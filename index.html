@@ -880,7 +880,48 @@
                 font-size: 2.5rem;
             }
         }
-    </style>
+    /* Исправление для мобильного отображения теста */
+@media (max-width: 768px) {
+    #test {
+        padding: 50px 0 !important;
+    }
+    
+    .test-container {
+        padding: 1.5rem !important;
+        margin: 0 10px !important;
+    }
+    
+    .period-table {
+        font-size: 0.8rem !important;
+    }
+    
+    .period-table th,
+    .period-table td {
+        padding: 0.5rem !important;
+    }
+    
+    .test-section {
+        padding: 1.5rem !important;
+        margin-bottom: 2rem !important;
+    }
+    
+    .options-grid {
+        grid-template-columns: 1fr !important;
+        gap: 0.5rem !important;
+    }
+    
+    .question-block {
+        padding: 1rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+}
+
+/* Гарантируем, что тест виден */
+#test {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}</style>
 </head>
 <body>
     <!-- Header -->
@@ -1652,6 +1693,7 @@
 </body>
 
 </html>
+
 
 
 
