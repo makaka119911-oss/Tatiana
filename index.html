@@ -882,50 +882,96 @@
         }
     
 /* Исправление для мобильного отображения теста */
+/* Улучшенное мобильное отображение теста */
 @media (max-width: 768px) {
     #test {
-        padding: 50px 0 !important;
+        padding: 40px 0 !important;
     }
     
     .test-container {
-        padding: 1.5rem !important;
-        margin: 0 10px !important;
+        padding: 1rem !important;
+        margin: 0 5px !important;
+        border-radius: 15px !important;
     }
     
+    /* Упрощаем таблицы для мобильных */
     .period-table {
-        font-size: 0.8rem !important;
+        font-size: 0.9rem !important;
         display: block;
         overflow-x: auto;
-    }
-    
-    .period-table th,
-    .period-table td {
-        padding: 0.5rem !important;
         white-space: nowrap;
+        margin: 1rem 0 !important;
     }
     
+    .period-table th {
+        padding: 0.8rem 0.5rem !important;
+        font-size: 0.85rem !important;
+    }
+    
+    .period-table td {
+        padding: 0.7rem 0.5rem !important;
+        min-width: 120px;
+    }
+    
+    /* Улучшаем секции */
     .test-section {
-        padding: 1.5rem !important;
-        margin-bottom: 2rem !important;
+        padding: 1.2rem !important;
+        margin-bottom: 1.5rem !important;
+        border-radius: 12px !important;
     }
     
+    .test-section h4 {
+        font-size: 1.2rem !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    /* Оптимизируем блоки вопросов */
+    .question-block {
+        padding: 1rem !important;
+        margin-bottom: 1.2rem !important;
+        border-radius: 10px !important;
+    }
+    
+    .question-block h5 {
+        font-size: 1rem !important;
+        margin-bottom: 0.8rem !important;
+    }
+    
+    /* Упрощаем сетку вариантов */
     .options-grid {
         grid-template-columns: 1fr !important;
         gap: 0.5rem !important;
     }
     
-    .question-block {
-        padding: 1rem !important;
-        margin-bottom: 1.5rem !important;
-        overflow-x: auto;
+    .option-item {
+        padding: 0.8rem !important;
+        font-size: 0.9rem !important;
+    }
+    
+    /* Улучшаем заголовок теста */
+    .test-header {
+        margin-bottom: 2rem !important;
+        padding-bottom: 1.5rem !important;
     }
     
     .test-header h3 {
-        font-size: 1.5rem !important;
+        font-size: 1.4rem !important;
+        line-height: 1.3 !important;
+    }
+    
+    /* Улучшаем выпадающие списки */
+    .form-control {
+        font-size: 0.9rem !important;
+        padding: 0.8rem !important;
+    }
+    
+    /* Уменьшаем отступы для лучшего использования пространства */
+    .container {
+        padding: 0 15px !important;
     }
 }
 
-/* Гарантируем, что тест виден */
+/* Гарантируем, что тест виден и удобен */
 #test {
     display: block !important;
     visibility: visible !important;
@@ -1702,6 +1748,7 @@
 </body>
 
 </html>
+
 
 
 
