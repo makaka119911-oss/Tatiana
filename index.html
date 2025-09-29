@@ -880,7 +880,8 @@
                 font-size: 2.5rem;
             }
         }
-    /* Исправление для мобильного отображения теста */
+    
+/* Исправление для мобильного отображения теста */
 @media (max-width: 768px) {
     #test {
         padding: 50px 0 !important;
@@ -893,11 +894,14 @@
     
     .period-table {
         font-size: 0.8rem !important;
+        display: block;
+        overflow-x: auto;
     }
     
     .period-table th,
     .period-table td {
         padding: 0.5rem !important;
+        white-space: nowrap;
     }
     
     .test-section {
@@ -913,6 +917,11 @@
     .question-block {
         padding: 1rem !important;
         margin-bottom: 1.5rem !important;
+        overflow-x: auto;
+    }
+    
+    .test-header h3 {
+        font-size: 1.5rem !important;
     }
 }
 
@@ -1693,6 +1702,7 @@
 </body>
 
 </html>
+
 
 
 
