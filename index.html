@@ -820,6 +820,90 @@
             100% { transform: translate(0, 0px); }
         }
 
+        /* Мобильные карточки - скрыты на десктопе */
+        .mobile-period-card {
+            display: none;
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 20px rgba(138, 12, 61, 0.1);
+            border: 2px solid var(--soft-pink);
+        }
+
+        .card-period-header {
+            background: linear-gradient(135deg, var(--deep-burgundy), var(--sensual-red));
+            color: white;
+            padding: 1rem 1.5rem;
+            margin: -1.5rem -1.5rem 1.5rem -1.5rem;
+            border-radius: 12px 12px 0 0;
+            border-bottom: 3px solid var(--gold);
+        }
+
+        .card-period-header h6 {
+            margin: 0;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-period-header h6::before {
+            content: '🩷';
+            font-size: 1.2rem;
+        }
+
+        .card-section {
+            background: var(--cream);
+            padding: 1.2rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--soft-pink);
+        }
+
+        .card-section h6 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card-section h6::before {
+            content: '•';
+            color: var(--vibrant-pink);
+            font-size: 1.5rem;
+        }
+
+        .mobile-form-group {
+            margin-bottom: 1rem;
+        }
+
+        .mobile-form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--dark-text);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .mobile-form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--soft-pink);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-form-group select:focus {
+            outline: none;
+            border-color: var(--vibrant-pink);
+            box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .nav-links {
@@ -863,174 +947,125 @@
                 height: 400px;
             }
 
+            /* Улучшенное мобильное отображение теста */
+            #test {
+                padding: 20px 0 !important;
+            }
+            
             .test-container {
-                padding: 1.5rem;
+                padding: 1rem !important;
+                margin: 0 5px !important;
+                border-radius: 15px !important;
             }
-
-            .options-grid {
-                grid-template-columns: 1fr;
-            }
-
+            
+            /* Скрываем таблицы на мобильных */
             .period-table {
-                display: block;
-                overflow-x: auto;
+                display: none !important;
+            }
+            
+            /* Показываем мобильные карточки */
+            .mobile-period-card {
+                display: block !important;
+            }
+            
+            /* Улучшаем секции */
+            .test-section {
+                padding: 1.2rem !important;
+                margin-bottom: 1.5rem !important;
+                border-radius: 12px !important;
+            }
+            
+            .test-section h4 {
+                font-size: 1.2rem !important;
+                margin-bottom: 1rem !important;
+            }
+            
+            /* Оптимизируем блоки вопросов */
+            .question-block {
+                padding: 1rem !important;
+                margin-bottom: 1.2rem !important;
+                border-radius: 10px !important;
+            }
+            
+            .question-block h5 {
+                font-size: 1rem !important;
+                margin-bottom: 0.8rem !important;
+            }
+            
+            /* Упрощаем сетку вариантов */
+            .options-grid {
+                grid-template-columns: 1fr !important;
+                gap: 0.5rem !important;
+            }
+            
+            .option-item {
+                padding: 0.8rem !important;
+                font-size: 0.9rem !important;
+                min-height: 50px !important;
+                display: flex !important;
+                align-items: center !important;
+            }
+            
+            /* Улучшаем заголовок теста */
+            .test-header {
+                margin-bottom: 2rem !important;
+                padding-bottom: 1.5rem !important;
+            }
+            
+            .test-header h3 {
+                font-size: 1.4rem !important;
+                line-height: 1.3 !important;
+            }
+            
+            /* Улучшаем выпадающие списки */
+            .form-control, select, input {
+                font-size: 1rem !important;
+                padding: 0.8rem !important;
+                min-height: 50px !important;
+            }
+            
+            /* Уменьшаем отступы для лучшего использования пространства */
+            .container {
+                padding: 0 15px !important;
             }
 
             .section-title h2 {
                 font-size: 2.5rem;
             }
         }
-    
-/* Исправление для мобильного отображения теста */
-/* Улучшенное мобильное отображение теста */
-<style>
-/* Улучшенное мобильное отображение теста */
-@media (max-width: 768px) {
-    #test {
-        padding: 20px 0 !important;
-    }
-    
-    .test-container {
-        padding: 0.8rem !important;
-        margin: 0 8px !important;
-        border-radius: 12px !important;
-    }
-    
-    /* Упрощаем таблицы для мобильных */
-    .period-table {
-        font-size: 0.85rem !important;
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-        margin: 0.8rem 0 !important;
-        -webkit-overflow-scrolling: touch;
-    }
-    
-    .period-table th {
-        padding: 0.6rem 0.4rem !important;
-        font-size: 0.8rem !important;
-    }
-    
-    .period-table td {
-        padding: 0.5rem 0.4rem !important;
-        min-width: 100px;
-    }
-    
-    /* Улучшаем секции */
-    .test-section {
-        padding: 1rem !important;
-        margin-bottom: 1.2rem !important;
-        border-radius: 10px !important;
-    }
-    
-    .test-section h4 {
-        font-size: 1.1rem !important;
-        margin-bottom: 0.8rem !important;
-        line-height: 1.3 !important;
-    }
-    
-    /* Оптимизируем блоки вопросов */
-    .question-block {
-        padding: 0.8rem !important;
-        margin-bottom: 1rem !important;
-        border-radius: 8px !important;
-    }
-    
-    .question-block h5 {
-        font-size: 0.95rem !important;
-        margin-bottom: 0.6rem !important;
-        line-height: 1.3 !important;
-    }
-    
-    /* Упрощаем сетку вариантов */
-    .options-grid {
-        grid-template-columns: 1fr !important;
-        gap: 0.4rem !important;
-    }
-    
-    .option-item {
-        padding: 0.7rem !important;
-        font-size: 0.85rem !important;
-        min-height: 44px !important; /* Минимальный размер для touch */
-        display: flex !important;
-        align-items: center !important;
-    }
-    
-    /* Улучшаем заголовок теста */
-    .test-header {
-        margin-bottom: 1.5rem !important;
-        padding-bottom: 1rem !important;
-    }
-    
-    .test-header h3 {
-        font-size: 1.3rem !important;
-        line-height: 1.2 !important;
-    }
-    
-    /* Улучшаем выпадающие списки и инпуты */
-    .form-control, select, input {
-        font-size: 0.9rem !important;
-        padding: 0.7rem !important;
-        min-height: 44px !important; /* Удобно для пальцев */
-    }
-    
-    /* Уменьшаем отступы для лучшего использования пространства */
-    .container {
-        padding: 0 10px !important;
-    }
-    
-    /* Улучшаем кнопки */
-    .btn {
-        padding: 0.8rem 1.2rem !important;
-        font-size: 0.9rem !important;
-        min-height: 44px !important;
-    }
-    
-    /* Улучшаем текстовые элементы */
-    p, li, span {
-        font-size: 0.9rem !important;
-        line-height: 1.4 !important;
-    }
-    
-    /* Адаптируем картинки если есть */
-    img {
-        max-width: 100% !important;
-        height: auto !important;
-    }
-}
 
-/* Гарантируем, что тест виден и удобен */
-#test {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
+        /* Дополнительные улучшения для очень маленьких экранов */
+        @media (max-width: 480px) {
+            .test-container {
+                padding: 0.8rem !important;
+            }
+            
+            .test-section {
+                padding: 1rem !important;
+            }
+            
+            .question-block {
+                padding: 0.8rem !important;
+            }
+            
+            .option-item {
+                padding: 0.7rem !important;
+                font-size: 0.85rem !important;
+            }
+            
+            .test-header h3 {
+                font-size: 1.3rem !important;
+            }
 
-/* Дополнительные улучшения для очень маленьких экранов */
-@media (max-width: 480px) {
-    .test-container {
-        padding: 0.5rem !important;
-        margin: 0 5px !important;
-    }
-    
-    .test-section {
-        padding: 0.8rem !important;
-    }
-    
-    .question-block {
-        padding: 0.6rem !important;
-    }
-    
-    .option-item {
-        padding: 0.6rem !important;
-        font-size: 0.82rem !important;
-    }
-    
-    .test-header h3 {
-        font-size: 1.2rem !important;
-    }
-}
-</style></style>
+            .mobile-period-card {
+                padding: 1rem;
+            }
+
+            .card-period-header {
+                padding: 0.8rem 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Header -->
@@ -1300,6 +1335,66 @@
                                     </td>
                                 </tr>
                             </table>
+
+                            <!-- Мобильная версия карточки для периода 1 -->
+                            <div class="mobile-period-card">
+                                <div class="card-period-header">
+                                    <h6>📅 От конца месячных до овуляции</h6>
+                                </div>
+                                
+                                <div class="card-section">
+                                    <h6>📋 В дни, когда НЕ хочется секса</h6>
+                                    <div class="mobile-form-group">
+                                        <label>Частота/Сила желания:</label>
+                                        <select name="period1_no_desire_frequency_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="never">Вообще не хочется</option>
+                                            <option value="weekly">Хочется 1 раз в неделю</option>
+                                            <option value="3days">Хочется 1 раз в 3 дня</option>
+                                            <option value="2days">Хочется через день</option>
+                                            <option value="daily">Хочется каждый день</option>
+                                            <option value="multiple">Хочется каждый день по много раз</option>
+                                        </select>
+                                    </div>
+                                    <div class="mobile-form-group">
+                                        <label>Возбуждение от вида:</label>
+                                        <select name="period1_no_desire_arousal_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="not_at_all">Вообще не возбуждает</option>
+                                            <option value="slightly">Немного возбуждает</option>
+                                            <option value="moderately">Средне возбуждает</option>
+                                            <option value="strongly">Сильно возбуждает</option>
+                                            <option value="very_strongly">Очень сильно возбуждает</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="card-section">
+                                    <h6>💖 В дни, когда хочется секса</h6>
+                                    <div class="mobile-form-group">
+                                        <label>Частота/Сила желания:</label>
+                                        <select name="period1_desire_strength_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="light">Легкое желание</option>
+                                            <option value="medium">Среднее желание</option>
+                                            <option value="strong">Сильное желание</option>
+                                            <option value="very_strong">Очень сильное желание</option>
+                                            <option value="maximal">Максимально сильное желание</option>
+                                        </select>
+                                    </div>
+                                    <div class="mobile-form-group">
+                                        <label>Возбуждение от вида:</label>
+                                        <select name="period1_desire_arousal_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="not_at_all">Вообще не возбуждает</option>
+                                            <option value="slightly">Немного возбуждает</option>
+                                            <option value="moderately">Средне возбуждает</option>
+                                            <option value="strongly">Сильно возбуждает</option>
+                                            <option value="very_strongly">Очень сильно возбуждает</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Период 2: В период овуляции -->
@@ -1359,6 +1454,66 @@
                                     </td>
                                 </tr>
                             </table>
+
+                            <!-- Мобильная версия карточки для периода 2 -->
+                            <div class="mobile-period-card">
+                                <div class="card-period-header">
+                                    <h6>🥚 В период овуляции</h6>
+                                </div>
+                                
+                                <div class="card-section">
+                                    <h6>📋 В дни, когда НЕ хочется секса</h6>
+                                    <div class="mobile-form-group">
+                                        <label>Частота/Сила желания:</label>
+                                        <select name="period2_no_desire_frequency_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="never">Вообще не хочется</option>
+                                            <option value="weekly">Хочется 1 раз в неделю</option>
+                                            <option value="3days">Хочется 1 раз в 3 дня</option>
+                                            <option value="2days">Хочется через день</option>
+                                            <option value="daily">Хочется каждый день</option>
+                                            <option value="multiple">Хочется каждый день по много раз</option>
+                                        </select>
+                                    </div>
+                                    <div class="mobile-form-group">
+                                        <label>Возбуждение от вида:</label>
+                                        <select name="period2_no_desire_arousal_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="not_at_all">Вообще не возбуждает</option>
+                                            <option value="slightly">Немного возбуждает</option>
+                                            <option value="moderately">Средне возбуждает</option>
+                                            <option value="strongly">Сильно возбуждает</option>
+                                            <option value="very_strongly">Очень сильно возбуждает</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="card-section">
+                                    <h6>💖 В дни, когда хочется секса</h6>
+                                    <div class="mobile-form-group">
+                                        <label>Частота/Сила желания:</label>
+                                        <select name="period2_desire_strength_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="light">Легкое желание</option>
+                                            <option value="medium">Среднее желание</option>
+                                            <option value="strong">Сильное желание</option>
+                                            <option value="very_strong">Очень сильное желание</option>
+                                            <option value="maximal">Максимально сильное желание</option>
+                                        </select>
+                                    </div>
+                                    <div class="mobile-form-group">
+                                        <label>Возбуждение от вида:</label>
+                                        <select name="period2_desire_arousal_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="not_at_all">Вообще не возбуждает</option>
+                                            <option value="slightly">Немного возбуждает</option>
+                                            <option value="moderately">Средне возбуждает</option>
+                                            <option value="strongly">Сильно возбуждает</option>
+                                            <option value="very_strongly">Очень сильно возбуждает</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Период 3: От конца овуляции до начала месячных -->
@@ -1418,6 +1573,66 @@
                                     </td>
                                 </tr>
                             </table>
+
+                            <!-- Мобильная версия карточки для периода 3 -->
+                            <div class="mobile-period-card">
+                                <div class="card-period-header">
+                                    <h6>📆 От конца овуляции до начала месячных</h6>
+                                </div>
+                                
+                                <div class="card-section">
+                                    <h6>📋 В дни, когда НЕ хочется секса</h6>
+                                    <div class="mobile-form-group">
+                                        <label>Частота/Сила желания:</label>
+                                        <select name="period3_no_desire_frequency_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="never">Вообще не хочется</option>
+                                            <option value="weekly">Хочется 1 раз в неделю</option>
+                                            <option value="3days">Хочется 1 раз в 3 дня</option>
+                                            <option value="2days">Хочется через день</option>
+                                            <option value="daily">Хочется каждый день</option>
+                                            <option value="multiple">Хочется каждый день по много раз</option>
+                                        </select>
+                                    </div>
+                                    <div class="mobile-form-group">
+                                        <label>Возбуждение от вида:</label>
+                                        <select name="period3_no_desire_arousal_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="not_at_all">Вообще не возбуждает</option>
+                                            <option value="slightly">Немного возбуждает</option>
+                                            <option value="moderately">Средне возбуждает</option>
+                                            <option value="strongly">Сильно возбуждает</option>
+                                            <option value="very_strongly">Очень сильно возбуждает</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="card-section">
+                                    <h6>💖 В дни, когда хочется секса</h6>
+                                    <div class="mobile-form-group">
+                                        <label>Частота/Сила желания:</label>
+                                        <select name="period3_desire_strength_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="light">Легкое желание</option>
+                                            <option value="medium">Среднее желание</option>
+                                            <option value="strong">Сильное желание</option>
+                                            <option value="very_strong">Очень сильное желание</option>
+                                            <option value="maximal">Максимально сильное желание</option>
+                                        </select>
+                                    </div>
+                                    <div class="mobile-form-group">
+                                        <label>Возбуждение от вида:</label>
+                                        <select name="period3_desire_arousal_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="not_at_all">Вообще не возбуждает</option>
+                                            <option value="slightly">Немного возбуждает</option>
+                                            <option value="moderately">Средне возбуждает</option>
+                                            <option value="strongly">Сильно возбуждает</option>
+                                            <option value="very_strongly">Очень сильно возбуждает</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Период 4: В период месячных -->
@@ -1477,6 +1692,66 @@
                                     </td>
                                 </tr>
                             </table>
+
+                            <!-- Мобильная версия карточки для периода 4 -->
+                            <div class="mobile-period-card">
+                                <div class="card-period-header">
+                                    <h6>🩸 В период месячных</h6>
+                                </div>
+                                
+                                <div class="card-section">
+                                    <h6>📋 В дни, когда НЕ хочется секса</h6>
+                                    <div class="mobile-form-group">
+                                        <label>Частота/Сила желания:</label>
+                                        <select name="period4_no_desire_frequency_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="never">Вообще не хочется</option>
+                                            <option value="weekly">Хочется 1 раз в неделю</option>
+                                            <option value="3days">Хочется 1 раз в 3 дня</option>
+                                            <option value="2days">Хочется через день</option>
+                                            <option value="daily">Хочется каждый день</option>
+                                            <option value="multiple">Хочется каждый день по много раз</option>
+                                        </select>
+                                    </div>
+                                    <div class="mobile-form-group">
+                                        <label>Возбуждение от вида:</label>
+                                        <select name="period4_no_desire_arousal_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="not_at_all">Вообще не возбуждает</option>
+                                            <option value="slightly">Немного возбуждает</option>
+                                            <option value="moderately">Средне возбуждает</option>
+                                            <option value="strongly">Сильно возбуждает</option>
+                                            <option value="very_strongly">Очень сильно возбуждает</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="card-section">
+                                    <h6>💖 В дни, когда хочется секса</h6>
+                                    <div class="mobile-form-group">
+                                        <label>Частота/Сила желания:</label>
+                                        <select name="period4_desire_strength_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="light">Легкое желание</option>
+                                            <option value="medium">Среднее желание</option>
+                                            <option value="strong">Сильное желание</option>
+                                            <option value="very_strong">Очень сильное желание</option>
+                                            <option value="maximal">Максимально сильное желание</option>
+                                        </select>
+                                    </div>
+                                    <div class="mobile-form-group">
+                                        <label>Возбуждение от вида:</label>
+                                        <select name="period4_desire_arousal_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="not_at_all">Вообще не возбуждает</option>
+                                            <option value="slightly">Немного возбуждает</option>
+                                            <option value="moderately">Средне возбуждает</option>
+                                            <option value="strongly">Сильно возбуждает</option>
+                                            <option value="very_strongly">Очень сильно возбуждает</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -1800,9 +2075,7 @@
         });
     </script>
 </body>
-
 </html>
-
 
 
 
