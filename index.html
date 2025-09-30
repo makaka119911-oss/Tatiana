@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Татьяна Солнечная - Сексолог-психолог | Интимная гармония</title>
+    <title>Татьяна Солнечная - Сексолог-психолог | Профессиональная помощь</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
@@ -13,115 +13,23 @@
         }
 
         :root {
-            --passionate-red: #D10047;
-            --deep-burgundy: #9A0C3D;
-            --sensual-pink: #E91E63;
-            --warm-rose: #FF4081;
+            --deep-burgundy: #8A0C3D;
+            --sensual-red: #C2185B;
+            --warm-pink: #E91E63;
             --soft-pink: #F8BBD0;
+            --vibrant-pink: #FF4081;
             --gold: #FFD700;
             --cream: #FFF8F3;
             --dark-text: #2C1A1D;
             --light-gold: #FFF9C4;
-            --rich-red: #C2185B;
-            --velvet-purple: #8E24AA;
         }
 
         body {
             font-family: 'Georgia', serif;
             line-height: 1.6;
             color: var(--dark-text);
-            background: linear-gradient(135deg, #1a0b0b 0%, #2d1a1a 50%, #1a0b0b 100%);
+            background-color: var(--cream);
             overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Анимированные сердечки на фоне - улучшенные */
-        .hearts-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-            overflow: hidden;
-        }
-
-        .heart {
-            position: absolute;
-            background: var(--warm-rose);
-            opacity: 0.3;
-            animation: floatHearts 20s infinite linear;
-            filter: drop-shadow(0 0 10px rgba(255, 64, 129, 0.5));
-        }
-
-        .heart:before, .heart:after {
-            content: '';
-            position: absolute;
-            background: inherit;
-            border-radius: 50%;
-        }
-
-        .heart:before {
-            top: -50%;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        .heart:after {
-            top: 0;
-            left: -50%;
-            width: 100%;
-            height: 100%;
-        }
-
-        .heart.small {
-            width: 20px;
-            height: 20px;
-        }
-
-        .heart.medium {
-            width: 30px;
-            height: 30px;
-        }
-
-        .heart.large {
-            width: 40px;
-            height: 40px;
-        }
-
-        @keyframes floatHearts {
-            0% {
-                transform: translateY(100vh) rotate(0deg) scale(0.5);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.4;
-            }
-            90% {
-                opacity: 0.2;
-            }
-            100% {
-                transform: translateY(-100px) rotate(360deg) scale(1);
-                opacity: 0;
-            }
-        }
-
-        /* Пульсирующие точки */
-        .pulse-dot {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: var(--warm-rose);
-            border-radius: 50%;
-            animation: pulse 3s infinite;
-            opacity: 0.2;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.2; }
-            50% { transform: scale(2); opacity: 0.1; }
         }
 
         .container {
@@ -130,19 +38,17 @@
             padding: 0 20px;
         }
 
-        /* Header - более чувственный */
+        /* Header */
         header {
-            background: linear-gradient(135deg, rgba(209, 0, 71, 0.95) 0%, rgba(154, 12, 61, 0.9) 100%);
+            background: linear-gradient(135deg, var(--deep-burgundy) 0%, var(--sensual-red) 100%);
             color: white;
             padding: 1rem 0;
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 30px rgba(209, 0, 71, 0.6);
+            box-shadow: 0 2px 20px rgba(138, 12, 61, 0.4);
             animation: slideDown 0.8s ease-out;
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         @keyframes slideDown {
@@ -163,17 +69,16 @@
         }
 
         .logo {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: bold;
             color: var(--gold);
-            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.5);
-            font-style: italic;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 2.5rem;
+            gap: 2rem;
         }
 
         .nav-links a {
@@ -182,7 +87,6 @@
             transition: all 0.3s;
             position: relative;
             font-weight: 500;
-            padding: 0.5rem 0;
         }
 
         .nav-links a:hover {
@@ -195,9 +99,9 @@
             position: absolute;
             width: 0;
             height: 2px;
-            bottom: 0;
+            bottom: -5px;
             left: 0;
-            background: linear-gradient(90deg, var(--gold), var(--warm-rose));
+            background-color: var(--gold);
             transition: width 0.3s;
         }
 
@@ -205,9 +109,9 @@
             width: 100%;
         }
 
-        /* Hero Section - более страстный */
+        /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, rgba(209, 0, 71, 0.9) 0%, rgba(142, 36, 170, 0.85) 100%);
+            background: linear-gradient(135deg, rgba(138, 12, 61, 0.9) 0%, rgba(194, 24, 91, 0.85) 100%);
             background-size: cover;
             background-position: center;
             height: 100vh;
@@ -227,40 +131,32 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(255, 64, 129, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(142, 36, 170, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(255, 215, 0, 0.2) 0%, transparent 50%);
-            animation: pulseBackground 8s ease-in-out infinite;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><pattern id="hearts" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse"><path fill="%23FF4081" fill-opacity="0.1" d="M50,30 C60,20 70,25 75,35 C80,45 70,55 60,65 C50,75 40,65 35,55 C30,45 40,35 50,30 Z"/></pattern></defs><rect fill="url(%23hearts)" width="1200" height="800"/></svg>');
+            animation: float 20s infinite linear;
         }
 
-        @keyframes pulseBackground {
-            0%, 100% { opacity: 0.8; }
-            50% { opacity: 1; }
+        @keyframes float {
+            0% { transform: translateY(0px) translateX(0px); }
+            50% { transform: translateY(-20px) translateX(20px); }
+            100% { transform: translateY(0px) translateX(0px); }
         }
 
         .hero-content h1 {
-            font-size: 4rem;
+            font-size: 3.5rem;
             margin-bottom: 1.5rem;
-            text-shadow: 2px 2px 15px rgba(0,0,0,0.5);
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
             line-height: 1.2;
             animation: fadeInUp 1s ease-out 0.3s both;
-            font-weight: 300;
-            background: linear-gradient(45deg, #fff, var(--gold));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
         .hero-content p {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             margin-bottom: 2.5rem;
             max-width: 700px;
             margin-left: auto;
             margin-right: auto;
-            opacity: 0.9;
+            opacity: 0.95;
             animation: fadeInUp 1s ease-out 0.6s both;
-            text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
         }
 
         @keyframes fadeInUp {
@@ -278,25 +174,22 @@
             display: inline-block;
             background: linear-gradient(45deg, var(--gold), #FFC107);
             color: var(--dark-text);
-            padding: 20px 45px;
+            padding: 18px 40px;
             border-radius: 50px;
             text-decoration: none;
             font-weight: bold;
             transition: all 0.4s;
             border: none;
             cursor: pointer;
-            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
             position: relative;
             overflow: hidden;
             animation: fadeInUp 1s ease-out 0.9s both;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         .btn:hover {
             transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 15px 30px rgba(255, 215, 0, 0.7);
+            box-shadow: 0 12px 25px rgba(255, 215, 0, 0.6);
         }
 
         .btn:active {
@@ -310,8 +203,8 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: left 0.7s;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
         }
 
         .btn:hover::before {
@@ -327,13 +220,13 @@
 
         /* Pulse animation for CTA button */
         @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5); }
-            50% { transform: scale(1.05); box-shadow: 0 12px 30px rgba(255, 215, 0, 0.7); }
-            100% { transform: scale(1); box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5); }
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
         .pulse {
-            animation: pulse 3s infinite;
+            animation: pulse 2s infinite;
         }
 
         /* Sections */
@@ -342,7 +235,6 @@
             opacity: 0;
             transform: translateY(30px);
             transition: all 0.8s ease-out;
-            position: relative;
         }
 
         section.visible {
@@ -356,34 +248,36 @@
         }
 
         .section-title h2 {
-            font-size: 3.5rem;
+            font-size: 3rem;
             margin-bottom: 1rem;
-            background: linear-gradient(45deg, var(--gold), var(--warm-rose));
+            background: linear-gradient(45deg, var(--deep-burgundy), var(--vibrant-pink));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             position: relative;
             display: inline-block;
-            font-weight: 300;
         }
 
         .section-title h2::after {
             content: '';
             position: absolute;
-            bottom: -15px;
+            bottom: -10px;
             left: 50%;
             transform: translateX(-50%);
-            width: 100px;
+            width: 80px;
             height: 4px;
-            background: linear-gradient(45deg, var(--gold), var(--warm-rose));
+            background: linear-gradient(45deg, var(--gold), var(--vibrant-pink));
             border-radius: 2px;
         }
 
-        .section-title p {
-            color: #fff;
-            font-size: 1.2rem;
-            opacity: 0.8;
-            margin-top: 2rem;
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(45deg, var(--gold), var(--warm-pink));
+            margin: 1rem auto;
+            border-radius: 2px;
         }
 
         /* About */
@@ -398,15 +292,14 @@
             position: relative;
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 20px 50px rgba(209, 0, 71, 0.4);
+            box-shadow: 0 20px 40px rgba(138, 12, 61, 0.3);
             transition: all 0.5s ease;
             transform: perspective(1000px) rotateY(0deg);
-            border: 3px solid var(--warm-rose);
         }
 
         .profile-img-container:hover {
             transform: perspective(1000px) rotateY(5deg) scale(1.03);
-            box-shadow: 0 25px 60px rgba(209, 0, 71, 0.6);
+            box-shadow: 0 25px 50px rgba(138, 12, 61, 0.4);
         }
 
         .profile-img {
@@ -426,7 +319,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(transparent, rgba(209, 0, 71, 0.9));
+            background: linear-gradient(transparent, rgba(138, 12, 61, 0.8));
             padding: 2rem;
             color: white;
             transform: translateY(10px);
@@ -447,17 +340,15 @@
         }
 
         .service-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+            background: white;
             padding: 2.5rem 2rem;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(209, 0, 71, 0.2);
+            box-shadow: 0 15px 30px rgba(138, 12, 61, 0.15);
             text-align: center;
             transition: all 0.4s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--soft-pink);
             position: relative;
             overflow: hidden;
-            color: white;
         }
 
         .service-card::before {
@@ -467,7 +358,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(45deg, var(--gold), var(--warm-rose));
+            background: linear-gradient(45deg, var(--deep-burgundy), var(--vibrant-pink));
             transform: scaleX(0);
             transform-origin: left;
             transition: transform 0.4s ease;
@@ -479,47 +370,40 @@
 
         .service-card:hover {
             transform: translateY(-15px) scale(1.03);
-            box-shadow: 0 25px 50px rgba(209, 0, 71, 0.3);
-            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 25px 40px rgba(138, 12, 61, 0.2);
         }
 
         .service-icon {
             font-size: 3.5rem;
-            color: var(--gold);
+            color: var(--deep-burgundy);
             margin-bottom: 1.5rem;
             transition: all 0.4s ease;
             display: inline-block;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
         }
 
         .service-card:hover .service-icon {
             transform: scale(1.2) rotate(5deg);
-            color: var(--warm-rose);
+            color: var(--vibrant-pink);
         }
 
         .service-card h3 {
-            color: var(--gold);
+            color: var(--deep-burgundy);
             margin-bottom: 1rem;
             font-size: 1.5rem;
             transition: color 0.3s;
         }
 
         .service-card:hover h3 {
-            color: var(--warm-rose);
-        }
-
-        .service-card p {
-            color: rgba(255, 255, 255, 0.8);
+            color: var(--vibrant-pink);
         }
 
         /* Test Section */
         .test-container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+            background: white;
             border-radius: 25px;
-            box-shadow: 0 20px 50px rgba(209, 0, 71, 0.2);
+            box-shadow: 0 20px 40px rgba(138, 12, 61, 0.15);
             padding: 3rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--soft-pink);
             position: relative;
             overflow: hidden;
         }
@@ -531,7 +415,7 @@
             left: 0;
             right: 0;
             height: 6px;
-            background: linear-gradient(45deg, var(--gold), var(--warm-rose), var(--velvet-purple));
+            background: linear-gradient(45deg, var(--deep-burgundy), var(--vibrant-pink), var(--gold));
             background-size: 200% 100%;
             animation: gradientShift 3s ease infinite;
         }
@@ -546,40 +430,36 @@
             text-align: center;
             margin-bottom: 3rem;
             padding-bottom: 2rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 2px solid var(--soft-pink);
         }
 
         .test-header h3 {
-            color: var(--gold);
+            color: var(--deep-burgundy);
             font-size: 2.2rem;
             margin-bottom: 1rem;
-            background: linear-gradient(45deg, var(--gold), var(--warm-rose));
+            background: linear-gradient(45deg, var(--deep-burgundy), var(--vibrant-pink));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .test-header p {
-            color: rgba(255, 255, 255, 0.8);
-        }
-
         .test-section {
             margin-bottom: 3rem;
             padding: 2.5rem;
-            background: rgba(255, 255, 255, 0.05);
+            background: linear-gradient(135deg, var(--cream) 0%, var(--light-gold) 100%);
             border-radius: 20px;
-            border-left: 4px solid var(--warm-rose);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-left: 6px solid var(--vibrant-pink);
+            box-shadow: 0 10px 25px rgba(138, 12, 61, 0.1);
             transition: all 0.3s ease;
         }
 
         .test-section:hover {
             transform: translateX(10px);
-            box-shadow: 0 15px 30px rgba(209, 0, 71, 0.2);
+            box-shadow: 0 15px 30px rgba(138, 12, 61, 0.15);
         }
 
         .test-section h4 {
-            color: var(--gold);
+            color: var(--deep-burgundy);
             margin-bottom: 1.5rem;
             font-size: 1.5rem;
             display: flex;
@@ -588,27 +468,28 @@
         }
 
         .test-section h4::before {
-            content: '❤️';
+            content: '✦';
+            color: var(--vibrant-pink);
             font-size: 1.8rem;
         }
 
         .question-block {
             margin-bottom: 2rem;
             padding: 2rem;
-            background: rgba(255, 255, 255, 0.05);
+            background: white;
             border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            border: 1px solid transparent;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 2px solid transparent;
             transition: all 0.3s ease;
         }
 
         .question-block:hover {
-            border-color: rgba(255, 64, 129, 0.3);
-            box-shadow: 0 8px 20px rgba(209, 0, 71, 0.15);
+            border-color: var(--soft-pink);
+            box-shadow: 0 8px 20px rgba(138, 12, 61, 0.12);
         }
 
         .question-block h5 {
-            color: var(--gold);
+            color: var(--deep-burgundy);
             margin-bottom: 1rem;
             font-size: 1.2rem;
             display: flex;
@@ -617,8 +498,8 @@
         }
 
         .question-block h5::before {
-            content: '💖';
-            color: var(--warm-rose);
+            content: '❖';
+            color: var(--vibrant-pink);
         }
 
         .options-grid {
@@ -631,23 +512,53 @@
             display: flex;
             align-items: center;
             padding: 1rem;
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--cream);
             border-radius: 12px;
             transition: all 0.3s ease;
             cursor: pointer;
-            border: 1px solid transparent;
-            color: rgba(255, 255, 255, 0.8);
+            border: 2px solid transparent;
         }
 
         .option-item:hover {
-            background: rgba(255, 64, 129, 0.2);
+            background: var(--soft-pink);
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(209, 0, 71, 0.1);
+            box-shadow: 0 5px 15px rgba(138, 12, 61, 0.1);
         }
 
         .option-item input {
             margin-right: 1rem;
             transform: scale(1.2);
+        }
+
+        .period-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .period-table th {
+            background: linear-gradient(135deg, var(--deep-burgundy), var(--sensual-red));
+            color: white;
+            padding: 1.2rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .period-table td {
+            padding: 1.2rem;
+            border-bottom: 1px solid var(--soft-pink);
+            transition: background-color 0.3s;
+        }
+
+        .period-table tr:nth-child(even) {
+            background: var(--cream);
+        }
+
+        .period-table tr:hover td {
+            background: var(--light-gold);
         }
 
         /* Process */
@@ -658,26 +569,24 @@
         }
 
         .step {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+            background: white;
             padding: 2.5rem 2rem;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(209, 0, 71, 0.2);
+            box-shadow: 0 15px 30px rgba(138, 12, 61, 0.1);
             text-align: center;
             position: relative;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--soft-pink);
             transition: all 0.4s ease;
-            color: white;
         }
 
         .step:hover {
             transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 45px rgba(209, 0, 71, 0.3);
+            box-shadow: 0 20px 40px rgba(138, 12, 61, 0.15);
         }
 
         .step-number {
-            background: linear-gradient(45deg, var(--gold), var(--warm-rose));
-            color: var(--dark-text);
+            background: linear-gradient(45deg, var(--deep-burgundy), var(--vibrant-pink));
+            color: white;
             width: 60px;
             height: 60px;
             border-radius: 50%;
@@ -687,7 +596,7 @@
             margin: 0 auto 1.5rem;
             font-weight: bold;
             font-size: 1.4rem;
-            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);
+            box-shadow: 0 8px 20px rgba(138, 12, 61, 0.3);
             transition: all 0.3s ease;
         }
 
@@ -696,13 +605,9 @@
         }
 
         .step h3 {
-            color: var(--gold);
+            color: var(--deep-burgundy);
             margin-bottom: 1rem;
             font-size: 1.4rem;
-        }
-
-        .step p {
-            color: rgba(255, 255, 255, 0.8);
         }
 
         /* Contact */
@@ -713,12 +618,11 @@
         }
 
         .contact-info {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+            background: white;
             padding: 2.5rem;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(209, 0, 71, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 30px rgba(138, 12, 61, 0.1);
+            border: 1px solid var(--soft-pink);
         }
 
         .contact-item {
@@ -728,19 +632,18 @@
             padding: 1.2rem;
             border-radius: 15px;
             transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
+            background: var(--cream);
         }
 
         .contact-item:hover {
-            background: rgba(255, 64, 129, 0.2);
+            background: var(--light-gold);
             transform: translateX(10px);
-            box-shadow: 0 8px 20px rgba(209, 0, 71, 0.1);
+            box-shadow: 0 8px 20px rgba(138, 12, 61, 0.1);
         }
 
         .contact-icon {
             font-size: 2rem;
-            color: var(--warm-rose);
+            color: var(--vibrant-pink);
             margin-right: 1.5rem;
             width: 40px;
             text-align: center;
@@ -752,21 +655,16 @@
         }
 
         .contact-text h4 {
-            color: var(--gold);
+            color: var(--deep-burgundy);
             margin-bottom: 0.3rem;
         }
 
-        .contact-text p {
-            color: rgba(255, 255, 255, 0.8);
-        }
-
         .booking-form {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+            background: white;
             padding: 2.5rem;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(209, 0, 71, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 30px rgba(138, 12, 61, 0.1);
+            border: 1px solid var(--soft-pink);
         }
 
         .form-group {
@@ -777,7 +675,7 @@
         .form-group label {
             display: block;
             margin-bottom: 0.7rem;
-            color: var(--gold);
+            color: var(--deep-burgundy);
             font-weight: bold;
             transition: color 0.3s;
         }
@@ -787,27 +685,21 @@
         .form-group select {
             width: 100%;
             padding: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 2px solid var(--soft-pink);
             border-radius: 12px;
             font-size: 1rem;
             transition: all 0.3s ease;
             font-family: 'Georgia', serif;
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
+            background: var(--cream);
         }
 
         .form-group input:focus,
         .form-group textarea:focus,
         .form-group select:focus {
             outline: none;
-            border-color: var(--warm-rose);
-            box-shadow: 0 0 0 3px rgba(255, 64, 129, 0.1);
+            border-color: var(--vibrant-pink);
+            box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
             transform: translateY(-2px);
-        }
-
-        .form-group input::placeholder,
-        .form-group textarea::placeholder {
-            color: rgba(255, 255, 255, 0.5);
         }
 
         .form-message {
@@ -831,20 +723,63 @@
         }
 
         .form-message.success {
-            background: rgba(212, 237, 218, 0.2);
-            color: #d4edda;
-            border: 1px solid rgba(195, 230, 203, 0.3);
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
         }
 
         .form-message.error {
-            background: rgba(248, 215, 218, 0.2);
-            color: #f8d7da;
-            border: 1px solid rgba(245, 198, 203, 0.3);
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+
+        /* Payment */
+        .payment-methods {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 3rem;
+            background: linear-gradient(135deg, var(--cream) 0%, var(--light-gold) 100%);
+            border-radius: 20px;
+            border: 1px solid var(--soft-pink);
+            box-shadow: 0 15px 30px rgba(138, 12, 61, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .payment-methods::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(45deg, var(--gold), var(--vibrant-pink), var(--deep-burgundy));
+            background-size: 200% 100%;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        .payment-icons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            font-size: 3rem;
+            color: var(--deep-burgundy);
+        }
+
+        .payment-icons i {
+            transition: all 0.3s ease;
+        }
+
+        .payment-icons i:hover {
+            color: var(--vibrant-pink);
+            transform: scale(1.2) translateY(-5px);
         }
 
         /* Footer */
         footer {
-            background: linear-gradient(135deg, var(--deep-burgundy) 0%, var(--velvet-purple) 100%);
+            background: linear-gradient(135deg, var(--deep-burgundy) 0%, var(--sensual-red) 100%);
             color: white;
             text-align: center;
             padding: 3rem 0;
@@ -874,7 +809,102 @@
             transform: scale(1.1);
         }
 
-        /* Мобильная версия тест-анкеты */
+        /* Floating elements */
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% { transform: translate(0, 0px); }
+            50% { transform: translate(0, -15px); }
+            100% { transform: translate(0, 0px); }
+        }
+
+        /* Мобильные карточки - скрыты на десктопе */
+        .mobile-period-card {
+            display: none;
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 20px rgba(138, 12, 61, 0.1);
+            border: 2px solid var(--soft-pink);
+        }
+
+        .card-period-header {
+            background: linear-gradient(135deg, var(--deep-burgundy), var(--sensual-red));
+            color: white;
+            padding: 1rem 1.5rem;
+            margin: -1.5rem -1.5rem 1.5rem -1.5rem;
+            border-radius: 12px 12px 0 0;
+            border-bottom: 3px solid var(--gold);
+        }
+
+        .card-period-header h6 {
+            margin: 0;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-period-header h6::before {
+            content: '🩷';
+            font-size: 1.2rem;
+        }
+
+        .card-section {
+            background: var(--cream);
+            padding: 1.2rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--soft-pink);
+        }
+
+        .card-section h6 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card-section h6::before {
+            content: '•';
+            color: var(--vibrant-pink);
+            font-size: 1.5rem;
+        }
+
+        .mobile-form-group {
+            margin-bottom: 1rem;
+        }
+
+        .mobile-form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--dark-text);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .mobile-form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--soft-pink);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-form-group select:focus {
+            outline: none;
+            border-color: var(--vibrant-pink);
+            box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
@@ -883,10 +913,9 @@
                 top: 100%;
                 left: 0;
                 right: 0;
-                background: rgba(209, 0, 71, 0.95);
+                background: var(--deep-burgundy);
                 padding: 1rem;
                 box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-                backdrop-filter: blur(10px);
             }
 
             .nav-links.active {
@@ -918,153 +947,135 @@
                 height: 400px;
             }
 
-            .section-title h2 {
-                font-size: 2.5rem;
-            }
-
-            /* Общие настройки для теста */
-            #test .container {
-                padding: 0 10px;
+            /* Улучшенное мобильное отображение теста */
+            #test {
+                padding: 20px 0;
+                display: block;
+                visibility: visible;
+                opacity: 1;
             }
             
             .test-container {
-                padding: 1.5rem;
+                padding: 1rem;
+                margin: 0 5px;
                 border-radius: 15px;
             }
             
+            /* Скрываем таблицы на мобильных */
+            .period-table {
+                display: none;
+            }
+            
+            /* Показываем мобильные карточки */
+            .mobile-period-card {
+                display: block;
+            }
+            
+            /* Улучшаем секции */
+            .test-section {
+                padding: 1.2rem;
+                margin-bottom: 1.5rem;
+                border-radius: 12px;
+            }
+            
+            .test-section h4 {
+                font-size: 1.2rem;
+                margin-bottom: 1rem;
+            }
+            
+            /* Оптимизируем блоки вопросов */
+            .question-block {
+                padding: 1rem;
+                margin-bottom: 1.2rem;
+                border-radius: 10px;
+            }
+            
+            .question-block h5 {
+                font-size: 1rem;
+                margin-bottom: 0.8rem;
+            }
+            
+            /* Упрощаем сетку вариантов */
+            .options-grid {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+            
+            .option-item {
+                padding: 0.8rem;
+                font-size: 0.9rem;
+                min-height: 50px;
+                display: flex;
+                align-items: center;
+            }
+            
+            /* Улучшаем заголовок теста */
             .test-header {
                 margin-bottom: 2rem;
                 padding-bottom: 1.5rem;
             }
             
             .test-header h3 {
-                font-size: 1.5rem;
+                font-size: 1.4rem;
                 line-height: 1.3;
             }
             
-            .test-header p {
+            /* Улучшаем выпадающие списки */
+            .form-control, select, input {
                 font-size: 1rem;
+                padding: 0.8rem;
+                min-height: 50px;
             }
             
-            /* Секции теста */
-            .test-section {
-                padding: 1.5rem;
-                margin-bottom: 2rem;
+            /* Уменьшаем отступы для лучшего использования пространства */
+            .container {
+                padding: 0 15px;
             }
-            
-            .test-section h4 {
-                font-size: 1.3rem;
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 5px;
-            }
-            
-            .test-section h4::before {
-                font-size: 1.5rem;
-            }
-            
-            /* Блоки вопросов */
-            .question-block {
-                padding: 1.5rem;
-                margin-bottom: 1.5rem;
-            }
-            
-            .question-block h5 {
-                font-size: 1.1rem;
-                line-height: 1.4;
-                margin-bottom: 1.2rem;
-            }
-            
-            /* Сетка вариантов ответов */
-            .options-grid {
-                grid-template-columns: 1fr;
-                gap: 0.8rem;
-            }
-            
-            .option-item {
-                padding: 1.2rem 1rem;
-                border-radius: 10px;
-                font-size: 1rem;
-                min-height: 60px;
-                display: flex;
-                align-items: center;
-            }
-            
-            .option-item input {
-                transform: scale(1.4);
-                margin-right: 1.2rem;
-            }
-            
-            /* Текстовое поле для сезонных особенностей */
-            #seasonalDescription textarea {
-                font-size: 1rem;
-                padding: 1rem;
-            }
-            
-            /* Кнопка отправки */
-            #testSubmitBtn {
-                padding: 1.2rem 2rem;
-                font-size: 1rem;
-                width: 100%;
-            }
-            
-            /* Сообщение о конфиденциальности */
-            #test .form-group p {
-                font-size: 0.9rem;
-                line-height: 1.4;
-            }
-            
-            /* Улучшение отступов для лучшего восприятия */
+
             .section-title h2 {
-                font-size: 2rem;
-            }
-            
-            .section-title p {
-                font-size: 1rem;
+                font-size: 2.5rem;
             }
         }
 
         /* Дополнительные улучшения для очень маленьких экранов */
         @media (max-width: 480px) {
             .test-container {
-                padding: 1rem;
+                padding: 0.8rem;
             }
             
             .test-section {
-                padding: 1.2rem;
+                padding: 1rem;
             }
             
             .question-block {
-                padding: 1.2rem;
+                padding: 0.8rem;
             }
             
             .option-item {
-                padding: 1rem;
-                min-height: 55px;
-            }
-            
-            .option-item input {
-                transform: scale(1.3);
-                margin-right: 1rem;
+                padding: 0.7rem;
+                font-size: 0.85rem;
             }
             
             .test-header h3 {
                 font-size: 1.3rem;
             }
-        }
 
-        /* Улучшение для планшетов */
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .options-grid {
-                grid-template-columns: repeat(2, 1fr);
+            .mobile-period-card {
+                padding: 1rem;
+            }
+
+            .card-period-header {
+                padding: 0.8rem 1rem;
+                margin: -1rem -1rem 1rem -1rem;
+            }
+
+            .card-section {
+                padding: 1rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Анимированные сердечки на фоне -->
-    <div class="hearts-background" id="heartsBackground"></div>
-
     <!-- Header -->
     <header>
         <div class="container nav-container">
@@ -1087,10 +1098,10 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="container hero-content">
-            <h1>Искусство интимной близости</h1>
-            <p>Раскройте потенциал ваших отношений. Профессиональная помощь в сфере сексуальности и интимной гармонии</p>
+            <h1>Интимная гармония: откройте новые грани близости</h1>
+            <p>Профессиональная психологическая помощь в сфере сексуальности и отношений. Доверие, конфиденциальность и научный подход</p>
             <a href="#contact" class="btn pulse">
-                <i class="fas fa-calendar-check"></i> Начать путь к гармонии
+                <i class="fas fa-calendar-check"></i> Записаться на консультацию
             </a>
         </div>
     </section>
@@ -1100,46 +1111,38 @@
         <div class="container">
             <div class="section-title">
                 <h2>Обо мне</h2>
-                <p>Профессиональный подход к интимным вопросам</p>
             </div>
             <div class="about-content">
                 <div class="profile-img-container floating">
-                    <div style="width:100%; height:500px; background:linear-gradient(135deg, var(--passionate-red), var(--velvet-purple)); display:flex; align-items:center; justify-content:center; color:white; font-size:1.5rem; border-radius:20px;">
-                        <div style="text-align:center;">
-                            <i class="fas fa-user" style="font-size:3rem; margin-bottom:1rem;"></i><br>
-                            Татьяна Солнечная<br>
-                            <small style="font-size:1rem; opacity:0.8;">Сексолог-психолог</small>
-                        </div>
-                    </div>
+                <img src="photo_2025-09-16_19-36-01.jpg" alt="Татьяна Солнечная - профессиональный сексолог-психолог" class="profile-img">
                     <div class="profile-img-overlay">
                         <p>"Ваше доверие - моя главная ценность"</p>
                     </div>
                 </div>
-                <div style="color: white;">
-                    <h3 style="color: var(--gold); font-size: 2rem; margin-bottom: 1rem;">Татьяна Солнечная</h3>
-                    <p style="font-size: 1.1rem; margin-bottom: 1.5rem; opacity: 0.9;">Сертифицированный сексолог-психолог с 10-летним опытом работы. Специализируюсь на решении интимных вопросов и восстановлении гармонии в отношениях.</p>
+                <div>
+                    <h3 style="color: var(--deep-burgundy); font-size: 2rem; margin-bottom: 1rem;">Татьяна Солнечная</h3>
+                    <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">Сертифицированный сексолог-психолог с 10-летним опытом работы. Специализируюсь на решении интимных вопросов и восстановлении гармонии в отношениях.</p>
                     
-                    <div style="background: rgba(255, 255, 255, 0.1); padding: 1.5rem; border-radius: 15px; margin-bottom: 1.5rem; border: 1px solid rgba(255, 255, 255, 0.1);">
-                        <h4 style="color: var(--gold); margin-bottom: 1rem;"><i class="fas fa-graduation-cap"></i> Образование и сертификации:</h4>
+                    <div style="background: var(--cream); padding: 1.5rem; border-radius: 15px; margin-bottom: 1.5rem; border: 2px solid var(--soft-pink);">
+                        <h4 style="color: var(--deep-burgundy); margin-bottom: 1rem;"><i class="fas fa-graduation-cap"></i> Образование и сертификации:</h4>
                         <ul style="list-style: none;">
-                            <li style="margin-bottom: 0.5rem; opacity: 0.9;"><i class="fas fa-university" style="color: var(--warm-rose); margin-right: 0.5rem;"></i> МГУ им. Ломоносова, факультет психологии</li>
-                            <li style="margin-bottom: 0.5rem; opacity: 0.9;"><i class="fas fa-certificate" style="color: var(--warm-rose); margin-right: 0.5rem;"></i> Европейская ассоциация сексологов</li>
-                            <li style="opacity: 0.9;"><i class="fas fa-heart" style="color: var(--warm-rose); margin-right: 0.5rem;"></i> Сертификаты по семейной и парной терапии</li>
+                            <li style="margin-bottom: 0.5rem;"><i class="fas fa-university" style="color: var(--vibrant-pink); margin-right: 0.5rem;"></i> МГУ им. Ломоносова, факультет психологии</li>
+                            <li style="margin-bottom: 0.5rem;"><i class="fas fa-certificate" style="color: var(--vibrant-pink); margin-right: 0.5rem;"></i> Европейская ассоциация сексологов</li>
+                            <li><i class="fas fa-heart" style="color: var(--vibrant-pink); margin-right: 0.5rem;"></i> Сертификаты по семейной и парной терапии</li>
                         </ul>
                     </div>
                     
-                    <p style="opacity: 0.9;">В своей работе создаю безопасное пространство, где вы можете открыто говорить о самых сокровенных вопросах. Индивидуальный подход к каждой ситуации.</p>
+                    <p>В своей работе создаю безопасное пространство, где вы можете открыто говорить о самых сокровенных вопросах. Индивидуальный подход к каждой ситуации.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Services Section -->
-    <section id="services">
+    <section id="services" style="background: linear-gradient(135deg, var(--cream) 0%, var(--light-gold) 50%, var(--cream) 100%);">
         <div class="container">
             <div class="section-title">
                 <h2>Направления работы</h2>
-                <p>Комплексный подход к решению интимных вопросов</p>
             </div>
             <div class="services-grid">
                 <div class="service-card floating" style="animation-delay: 0.1s;">
@@ -1191,7 +1194,6 @@
                     <div class="form-message" id="testMessage"></div>
                     
                     <input type="hidden" name="_subject" value="Анкета женского либидо от клиента">
-                    <input type="hidden" name="_format" value="plain">
                     
                     <!-- Общие вопросы -->
                     <div class="test-section">
@@ -1216,6 +1218,14 @@
                                     <input type="radio" name="general_frequency" value="2days">
                                     Хочется через день
                                 </label>
+                                <label class="option-item">
+                                    <input type="radio" name="general_frequency" value="daily">
+                                    Хочется каждый день
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="general_frequency" value="multiple">
+                                    Хочется каждый день по много раз
+                                </label>
                             </div>
                         </div>
 
@@ -1238,6 +1248,517 @@
                                     <input type="radio" name="desire_strength" value="very_strong">
                                     Очень сильное желание
                                 </label>
+                                <label class="option-item">
+                                    <input type="radio" name="desire_strength" value="maximal">
+                                    Максимально сильное желание
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="question-block">
+                            <h5>Возбуждает ли Вас вид эрегированного полового члена?</h5>
+                            <div class="options-grid">
+                                <label class="option-item">
+                                    <input type="radio" name="arousal_penis" value="not_at_all" required>
+                                    Вообще не возбуждает
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="arousal_penis" value="slightly">
+                                    Немного возбуждает
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="arousal_penis" value="moderately">
+                                    Средне возбуждает
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="arousal_penis" value="strongly">
+                                    Сильно возбуждает
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="arousal_penis" value="very_strongly">
+                                    Очень сильно возбуждает
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Периоды менструального цикла -->
+                    <div class="test-section">
+                        <h4>Особенности либидо в разные периоды цикла</h4>
+                        
+                        <!-- Период 1: От конца месячных до овуляции -->
+                        <div class="question-block">
+                            <h5>От конца месячных до овуляции</h5>
+                            <table class="period-table">
+                                <tr>
+                                    <th>Параметр</th>
+                                    <th>В дни, когда НЕ хочется секса</th>
+                                    <th>В дни, когда хочется секса</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>Частота/Сила желания</strong></td>
+                                    <td>
+                                        <select name="period1_no_desire_frequency" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="never">Вообще не хочется</option>
+                                            <option value="weekly">Хочется 1 раз в неделю</option>
+                                            <option value="3days">Хочется 1 раз в 3 дня</option>
+                                            <option value="2days">Хочется через день</option>
+                                            <option value="daily">Хочется каждый день</option>
+                                            <option value="multiple">Хочется каждый день по много раз</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select name="period1_desire_strength" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="light">Легкое желание</option>
+                                            <option value="medium">Среднее желание</option>
+                                            <option value="strong">Сильное желание</option>
+                                            <option value="very_strong">Очень сильное желание</option>
+                                            <option value="maximal">Максимально сильное желание</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Возбуждение от вида</strong></td>
+                                    <td>
+                                        <select name="period1_no_desire_arousal" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="not_at_all">Вообще не возбуждает</option>
+                                            <option value="slightly">Немного возбуждает</option>
+                                            <option value="moderately">Средне возбуждает</option>
+                                            <option value="strongly">Сильно возбуждает</option>
+                                            <option value="very_strongly">Очень сильно возбуждает</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select name="period1_desire_arousal" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="not_at_all">Вообще не возбуждает</option>
+                                            <option value="slightly">Немного возбуждает</option>
+                                            <option value="moderately">Средне возбуждает</option>
+                                            <option value="strongly">Сильно возбуждает</option>
+                                            <option value="very_strongly">Очень сильно возбуждает</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Мобильная версия карточки для периода 1 -->
+                            <div class="mobile-period-card">
+                                <div class="card-period-header">
+                                    <h6>📅 От конца месячных до овуляции</h6>
+                                </div>
+                                
+                                <div class="card-section">
+                                    <h6>📋 В дни, когда НЕ хочется секса</h6>
+                                    <div class="mobile-form-group">
+                                        <label>Частота/Сила желания:</label>
+                                        <select name="period1_no_desire_frequency_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="never">Вообще не хочется</option>
+                                            <option value="weekly">Хочется 1 раз в неделю</option>
+                                            <option value="3days">Хочется 1 раз в 3 дня</option>
+                                            <option value="2days">Хочется через день</option>
+                                            <option value="daily">Хочется каждый день</option>
+                                            <option value="multiple">Хочется каждый день по много раз</option>
+                                        </select>
+                                    </div>
+                                    <div class="mobile-form-group">
+                                        <label>Возбуждение от вида:</label>
+                                        <select name="period1_no_desire_arousal_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="not_at_all">Вообще не возбуждает</option>
+                                            <option value="slightly">Немного возбуждает</option>
+                                            <option value="moderately">Средне возбуждает</option>
+                                            <option value="strongly">Сильно возбуждает</option>
+                                            <option value="very_strongly">Очень сильно возбуждает</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="card-section">
+                                    <h6>💖 В дни, когда хочется секса</h6>
+                                    <div class="mobile-form-group">
+                                        <label>Частота/Сила желания:</label>
+                                        <select name="period1_desire_strength_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="light">Легкое желание</option>
+                                            <option value="medium">Среднее желание</option>
+                                            <option value="strong">Сильное желание</option>
+                                            <option value="very_strong">Очень сильное желание</option>
+                                            <option value="maximal">Максимально сильное желание</option>
+                                        </select>
+                                    </div>
+                                    <div class="mobile-form-group">
+                                        <label>Возбуждение от вида:</label>
+                                        <select name="period1_desire_arousal_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="not_at_all">Вообще не возбуждает</option>
+                                            <option value="slightly">Немного возбуждает</option>
+                                            <option value="moderately">Средне возбуждает</option>
+                                            <option value="strongly">Сильно возбуждает</option>
+                                            <option value="very_strongly">Очень сильно возбуждает</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Период 2: В период овуляции -->
+                        <div class="question-block">
+                            <h5>В период овуляции</h5>
+                            <table class="period-table">
+                                <tr>
+                                    <th>Параметр</th>
+                                    <th>В дни, когда НЕ хочется секса</th>
+                                    <th>В дни, когда хочется секса</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>Частота/Сила желания</strong></td>
+                                    <td>
+                                        <select name="period2_no_desire_frequency" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="never">Вообще не хочется</option>
+                                            <option value="weekly">Хочется 1 раз в неделю</option>
+                                            <option value="3days">Хочется 1 раз в 3 дня</option>
+                                            <option value="2days">Хочется через день</option>
+                                            <option value="daily">Хочется каждый день</option>
+                                            <option value="multiple">Хочется каждый день по много раз</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select name="period2_desire_strength" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="light">Легкое желание</option>
+                                            <option value="medium">Среднее желание</option>
+                                            <option value="strong">Сильное желание</option>
+                                            <option value="very_strong">Очень сильное желание</option>
+                                            <option value="maximal">Максимально сильное желание</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Возбуждение от вида</strong></td>
+                                    <td>
+                                        <select name="period2_no_desire_arousal" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="not_at_all">Вообще не возбуждает</option>
+                                            <option value="slightly">Немного возбуждает</option>
+                                            <option value="moderately">Средне возбуждает</option>
+                                            <option value="strongly">Сильно возбуждает</option>
+                                            <option value="very_strongly">Очень сильно возбуждает</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select name="period2_desire_arousal" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="not_at_all">Вообще не возбуждает</option>
+                                            <option value="slightly">Немного возбуждает</option>
+                                            <option value="moderately">Средне возбуждает</option>
+                                            <option value="strongly">Сильно возбуждает</option>
+                                            <option value="very_strongly">Очень сильно возбуждает</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Мобильная версия карточки для периода 2 -->
+                            <div class="mobile-period-card">
+                                <div class="card-period-header">
+                                    <h6>🥚 В период овуляции</h6>
+                                </div>
+                                
+                                <div class="card-section">
+                                    <h6>📋 В дни, когда НЕ хочется секса</h6>
+                                    <div class="mobile-form-group">
+                                        <label>Частота/Сила желания:</label>
+                                        <select name="period2_no_desire_frequency_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="never">Вообще не хочется</option>
+                                            <option value="weekly">Хочется 1 раз в неделю</option>
+                                            <option value="3days">Хочется 1 раз в 3 дня</option>
+                                            <option value="2days">Хочется через день</option>
+                                            <option value="daily">Хочется каждый день</option>
+                                            <option value="multiple">Хочется каждый день по много раз</option>
+                                        </select>
+                                    </div>
+                                    <div class="mobile-form-group">
+                                        <label>Возбуждение от вида:</label>
+                                        <select name="period2_no_desire_arousal_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="not_at_all">Вообще не возбуждает</option>
+                                            <option value="slightly">Немного возбуждает</option>
+                                            <option value="moderately">Средне возбуждает</option>
+                                            <option value="strongly">Сильно возбуждает</option>
+                                            <option value="very_strongly">Очень сильно возбуждает</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="card-section">
+                                    <h6>💖 В дни, когда хочется секса</h6>
+                                    <div class="mobile-form-group">
+                                        <label>Частота/Сила желания:</label>
+                                        <select name="period2_desire_strength_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="light">Легкое желание</option>
+                                            <option value="medium">Среднее желание</option>
+                                            <option value="strong">Сильное желание</option>
+                                            <option value="very_strong">Очень сильное желание</option>
+                                            <option value="maximal">Максимально сильное желание</option>
+                                        </select>
+                                    </div>
+                                    <div class="mobile-form-group">
+                                        <label>Возбуждение от вида:</label>
+                                        <select name="period2_desire_arousal_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="not_at_all">Вообще не возбуждает</option>
+                                            <option value="slightly">Немного возбуждает</option>
+                                            <option value="moderately">Средне возбуждает</option>
+                                            <option value="strongly">Сильно возбуждает</option>
+                                            <option value="very_strongly">Очень сильно возбуждает</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Период 3: От конца овуляции до начала месячных -->
+                        <div class="question-block">
+                            <h5>От конца овуляции до начала месячных</h5>
+                            <table class="period-table">
+                                <tr>
+                                    <th>Параметр</th>
+                                    <th>В дни, когда НЕ хочется секса</th>
+                                    <th>В дни, когда хочется секса</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>Частота/Сила желания</strong></td>
+                                    <td>
+                                        <select name="period3_no_desire_frequency" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="never">Вообще не хочется</option>
+                                            <option value="weekly">Хочется 1 раз в неделю</option>
+                                            <option value="3days">Хочется 1 раз в 3 дня</option>
+                                            <option value="2days">Хочется через день</option>
+                                            <option value="daily">Хочется каждый день</option>
+                                            <option value="multiple">Хочется каждый день по много раз</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select name="period3_desire_strength" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="light">Легкое желание</option>
+                                            <option value="medium">Среднее желание</option>
+                                            <option value="strong">Сильное желание</option>
+                                            <option value="very_strong">Очень сильное желание</option>
+                                            <option value="maximal">Максимально сильное желание</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Возбуждение от вида</strong></td>
+                                    <td>
+                                        <select name="period3_no_desire_arousal" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="not_at_all">Вообще не возбуждает</option>
+                                            <option value="slightly">Немного возбуждает</option>
+                                            <option value="moderately">Средне возбуждает</option>
+                                            <option value="strongly">Сильно возбуждает</option>
+                                            <option value="very_strongly">Очень сильно возбуждает</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select name="period3_desire_arousal" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="not_at_all">Вообще не возбуждает</option>
+                                            <option value="slightly">Немного возбуждает</option>
+                                            <option value="moderately">Средне возбуждает</option>
+                                            <option value="strongly">Сильно возбуждает</option>
+                                            <option value="very_strongly">Очень сильно возбуждает</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Мобильная версия карточки для периода 3 -->
+                            <div class="mobile-period-card">
+                                <div class="card-period-header">
+                                    <h6>📆 От конца овуляции до начала месячных</h6>
+                                </div>
+                                
+                                <div class="card-section">
+                                    <h6>📋 В дни, когда НЕ хочется секса</h6>
+                                    <div class="mobile-form-group">
+                                        <label>Частота/Сила желания:</label>
+                                        <select name="period3_no_desire_frequency_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="never">Вообще не хочется</option>
+                                            <option value="weekly">Хочется 1 раз в неделю</option>
+                                            <option value="3days">Хочется 1 раз в 3 дня</option>
+                                            <option value="2days">Хочется через день</option>
+                                            <option value="daily">Хочется каждый день</option>
+                                            <option value="multiple">Хочется каждый день по много раз</option>
+                                        </select>
+                                    </div>
+                                    <div class="mobile-form-group">
+                                        <label>Возбуждение от вида:</label>
+                                        <select name="period3_no_desire_arousal_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="not_at_all">Вообще не возбуждает</option>
+                                            <option value="slightly">Немного возбуждает</option>
+                                            <option value="moderately">Средне возбуждает</option>
+                                            <option value="strongly">Сильно возбуждает</option>
+                                            <option value="very_strongly">Очень сильно возбуждает</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="card-section">
+                                    <h6>💖 В дни, когда хочется секса</h6>
+                                    <div class="mobile-form-group">
+                                        <label>Частота/Сила желания:</label>
+                                        <select name="period3_desire_strength_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="light">Легкое желание</option>
+                                            <option value="medium">Среднее желание</option>
+                                            <option value="strong">Сильное желание</option>
+                                            <option value="very_strong">Очень сильное желание</option>
+                                            <option value="maximal">Максимально сильное желание</option>
+                                        </select>
+                                    </div>
+                                    <div class="mobile-form-group">
+                                        <label>Возбуждение от вида:</label>
+                                        <select name="period3_desire_arousal_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="not_at_all">Вообще не возбуждает</option>
+                                            <option value="slightly">Немного возбуждает</option>
+                                            <option value="moderately">Средне возбуждает</option>
+                                            <option value="strongly">Сильно возбуждает</option>
+                                            <option value="very_strongly">Очень сильно возбуждает</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Период 4: В период месячных -->
+                        <div class="question-block">
+                            <h5>В период месячных</h5>
+                            <table class="period-table">
+                                <tr>
+                                    <th>Параметр</th>
+                                    <th>В дни, когда НЕ хочется секса</th>
+                                    <th>В дни, когда хочется секса</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>Частота/Сила желания</strong></td>
+                                    <td>
+                                        <select name="period4_no_desire_frequency" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="never">Вообще не хочется</option>
+                                            <option value="weekly">Хочется 1 раз в неделю</option>
+                                            <option value="3days">Хочется 1 раз в 3 дня</option>
+                                            <option value="2days">Хочется через день</option>
+                                            <option value="daily">Хочется каждый день</option>
+                                            <option value="multiple">Хочется каждый день по много раз</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select name="period4_desire_strength" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="light">Легкое желание</option>
+                                            <option value="medium">Среднее желание</option>
+                                            <option value="strong">Сильное желание</option>
+                                            <option value="very_strong">Очень сильное желание</option>
+                                            <option value="maximal">Максимально сильное желание</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Возбуждение от вида</strong></td>
+                                    <td>
+                                        <select name="period4_no_desire_arousal" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="not_at_all">Вообще не возбуждает</option>
+                                            <option value="slightly">Немного возбуждает</option>
+                                            <option value="moderately">Средне возбуждает</option>
+                                            <option value="strongly">Сильно возбуждает</option>
+                                            <option value="very_strongly">Очень сильно возбуждает</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select name="period4_desire_arousal" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="not_at_all">Вообще не возбуждает</option>
+                                            <option value="slightly">Немного возбуждает</option>
+                                            <option value="moderately">Средне возбуждает</option>
+                                            <option value="strongly">Сильно возбуждает</option>
+                                            <option value="very_strongly">Очень сильно возбуждает</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Мобильная версия карточки для периода 4 -->
+                            <div class="mobile-period-card">
+                                <div class="card-period-header">
+                                    <h6>🩸 В период месячных</h6>
+                                </div>
+                                
+                                <div class="card-section">
+                                    <h6>📋 В дни, когда НЕ хочется секса</h6>
+                                    <div class="mobile-form-group">
+                                        <label>Частота/Сила желания:</label>
+                                        <select name="period4_no_desire_frequency_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="never">Вообще не хочется</option>
+                                            <option value="weekly">Хочется 1 раз в неделю</option>
+                                            <option value="3days">Хочется 1 раз в 3 дня</option>
+                                            <option value="2days">Хочется через день</option>
+                                            <option value="daily">Хочется каждый день</option>
+                                            <option value="multiple">Хочется каждый день по много раз</option>
+                                        </select>
+                                    </div>
+                                    <div class="mobile-form-group">
+                                        <label>Возбуждение от вида:</label>
+                                        <select name="period4_no_desire_arousal_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="not_at_all">Вообще не возбуждает</option>
+                                            <option value="slightly">Немного возбуждает</option>
+                                            <option value="moderately">Средне возбуждает</option>
+                                            <option value="strongly">Сильно возбуждает</option>
+                                            <option value="very_strongly">Очень сильно возбуждает</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="card-section">
+                                    <h6>💖 В дни, когда хочется секса</h6>
+                                    <div class="mobile-form-group">
+                                        <label>Частота/Сила желания:</label>
+                                        <select name="period4_desire_strength_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="light">Легкое желание</option>
+                                            <option value="medium">Среднее желание</option>
+                                            <option value="strong">Сильное желание</option>
+                                            <option value="very_strong">Очень сильное желание</option>
+                                            <option value="maximal">Максимально сильное желание</option>
+                                        </select>
+                                    </div>
+                                    <div class="mobile-form-group">
+                                        <label>Возбуждение от вида:</label>
+                                        <select name="period4_desire_arousal_mobile" class="form-control">
+                                            <option value="">Выберите</option>
+                                            <option value="not_at_all">Вообще не возбуждает</option>
+                                            <option value="slightly">Немного возбуждает</option>
+                                            <option value="moderately">Средне возбуждает</option>
+                                            <option value="strongly">Сильно возбуждает</option>
+                                            <option value="very_strongly">Очень сильно возбуждает</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1261,7 +1782,7 @@
 
                         <div class="question-block" id="seasonalDescription" style="display: none;">
                             <h5>Опишите, как меняется ваше либидо в зависимости от времени года:</h5>
-                            <textarea name="seasonal_changes" rows="4" class="form-control" placeholder="Опишите особенности..." style="width: 100%; padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white;"></textarea>
+                            <textarea name="seasonal_changes" rows="4" class="form-control" placeholder="Опишите особенности..."></textarea>
                         </div>
                     </div>
 
@@ -1269,7 +1790,7 @@
                         <button type="submit" class="btn" id="testSubmitBtn">
                             <i class="fas fa-paper-plane"></i> Отправить анкету
                         </button>
-                        <p style="margin-top: 1rem; font-size: 0.9rem; color: rgba(255,255,255,0.7);">
+                        <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--dark-text);">
                             Все ответы строго конфиденциальны и будут использоваться только для профессиональной диагностики
                         </p>
                     </div>
@@ -1283,7 +1804,6 @@
         <div class="container">
             <div class="section-title">
                 <h2>Процесс работы</h2>
-                <p>Поэтапный путь к интимной гармонии</p>
             </div>
             <div class="process-steps">
                 <div class="step floating" style="animation-delay: 0.1s;">
@@ -1311,15 +1831,14 @@
     </section>
 
     <!-- Contact Section -->
-    <section id="contact">
+    <section id="contact" style="background: linear-gradient(135deg, var(--cream) 0%, var(--light-gold) 50%, var(--cream) 100%);">
         <div class="container">
             <div class="section-title">
                 <h2>Контакты и запись</h2>
-                <p>Начните свой путь к гармонии уже сегодня</p>
             </div>
             <div class="contact-container">
                 <div class="contact-info">
-                    <h3 style="color: var(--gold); margin-bottom: 2rem; text-align: center;">Свяжитесь со мной</h3>
+                    <h3 style="color: var(--deep-burgundy); margin-bottom: 2rem; text-align: center;">Свяжитесь со мной</h3>
                     
                     <div class="contact-item">
                         <div class="contact-icon">
@@ -1363,20 +1882,19 @@
                 </div>
                 
                 <div class="booking-form">
-                    <h3 style="color: var(--gold); margin-bottom: 2rem; text-align: center;">Запись на консультацию</h3>
+                    <h3 style="color: var(--deep-burgundy); margin-bottom: 2rem; text-align: center;">Запись на консультацию</h3>
                     <form id="bookingForm">
                         <div class="form-message" id="bookingMessage"></div>
                         
                         <input type="hidden" name="_subject" value="Запись на консультацию">
-                        <input type="hidden" name="_format" value="plain">
                         
                         <div class="form-group">
                             <label for="name"><i class="fas fa-user" style="margin-right: 0.5rem;"></i> Ваше имя</label>
-                            <input type="text" id="name" name="name" required placeholder="Введите ваше имя">
+                            <input type="text" id="name" name="name" required>
                         </div>
                         <div class="form-group">
                             <label for="contact"><i class="fas fa-phone" style="margin-right: 0.5rem;"></i> Телефон или Telegram</label>
-                            <input type="text" id="contact" name="contact" required placeholder="Введите контактные данные">
+                            <input type="text" id="contact" name="contact" required>
                         </div>
                         <div class="form-group">
                             <label for="service"><i class="fas fa-concierge-bell" style="margin-right: 0.5rem;"></i> Формат консультации</label>
@@ -1396,6 +1914,22 @@
                     </form>
                 </div>
             </div>
+            
+            <!-- Payment Methods -->
+            <div class="payment-methods">
+                <h3 style="color: var(--deep-burgundy); margin-bottom: 1rem;">Способы оплаты</h3>
+                <p>Безопасная оплата банковскими картами РФ через защищенный платежный шлюз</p>
+                <div class="payment-icons">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fas fa-credit-card"></i>
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <p style="margin-top: 1.5rem; font-size: 0.95rem; color: var(--dark-text);">
+                    <i class="fas fa-lock" style="color: var(--deep-burgundy); margin-right: 0.5rem;"></i>
+                    Поддерживаются карты Visa, MasterCard, МИР. Ссылка на оплату высылается после подтверждения записи
+                </p>
+            </div>
         </div>
     </section>
 
@@ -1410,7 +1944,7 @@
                 <div>
                     <h4 style="color: var(--gold); margin-bottom: 1rem;">Контакты</h4>
                     <p>Telegram: @Tan4ik77G</p>
-                    <p>Email: Tan4ik017@gmail.com</p>
+                    <p>Email: makaka119911@gmail.com</p>
                 </div>
                 <div>
                     <h4 style="color: var(--gold); margin-bottom: 1rem;">Принципы работы</h4>
@@ -1422,236 +1956,316 @@
     </footer>
 
     <script>
-        // Создаем улучшенные анимированные сердечки на фоне
-        function createHearts() {
-            const container = document.getElementById('heartsBackground');
-            const heartCount = 25;
+       
+    // Formspree endpoints - РАЗНЫЕ ДЛЯ КАЖДОЙ ФОРМЫ!
+    const FORMSPREE_ENDPOINT_TEST = 'https://formspree.io/f/xgvnkwgl'; // для теста
+    const FORMSPREE_ENDPOINT_BOOKING = 'https://formspree.io/f/xgvnkwgl'; // для записи (пока тот же, замените!)
+
+    // Mobile menu toggle
+    document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+        document.querySelector('.nav-links').classList.toggle('active');
+    });
+
+    // Show/hide seasonal description
+    document.querySelectorAll('input[name="seasonal_dependency"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            const descriptionBlock = document.getElementById('seasonalDescription');
+            descriptionBlock.style.display = this.value === 'yes' ? 'block' : 'none';
+        });
+    });
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector('.nav-links').classList.remove('active');
             
-            for (let i = 0; i < heartCount; i++) {
-                const heart = document.createElement('div');
-                const sizes = ['small', 'medium', 'large'];
-                const size = sizes[Math.floor(Math.random() * sizes.length)];
-                
-                heart.className = `heart ${size}`;
-                
-                // Случайная позиция
-                const left = Math.random() * 100;
-                const delay = Math.random() * 20;
-                const duration = 15 + Math.random() * 15;
-                
-                heart.style.left = `${left}vw`;
-                heart.style.animationDelay = `${delay}s`;
-                heart.style.animationDuration = `${duration}s`;
-                
-                // Случайный цвет
-                const colors = ['#FF4081', '#E91E63', '#D10047', '#9A0C3D', '#8E24AA'];
-                const color = colors[Math.floor(Math.random() * colors.length)];
-                heart.style.background = color;
-                
-                container.appendChild(heart);
-            }
-            
-            // Добавляем пульсирующие точки
-            for (let i = 0; i < 15; i++) {
-                const dot = document.createElement('div');
-                dot.className = 'pulse-dot';
-                
-                dot.style.left = `${Math.random() * 100}vw`;
-                dot.style.top = `${Math.random() * 100}vh`;
-                dot.style.animationDelay = `${Math.random() * 5}s`;
-                
-                container.appendChild(dot);
-            }
-        }
-
-        // Telegram Bot Integration
-        const TELEGRAM_BOT_TOKEN = '7121399834:AAEDCQcX8Mp8c5LcTv3Gz1Qh3N7sJ4m5T8c'; // Замените на реальный токен бота
-        const TELEGRAM_CHAT_ID = '6310914870'; // Замените на реальный Chat ID
-
-        // Formspree endpoints
-        const FORMSPREE_ENDPOINT_TEST = 'https://formspree.io/f/xgvnkwgl';
-        const FORMSPREE_ENDPOINT_BOOKING = 'https://formspree.io/f/xgvnkwgl';
-
-        // Mobile menu toggle
-        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
-            document.querySelector('.nav-links').classList.toggle('active');
-        });
-
-        // Show/hide seasonal description
-        document.querySelectorAll('input[name="seasonal_dependency"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                const descriptionBlock = document.getElementById('seasonalDescription');
-                descriptionBlock.style.display = this.value === 'yes' ? 'block' : 'none';
-            });
-        });
-
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector('.nav-links').classList.remove('active');
-                
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Scroll animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('section').forEach(section => observer.observe(section));
-
-        // Отправка данных в Telegram
-        async function sendToTelegram(data, isTest = false) {
-            const text = isTest 
-                ? `📋 НОВАЯ АНКЕТА ЛИБИДО\n\n👤 Имя: ${data.name || 'Не указано'}\n📞 Контакт: ${data.contact || 'Не указано'}\n\n📊 Результаты:\n${data.results || 'Нет данных'}`
-                : `📅 НОВАЯ ЗАЯВКА НА КОНСУЛЬТАЦИЮ\n\n👤 Имя: ${data.name}\n📞 Контакт: ${data.contact}\n📋 Услуга: ${data.service}\n💬 Сообщение: ${data.message || 'Не указано'}`;
-
-            try {
-                const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        chat_id: TELEGRAM_CHAT_ID,
-                        text: text,
-                        parse_mode: 'HTML'
-                    })
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
                 });
+            }
+        });
+    });
 
-                return response.ok;
-            } catch (error) {
-                console.error('Ошибка отправки в Telegram:', error);
-                return false;
+    // Scroll animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, observerOptions);
+
+    // Observe all sections for animation
+    document.querySelectorAll('section').forEach(section => {
+        observer.observe(section);
+    });
+
+    // Функция для создания русскоязычного текста из данных формы
+    function createRussianText(formData) {
+        let russianText = "АНКЕТА ЖЕНСКОГО ЛИБИДО\n\n";
+        
+        // Маппинг значений на русский язык
+        const valueMapping = {
+            // Общая частота
+            'never': 'Вообще не хочется',
+            'weekly': '1 раз в неделю',
+            '3days': '1 раз в 3 дня',
+            '2days': 'Через день',
+            'daily': 'Каждый день',
+            'multiple': 'Каждый день по много раз',
+            
+            // Сила желания
+            'light': 'Легкое желание',
+            'medium': 'Среднее желание',
+            'strong': 'Сильное желание',
+            'very_strong': 'Очень сильное желание',
+            'maximal': 'Максимально сильное желание',
+            
+            // Возбуждение
+            'not_at_all': 'Вообще не возбуждает',
+            'slightly': 'Немного возбуждает',
+            'moderately': 'Средне возбуждает',
+            'strongly': 'Сильно возбуждает',
+            'very_strongly': 'Очень сильно возбуждает',
+            
+            // Сезонная зависимость
+            'no': 'Нет',
+            'yes': 'Да'
+        };
+
+        const periodNames = {
+            'period1': 'От конца месячных до овуляции',
+            'period2': 'В период овуляции',
+            'period3': 'От конца овуляции до начала месячных',
+            'period4': 'В период месячных'
+        };
+
+        // Обработка общих вопросов
+        if (formData.get('general_frequency')) {
+            russianText += `ОБЩИЕ ПОКАЗАТЕЛИ ЛИБИДО:\n`;
+            russianText += `Как часто в целом хочется секса: ${valueMapping[formData.get('general_frequency')] || formData.get('general_frequency')}\n`;
+            russianText += `Сила желания: ${valueMapping[formData.get('desire_strength')] || formData.get('desire_strength')}\n`;
+            russianText += `Возбуждение от вида: ${valueMapping[formData.get('arousal_penis')] || formData.get('arousal_penis')}\n\n`;
+        }
+
+        // Обработка периодов
+        for (let i = 1; i <= 4; i++) {
+            const periodKey = `period${i}`;
+            const noDesireFreq = formData.get(`${periodKey}_no_desire_frequency`);
+            const desireStrength = formData.get(`${periodKey}_desire_strength`);
+            const noDesireArousal = formData.get(`${periodKey}_no_desire_arousal`);
+            const desireArousal = formData.get(`${periodKey}_desire_arousal`);
+
+            if (noDesireFreq || desireStrength) {
+                russianText += `${periodNames[periodKey]}:\n`;
+                
+                if (noDesireFreq || noDesireArousal) {
+                    russianText += `В дни, когда НЕ хочется секса:\n`;
+                    if (noDesireFreq) russianText += `  Частота: ${valueMapping[noDesireFreq] || noDesireFreq}\n`;
+                    if (noDesireArousal) russianText += `  Возбуждение: ${valueMapping[noDesireArousal] || noDesireArousal}\n`;
+                }
+                
+                if (desireStrength || desireArousal) {
+                    russianText += `В дни, когда хочется секса:\n`;
+                    if (desireStrength) russianText += `  Сила желания: ${valueMapping[desireStrength] || desireStrength}\n`;
+                    if (desireArousal) russianText += `  Возбуждение: ${valueMapping[desireArousal] || desireArousal}\n`;
+                }
+                russianText += '\n';
             }
         }
 
-        // Обработка отправки форм
-        async function handleFormSubmit(form, submitBtn, messageEl, successMessage, isTestForm = false) {
-            event.preventDefault();
-            
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
-            
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData.entries());
-            
-            // Форматируем данные для теста
-            if (isTestForm) {
-                data.results = `
-Частота желания: ${data.general_frequency || 'Не указано'}
-Сила желания: ${data.desire_strength || 'Не указано'}
-Сезонная зависимость: ${data.seasonal_dependency || 'Не указано'}
-${data.seasonal_changes ? `Сезонные изменения: ${data.seasonal_changes}` : ''}
-                `.trim();
+        // Сезонные особенности
+        if (formData.get('seasonal_dependency')) {
+            russianText += `СЕЗОННЫЕ ОСОБЕННОСТИ:\n`;
+            russianText += `Зависит от времени года: ${valueMapping[formData.get('seasonal_dependency')] || formData.get('seasonal_dependency')}\n`;
+            if (formData.get('seasonal_changes')) {
+                russianText += `Описание изменений: ${formData.get('seasonal_changes')}\n`;
             }
+        }
+
+        return russianText;
+    }
+
+    // Улучшенная функция отправки формы
+    async function handleFormSubmit(form, submitBtn, messageEl, successMessage, isTestForm = false) {
+        event.preventDefault();
+        
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+        
+        const formData = new FormData(form);
+        
+        // Выбираем правильный endpoint
+        const endpoint = isTestForm ? FORMSPREE_ENDPOINT_TEST : FORMSPREE_ENDPOINT_BOOKING;
+        
+        // Для тестовой формы создаем русскоязычную версию
+        if (isTestForm) {
+            const russianText = createRussianText(formData);
+            formData.append('russian_version', russianText);
             
-            // Пытаемся отправить в Telegram
-            const telegramSuccess = await sendToTelegram(data, isTestForm);
+            // Добавляем понятные названия для основных полей
+            formData.append('Общая частота', formData.get('general_frequency') || 'Не указано');
+            formData.append('Сила желания', formData.get('desire_strength') || 'Не указано');
+            formData.append('Возбуждение от вида', formData.get('arousal_penis') || 'Не указано');
+        }
+        
+        // Для формы бронирования тоже добавляем русские названия
+        if (!isTestForm) {
+            formData.append('Имя клиента', formData.get('name') || 'Не указано');
+            formData.append('Контактные данные', formData.get('contact') || 'Не указано');
+            formData.append('Формат консультации', formData.get('service') || 'Не указано');
+            formData.append('Сообщение', formData.get('message') || 'Не указано');
+        }
+        
+        try {
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
             
-            if (telegramSuccess) {
+            if (response.ok) {
                 messageEl.textContent = successMessage;
                 messageEl.className = 'form-message success';
                 messageEl.style.display = 'block';
+                
                 form.reset();
                 
                 const seasonalDesc = document.getElementById('seasonalDescription');
                 if (seasonalDesc) seasonalDesc.style.display = 'none';
-            } else {
-                // Если Telegram не сработал, пробуем Formspree
-                const endpoint = isTestForm ? FORMSPREE_ENDPOINT_TEST : FORMSPREE_ENDPOINT_BOOKING;
                 
-                try {
-                    const response = await fetch(endpoint, {
-                        method: 'POST',
-                        body: formData,
-                        headers: { 'Accept': 'application/json' }
-                    });
-                    
-                    if (response.ok) {
-                        messageEl.textContent = successMessage;
-                        messageEl.className = 'form-message success';
-                        messageEl.style.display = 'block';
-                        form.reset();
-                        
-                        const seasonalDesc = document.getElementById('seasonalDescription');
-                        if (seasonalDesc) seasonalDesc.style.display = 'none';
-                    } else {
-                        throw new Error('Form submission failed');
-                    }
-                } catch (error) {
-                    console.error('Form submission error:', error);
-                    messageEl.innerHTML = `
-                        <strong>Произошла ошибка при отправке.</strong><br>
-                        Пожалуйста, свяжитесь со мной напрямую:<br>
-                        📞 Телефон: +7 (905) 595-99-96<br>
-                        ✉️ Telegram: @Tan4ik77G
-                    `;
-                    messageEl.className = 'form-message error';
-                    messageEl.style.display = 'block';
-                }
+            } else {
+                throw new Error('Form submission failed');
             }
             
+        } catch (error) {
+            console.error('Form submission error:', error);
+            messageEl.innerHTML = `
+                <strong>Произошла ошибка при отправке.</strong><br>
+                Пожалуйста, свяжитесь со мной напрямую:<br>
+                📞 Телефон: +7 (905) 595-99-96<br>
+                ✉️ Telegram: @Tan4ik77G<br>
+                📧 Email: Tan4ik017@gmail.com
+            `;
+            messageEl.className = 'form-message error';
+            messageEl.style.display = 'block';
+        } finally {
             submitBtn.disabled = false;
-            submitBtn.innerHTML = isTestForm ? 
-                '<i class="fas fa-paper-plane"></i> Отправить анкету' : 
-                '<i class="fas fa-paper-plane"></i> Отправить заявку';
-            messageEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-
-        // Booking form submission
-        document.getElementById('bookingForm').addEventListener('submit', function(e) {
-            handleFormSubmit(this, 
-                document.getElementById('bookingSubmitBtn'),
-                document.getElementById('bookingMessage'),
-                'Благодарю за заявку! Я свяжусь с вами в ближайшее время.',
-                false
-            );
-        });
-
-        // Test form submission
-        document.getElementById('libidoTestForm').addEventListener('submit', function(e) {
-            // Добавляем контактные данные к тесту
-            const contact = prompt("Пожалуйста, укажите ваше имя и контакт для связи (телефон или Telegram):");
-            if (contact) {
-                const contactInput = document.createElement('input');
-                contactInput.type = 'hidden';
-                contactInput.name = 'contact';
-                contactInput.value = contact;
-                this.appendChild(contactInput);
-                
-                const nameInput = document.createElement('input');
-                nameInput.type = 'hidden';
-                nameInput.name = 'name';
-                nameInput.value = contact.split(' ')[0]; // Берем первое слово как имя
-                this.appendChild(nameInput);
-                
-                handleFormSubmit(this,
-                    document.getElementById('testSubmitBtn'),
-                    document.getElementById('testMessage'),
-                    'Благодарю за заполнение анкеты! Ваши ответы помогут мне лучше понять вашу ситуацию. Я свяжусь с вами для обсуждения результатов.',
-                    true
-                );
+            if (isTestForm) {
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Отправить анкету';
+            } else {
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Отправить заявку';
             }
-        });
+            
+            // Плавная прокрутка к сообщению
+            messageEl.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center',
+                inline: 'nearest'
+            });
+        }
+    }
 
-        // Инициализация
-        document.addEventListener('DOMContentLoaded', function() {
-            createHearts();
+    // Booking form submission
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+        handleFormSubmit(
+            this, 
+            document.getElementById('bookingSubmitBtn'),
+            document.getElementById('bookingMessage'),
+            'Благодарю за заявку! Я свяжусь с вами в ближайшее время для подтверждения записи.',
+            false
+        );
+    });
+
+    // Test form submission
+    document.getElementById('libidoTestForm').addEventListener('submit', function(e) {
+        handleFormSubmit(
+            this,
+            document.getElementById('testSubmitBtn'),
+            document.getElementById('testMessage'),
+            'Благодарю за заполнение анкеты! Ваши ответы помогут мне лучше понять вашу ситуацию. Я свяжусь с вами для обсуждения результатов.',
+            true
+        );
+    });
+
+    // Add hover effects to all interactive elements
+    document.querySelectorAll('.btn, .service-card, .step, .contact-item, .option-item').forEach(element => {
+        element.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.02)';
         });
-    </script>
+        
+        element.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+        });
+    });
+
+    // Добавляем обработчики для мобильных полей (синхронизация с основными)
+    document.addEventListener('change', function(e) {
+        // Если изменение произошло в мобильном поле, синхронизируем с основным
+        if (e.target.name && e.target.name.includes('_mobile')) {
+            const mainFieldName = e.target.name.replace('_mobile', '');
+            const mainField = document.querySelector(`[name="${mainFieldName}"]`);
+            if (mainField) {
+                mainField.value = e.target.value;
+            }
+        }
+        
+        // И наоборот - если изменение в основном поле, синхронизируем с мобильным
+        if (e.target.name && !e.target.name.includes('_mobile')) {
+            const mobileFieldName = e.target.name + '_mobile';
+            const mobileField = document.querySelector(`[name="${mobileFieldName}"]`);
+            if (mobileField) {
+                mobileField.value = e.target.value;
+            }
+        }
+    });
+
+    // Гарантируем отображение теста на мобильных устройствах
+    function ensureTestVisibility() {
+        if (window.innerWidth <= 768) {
+            const testSection = document.getElementById('test');
+            const mobileCards = document.querySelectorAll('.mobile-period-card');
+            const tables = document.querySelectorAll('.period-table');
+            
+            // Гарантируем, что тест виден
+            if (testSection) {
+                testSection.style.display = 'block';
+                testSection.style.visibility = 'visible';
+                testSection.style.opacity = '1';
+            }
+            
+            // Гарантируем, что мобильные карточки видны
+            mobileCards.forEach(card => {
+                card.style.display = 'block';
+                card.style.visibility = 'visible';
+                card.style.opacity = '1';
+            });
+            
+            // Гарантируем, что таблицы скрыты
+            tables.forEach(table => {
+                table.style.display = 'none';
+            });
+        }
+    }
+
+    // Проверяем при загрузке и изменении размера окна
+    window.addEventListener('load', ensureTestVisibility);
+    window.addEventListener('resize', ensureTestVisibility);
+    // Дополнительная проверка после полной загрузки DOM
+    document.addEventListener('DOMContentLoaded', ensureTestVisibility);
+</script>
+    
 </body>
 </html>
 
