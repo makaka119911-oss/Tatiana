@@ -1,6 +1,4 @@
-<script>
-       
-    // Formspree endpoints - РАЗНЫЕ ДЛЯ КАЖДОЙ ФОРМЫ!
+// Formspree endpoints - РАЗНЫЕ ДЛЯ КАЖДОЙ ФОРМЫ!
     const FORMSPREE_ENDPOINT_TEST = 'https://formspree.io/f/xgvnkwgl'; // для теста
     const FORMSPREE_ENDPOINT_BOOKING = 'https://formspree.io/f/xgvnkwgl'; // для записи (пока тот же, замените!)
 
@@ -307,4 +305,4 @@
     window.addEventListener('resize', ensureTestVisibility);
     // Дополнительная проверка после полной загрузки DOM
     document.addEventListener('DOMContentLoaded', ensureTestVisibility);
-</script>
+
