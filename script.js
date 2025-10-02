@@ -306,3 +306,56 @@
     // Дополнительная проверка после полной загрузки DOM
     document.addEventListener('DOMContentLoaded', ensureTestVisibility);
 
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Обработка формы записи
+    const bookingForm = document.getElementById('bookingForm');
+    if (bookingForm) {
+        bookingForm.addEventListener('submit', function(e) {
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            // Показываем загрузку
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                alert('Форма отправлена! Мы свяжемся с вами в ближайшее время.');
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 2000);
+        });
+    }
+    
+    // Обработка формы теста
+    const testForm = document.getElementById('libidoTestForm');
+    if (testForm) {
+        testForm.addEventListener('submit', function(e) {
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                alert('Анкета отправлена! Спасибо за ваши ответы.');
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 2000);
+        });
+    }
+    
+    // Показ/скрытие поля для сезонных изменений
+    const seasonalRadio = document.querySelectorAll('input[name="seasonal_dependency"]');
+    const seasonalDescription = document.getElementById('seasonalDescription');
+    
+    seasonalRadio.forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.value === 'yes') {
+                seasonalDescription.style.display = 'block';
+            } else {
+                seasonalDescription.style.display = 'none';
+            }
+        });
+    });
+});
