@@ -359,10 +359,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-
-// Настройки Telegram бота - ТЕПЕРЬ РАБОЧИЕ!
+// Настройки Telegram бота
 const TELEGRAM_BOT_TOKEN = '8252555147:AAHu6OM_tQArpphVMQnw7SXKi5vDfo8EAdg';
-const TELEGRAM_CHAT_ID = '846572018'; // Ваш chat_id
+const TELEGRAM_CHAT_ID = '846572018';
 
 // Функция отправки в Telegram
 async function sendToTelegram(message) {
