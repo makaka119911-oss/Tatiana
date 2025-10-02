@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Показ/скрытие поля для сезонных изменений (обновлено для новой формы)
+    // Показ/скрытие поля для сезонных изменений
     const seasonalRadio = document.querySelectorAll('input[name="question_5"]');
     const seasonalDescription = document.getElementById('seasonalDescription');
     
@@ -53,6 +53,9 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
+    // Валидация форм в реальном времени
+    setupFormValidation();
 
     // Функция для создания читаемого текста результатов теста
     function createTestSummary(form) {
@@ -99,35 +102,48 @@ document.addEventListener('DOMContentLoaded', function() {
         // Период 1 вопросы
         const q4a = form.querySelector('select[name="question_4a"]')?.value || 
                     form.querySelector('select[name="question_4a_mobile"]')?.value;
-        if (q4a) {
+        if (q4a && q4a !== '') {
             summary += `4. Период 1 - Без желания - Частота:\n`;
             summary += `   ✅ ${q4a}\n\n`;
         }
         
         const q4b = form.querySelector('select[name="question_4b"]')?.value || 
                     form.querySelector('select[name="question_4b_mobile"]')?.value;
-        if (q4b) {
+        if (q4b && q4b !== '') {
             summary += `5. Период 1 - С желанием - Сила:\n`;
             summary += `   ✅ ${q4b}\n\n`;
+        }
+        
+        const q4c = form.querySelector('select[name="question_4c"]')?.value || 
+                    form.querySelector('select[name="question_4c_mobile"]')?.value;
+        if (q4c && q4c !== '') {
+            summary += `6. Период 1 - Без желания - Возбуждение:\n`;
+            summary += `   ✅ ${q4c}\n\n`;
+        }
+        
+        const q4d = form.querySelector('select[name="question_4d"]')?.value || 
+                    form.querySelector('select[name="question_4d_mobile"]')?.value;
+        if (q4d && q4d !== '') {
+            summary += `7. Период 1 - С желанием - Возбуждение:\n`;
+            summary += `   ✅ ${q4d}\n\n`;
         }
         
         // Сезонные особенности
         const q5 = form.querySelector('input[name="question_5"]:checked');
         if (q5) {
-            summary += `6. Сезонная зависимость:\n`;
+            summary += `8. Сезонная зависимость:\n`;
             summary += `   ✅ ${q5.value}\n\n`;
         }
         
         const q6 = form.querySelector('textarea[name="question_6"]')?.value;
         if (q6 && q6.trim() !== '') {
-            summary += `7. Сезонные изменения:\n`;
+            summary += `9. Сезонные изменения:\n`;
             summary += `   📝 ${q6}\n\n`;
         }
         
         summary += `========================================\n`;
         summary += `💡 РЕКОМЕНДАЦИЯ:\n`;
         summary += `Тест заполнен полностью. Требуется профессиональная консультация.\n`;
-        summary += `Рекомендуется связаться с клиентом для детального обсуждения результатов.`;
         
         return summary;
     }
@@ -146,7 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Для теста создаем читаемое резюме
         if (isTest) {
             const summary = createTestSummary(form);
-            const summaryField = form.querySelector('#readableResults');
+            const summaryField = document.getElementById('readableResults');
             if (summaryField) {
                 summaryField.value = summary;
             }
@@ -157,7 +173,10 @@ document.addEventListener('DOMContentLoaded', function() {
         submitBtn.disabled = true;
         
         try {
+            // Создаем FormData из формы
             const formData = new FormData(form);
+            
+            console.log('Отправка данных на:', endpoint);
             
             const response = await fetch(endpoint, {
                 method: 'POST',
@@ -166,6 +185,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     'Accept': 'application/json'
                 }
             });
+            
+            console.log('Статус ответа:', response.status);
+            console.log('Ответ OK:', response.ok);
             
             if (response.ok) {
                 // Успешная отправка
@@ -191,11 +213,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
                 
             } else {
-                throw new Error('Ошибка отправки формы');
+                // Получаем текст ошибки для отладки
+                const errorText = await response.text();
+                console.error('Ошибка Formspree:', errorText);
+                throw new Error(`Formspree error: ${response.status} ${response.statusText}`);
             }
             
         } catch (error) {
-            console.error('Ошибка:', error);
+            console.error('Ошибка отправки:', error);
             alert('❌ Произошла ошибка при отправке. Пожалуйста, позвоните мне: +7 (905) 595-99-96');
         } finally {
             // Восстанавливаем кнопку
@@ -212,11 +237,14 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Проверяем, пройден ли тест
             if (localStorage.getItem('testCompleted') !== 'true') {
-                document.getElementById('testRequiredMessage').style.display = 'block';
-                document.getElementById('testRequiredMessage').scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'center' 
-                });
+                const testRequiredMessage = document.getElementById('testRequiredMessage');
+                if (testRequiredMessage) {
+                    testRequiredMessage.style.display = 'block';
+                    testRequiredMessage.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'center' 
+                    });
+                }
                 return;
             }
             
@@ -382,16 +410,28 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Проверяем все обязательные поля
         form.querySelectorAll('[required]').forEach(field => {
-            if (!field.value || (field.type === 'radio' && !form.querySelector(`input[name="${field.name}"]:checked`))) {
+            const isRadio = field.type === 'radio';
+            const radioGroup = isRadio ? form.querySelectorAll(`input[name="${field.name}"]`) : null;
+            const isRadioChecked = isRadio ? Array.from(radioGroup).some(radio => radio.checked) : false;
+            
+            if (!field.value && !isRadioChecked) {
                 field.classList.add('error');
-                const errorMessage = field.parentNode.querySelector('.error-message');
+                let errorMessage;
+                
+                if (isRadio) {
+                    // Для радиогруппы показываем ошибку у первого элемента
+                    errorMessage = radioGroup[0].parentNode.parentNode.querySelector('.error-message');
+                } else {
+                    errorMessage = field.parentNode.querySelector('.error-message');
+                }
+                
                 if (errorMessage) {
                     errorMessage.style.display = 'block';
                 }
                 
                 // Запоминаем первое поле с ошибкой для скролла
                 if (!firstError) {
-                    firstError = field;
+                    firstError = isRadio ? radioGroup[0] : field;
                 }
             }
         });
@@ -405,7 +445,4 @@ document.addEventListener('DOMContentLoaded', function() {
             firstError.focus();
         }
     }
-
-    // Инициализируем валидацию форм
-    setupFormValidation();
 });
