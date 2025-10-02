@@ -359,35 +359,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-// Настройки Telegram бота
-const TELEGRAM_BOT_TOKEN = '8252555147:AAHu6OM_tQArpphVMQnw7SXKi5vDfo8EAdg';
-const TELEGRAM_CHAT_ID = '846572018';
-
-// Функция отправки в Telegram
-async function sendToTelegram(message) {
-    try {
-        const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                chat_id: TELEGRAM_CHAT_ID,
-                text: message,
-                parse_mode: 'HTML'
-            })
-        });
-        
-        const data = await response.json();
-        return data.ok;
-    } catch (error) {
-        console.error('Ошибка отправки:', error);
-        return false;
-    }
-}
+// Настройки Telegram
+const TELEGRAM_USERNAME = 'Tan4ik77G';
 
 // Основная функция инициализации
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Сайт загружен');
+
     // Mobile menu toggle
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
     const navLinks = document.querySelector('.nav-links');
@@ -429,8 +407,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Форма записи на консультацию
     const bookingForm = document.getElementById('bookingForm');
     if (bookingForm) {
-        bookingForm.addEventListener('submit', async function(e) {
+        console.log('Форма записи найдена');
+        bookingForm.addEventListener('submit', function(e) {
             e.preventDefault();
+            console.log('Отправка формы записи');
             
             const submitBtn = this.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
@@ -443,55 +423,38 @@ document.addEventListener('DOMContentLoaded', function() {
             const message = this.querySelector('[name="message"]').value;
             
             // Формируем сообщение для Telegram
-            const telegramMessage = `
-🎯 <b>НОВАЯ ЗАЯВКА НА КОНСУЛЬТАЦИЮ</b>
-
-👤 <b>Имя:</b> ${name}
-📞 <b>Контакт:</b> ${contact}
-📧 <b>Email:</b> ${email || 'Не указан'}
-🎭 <b>Формат:</b> ${service}
-💬 <b>Сообщение:</b> ${message || 'Не указано'}
-
-⏰ <i>${new Date().toLocaleString('ru-RU')}</i>
-            `;
+            const telegramMessage = `🎯 НОВАЯ ЗАЯВКА НА КОНСУЛЬТАЦИЮ%0A%0A👤 Имя: ${name}%0A📞 Контакт: ${contact}%0A📧 Email: ${email || 'Не указан'}%0A🎭 Формат: ${service}%0A💬 Сообщение: ${message || 'Не указано'}%0A%0A⏰ ${new Date().toLocaleString('ru-RU')}`;
             
             // Показываем загрузку
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
             submitBtn.disabled = true;
             
-            try {
-                // Пробуем отправить через Telegram бота
-                const success = await sendToTelegram(telegramMessage);
+            // Открываем Telegram с сообщением
+            setTimeout(() => {
+                window.open(`https://t.me/${TELEGRAM_USERNAME}?text=${telegramMessage}`, '_blank');
                 
-                if (success) {
-                    alert('✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.');
-                    this.reset();
-                } else {
-                    // Если бот не работает, открываем Telegram с сообщением
-                    const fallbackMessage = `🎯 НОВАЯ ЗАЯВКА НА КОНСУЛЬТАЦИЮ%0A%0A👤 Имя: ${name}%0A📞 Контакт: ${contact}%0A📧 Email: ${email || 'Не указан'}%0A🎭 Формат: ${service}%0A💬 Сообщение: ${message || 'Не указано'}%0A%0A⏰ ${new Date().toLocaleString('ru-RU')}`;
-                    
-                    alert('Открываем Telegram... Нажмите "Отправить" в открывшемся окне.');
-                    window.open(`https://t.me/Tan4ik77G?text=${fallbackMessage}`, '_blank');
-                    
-                    setTimeout(() => {
-                        alert('✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.');
-                        this.reset();
-                    }, 2000);
-                }
-            } catch (error) {
-                alert('❌ Ошибка отправки. Позвоните мне: +7 (905) 595-99-96 или напишите в Telegram: @Tan4ik77G');
-            } finally {
+                // Показываем сообщение об успехе
+                alert('✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.');
+                
+                // Сбрасываем форму
+                this.reset();
+                
+                // Восстанавливаем кнопку
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
-            }
+            }, 1000);
         });
+    } else {
+        console.log('Форма записи НЕ найдена');
     }
 
     // Форма теста
     const testForm = document.getElementById('libidoTestForm');
     if (testForm) {
-        testForm.addEventListener('submit', async function(e) {
+        console.log('Форма теста найдена');
+        testForm.addEventListener('submit', function(e) {
             e.preventDefault();
+            console.log('Отправка формы теста');
             
             const submitBtn = this.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
@@ -502,53 +465,32 @@ document.addEventListener('DOMContentLoaded', function() {
             const arousalPenis = this.querySelector('[name="arousal_penis"]:checked')?.value || 'Не указано';
             const seasonal = this.querySelector('[name="seasonal_dependency"]:checked')?.value || 'Не указано';
             
-            const telegramMessage = `
-📊 <b>НОВАЯ АНКЕТА ЛИБИДО</b>
-
-📈 <b>Общая частота:</b> ${generalFrequency}
-💪 <b>Сила желания:</b> ${desireStrength}
-🔥 <b>Возбуждение от вида:</b> ${arousalPenis}
-🌦️ <b>Сезонная зависимость:</b> ${seasonal}
-
-⏰ <i>${new Date().toLocaleString('ru-RU')}</i>
-
-<i>Полная анкета будет проанализирована отдельно</i>
-            `;
+            const telegramMessage = `📊 НОВАЯ АНКЕТА ЛИБИДО%0A%0A📈 Общая частота: ${generalFrequency}%0A💪 Сила желания: ${desireStrength}%0A🔥 Возбуждение от вида: ${arousalPenis}%0A🌦️ Сезонная зависимость: ${seasonal}%0A%0A⏰ ${new Date().toLocaleString('ru-RU')}%0A%0AПолная анкета будет проанализирована отдельно`;
             
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка анкеты...';
             submitBtn.disabled = true;
             
-            try {
-                // Пробуем отправить через Telegram бота
-                const success = await sendToTelegram(telegramMessage);
+            // Открываем Telegram с сообщением
+            setTimeout(() => {
+                window.open(`https://t.me/${TELEGRAM_USERNAME}?text=${telegramMessage}`, '_blank');
                 
-                if (success) {
-                    alert('✅ Анкета отправлена! Спасибо за ваши ответы.');
-                    this.reset();
-                } else {
-                    // Если бот не работает, открываем Telegram с сообщением
-                    const fallbackMessage = `📊 НОВАЯ АНКЕТА ЛИБИДО%0A%0A📈 Общая частота: ${generalFrequency}%0A💪 Сила желания: ${desireStrength}%0A🔥 Возбуждение от вида: ${arousalPenis}%0A🌦️ Сезонная зависимость: ${seasonal}%0A%0A⏰ ${new Date().toLocaleString('ru-RU')}%0A%0AПолная анкета будет проанализирована отдельно`;
-                    
-                    alert('Открываем Telegram... Нажмите "Отправить" в открывшемся окне.');
-                    window.open(`https://t.me/Tan4ik77G?text=${fallbackMessage}`, '_blank');
-                    
-                    setTimeout(() => {
-                        alert('✅ Анкета отправлена! Спасибо за ваши ответы.');
-                        this.reset();
-                    }, 2000);
-                }
-            } catch (error) {
-                alert('❌ Ошибка отправки анкеты. Попробуйте еще раз или свяжитесь со мной напрямую.');
-            } finally {
+                // Показываем сообщение об успехе
+                alert('✅ Анкета отправлена! Спасибо за ваши ответы.');
+                
+                // Сбрасываем форму
+                this.reset();
+                
+                // Восстанавливаем кнопку
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
-            }
+            }, 1000);
         });
+    } else {
+        console.log('Форма теста НЕ найдена');
     }
 
     // Синхронизация мобильных и десктопных полей
     document.addEventListener('change', function(e) {
-        // Если изменение произошло в мобильном поле, синхронизируем с основным
         if (e.target.name && e.target.name.includes('_mobile')) {
             const mainFieldName = e.target.name.replace('_mobile', '');
             const mainField = document.querySelector(`[name="${mainFieldName}"]`);
@@ -557,7 +499,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // И наоборот - если изменение в основном поле, синхронизируем с мобильным
         if (e.target.name && !e.target.name.includes('_mobile')) {
             const mobileFieldName = e.target.name + '_mobile';
             const mobileField = document.querySelector(`[name="${mobileFieldName}"]`);
@@ -605,16 +546,5 @@ document.addEventListener('DOMContentLoaded', function() {
     // Observe all sections for animation
     document.querySelectorAll('section').forEach(section => {
         observer.observe(section);
-    });
-
-    // Add hover effects to interactive elements
-    document.querySelectorAll('.btn, .service-card, .step, .contact-item, .option-item').forEach(element => {
-        element.addEventListener('mouseenter', function() {
-            this.style.transform = 'scale(1.02)';
-        });
-        
-        element.addEventListener('mouseleave', function() {
-            this.style.transform = 'scale(1)';
-        });
     });
 });
