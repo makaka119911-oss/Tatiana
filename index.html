@@ -24,6 +24,31 @@
                 display: table !important;
             }
         }
+        
+        /* Стили для обязательных полей */
+        .required-field::after {
+            content: " *";
+            color: #e74c3c;
+        }
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+        .form-control.error {
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2);
+        }
+        .test-completion-message {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -51,8 +76,8 @@
         <div class="container hero-content">
             <h1>Интимная гармония: откройте новые грани близости</h1>
             <p>Профессиональная психологическая помощь в сфере сексуальности и отношений. Доверие, конфиденциальность и научный подход</p>
-            <a href="#contact" class="btn pulse">
-                <i class="fas fa-calendar-check"></i> Записаться на консультацию
+            <a href="#test" class="btn pulse">
+                <i class="fas fa-clipboard-check"></i> Начать с теста либидо
             </a>
         </div>
     </section>
@@ -135,10 +160,20 @@
                 <h2>Анкета женского либидо</h2>
                 <p>Профессиональная диагностика для понимания вашего сексуального здоровья</p>
             </div>
+            
+            <div class="test-completion-message" id="testCompletionMessage">
+                <i class="fas fa-check-circle" style="color: #27ae60; font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                <h4 style="color: #27ae60; margin-bottom: 0.5rem;">Тест пройден успешно!</h4>
+                <p>Теперь вы можете записаться на консультацию. Ваши ответы помогут мне лучше понять вашу ситуацию.</p>
+                <a href="#contact" class="btn" style="margin-top: 1rem;">
+                    <i class="fas fa-calendar-check"></i> Записаться на консультацию
+                </a>
+            </div>
+
             <div class="test-container">
                 <div class="test-header">
                     <h3>ТЕСТ АНКЕТА НА ЖЕНСКОЕ ЛИБИДО (ЖЕЛАНИЕ СЕКСА)</h3>
-                    <p>Ответьте на вопросы максимально честно - это поможет получить точную картину</p>
+                    <p>Ответьте на вопросы максимально честно - это поможет получить точную картину. <strong>Все вопросы обязательны для заполнения.</strong></p>
                 </div>
 
                 <form id="libidoTestForm">
@@ -152,7 +187,8 @@
                         <h4>Общие показатели либидо</h4>
                         
                         <div class="question-block">
-                            <h5>Как часто в целом хочется секса?</h5>
+                            <h5 class="required-field">Как часто в целом хочется секса?</h5>
+                            <div class="error-message" id="general_frequency_error">Пожалуйста, выберите один из вариантов</div>
                             <div class="options-grid">
                                 <label class="option-item">
                                     <input type="radio" name="general_frequency" value="never" required>
@@ -182,7 +218,8 @@
                         </div>
 
                         <div class="question-block">
-                            <h5>Сила желания в те дни, когда хочется секса?</h5>
+                            <h5 class="required-field">Сила желания в те дни, когда хочется секса?</h5>
+                            <div class="error-message" id="desire_strength_error">Пожалуйста, выберите один из вариантов</div>
                             <div class="options-grid">
                                 <label class="option-item">
                                     <input type="radio" name="desire_strength" value="light" required>
@@ -208,7 +245,8 @@
                         </div>
 
                         <div class="question-block">
-                            <h5>Возбуждает ли Вас вид эрегированного полового члена?</h5>
+                            <h5 class="required-field">Возбуждает ли Вас вид эрегированного полового члена?</h5>
+                            <div class="error-message" id="arousal_penis_error">Пожалуйста, выберите один из вариантов</div>
                             <div class="options-grid">
                                 <label class="option-item">
                                     <input type="radio" name="arousal_penis" value="not_at_all" required>
@@ -240,7 +278,7 @@
                         
                         <!-- Период 1: От конца месячных до овуляции -->
                         <div class="question-block">
-                            <h5>От конца месячных до овуляции</h5>
+                            <h5 class="required-field">От конца месячных до овуляции</h5>
                             <table class="period-table">
                                 <tr>
                                     <th>Параметр</th>
@@ -250,7 +288,7 @@
                                 <tr>
                                     <td><strong>Частота/Сила желания</strong></td>
                                     <td>
-                                        <select name="period1_no_desire_frequency" class="form-control">
+                                        <select name="period1_no_desire_frequency" class="form-control" required>
                                             <option value="">Выберите</option>
                                             <option value="never">Вообще не хочется</option>
                                             <option value="weekly">Хочется 1 раз в неделю</option>
@@ -259,9 +297,10 @@
                                             <option value="daily">Хочется каждый день</option>
                                             <option value="multiple">Хочется каждый день по много раз</option>
                                         </select>
+                                        <div class="error-message">Пожалуйста, выберите вариант</div>
                                     </td>
                                     <td>
-                                        <select name="period1_desire_strength" class="form-control">
+                                        <select name="period1_desire_strength" class="form-control" required>
                                             <option value="">Выберите</option>
                                             <option value="light">Легкое желание</option>
                                             <option value="medium">Среднее желание</option>
@@ -269,12 +308,13 @@
                                             <option value="very_strong">Очень сильное желание</option>
                                             <option value="maximal">Максимально сильное желание</option>
                                         </select>
+                                        <div class="error-message">Пожалуйста, выберите вариант</div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><strong>Возбуждение от вида</strong></td>
                                     <td>
-                                        <select name="period1_no_desire_arousal" class="form-control">
+                                        <select name="period1_no_desire_arousal" class="form-control" required>
                                             <option value="">Выберите</option>
                                             <option value="not_at_all">Вообще не возбуждает</option>
                                             <option value="slightly">Немного возбуждает</option>
@@ -282,9 +322,10 @@
                                             <option value="strongly">Сильно возбуждает</option>
                                             <option value="very_strongly">Очень сильно возбуждает</option>
                                         </select>
+                                        <div class="error-message">Пожалуйста, выберите вариант</div>
                                     </td>
                                     <td>
-                                        <select name="period1_desire_arousal" class="form-control">
+                                        <select name="period1_desire_arousal" class="form-control" required>
                                             <option value="">Выберите</option>
                                             <option value="not_at_all">Вообще не возбуждает</option>
                                             <option value="slightly">Немного возбуждает</option>
@@ -292,6 +333,7 @@
                                             <option value="strongly">Сильно возбуждает</option>
                                             <option value="very_strongly">Очень сильно возбуждает</option>
                                         </select>
+                                        <div class="error-message">Пожалуйста, выберите вариант</div>
                                     </td>
                                 </tr>
                             </table>
@@ -305,8 +347,8 @@
                                 <div class="card-section">
                                     <h6>📋 В дни, когда НЕ хочется секса</h6>
                                     <div class="mobile-form-group">
-                                        <label>Частота/Сила желания:</label>
-                                        <select name="period1_no_desire_frequency_mobile" class="form-control">
+                                        <label class="required-field">Частота/Сила желания:</label>
+                                        <select name="period1_no_desire_frequency_mobile" class="form-control" required>
                                             <option value="">Выберите</option>
                                             <option value="never">Вообще не хочется</option>
                                             <option value="weekly">Хочется 1 раз в неделю</option>
@@ -315,10 +357,11 @@
                                             <option value="daily">Хочется каждый день</option>
                                             <option value="multiple">Хочется каждый день по много раз</option>
                                         </select>
+                                        <div class="error-message">Пожалуйста, выберите вариант</div>
                                     </div>
                                     <div class="mobile-form-group">
-                                        <label>Возбуждение от вида:</label>
-                                        <select name="period1_no_desire_arousal_mobile" class="form-control">
+                                        <label class="required-field">Возбуждение от вида:</label>
+                                        <select name="period1_no_desire_arousal_mobile" class="form-control" required>
                                             <option value="">Выберите</option>
                                             <option value="not_at_all">Вообще не возбуждает</option>
                                             <option value="slightly">Немного возбуждает</option>
@@ -326,14 +369,15 @@
                                             <option value="strongly">Сильно возбуждает</option>
                                             <option value="very_strongly">Очень сильно возбуждает</option>
                                         </select>
+                                        <div class="error-message">Пожалуйста, выберите вариант</div>
                                     </div>
                                 </div>
                                 
                                 <div class="card-section">
                                     <h6>💖 В дни, когда хочется секса</h6>
                                     <div class="mobile-form-group">
-                                        <label>Частота/Сила желания:</label>
-                                        <select name="period1_desire_strength_mobile" class="form-control">
+                                        <label class="required-field">Частота/Сила желания:</label>
+                                        <select name="period1_desire_strength_mobile" class="form-control" required>
                                             <option value="">Выберите</option>
                                             <option value="light">Легкое желание</option>
                                             <option value="medium">Среднее желание</option>
@@ -341,10 +385,11 @@
                                             <option value="very_strong">Очень сильное желание</option>
                                             <option value="maximal">Максимально сильное желание</option>
                                         </select>
+                                        <div class="error-message">Пожалуйста, выберите вариант</div>
                                     </div>
                                     <div class="mobile-form-group">
-                                        <label>Возбуждение от вида:</label>
-                                        <select name="period1_desire_arousal_mobile" class="form-control">
+                                        <label class="required-field">Возбуждение от вида:</label>
+                                        <select name="period1_desire_arousal_mobile" class="form-control" required>
                                             <option value="">Выберите</option>
                                             <option value="not_at_all">Вообще не возбуждает</option>
                                             <option value="slightly">Немного возбуждает</option>
@@ -352,6 +397,7 @@
                                             <option value="strongly">Сильно возбуждает</option>
                                             <option value="very_strongly">Очень сильно возбуждает</option>
                                         </select>
+                                        <div class="error-message">Пожалуйста, выберите вариант</div>
                                     </div>
                                 </div>
                             </div>
@@ -366,7 +412,8 @@
                     <div class="test-section">
                         <h4>Сезонные особенности</h4>
                         <div class="question-block">
-                            <h5>Зависит ли Ваше либидо от времени года?</h5>
+                            <h5 class="required-field">Зависит ли Ваше либидо от времени года?</h5>
+                            <div class="error-message" id="seasonal_dependency_error">Пожалуйста, выберите один из вариантов</div>
                             <div class="options-grid">
                                 <label class="option-item">
                                     <input type="radio" name="seasonal_dependency" value="no" required>
@@ -380,8 +427,9 @@
                         </div>
 
                         <div class="question-block" id="seasonalDescription" style="display: none;">
-                            <h5>Опишите, как меняется ваше либидо в зависимости от времени года:</h5>
-                            <textarea name="seasonal_changes" rows="4" class="form-control" placeholder="Опишите особенности..."></textarea>
+                            <h5 class="required-field">Опишите, как меняется ваше либидо в зависимости от времени года:</h5>
+                            <textarea name="seasonal_changes" rows="4" class="form-control" placeholder="Опишите особенности..." required></textarea>
+                            <div class="error-message">Пожалуйста, опишите сезонные изменения</div>
                         </div>
                     </div>
 
@@ -407,13 +455,13 @@
             <div class="process-steps">
                 <div class="step floating" style="animation-delay: 0.1s;">
                     <div class="step-number">1</div>
-                    <h3>Первичная консультация</h3>
-                    <p>Знакомство, анализ запроса, определение целей и составление плана работы</p>
+                    <h3>Тестирование</h3>
+                    <p>Прохождение детальной анкеты для понимания вашей ситуации</p>
                 </div>
                 <div class="step floating" style="animation-delay: 0.2s;">
                     <div class="step-number">2</div>
-                    <h3>Глубинный анализ</h3>
-                    <p>Исследование причин проблемы, выявление психологических и физиологических факторов</p>
+                    <h3>Первичная консультация</h3>
+                    <p>Анализ результатов теста, определение целей и составление плана работы</p>
                 </div>
                 <div class="step floating" style="animation-delay: 0.3s;">
                     <div class="step-number">3</div>
@@ -435,6 +483,16 @@
             <div class="section-title">
                 <h2>Контакты и запись</h2>
             </div>
+            
+            <div class="test-required-message" id="testRequiredMessage" style="background: #ffeaa7; border: 2px solid #fdcb6e; border-radius: 10px; padding: 1.5rem; margin-bottom: 2rem; text-align: center; display: none;">
+                <i class="fas fa-exclamation-circle" style="color: #e17055; font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                <h4 style="color: #e17055; margin-bottom: 0.5rem;">Сначала пройдите тест</h4>
+                <p>Для записи на консультацию необходимо сначала пройти тест либидо. Это поможет мне лучше понять вашу ситуацию и подготовиться к нашей работе.</p>
+                <a href="#test" class="btn" style="margin-top: 1rem;">
+                    <i class="fas fa-clipboard-check"></i> Пройти тест
+                </a>
+            </div>
+            
             <div class="contact-container">
                 <div class="contact-info">
                     <h3 style="color: var(--deep-burgundy); margin-bottom: 2rem; text-align: center;">Свяжитесь со мной</h3>
@@ -488,13 +546,15 @@
                         <input type="hidden" name="_subject" value="Новая заявка на консультацию" />
                         
                         <div class="form-group">
-                            <label for="name"><i class="fas fa-user"></i> Ваше имя</label>
+                            <label for="name" class="required-field"><i class="fas fa-user"></i> Ваше имя</label>
                             <input type="text" id="name" name="name" required>
+                            <div class="error-message">Пожалуйста, введите ваше имя</div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="contact"><i class="fas fa-phone"></i> Телефон или Telegram</label>
+                            <label for="contact" class="required-field"><i class="fas fa-phone"></i> Телефон или Telegram</label>
                             <input type="text" id="contact" name="contact" required>
+                            <div class="error-message">Пожалуйста, введите контактные данные</div>
                         </div>
                         
                         <div class="form-group">
@@ -503,20 +563,22 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="service"><i class="fas fa-concierge-bell"></i> Формат консультации</label>
-                            <select id="service" name="service">
+                            <label for="service" class="required-field"><i class="fas fa-concierge-bell"></i> Формат консультации</label>
+                            <select id="service" name="service" required>
+                                <option value="">Выберите формат</option>
                                 <option value="Индивидуальная">Индивидуальная консультация</option>
                                 <option value="Для пары">Консультация для пары</option>
                                 <option value="Онлайн">Онлайн-консультация</option>
                             </select>
+                            <div class="error-message">Пожалуйста, выберите формат консультации</div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="message"><i class="fas fa-comment"></i> Ваш вопрос</label>
+                            <label for="message"><i class="fas fa-comment"></i> Ваш вопрос (необязательно)</label>
                             <textarea id="message" name="message" rows="4" placeholder="Опишите кратко вашу ситуацию..."></textarea>
                         </div>
                         
-                        <button type="submit" class="btn" style="width: 100%;">
+                        <button type="submit" class="btn" style="width: 100%;" id="bookingSubmitBtn">
                             <i class="fas fa-paper-plane"></i> Отправить заявку
                         </button>
                         
@@ -576,6 +638,9 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Сайт загружен');
 
+            // Проверяем, пройден ли тест
+            checkTestCompletion();
+
             // Mobile menu toggle
             const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
             const navLinks = document.querySelector('.nav-links');
@@ -609,15 +674,31 @@
             if (seasonalRadio.length > 0 && seasonalDescription) {
                 seasonalRadio.forEach(radio => {
                     radio.addEventListener('change', function() {
-                        seasonalDescription.style.display = this.value === 'yes' ? 'block' : 'none';
+                        const shouldShow = this.value === 'yes';
+                        seasonalDescription.style.display = shouldShow ? 'block' : 'none';
+                        
+                        // Делаем текстовое поле обязательным только если выбрано "Да"
+                        const textarea = seasonalDescription.querySelector('textarea');
+                        if (textarea) {
+                            textarea.required = shouldShow;
+                        }
                     });
                 });
             }
+
+            // Валидация форм в реальном времени
+            setupFormValidation();
 
             // Функция для отправки формы
             async function submitForm(form, endpoint, successMessage) {
                 const submitBtn = form.querySelector('button[type="submit"]');
                 const originalText = submitBtn.innerHTML;
+                
+                // Проверяем валидность формы
+                if (!form.checkValidity()) {
+                    showFormErrors(form);
+                    return;
+                }
                 
                 // Показываем загрузку
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
@@ -637,6 +718,14 @@
                     if (response.ok) {
                         // Успешная отправка
                         alert(successMessage);
+                        
+                        // Если это тест, сохраняем факт прохождения
+                        if (form.id === 'libidoTestForm') {
+                            localStorage.setItem('testCompleted', 'true');
+                            showTestCompletionMessage();
+                            checkTestCompletion();
+                        }
+                        
                         form.reset();
                         
                         // Сбрасываем сезонное описание если есть
@@ -663,19 +752,6 @@
                 }
             }
 
-            // Форма записи на консультацию
-            const bookingForm = document.getElementById('bookingForm');
-            if (bookingForm) {
-                bookingForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    submitForm(
-                        this, 
-                        FORMSPREE_BOOKING, 
-                        '✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.'
-                    );
-                });
-            }
-
             // Форма теста
             const testForm = document.getElementById('libidoTestForm');
             if (testForm) {
@@ -685,6 +761,30 @@
                         this, 
                         FORMSPREE_TEST, 
                         '✅ Анкета отправлена! Спасибо за ваши ответы. Я свяжусь с вами для обсуждения результатов.'
+                    );
+                });
+            }
+
+            // Форма записи на консультацию
+            const bookingForm = document.getElementById('bookingForm');
+            if (bookingForm) {
+                bookingForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Проверяем, пройден ли тест
+                    if (localStorage.getItem('testCompleted') !== 'true') {
+                        document.getElementById('testRequiredMessage').style.display = 'block';
+                        document.getElementById('testRequiredMessage').scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'center' 
+                        });
+                        return;
+                    }
+                    
+                    submitForm(
+                        this, 
+                        FORMSPREE_BOOKING, 
+                        '✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.'
                     );
                 });
             }
@@ -759,10 +859,103 @@
                 section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
                 observer.observe(section);
             });
+
+            // Функция проверки прохождения теста
+            function checkTestCompletion() {
+                const testCompleted = localStorage.getItem('testCompleted') === 'true';
+                const testRequiredMessage = document.getElementById('testRequiredMessage');
+                const bookingSubmitBtn = document.getElementById('bookingSubmitBtn');
+                
+                if (testRequiredMessage) {
+                    testRequiredMessage.style.display = testCompleted ? 'none' : 'block';
+                }
+                
+                if (bookingSubmitBtn) {
+                    bookingSubmitBtn.disabled = !testCompleted;
+                    if (!testCompleted) {
+                        bookingSubmitBtn.title = 'Сначала пройдите тест либидо';
+                    } else {
+                        bookingSubmitBtn.title = '';
+                    }
+                }
+            }
+
+            // Функция показа сообщения о завершении теста
+            function showTestCompletionMessage() {
+                const message = document.getElementById('testCompletionMessage');
+                if (message) {
+                    message.style.display = 'block';
+                    message.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+
+            // Функция настройки валидации форм
+            function setupFormValidation() {
+                // Добавляем обработчики для полей ввода
+                document.querySelectorAll('input, select, textarea').forEach(field => {
+                    field.addEventListener('input', function() {
+                        clearFieldError(this);
+                    });
+                    
+                    field.addEventListener('change', function() {
+                        clearFieldError(this);
+                    });
+                    
+                    // Для радиокнопок добавляем обработчик на всю группу
+                    if (field.type === 'radio') {
+                        const radioGroup = document.querySelectorAll(`input[name="${field.name}"]`);
+                        radioGroup.forEach(radio => {
+                            radio.addEventListener('change', function() {
+                                radioGroup.forEach(r => clearFieldError(r));
+                            });
+                        });
+                    }
+                });
+            }
+
+            // Функция очистки ошибки поля
+            function clearFieldError(field) {
+                field.classList.remove('error');
+                const errorMessage = field.parentNode.querySelector('.error-message');
+                if (errorMessage) {
+                    errorMessage.style.display = 'none';
+                }
+            }
+
+            // Функция показа ошибок формы
+            function showFormErrors(form) {
+                let firstError = null;
+                
+                // Проверяем все обязательные поля
+                form.querySelectorAll('[required]').forEach(field => {
+                    if (!field.value || (field.type === 'radio' && !form.querySelector(`input[name="${field.name}"]:checked`))) {
+                        field.classList.add('error');
+                        const errorMessage = field.parentNode.querySelector('.error-message');
+                        if (errorMessage) {
+                            errorMessage.style.display = 'block';
+                        }
+                        
+                        // Запоминаем первое поле с ошибкой для скролла
+                        if (!firstError) {
+                            firstError = field;
+                        }
+                    }
+                });
+                
+                // Прокручиваем к первой ошибке
+                if (firstError) {
+                    firstError.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'center' 
+                    });
+                    firstError.focus();
+                }
+            }
         });
     </script>
 </body>
 </html>
+
 
 
 
