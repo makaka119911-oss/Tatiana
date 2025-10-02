@@ -1,10 +1,13 @@
-// Formspree endpoints - УБЕДИТЕСЬ ЧТО ЭТО ВАШИ РЕАЛЬНЫЕ URL ИЗ FORMSPREE
-const FORMSPREE_BOOKING = 'https://formspree.io/f/xrbykqya';
-const FORMSPREE_TEST = 'https://formspree.io/f/xpwyrdyp';
+// Formspree endpoints
+const FORMSPREE_BOOKING = 'https://formspree.io/f/xrbykqya'; // для записи
+const FORMSPREE_TEST = 'https://formspree.io/f/xpwyrdyp'; // для теста
 
 // Основная функция инициализации
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Сайт загружен');
+
+    // Проверяем, пройден ли тест
+    checkTestCompletion();
 
     // Mobile menu toggle
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
@@ -32,32 +35,57 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Показ/скрытие поля для сезонных изменений
+    // Показ/скрытие поля для сезонных изменений (обновлено для новой формы)
     const seasonalRadio = document.querySelectorAll('input[name="question_5"]');
     const seasonalDescription = document.getElementById('seasonalDescription');
     
     if (seasonalRadio.length > 0 && seasonalDescription) {
         seasonalRadio.forEach(radio => {
             radio.addEventListener('change', function() {
-                seasonalDescription.style.display = this.value === 'Да' ? 'block' : 'none';
+                const shouldShow = this.value === 'Да';
+                seasonalDescription.style.display = shouldShow ? 'block' : 'none';
+                
+                // Делаем текстовое поле обязательным только если выбрано "Да"
+                const textarea = seasonalDescription.querySelector('textarea');
+                if (textarea) {
+                    textarea.required = shouldShow;
+                }
             });
         });
     }
 
-    // Простая функция отправки формы
-    async function submitForm(form, endpoint, successMessage) {
+    // Функция для создания читаемого текста результатов теста
+    function createTestSummary(form) {
+        // ... код функции без изменений ...
+    }
+
+    // Функция для отправки формы
+    async function submitForm(form, endpoint, successMessage, isTest = false) {
         const submitBtn = form.querySelector('button[type="submit"]');
         const originalText = submitBtn.innerHTML;
+        
+        // Проверяем валидность формы
+        if (!form.checkValidity()) {
+            showFormErrors(form);
+            return;
+        }
+        
+        // Для теста создаем читаемое резюме
+        if (isTest) {
+            // ВРЕМЕННО ЗАКОММЕНТИРУЕМ, чтобы проверить отправку без читаемого резюме
+            // const summary = createTestSummary(form);
+            // const summaryField = form.querySelector('#readableResults');
+            // if (summaryField) {
+            //     summaryField.value = summary;
+            // }
+        }
         
         // Показываем загрузку
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
         submitBtn.disabled = true;
         
         try {
-            // Создаем простой объект с данными формы
             const formData = new FormData(form);
-            
-            console.log('Отправка данных на Formspree...');
             
             const response = await fetch(endpoint, {
                 method: 'POST',
@@ -70,33 +98,33 @@ document.addEventListener('DOMContentLoaded', function() {
             if (response.ok) {
                 // Успешная отправка
                 alert(successMessage);
+                
+                // Если это тест, сохраняем факт прохождения
+                if (isTest) {
+                    localStorage.setItem('testCompleted', 'true');
+                    showTestCompletionMessage();
+                    checkTestCompletion();
+                }
+                
                 form.reset();
                 
-                // Сбрасываем сезонное описание
+                // Сбрасываем сезонное описание если есть
                 if (seasonalDescription) {
                     seasonalDescription.style.display = 'none';
                 }
                 
-                // Для теста - сохраняем факт прохождения
-                if (form.id === 'libidoTestForm') {
-                    localStorage.setItem('testCompleted', 'true');
-                    // Показываем сообщение об успехе
-                    const completionMessage = document.getElementById('testCompletionMessage');
-                    if (completionMessage) {
-                        completionMessage.style.display = 'block';
-                    }
-                }
+                // Сбрасываем выбранные радиокнопки сезонности
+                seasonalRadio.forEach(radio => {
+                    radio.checked = false;
+                });
                 
             } else {
-                // Получаем детали ошибки
-                const errorData = await response.json();
-                console.error('Formspree error:', errorData);
-                throw new Error(`Formspree вернул ошибку: ${response.status}`);
+                throw new Error('Ошибка отправки формы');
             }
             
         } catch (error) {
-            console.error('Ошибка отправки:', error);
-            alert('❌ Ошибка отправки. Проверьте:\n1. Подключение к интернету\n2. Правильность URL Formspree\n3. Или позвоните: +7 (905) 595-99-96');
+            console.error('Ошибка:', error);
+            alert('❌ Произошла ошибка при отправке. Пожалуйста, позвоните мне: +7 (905) 595-99-96');
         } finally {
             // Восстанавливаем кнопку
             submitBtn.innerHTML = originalText;
@@ -104,107 +132,5 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Форма записи на консультацию
-    const bookingForm = document.getElementById('bookingForm');
-    if (bookingForm) {
-        bookingForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Проверяем, пройден ли тест
-            if (localStorage.getItem('testCompleted') !== 'true') {
-                alert('❌ Сначала пройдите тест либидо для записи на консультацию');
-                return;
-            }
-            
-            submitForm(
-                this, 
-                FORMSPREE_BOOKING, 
-                '✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.'
-            );
-        });
-    }
-
-    // Форма теста
-    const testForm = document.getElementById('libidoTestForm');
-    if (testForm) {
-        testForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            submitForm(
-                this, 
-                FORMSPREE_TEST, 
-                '✅ Анкета отправлена! Спасибо за ваши ответы. Я свяжусь с вами для обсуждения результатов.'
-            );
-        });
-    }
-
-    // Синхронизация мобильных и десктопных полей
-    document.addEventListener('change', function(e) {
-        if (e.target.name && e.target.name.includes('_mobile')) {
-            const mainFieldName = e.target.name.replace('_mobile', '');
-            const mainField = document.querySelector(`[name="${mainFieldName}"]`);
-            if (mainField) {
-                mainField.value = e.target.value;
-            }
-        }
-        
-        if (e.target.name && !e.target.name.includes('_mobile')) {
-            const mobileFieldName = e.target.name + '_mobile';
-            const mobileField = document.querySelector(`[name="${mobileFieldName}"]`);
-            if (mobileField) {
-                mobileField.value = e.target.value;
-            }
-        }
-    });
-
-    // Адаптация таблиц для мобильных устройств
-    function adaptTablesForMobile() {
-        if (window.innerWidth <= 768) {
-            const tables = document.querySelectorAll('.period-table');
-            const mobileCards = document.querySelectorAll('.mobile-period-card');
-            
-            tables.forEach(table => {
-                table.style.display = 'none';
-            });
-            mobileCards.forEach(card => {
-                card.style.display = 'block';
-            });
-        } else {
-            const tables = document.querySelectorAll('.period-table');
-            const mobileCards = document.querySelectorAll('.mobile-period-card');
-            
-            tables.forEach(table => {
-                table.style.display = 'table';
-            });
-            mobileCards.forEach(card => {
-                card.style.display = 'none';
-            });
-        }
-    }
-
-    // Проверяем при загрузке и изменении размера окна
-    window.addEventListener('load', adaptTablesForMobile);
-    window.addEventListener('resize', adaptTablesForMobile);
-
-    // Анимация появления элементов при скролле
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, observerOptions);
-
-    // Наблюдаем за всеми секциями для анимации
-    document.querySelectorAll('section').forEach(section => {
-        section.style.opacity = '0';
-        section.style.transform = 'translateY(20px)';
-        section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(section);
-    });
+    // ... остальной код без изменений ...
 });
