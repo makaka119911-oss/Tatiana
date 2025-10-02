@@ -1,49 +1,6 @@
-// Formspree endpoints - РАЗНЫЕ ДЛЯ КАЖДОЙ ФОРМЫ!
-  // Настройки Telegram
-const TELEGRAM_USERNAME = 'Tan4ik77G';
-
-// Функция для определения мобильного устройства
-function isMobileDevice() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-}
-
-// Функция для копирования текста в буфер обмена
-async function copyToClipboard(text) {
-    try {
-        if (navigator.clipboard && window.isSecureContext) {
-            await navigator.clipboard.writeText(text);
-            return true;
-        } else {
-            // Fallback для старых браузеров
-            const textArea = document.createElement('textarea');
-            textArea.value = text;
-            textArea.style.position = 'fixed';
-            textArea.style.left = '-999999px';
-            textArea.style.top = '-999999px';
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-            
-            const success = document.execCommand('copy');
-            textArea.remove();
-            return success;
-        }
-    } catch (error) {
-        console.error('Ошибка копирования:', error);
-        return false;
-    }
-}
-
-// Функция для открытия Telegram
-function openTelegram() {
-    // Пытаемся открыть приложение Telegram
-    window.location.href = `tg://resolve?domain=${TELEGRAM_USERNAME}`;
-    
-    // Fallback: через 2 секунды открываем веб-версию, если приложение не открылось
-    setTimeout(() => {
-        window.open(`https://t.me/${TELEGRAM_USERNAME}`, '_blank');
-    }, 2000);
-}
+// Formspree endpoints
+const FORMSPREE_BOOKING = 'https://formspree.io/f/xrbykqya'; // для записи
+const FORMSPREE_TEST = 'https://formspree.io/f/xpwyrdyp'; // для теста
 
 // Основная функция инициализации
 document.addEventListener('DOMContentLoaded', function() {
@@ -87,133 +44,78 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Функция для отправки формы
+    async function submitForm(form, endpoint, successMessage) {
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        
+        // Показываем загрузку
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+        submitBtn.disabled = true;
+        
+        try {
+            const formData = new FormData(form);
+            
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                // Успешная отправка
+                alert(successMessage);
+                form.reset();
+                
+                // Сбрасываем сезонное описание если есть
+                if (seasonalDescription) {
+                    seasonalDescription.style.display = 'none';
+                }
+                
+                // Сбрасываем выбранные радиокнопки сезонности
+                seasonalRadio.forEach(radio => {
+                    radio.checked = false;
+                });
+                
+            } else {
+                throw new Error('Ошибка отправки формы');
+            }
+            
+        } catch (error) {
+            console.error('Ошибка:', error);
+            alert('❌ Произошла ошибка при отправке. Пожалуйста, позвоните мне: +7 (905) 595-99-96');
+        } finally {
+            // Восстанавливаем кнопку
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }
+    }
+
     // Форма записи на консультацию
     const bookingForm = document.getElementById('bookingForm');
     if (bookingForm) {
-        bookingForm.addEventListener('submit', async function(e) {
+        bookingForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            
-            // Получаем данные
-            const name = this.querySelector('[name="name"]').value;
-            const contact = this.querySelector('[name="contact"]').value;
-            const email = this.querySelector('[name="email"]').value;
-            const service = this.querySelector('[name="service"]').value;
-            const message = this.querySelector('[name="message"]').value;
-            
-            // Формируем сообщение
-            const messageText = `🎯 НОВАЯ ЗАЯВКА НА КОНСУЛЬТАЦИЮ
-
-👤 Имя: ${name}
-📞 Контакт: ${contact}
-📧 Email: ${email || 'Не указан'}
-🎭 Формат: ${service}
-💬 Сообщение: ${message || 'Не указано'}
-
-⏰ ${new Date().toLocaleString('ru-RU')}`;
-
-            // URL-encoded версия для десктопов
-            const encodedMessage = encodeURIComponent(messageText.replace(/\n/g, '%0A'));
-            
-            // Показываем загрузку
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
-            submitBtn.disabled = true;
-            
-            try {
-                if (isMobileDevice()) {
-                    // Для мобильных устройств
-                    const copySuccess = await copyToClipboard(messageText);
-                    
-                    if (copySuccess) {
-                        alert('✅ Текст заявки скопирован!\n\nТеперь:\n1. Откройте Telegram\n2. Напишите @Tan4ik77G\n3. Вставьте скопированный текст\n4. Отправьте сообщение');
-                        openTelegram();
-                    } else {
-                        alert('📋 Заявка готова для отправки!\n\nСкопируйте этот текст:\n\n' + messageText + '\n\nЗатем:\n1. Откройте Telegram\n2. Напишите @Tan4ik77G\n3. Вставьте этот текст\n4. Отправьте сообщение');
-                        openTelegram();
-                    }
-                } else {
-                    // Для десктопов
-                    window.open(`https://t.me/${TELEGRAM_USERNAME}?text=${encodedMessage}`, '_blank');
-                    alert('✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.');
-                }
-                
-                // Сбрасываем форму
-                this.reset();
-                
-            } catch (error) {
-                console.error('Ошибка:', error);
-                alert('❌ Произошла ошибка. Пожалуйста, свяжитесь со мной напрямую:\n📞 +7 (905) 595-99-96\n✉️ @Tan4ik77G');
-            } finally {
-                // Восстанавливаем кнопку
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            }
+            submitForm(
+                this, 
+                FORMSPREE_BOOKING, 
+                '✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.'
+            );
         });
     }
 
     // Форма теста
     const testForm = document.getElementById('libidoTestForm');
     if (testForm) {
-        testForm.addEventListener('submit', async function(e) {
+        testForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            
-            // Собираем основные данные из теста
-            const generalFrequency = this.querySelector('[name="general_frequency"]:checked')?.value || 'Не указано';
-            const desireStrength = this.querySelector('[name="desire_strength"]:checked')?.value || 'Не указано';
-            const arousalPenis = this.querySelector('[name="arousal_penis"]:checked')?.value || 'Не указано';
-            const seasonal = this.querySelector('[name="seasonal_dependency"]:checked')?.value || 'Не указано';
-            
-            const messageText = `📊 НОВАЯ АНКЕТА ЛИБИДО
-
-📈 Общая частота: ${generalFrequency}
-💪 Сила желания: ${desireStrength}
-🔥 Возбуждение от вида: ${arousalPenis}
-🌦️ Сезонная зависимость: ${seasonal}
-
-⏰ ${new Date().toLocaleString('ru-RU')}
-
-Полная анкета будет проанализирована отдельно`;
-
-            // URL-encoded версия для десктопов
-            const encodedMessage = encodeURIComponent(messageText.replace(/\n/g, '%0A'));
-            
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка анкеты...';
-            submitBtn.disabled = true;
-            
-            try {
-                if (isMobileDevice()) {
-                    // Для мобильных устройств
-                    const copySuccess = await copyToClipboard(messageText);
-                    
-                    if (copySuccess) {
-                        alert('✅ Текст анкеты скопирован!\n\nТеперь:\n1. Откройте Telegram\n2. Напишите @Tan4ik77G\n3. Вставьте скопированный текст\n4. Отправьте сообщение');
-                        openTelegram();
-                    } else {
-                        alert('📋 Анкета готова для отправки!\n\nСкопируйте этот текст:\n\n' + messageText + '\n\nЗатем:\n1. Откройте Telegram\n2. Напишите @Tan4ik77G\n3. Вставьте этот текст\n4. Отправьте сообщение');
-                        openTelegram();
-                    }
-                } else {
-                    // Для десктопов
-                    window.open(`https://t.me/${TELEGRAM_USERNAME}?text=${encodedMessage}`, '_blank');
-                    alert('✅ Анкета отправлена! Спасибо за ваши ответы.');
-                }
-                
-                // Сбрасываем форму
-                this.reset();
-                
-            } catch (error) {
-                console.error('Ошибка:', error);
-                alert('❌ Произошла ошибка отправки анкеты.');
-            } finally {
-                // Восстанавливаем кнопку
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            }
+            submitForm(
+                this, 
+                FORMSPREE_TEST, 
+                '✅ Анкета отправлена! Спасибо за ваши ответы. Я свяжусь с вами для обсуждения результатов.'
+            );
         });
     }
 
@@ -264,18 +166,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Проверяем при загрузке и изменении размера окна
     window.addEventListener('load', adaptTablesForMobile);
     window.addEventListener('resize', adaptTablesForMobile);
-
-    // Добавляем обработку наведения для интерактивных элементов
-    document.querySelectorAll('.btn, .service-card, .step, .contact-item, .option-item').forEach(element => {
-        element.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-2px)';
-            this.style.transition = 'transform 0.2s ease';
-        });
-        
-        element.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
-        });
-    });
 
     // Анимация появления элементов при скролле
     const observerOptions = {
