@@ -366,7 +366,6 @@ const TELEGRAM_CHAT_ID = '846572018';
 // Функция отправки в Telegram
 async function sendToTelegram(message) {
     try {
-        console.log('Отправка сообщения в Telegram...');
         const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: {
@@ -380,27 +379,58 @@ async function sendToTelegram(message) {
         });
         
         const data = await response.json();
-        console.log('Ответ от Telegram:', data);
-        
-        if (data.ok) {
-            return true;
-        } else {
-            console.error('Ошибка Telegram:', data);
-            return false;
-        }
+        return data.ok;
     } catch (error) {
         console.error('Ошибка отправки:', error);
         return false;
     }
 }
 
-// Форма записи на консультацию
+// Основная функция инициализации
 document.addEventListener('DOMContentLoaded', function() {
+    // Mobile menu toggle
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (mobileMenuBtn && navLinks) {
+        mobileMenuBtn.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+        });
+    }
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            if (navLinks) navLinks.classList.remove('active');
+            
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Показ/скрытие поля для сезонных изменений
+    const seasonalRadio = document.querySelectorAll('input[name="seasonal_dependency"]');
+    const seasonalDescription = document.getElementById('seasonalDescription');
+    
+    if (seasonalRadio.length > 0 && seasonalDescription) {
+        seasonalRadio.forEach(radio => {
+            radio.addEventListener('change', function() {
+                seasonalDescription.style.display = this.value === 'yes' ? 'block' : 'none';
+            });
+        });
+    }
+
+    // Форма записи на консультацию
     const bookingForm = document.getElementById('bookingForm');
     if (bookingForm) {
         bookingForm.addEventListener('submit', async function(e) {
             e.preventDefault();
-            console.log('Форма записи отправлена');
             
             const submitBtn = this.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
@@ -412,7 +442,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const service = this.querySelector('[name="service"]').value;
             const message = this.querySelector('[name="message"]').value;
             
-            // Формируем сообщение
+            // Формируем сообщение для Telegram
             const telegramMessage = `
 🎯 <b>НОВАЯ ЗАЯВКА НА КОНСУЛЬТАЦИЮ</b>
 
@@ -429,18 +459,31 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
             submitBtn.disabled = true;
             
-            // Отправляем
-            const success = await sendToTelegram(telegramMessage);
-            
-            if (success) {
-                alert('✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.');
-                this.reset();
-            } else {
+            try {
+                // Пробуем отправить через Telegram бота
+                const success = await sendToTelegram(telegramMessage);
+                
+                if (success) {
+                    alert('✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.');
+                    this.reset();
+                } else {
+                    // Если бот не работает, открываем Telegram с сообщением
+                    const fallbackMessage = `🎯 НОВАЯ ЗАЯВКА НА КОНСУЛЬТАЦИЮ%0A%0A👤 Имя: ${name}%0A📞 Контакт: ${contact}%0A📧 Email: ${email || 'Не указан'}%0A🎭 Формат: ${service}%0A💬 Сообщение: ${message || 'Не указано'}%0A%0A⏰ ${new Date().toLocaleString('ru-RU')}`;
+                    
+                    alert('Открываем Telegram... Нажмите "Отправить" в открывшемся окне.');
+                    window.open(`https://t.me/Tan4ik77G?text=${fallbackMessage}`, '_blank');
+                    
+                    setTimeout(() => {
+                        alert('✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.');
+                        this.reset();
+                    }, 2000);
+                }
+            } catch (error) {
                 alert('❌ Ошибка отправки. Позвоните мне: +7 (905) 595-99-96 или напишите в Telegram: @Tan4ik77G');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
             }
-            
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
         });
     }
 
@@ -449,7 +492,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (testForm) {
         testForm.addEventListener('submit', async function(e) {
             e.preventDefault();
-            console.log('Форма теста отправлена');
             
             const submitBtn = this.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
@@ -476,29 +518,103 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка анкеты...';
             submitBtn.disabled = true;
             
-            const success = await sendToTelegram(telegramMessage);
-            
-            if (success) {
-                alert('✅ Анкета отправлена! Спасибо за ваши ответы.');
-                this.reset();
-            } else {
+            try {
+                // Пробуем отправить через Telegram бота
+                const success = await sendToTelegram(telegramMessage);
+                
+                if (success) {
+                    alert('✅ Анкета отправлена! Спасибо за ваши ответы.');
+                    this.reset();
+                } else {
+                    // Если бот не работает, открываем Telegram с сообщением
+                    const fallbackMessage = `📊 НОВАЯ АНКЕТА ЛИБИДО%0A%0A📈 Общая частота: ${generalFrequency}%0A💪 Сила желания: ${desireStrength}%0A🔥 Возбуждение от вида: ${arousalPenis}%0A🌦️ Сезонная зависимость: ${seasonal}%0A%0A⏰ ${new Date().toLocaleString('ru-RU')}%0A%0AПолная анкета будет проанализирована отдельно`;
+                    
+                    alert('Открываем Telegram... Нажмите "Отправить" в открывшемся окне.');
+                    window.open(`https://t.me/Tan4ik77G?text=${fallbackMessage}`, '_blank');
+                    
+                    setTimeout(() => {
+                        alert('✅ Анкета отправлена! Спасибо за ваши ответы.');
+                        this.reset();
+                    }, 2000);
+                }
+            } catch (error) {
                 alert('❌ Ошибка отправки анкеты. Попробуйте еще раз или свяжитесь со мной напрямую.');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
             }
-            
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
         });
     }
 
-    // Сезонные изменения
-    const seasonalRadio = document.querySelectorAll('input[name="seasonal_dependency"]');
-    const seasonalDescription = document.getElementById('seasonalDescription');
-    
-    if (seasonalRadio.length > 0 && seasonalDescription) {
-        seasonalRadio.forEach(radio => {
-            radio.addEventListener('change', function() {
-                seasonalDescription.style.display = this.value === 'yes' ? 'block' : 'none';
-            });
-        });
+    // Синхронизация мобильных и десктопных полей
+    document.addEventListener('change', function(e) {
+        // Если изменение произошло в мобильном поле, синхронизируем с основным
+        if (e.target.name && e.target.name.includes('_mobile')) {
+            const mainFieldName = e.target.name.replace('_mobile', '');
+            const mainField = document.querySelector(`[name="${mainFieldName}"]`);
+            if (mainField) {
+                mainField.value = e.target.value;
+            }
+        }
+        
+        // И наоборот - если изменение в основном поле, синхронизируем с мобильным
+        if (e.target.name && !e.target.name.includes('_mobile')) {
+            const mobileFieldName = e.target.name + '_mobile';
+            const mobileField = document.querySelector(`[name="${mobileFieldName}"]`);
+            if (mobileField) {
+                mobileField.value = e.target.value;
+            }
+        }
+    });
+
+    // Адаптация таблиц для мобильных устройств
+    function adaptTablesForMobile() {
+        if (window.innerWidth <= 768) {
+            const tables = document.querySelectorAll('.period-table');
+            const mobileCards = document.querySelectorAll('.mobile-period-card');
+            
+            tables.forEach(table => table.style.display = 'none');
+            mobileCards.forEach(card => card.style.display = 'block');
+        } else {
+            const tables = document.querySelectorAll('.period-table');
+            const mobileCards = document.querySelectorAll('.mobile-period-card');
+            
+            tables.forEach(table => table.style.display = 'table');
+            mobileCards.forEach(card => card.style.display = 'none');
+        }
     }
+
+    // Проверяем при загрузке и изменении размера окна
+    window.addEventListener('load', adaptTablesForMobile);
+    window.addEventListener('resize', adaptTablesForMobile);
+    
+    // Scroll animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, observerOptions);
+
+    // Observe all sections for animation
+    document.querySelectorAll('section').forEach(section => {
+        observer.observe(section);
+    });
+
+    // Add hover effects to interactive elements
+    document.querySelectorAll('.btn, .service-card, .step, .contact-item, .option-item').forEach(element => {
+        element.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.02)';
+        });
+        
+        element.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+        });
+    });
 });
