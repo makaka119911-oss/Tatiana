@@ -444,8 +444,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitBtn.disabled = false;
             }, 1000);
         });
-    } else {
-        console.log('Форма записи НЕ найдена');
     }
 
     // Форма теста
@@ -485,8 +483,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitBtn.disabled = false;
             }, 1000);
         });
-    } else {
-        console.log('Форма теста НЕ найдена');
     }
 
     // Синхронизация мобильных и десктопных полей
@@ -506,45 +502,5 @@ document.addEventListener('DOMContentLoaded', function() {
                 mobileField.value = e.target.value;
             }
         }
-    });
-
-    // Адаптация таблиц для мобильных устройств
-    function adaptTablesForMobile() {
-        if (window.innerWidth <= 768) {
-            const tables = document.querySelectorAll('.period-table');
-            const mobileCards = document.querySelectorAll('.mobile-period-card');
-            
-            tables.forEach(table => table.style.display = 'none');
-            mobileCards.forEach(card => card.style.display = 'block');
-        } else {
-            const tables = document.querySelectorAll('.period-table');
-            const mobileCards = document.querySelectorAll('.mobile-period-card');
-            
-            tables.forEach(table => table.style.display = 'table');
-            mobileCards.forEach(card => card.style.display = 'none');
-        }
-    }
-
-    // Проверяем при загрузке и изменении размера окна
-    window.addEventListener('load', adaptTablesForMobile);
-    window.addEventListener('resize', adaptTablesForMobile);
-    
-    // Scroll animations
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
-        });
-    }, observerOptions);
-
-    // Observe all sections for animation
-    document.querySelectorAll('section').forEach(section => {
-        observer.observe(section);
     });
 });
