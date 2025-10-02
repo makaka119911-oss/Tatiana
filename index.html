@@ -761,7 +761,6 @@
             </div>
         </div>
     </section>
-
 <!-- Contact Section -->
 <section id="contact" style="background: linear-gradient(135deg, var(--cream) 0%, var(--light-gold) 50%, var(--cream) 100%);">
     <div class="container">
@@ -816,11 +815,7 @@
             <div class="booking-form">
                 <h3 style="color: var(--deep-burgundy); margin-bottom: 2rem; text-align: center;">Запись на консультацию</h3>
                 
-                <form id="libidoTestForm">
-                    <input type="hidden" name="_subject" value="Новая заявка с сайта - Запись на консультацию">
-                    <input type="hidden" name="_replyto" value="client@email.com">
-                    <input type="hidden" name="_language" value="ru">
-                    
+                <form id="bookingForm">
                     <div class="form-group">
                         <label for="name"><i class="fas fa-user"></i> Ваше имя</label>
                         <input type="text" id="name" name="name" required>
@@ -839,9 +834,9 @@
                     <div class="form-group">
                         <label for="service"><i class="fas fa-concierge-bell"></i> Формат консультации</label>
                         <select id="service" name="service">
-                            <option value="individual">Индивидуальная консультация</option>
-                            <option value="couple">Консультация для пары</option>
-                            <option value="online">Онлайн-консультация</option>
+                            <option value="Индивидуальная">Индивидуальная консультация</option>
+                            <option value="Для пары">Консультация для пары</option>
+                            <option value="Онлайн">Онлайн-консультация</option>
                         </select>
                     </div>
                     
@@ -855,9 +850,9 @@
                     </button>
                     
                     <p style="margin-top: 1rem; font-size: 0.9rem; text-align: center; color: #666;">
-                        После отправки вы будете перенаправлены на страницу подтверждения
+                        После отправки вы получите уведомление о успешной отправке.
                     </p>
-                <form id="bookingForm">
+                </form>
             </div>
         </div>
         
@@ -905,6 +900,7 @@
     
 <script src="script.js"></script></body>
 </html>
+
 
 
 
