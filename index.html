@@ -140,7 +140,7 @@
                     <div class="service-icon">
                         <i class="fas fa-fire"></i>
                     </div>
-                    <h3>Либидо верхняя граница нормы</h3>
+                    <h3>Повышенное либидо</h3>
                     <p>Гармонизация чрезмерного сексуального желания, поиск баланса в отношениях, управление энергией</p>
                 </div>
                 <div class="service-card floating" style="animation-delay: 0.4s;">
@@ -163,7 +163,7 @@
             <div style="margin-top: 3rem; background: white; padding: 2rem; border-radius: 15px; border: 2px solid var(--soft-pink);">
                 <h3 style="color: var(--deep-burgundy); text-align: center; margin-bottom: 1.5rem;">
                     <i class="fas fa-fire" style="color: #e74c3c; margin-right: 0.5rem;"></i>
-                    Особенности работы с верхней граници нормы либидо
+                    Особенности работы с повышенным либидо
                 </h3>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
                     <div>
@@ -213,8 +213,13 @@
                 </div>
 
                 <form id="libidoTestForm">
+                    <!-- Скрытые поля для улучшения читаемости письма -->
                     <input type="hidden" name="_language" value="ru" />
-                    <input type="hidden" name="_subject" value="Результаты теста либидо от сайта" />
+                    <input type="hidden" name="_subject" value="Результаты теста либидо - Новая анкета" />
+                    <input type="hidden" name="_format" value="plain" />
+                    
+                    <!-- Основное поле для читаемого текста -->
+                    <textarea name="test_results_summary" style="display: none;"></textarea>
                     
                     <div class="form-message" id="testMessage"></div>
                     
@@ -223,85 +228,85 @@
                         <h4>Общие показатели либидо</h4>
                         
                         <div class="question-block">
-                            <h5 class="required-field">Как часто в целом хочется секса?</h5>
+                            <h5 class="required-field">1. Как часто в целом хочется секса?</h5>
                             <div class="error-message" id="general_frequency_error">Пожалуйста, выберите один из вариантов</div>
                             <div class="options-grid">
                                 <label class="option-item">
-                                    <input type="radio" name="general_frequency" value="never" required>
+                                    <input type="radio" name="question_1" value="Вообще не хочется" required data-question="Как часто в целом хочется секса?">
                                     Вообще не хочется
                                 </label>
                                 <label class="option-item">
-                                    <input type="radio" name="general_frequency" value="weekly">
+                                    <input type="radio" name="question_1" value="Хочется 1 раза в неделю" data-question="Как часто в целом хочется секса?">
                                     Хочется 1 раза в неделю
                                 </label>
                                 <label class="option-item">
-                                    <input type="radio" name="general_frequency" value="3days">
+                                    <input type="radio" name="question_1" value="Хочется 1 раз в 3 дня" data-question="Как часто в целом хочется секса?">
                                     Хочется 1 раз в 3 дня
                                 </label>
                                 <label class="option-item">
-                                    <input type="radio" name="general_frequency" value="2days">
+                                    <input type="radio" name="question_1" value="Хочется через день" data-question="Как часто в целом хочется секса?">
                                     Хочется через день
                                 </label>
                                 <label class="option-item">
-                                    <input type="radio" name="general_frequency" value="daily">
+                                    <input type="radio" name="question_1" value="Хочется каждый день" data-question="Как часто в целом хочется секса?">
                                     Хочется каждый день
                                 </label>
                                 <label class="option-item">
-                                    <input type="radio" name="general_frequency" value="multiple">
+                                    <input type="radio" name="question_1" value="Хочется каждый день по много раз" data-question="Как часто в целом хочется секса?">
                                     Хочется каждый день по много раз
                                 </label>
                             </div>
                         </div>
 
                         <div class="question-block">
-                            <h5 class="required-field">Сила желания в те дни, когда хочется секса?</h5>
+                            <h5 class="required-field">2. Сила желания в те дни, когда хочется секса?</h5>
                             <div class="error-message" id="desire_strength_error">Пожалуйста, выберите один из вариантов</div>
                             <div class="options-grid">
                                 <label class="option-item">
-                                    <input type="radio" name="desire_strength" value="light" required>
+                                    <input type="radio" name="question_2" value="Легкое желание" required data-question="Сила желания в те дни, когда хочется секса?">
                                     Легкое желание
                                 </label>
                                 <label class="option-item">
-                                    <input type="radio" name="desire_strength" value="medium">
+                                    <input type="radio" name="question_2" value="Среднее желание" data-question="Сила желания в те дни, когда хочется секса?">
                                     Среднее желание
                                 </label>
                                 <label class="option-item">
-                                    <input type="radio" name="desire_strength" value="strong">
+                                    <input type="radio" name="question_2" value="Сильное желание" data-question="Сила желания в те дни, когда хочется секса?">
                                     Сильное желание
                                 </label>
                                 <label class="option-item">
-                                    <input type="radio" name="desire_strength" value="very_strong">
+                                    <input type="radio" name="question_2" value="Очень сильное желание" data-question="Сила желания в те дни, когда хочется секса?">
                                     Очень сильное желание
                                 </label>
                                 <label class="option-item">
-                                    <input type="radio" name="desire_strength" value="maximal">
+                                    <input type="radio" name="question_2" value="Максимально сильное желание" data-question="Сила желания в те дни, когда хочется секса?">
                                     Максимально сильное желание
                                 </label>
                             </div>
                         </div>
 
                         <div class="question-block">
-                            <h5 class="required-field">Возбуждает ли Вас вид эрегированного полового члена?</h5>
+                            <h5 class="required-field">3. Возбуждает ли Вас вид эрегированного полового члена?</h5>
                             <div class="error-message" id="arousal_penis_error">Пожалуйста, выберите один из вариантов</div>
                             <div class="options-grid">
                                 <label class="option-item">
-                                    <input type="radio" name="arousal_penis" value="not_at_all" required>
+                                    <input type="radio" name="question_3" value="Вообще не возбуждает" required data-question="Возбуждает ли Вас вид эрегированного полового члена?">
                                     Вообще не возбуждает
                                 </label>
                                 <label class="option-item">
-                                    <input type="radio" name="arousal_penis" value="slightly">
+                                    <input type="radio" name="question_3" value="Немного возбуждает" data-question="Возбуждает ли Вас вид эрегированного полового члена?">
                                     Немного возбуждает
                                 </label>
                                 <label class="option-item">
-                                    <input type="radio" name="arousal_penis" value="moderately">
+                                    <input type="radio" name="question_3" value="Средне возбуждает" data-question="Возбуждает ли Вас вид эрегированного полового члена?">
                                     Средне возбуждает
                                 </label>
                                 <label class="option-item">
-                                    <input type="radio" name="arousal_penis" value="strongly">
+                                    <input type="radio" name="question_3" value="Сильно возбуждает" data-question="Возбуждает ли Вас вид эрегированного полового члена?">
                                     Сильно возбуждает
                                 </label>
                                 <label class="option-item">
-                                    <input type="radio" name="arousal_penis" value="very_strongly">
+                                    <input type="radio" name="question_3" value="Очень сильно возбуждает" data-question="Возбуждает ли Вас вид эрегированного полового члена?">
                                     Очень сильно возбуждает
                                 </label>
                             </div>
@@ -314,7 +319,7 @@
                         
                         <!-- Период 1: От конца месячных до овуляции -->
                         <div class="question-block">
-                            <h5 class="required-field">От конца месячных до овуляции</h5>
+                            <h5 class="required-field">4. От конца месячных до овуляции</h5>
                             <table class="period-table">
                                 <tr>
                                     <th>Параметр</th>
@@ -324,25 +329,25 @@
                                 <tr>
                                     <td><strong>Частота/Сила желания</strong></td>
                                     <td>
-                                        <select name="period1_no_desire_frequency" class="form-control" required>
+                                        <select name="question_4a" class="form-control" required data-question="Период 1 - В дни, когда НЕ хочется секса - Частота/Сила желания">
                                             <option value="">Выберите</option>
-                                            <option value="never">Вообще не хочется</option>
-                                            <option value="weekly">Хочется 1 раз в неделю</option>
-                                            <option value="3days">Хочется 1 раз в 3 дня</option>
-                                            <option value="2days">Хочется через день</option>
-                                            <option value="daily">Хочется каждый день</option>
-                                            <option value="multiple">Хочется каждый день по много раз</option>
+                                            <option value="Вообще не хочется">Вообще не хочется</option>
+                                            <option value="Хочется 1 раз в неделю">Хочется 1 раз в неделю</option>
+                                            <option value="Хочется 1 раз в 3 дня">Хочется 1 раз в 3 дня</option>
+                                            <option value="Хочется через день">Хочется через день</option>
+                                            <option value="Хочется каждый день">Хочется каждый день</option>
+                                            <option value="Хочется каждый день по много раз">Хочется каждый день по много раз</option>
                                         </select>
                                         <div class="error-message">Пожалуйста, выберите вариант</div>
                                     </td>
                                     <td>
-                                        <select name="period1_desire_strength" class="form-control" required>
+                                        <select name="question_4b" class="form-control" required data-question="Период 1 - В дни, когда хочется секса - Частота/Сила желания">
                                             <option value="">Выберите</option>
-                                            <option value="light">Легкое желание</option>
-                                            <option value="medium">Среднее желание</option>
-                                            <option value="strong">Сильное желание</option>
-                                            <option value="very_strong">Очень сильное желание</option>
-                                            <option value="maximal">Максимально сильное желание</option>
+                                            <option value="Легкое желание">Легкое желание</option>
+                                            <option value="Среднее желание">Среднее желание</option>
+                                            <option value="Сильное желание">Сильное желание</option>
+                                            <option value="Очень сильное желание">Очень сильное желание</option>
+                                            <option value="Максимально сильное желание">Максимально сильное желание</option>
                                         </select>
                                         <div class="error-message">Пожалуйста, выберите вариант</div>
                                     </td>
@@ -350,24 +355,24 @@
                                 <tr>
                                     <td><strong>Возбуждение от вида</strong></td>
                                     <td>
-                                        <select name="period1_no_desire_arousal" class="form-control" required>
+                                        <select name="question_4c" class="form-control" required data-question="Период 1 - В дни, когда НЕ хочется секса - Возбуждение от вида">
                                             <option value="">Выберите</option>
-                                            <option value="not_at_all">Вообще не возбуждает</option>
-                                            <option value="slightly">Немного возбуждает</option>
-                                            <option value="moderately">Средне возбуждает</option>
-                                            <option value="strongly">Сильно возбуждает</option>
-                                            <option value="very_strongly">Очень сильно возбуждает</option>
+                                            <option value="Вообще не возбуждает">Вообще не возбуждает</option>
+                                            <option value="Немного возбуждает">Немного возбуждает</option>
+                                            <option value="Средне возбуждает">Средне возбуждает</option>
+                                            <option value="Сильно возбуждает">Сильно возбуждает</option>
+                                            <option value="Очень сильно возбуждает">Очень сильно возбуждает</option>
                                         </select>
                                         <div class="error-message">Пожалуйста, выберите вариант</div>
                                     </td>
                                     <td>
-                                        <select name="period1_desire_arousal" class="form-control" required>
+                                        <select name="question_4d" class="form-control" required data-question="Период 1 - В дни, когда хочется секса - Возбуждение от вида">
                                             <option value="">Выберите</option>
-                                            <option value="not_at_all">Вообще не возбуждает</option>
-                                            <option value="slightly">Немного возбуждает</option>
-                                            <option value="moderately">Средне возбуждает</option>
-                                            <option value="strongly">Сильно возбуждает</option>
-                                            <option value="very_strongly">Очень сильно возбуждает</option>
+                                            <option value="Вообще не возбуждает">Вообще не возбуждает</option>
+                                            <option value="Немного возбуждает">Немного возбуждает</option>
+                                            <option value="Средне возбуждает">Средне возбуждает</option>
+                                            <option value="Сильно возбуждает">Сильно возбуждает</option>
+                                            <option value="Очень сильно возбуждает">Очень сильно возбуждает</option>
                                         </select>
                                         <div class="error-message">Пожалуйста, выберите вариант</div>
                                     </td>
@@ -384,26 +389,26 @@
                                     <h6>📋 В дни, когда НЕ хочется секса</h6>
                                     <div class="mobile-form-group">
                                         <label class="required-field">Частота/Сила желания:</label>
-                                        <select name="period1_no_desire_frequency_mobile" class="form-control" required>
+                                        <select name="question_4a_mobile" class="form-control" required data-question="Период 1 - В дни, когда НЕ хочется секса - Частота/Сила желания">
                                             <option value="">Выберите</option>
-                                            <option value="never">Вообще не хочется</option>
-                                            <option value="weekly">Хочется 1 раз в неделю</option>
-                                            <option value="3days">Хочется 1 раз в 3 дня</option>
-                                            <option value="2days">Хочется через день</option>
-                                            <option value="daily">Хочется каждый день</option>
-                                            <option value="multiple">Хочется каждый день по много раз</option>
+                                            <option value="Вообще не хочется">Вообще не хочется</option>
+                                            <option value="Хочется 1 раз в неделю">Хочется 1 раз в неделю</option>
+                                            <option value="Хочется 1 раз в 3 дня">Хочется 1 раз в 3 дня</option>
+                                            <option value="Хочется через день">Хочется через день</option>
+                                            <option value="Хочется каждый день">Хочется каждый день</option>
+                                            <option value="Хочется каждый день по много раз">Хочется каждый день по много раз</option>
                                         </select>
                                         <div class="error-message">Пожалуйста, выберите вариант</div>
                                     </div>
                                     <div class="mobile-form-group">
                                         <label class="required-field">Возбуждение от вида:</label>
-                                        <select name="period1_no_desire_arousal_mobile" class="form-control" required>
+                                        <select name="question_4c_mobile" class="form-control" required data-question="Период 1 - В дни, когда НЕ хочется секса - Возбуждение от вида">
                                             <option value="">Выберите</option>
-                                            <option value="not_at_all">Вообще не возбуждает</option>
-                                            <option value="slightly">Немного возбуждает</option>
-                                            <option value="moderately">Средне возбуждает</option>
-                                            <option value="strongly">Сильно возбуждает</option>
-                                            <option value="very_strongly">Очень сильно возбуждает</option>
+                                            <option value="Вообще не возбуждает">Вообще не возбуждает</option>
+                                            <option value="Немного возбуждает">Немного возбуждает</option>
+                                            <option value="Средне возбуждает">Средне возбуждает</option>
+                                            <option value="Сильно возбуждает">Сильно возбуждает</option>
+                                            <option value="Очень сильно возбуждает">Очень сильно возбуждает</option>
                                         </select>
                                         <div class="error-message">Пожалуйста, выберите вариант</div>
                                     </div>
@@ -413,25 +418,25 @@
                                     <h6>💖 В дни, когда хочется секса</h6>
                                     <div class="mobile-form-group">
                                         <label class="required-field">Частота/Сила желания:</label>
-                                        <select name="period1_desire_strength_mobile" class="form-control" required>
+                                        <select name="question_4b_mobile" class="form-control" required data-question="Период 1 - В дни, когда хочется секса - Частота/Сила желания">
                                             <option value="">Выберите</option>
-                                            <option value="light">Легкое желание</option>
-                                            <option value="medium">Среднее желание</option>
-                                            <option value="strong">Сильное желание</option>
-                                            <option value="very_strong">Очень сильное желание</option>
-                                            <option value="maximal">Максимально сильное желание</option>
+                                            <option value="Легкое желание">Легкое желание</option>
+                                            <option value="Среднее желание">Среднее желание</option>
+                                            <option value="Сильное желание">Сильное желание</option>
+                                            <option value="Очень сильное желание">Очень сильное желание</option>
+                                            <option value="Максимально сильное желание">Максимально сильное желание</option>
                                         </select>
                                         <div class="error-message">Пожалуйста, выберите вариант</div>
                                     </div>
                                     <div class="mobile-form-group">
                                         <label class="required-field">Возбуждение от вида:</label>
-                                        <select name="period1_desire_arousal_mobile" class="form-control" required>
+                                        <select name="question_4d_mobile" class="form-control" required data-question="Период 1 - В дни, когда хочется секса - Возбуждение от вида">
                                             <option value="">Выберите</option>
-                                            <option value="not_at_all">Вообще не возбуждает</option>
-                                            <option value="slightly">Немного возбуждает</option>
-                                            <option value="moderately">Средне возбуждает</option>
-                                            <option value="strongly">Сильно возбуждает</option>
-                                            <option value="very_strongly">Очень сильно возбуждает</option>
+                                            <option value="Вообще не возбуждает">Вообще не возбуждает</option>
+                                            <option value="Немного возбуждает">Немного возбуждает</option>
+                                            <option value="Средне возбуждает">Средне возбуждает</option>
+                                            <option value="Сильно возбуждает">Сильно возбуждает</option>
+                                            <option value="Очень сильно возбуждает">Очень сильно возбуждает</option>
                                         </select>
                                         <div class="error-message">Пожалуйста, выберите вариант</div>
                                     </div>
@@ -448,23 +453,23 @@
                     <div class="test-section">
                         <h4>Сезонные особенности</h4>
                         <div class="question-block">
-                            <h5 class="required-field">Зависит ли Ваше либидо от времени года?</h5>
+                            <h5 class="required-field">5. Зависит ли Ваше либидо от времени года?</h5>
                             <div class="error-message" id="seasonal_dependency_error">Пожалуйста, выберите один из вариантов</div>
                             <div class="options-grid">
                                 <label class="option-item">
-                                    <input type="radio" name="seasonal_dependency" value="no" required>
+                                    <input type="radio" name="question_5" value="Нет" required data-question="Зависит ли Ваше либидо от времени года?">
                                     Нет
                                 </label>
                                 <label class="option-item">
-                                    <input type="radio" name="seasonal_dependency" value="yes">
+                                    <input type="radio" name="question_5" value="Да" data-question="Зависит ли Ваше либидо от времени года?">
                                     Да
                                 </label>
                             </div>
                         </div>
 
                         <div class="question-block" id="seasonalDescription" style="display: none;">
-                            <h5 class="required-field">Опишите, как меняется ваше либидо в зависимости от времени года:</h5>
-                            <textarea name="seasonal_changes" rows="4" class="form-control" placeholder="Опишите особенности..." required></textarea>
+                            <h5 class="required-field">6. Опишите, как меняется ваше либидо в зависимости от времени года:</h5>
+                            <textarea name="question_6" rows="4" class="form-control" placeholder="Опишите особенности..." data-question="Опишите, как меняется ваше либидо в зависимости от времени года"></textarea>
                             <div class="error-message">Пожалуйста, опишите сезонные изменения</div>
                         </div>
                     </div>
@@ -523,7 +528,7 @@
             <div class="test-required-message" id="testRequiredMessage" style="background: #ffeaa7; border: 2px solid #fdcb6e; border-radius: 10px; padding: 1.5rem; margin-bottom: 2rem; text-align: center; display: none;">
                 <i class="fas fa-exclamation-circle" style="color: #e17055; font-size: 2rem; margin-bottom: 0.5rem;"></i>
                 <h4 style="color: #e17055; margin-bottom: 0.5rem;">Сначала пройдите тест</h4>
-                <p>Для записи на консультацию необходимо сначала пройти тест на либидо. Это поможет мне лучше понять вашу ситуацию и подготовиться к нашей работе.</p>
+                <p>Для записи на консультацию необходимо сначала пройти тест либидо. Это поможет мне лучше понять вашу ситуацию и подготовиться к нашей работе.</p>
                 <a href="#test" class="btn" style="margin-top: 1rem;">
                     <i class="fas fa-clipboard-check"></i> Пройти тест
                 </a>
@@ -580,6 +585,7 @@
                     <form id="bookingForm">
                         <input type="hidden" name="_language" value="ru" />
                         <input type="hidden" name="_subject" value="Новая заявка на консультацию" />
+                        <input type="hidden" name="_format" value="plain" />
                         
                         <div class="form-group">
                             <label for="name" class="required-field"><i class="fas fa-user"></i> Ваше имя</label>
@@ -602,9 +608,9 @@
                             <label for="service" class="required-field"><i class="fas fa-concierge-bell"></i> Формат консультации</label>
                             <select id="service" name="service" required>
                                 <option value="">Выберите формат</option>
-                                <option value="Индивидуальная">Индивидуальная консультация</option>
-                                <option value="Для пары">Консультация для пары</option>
-                                <option value="Онлайн">Онлайн-консультация</option>
+                                <option value="Индивидуальная консультация">Индивидуальная консультация</option>
+                                <option value="Консультация для пары">Консультация для пары</option>
+                                <option value="Онлайн-консультация">Онлайн-консультация</option>
                             </select>
                             <div class="error-message">Пожалуйста, выберите формат консультации</div>
                         </div>
@@ -704,13 +710,13 @@
             });
 
             // Показ/скрытие поля для сезонных изменений
-            const seasonalRadio = document.querySelectorAll('input[name="seasonal_dependency"]');
+            const seasonalRadio = document.querySelectorAll('input[name="question_5"]');
             const seasonalDescription = document.getElementById('seasonalDescription');
             
             if (seasonalRadio.length > 0 && seasonalDescription) {
                 seasonalRadio.forEach(radio => {
                     radio.addEventListener('change', function() {
-                        const shouldShow = this.value === 'yes';
+                        const shouldShow = this.value === 'Да';
                         seasonalDescription.style.display = shouldShow ? 'block' : 'none';
                         
                         // Делаем текстовое поле обязательным только если выбрано "Да"
@@ -725,8 +731,56 @@
             // Валидация форм в реальном времени
             setupFormValidation();
 
+            // Функция для создания читаемого текста из ответов теста
+            function createTestSummary(form) {
+                let summary = "РЕЗУЛЬТАТЫ ТЕСТА ЛИБИДО\n\n";
+                summary += "==============================\n\n";
+                
+                // Собираем все вопросы и ответы
+                const formData = new FormData(form);
+                const questions = [];
+                
+                // Собираем радиокнопки
+                form.querySelectorAll('input[type="radio"]:checked').forEach(radio => {
+                    const question = radio.getAttribute('data-question');
+                    const answer = radio.value;
+                    if (question && answer) {
+                        questions.push({ question, answer });
+                    }
+                });
+                
+                // Собираем селекты
+                form.querySelectorAll('select').forEach(select => {
+                    const question = select.getAttribute('data-question');
+                    const answer = select.value;
+                    if (question && answer && answer !== '') {
+                        questions.push({ question, answer });
+                    }
+                });
+                
+                // Собираем текстовые поля
+                form.querySelectorAll('textarea').forEach(textarea => {
+                    const question = textarea.getAttribute('data-question');
+                    const answer = textarea.value;
+                    if (question && answer && answer.trim() !== '') {
+                        questions.push({ question, answer });
+                    }
+                });
+                
+                // Форматируем вопросы и ответы
+                questions.forEach((item, index) => {
+                    summary += `ВОПРОС ${index + 1}: ${item.question}\n`;
+                    summary += `ОТВЕТ: ${item.answer}\n\n`;
+                });
+                
+                summary += "==============================\n";
+                summary += "Дата заполнения: " + new Date().toLocaleString('ru-RU');
+                
+                return summary;
+            }
+
             // Функция для отправки формы
-            async function submitForm(form, endpoint, successMessage) {
+            async function submitForm(form, endpoint, successMessage, isTest = false) {
                 const submitBtn = form.querySelector('button[type="submit"]');
                 const originalText = submitBtn.innerHTML;
                 
@@ -734,6 +788,15 @@
                 if (!form.checkValidity()) {
                     showFormErrors(form);
                     return;
+                }
+                
+                // Для теста создаем читаемое резюме
+                if (isTest) {
+                    const summary = createTestSummary(form);
+                    const summaryField = form.querySelector('textarea[name="test_results_summary"]');
+                    if (summaryField) {
+                        summaryField.value = summary;
+                    }
                 }
                 
                 // Показываем загрузку
@@ -756,7 +819,7 @@
                         alert(successMessage);
                         
                         // Если это тест, сохраняем факт прохождения
-                        if (form.id === 'libidoTestForm') {
+                        if (isTest) {
                             localStorage.setItem('testCompleted', 'true');
                             showTestCompletionMessage();
                             checkTestCompletion();
@@ -796,7 +859,8 @@
                     submitForm(
                         this, 
                         FORMSPREE_TEST, 
-                        '✅ Анкета отправлена! Спасибо за ваши ответы. Я свяжусь с вами для обсуждения результатов.'
+                        '✅ Анкета отправлена! Спасибо за ваши ответы. Я свяжусь с вами для обсуждения результатов.',
+                        true // это тест
                     );
                 });
             }
@@ -820,7 +884,8 @@
                     submitForm(
                         this, 
                         FORMSPREE_BOOKING, 
-                        '✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.'
+                        '✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.',
+                        false // это не тест
                     );
                 });
             }
@@ -991,6 +1056,7 @@
     </script>
 </body>
 </html>
+
 
 
 
