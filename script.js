@@ -34,86 +34,79 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Сезонные изменения
-    const seasonalRadio = document.querySelectorAll('input[name="question_5"]');
-    const seasonalDescription = document.getElementById('seasonalDescription');
-    
-    if (seasonalRadio.length > 0 && seasonalDescription) {
-        seasonalRadio.forEach(radio => {
-            radio.addEventListener('change', function() {
-                const shouldShow = this.value === 'Да';
-                seasonalDescription.style.display = shouldShow ? 'block' : 'none';
-                
-                const textarea = seasonalDescription.querySelector('textarea');
-                if (textarea) {
-                    textarea.required = shouldShow;
-                }
-            });
-        });
-    }
+// Добавьте этот код в существующий JavaScript
 
-    // Улучшенная функция создания сводки теста
-    function createTestSummary(form) {
-        const timestamp = new Date().toLocaleString('ru-RU');
-        let summary = `🎯 РЕЗУЛЬТАТЫ ТЕСТА ЛИБИДО\n`;
-        summary += `📅 Дата заполнения: ${timestamp}\n`;
-        summary += `========================================\n\n`;
-        
-        // Контактные данные
-        const name = form.querySelector('#clientName')?.value || 'Не указано';
-        const contact = form.querySelector('#clientContact')?.value || 'Не указано';
-        
-        if (name !== 'Не указано' || contact !== 'Не указано') {
-            summary += `👤 КОНТАКТНЫЕ ДАННЫЕ:\n`;
-            summary += `Имя: ${name}\n`;
-            summary += `Контакты: ${contact}\n\n`;
-        }
-        
-        // Собираем все ответы
-        const answers = [];
-        
-        // Вопрос 1-3 (радиокнопки)
-        for (let i = 1; i <= 3; i++) {
-            const radio = form.querySelector(`input[name="question_${i}"]:checked`);
-            if (radio) {
-                answers.push(`Вопрос ${i}: ${radio.value}`);
-            }
-        }
-        
-        // Периоды (селекты)
-        const periodFields = ['4a', '4b', '4c', '4d'];
-        periodFields.forEach(field => {
-            const select = form.querySelector(`select[name="question_${field}"]`) || 
-                          form.querySelector(`select[name="question_${field}_mobile"]`);
-            if (select && select.value) {
-                answers.push(`Период ${field}: ${select.value}`);
-            }
+// Показ/скрытие поля для сезонных изменений
+const seasonalRadio = document.querySelectorAll('input[name="seasonal_dependency"]');
+const seasonalDescription = document.getElementById('seasonalDescription');
+
+if (seasonalRadio.length > 0 && seasonalDescription) {
+    seasonalRadio.forEach(radio => {
+        radio.addEventListener('change', function() {
+            const shouldShow = this.value === 'Да';
+            seasonalDescription.style.display = shouldShow ? 'block' : 'none';
         });
-        
-        // Сезонные вопросы
-        const q5 = form.querySelector('input[name="question_5"]:checked');
-        if (q5) {
-            answers.push(`Сезонная зависимость: ${q5.value}`);
-        }
-        
-        const q6 = form.querySelector('textarea[name="question_6"]')?.value;
-        if (q6 && q6.trim() !== '') {
-            answers.push(`Сезонные изменения: ${q6}`);
-        }
-        
-        // Добавляем ответы в сводку
-        if (answers.length > 0) {
-            summary += `📊 ОТВЕТЫ НА ВОПРОСЫ:\n`;
-            answers.forEach((answer, index) => {
-                summary += `${index + 1}. ${answer}\n`;
-            });
-        }
-        
-        summary += `\n========================================\n`;
-        summary += `💡 СТАТУС: Тест заполнен, требуется консультация специалиста`;
-        
-        return summary;
+    });
+}
+
+// Функция для создания читаемого текста из ответов теста
+function createTestSummary(form) {
+    let summary = "РЕЗУЛЬТАТЫ ТЕСТА ЛИБИДО\n\n";
+    summary += "==============================\n\n";
+    
+    // Собираем общие вопросы
+    const generalFrequency = form.querySelector('input[name="general_frequency"]:checked');
+    const generalStrength = form.querySelector('input[name="general_strength"]:checked');
+    
+    if (generalFrequency) {
+        summary += `ОБЩАЯ ЧАСТОТА: ${generalFrequency.value}\n`;
     }
+    if (generalStrength) {
+        summary += `ОБЩАЯ СИЛА ЖЕЛАНИЯ: ${generalStrength.value}\n`;
+    }
+    
+    summary += "\n--- ПО ПЕРИОДАМ ЦИКЛА ---\n\n";
+    
+    // Собираем ответы по периодам
+    const periods = [
+        { name: "От конца месячных до овуляции", prefix: "period1" },
+        { name: "В период овуляции", prefix: "period2" },
+        { name: "От конца овуляции до начала месячных", prefix: "period3" },
+        { name: "В период месячных", prefix: "period4" }
+    ];
+    
+    periods.forEach(period => {
+        summary += `ПЕРИОД: ${period.name}\n`;
+        
+        const frequency = form.querySelector(`select[name="${period.prefix}_frequency"]`);
+        const strength = form.querySelector(`select[name="${period.prefix}_strength"]`);
+        const erectedDesire = form.querySelector(`select[name="${period.prefix}_erected_desire"]`);
+        const erectedNoDesire = form.querySelector(`select[name="${period.prefix}_erected_no_desire"]`);
+        
+        if (frequency && frequency.value) summary += `  Частота: ${frequency.value}\n`;
+        if (strength && strength.value) summary += `  Сила: ${strength.value}\n`;
+        if (erectedDesire && erectedDesire.value) summary += `  Возбуждение (дни желания): ${erectedDesire.value}\n`;
+        if (erectedNoDesire && erectedNoDesire.value) summary += `  Возбуждение (дни без желания): ${erectedNoDesire.value}\n`;
+        
+        summary += "\n";
+    });
+    
+    // Сезонные особенности
+    const seasonal = form.querySelector('input[name="seasonal_dependency"]:checked');
+    const seasonalText = form.querySelector('textarea[name="seasonal_changes"]');
+    
+    if (seasonal) {
+        summary += `СЕЗОННАЯ ЗАВИСИМОСТЬ: ${seasonal.value}\n`;
+        if (seasonalText && seasonalText.value) {
+            summary += `ОПИСАНИЕ: ${seasonalText.value}\n`;
+        }
+    }
+    
+    summary += "==============================\n";
+    summary += "Дата заполнения: " + new Date().toLocaleString('ru-RU');
+    
+    return summary;
+}
 
     // Улучшенная функция отправки формы
     async function submitForm(form, endpoint, successMessage, isTest = false) {
