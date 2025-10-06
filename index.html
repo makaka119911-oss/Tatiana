@@ -1,53 +1,627 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <link rel="stylesheet" href="styles.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Татьяна Солнечная - Сексолог-психолог | Профессиональная помощь</title>
+    <title>Татьяна Солнечная - Раскрытие женской силы | Пробуждение сексуальной энергии</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* Добавим базовые стили для скрытия таблиц на мобильных */
-        @media (max-width: 768px) {
-            .period-table {
-                display: none !important;
-            }
-            .mobile-period-card {
-                display: block !important;
-            }
+        :root {
+            --deep-burgundy: #8B4352;
+            --vibrant-pink: #D46A6A;
+            --soft-pink: #F8C8C8;
+            --cream: #FFF8F0;
+            --light-gold: #F5E6C8;
+            --dark-text: #4A4A4A;
+            --purple-mystic: #8B6B9E;
+            --peach-blossom: #FFB7B2;
+            --lavender: #E6E6FA;
+            --moonlight: #F0E6FF;
         }
-        @media (min-width: 769px) {
-            .mobile-period-card {
-                display: none !important;
-            }
-            .period-table {
-                display: table !important;
-            }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
-        /* Стили для обязательных полей */
-        .required-field::after {
-            content: " *";
-            color: #e74c3c;
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-text);
+            background-color: var(--cream);
+            overflow-x: hidden;
         }
-        .error-message {
-            color: #e74c3c;
-            font-size: 0.8rem;
-            margin-top: 0.25rem;
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--deep-burgundy) 0%, var(--purple-mystic) 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--light-gold);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--light-gold);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--light-gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
             display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
         }
-        .form-control.error {
-            border-color: #e74c3c;
-            box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2);
-        }
-        .test-completion-message {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            border-radius: 10px;
-            padding: 1rem;
-            margin: 1rem 0;
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(139, 67, 82, 0.7), rgba(139, 107, 158, 0.7)), 
+                        url('https://images.unsplash.com/photo-1515377905703-c4788e51af15?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
             text-align: center;
-            display: none;
+            color: white;
+            padding-top: 80px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-content p {
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--vibrant-pink) 0%, var(--purple-mystic) 100%);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Section Styles */
+        section {
+            padding: 5rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--vibrant-pink), var(--purple-mystic));
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 3px;
+        }
+
+        .section-title p {
+            font-size: 1.2rem;
+            color: var(--dark-text);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .profile-img-container {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .profile-img-container:hover .profile-img {
+            transform: scale(1.05);
+        }
+
+        .profile-img-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(139, 67, 82, 0.8));
+            color: white;
+            padding: 2rem;
+            transform: translateY(100%);
+            transition: transform 0.5s ease;
+        }
+
+        .profile-img-container:hover .profile-img-overlay {
+            transform: translateY(0);
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Services Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border-top: 5px solid var(--vibrant-pink);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            color: var(--vibrant-pink);
+            margin-bottom: 1.5rem;
+        }
+
+        .service-card h3 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        /* Female Power Section */
+        .female-power {
+            background: linear-gradient(135deg, var(--moonlight) 0%, var(--lavender) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .female-power::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" opacity="0.05"><path d="M50,10 A40,40 0 1,1 50,90 A40,40 0 1,1 50,10 Z" fill="none" stroke="%238B4352" stroke-width="2"/></svg>') repeat;
+            transform: rotate(30deg);
+        }
+
+        .power-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .power-item {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .power-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .power-icon {
+            font-size: 2.5rem;
+            color: var(--purple-mystic);
+            margin-bottom: 1rem;
+        }
+
+        .power-item h3 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+        }
+
+        /* Test Section */
+        .test-container {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .test-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .test-header h3 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+        }
+
+        .test-section {
+            margin-bottom: 3rem;
+        }
+
+        .test-section h4 {
+            color: var(--purple-mystic);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+
+        .test-section h4 i {
+            margin-right: 10px;
+        }
+
+        .question-block {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f9f9f9;
+            border-radius: 10px;
+        }
+
+        .question-block h5 {
+            margin-bottom: 1rem;
+            color: var(--dark-text);
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid #eee;
+        }
+
+        .option-item:hover {
+            background: var(--lavender);
+            border-color: var(--purple-mystic);
+        }
+
+        .option-item input {
+            margin-right: 10px;
+        }
+
+        /* Process Section */
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .step {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--vibrant-pink) 0%, var(--purple-mystic) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto 1.5rem;
+        }
+
+        .step h3 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+        }
+
+        /* Contact Section */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .contact-info {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--vibrant-pink) 0%, var(--purple-mystic) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-right: 1.5rem;
+        }
+
+        .contact-text h4 {
+            color: var(--deep-burgundy);
+            margin-bottom: 0.5rem;
+        }
+
+        .booking-form {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--dark-text);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--purple-mystic);
+            box-shadow: 0 0 0 3px rgba(139, 107, 158, 0.2);
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--deep-burgundy) 0%, var(--purple-mystic) 100%);
+            color: white;
+            padding: 3rem 0 1.5rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        footer h4 {
+            margin-bottom: 1rem;
+            color: var(--light-gold);
+        }
+
+        footer p {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero-content h1 {
+                font-size: 2.8rem;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--deep-burgundy);
+                flex-direction: column;
+                padding: 1rem 0;
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .nav-links li {
+                margin: 0;
+                text-align: center;
+                padding: 0.8rem 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+            }
+            
+            .test-container {
+                padding: 1.5rem;
+            }
+            
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -59,9 +633,10 @@
             <nav>
                 <ul class="nav-links">
                     <li><a href="#about">Обо мне</a></li>
-                    <li><a href="#services">Услуги</a></li>
-                    <li><a href="#test">Тест либидо</a></li>
-                    <li><a href="#process">Процесс работы</a></li>
+                    <li><a href="#power">Женская сила</a></li>
+                    <li><a href="#services">Направления</a></li>
+                    <li><a href="#test">Тест энергии</a></li>
+                    <li><a href="#process">Процесс</a></li>
                     <li><a href="#contact">Контакты</a></li>
                 </ul>
                 <button class="mobile-menu-btn">
@@ -74,10 +649,10 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="container hero-content">
-            <h1>Интимная гармония: откройте новые грани близости</h1>
-            <p>Профессиональная психологическая помощь в сфере сексуальности и отношений. Доверие, конфиденциальность и научный подход</p>
+            <h1>Пробудите свою божественную женскую силу</h1>
+            <p>Трансформируйте сексуальную энергию в источник творчества, магнетизма и внутренней гармонии. Станьте той женщиной, которой восхищаются и которую желают.</p>
             <a href="#test" class="btn pulse">
-                <i class="fas fa-clipboard-check"></i> Начать с теста либидо
+                <i class="fas fa-seedling"></i> Начать пробуждение
             </a>
         </div>
     </section>
@@ -87,28 +662,84 @@
         <div class="container">
             <div class="section-title">
                 <h2>Обо мне</h2>
+                <p>Ваш проводник в мир женской силы и сексуальной энергии</p>
             </div>
             <div class="about-content">
                 <div class="profile-img-container floating">
-                    <img src="photo_2025-09-16_19-36-01.jpg" alt="Татьяна Солнечная - профессиональный сексолог-психолог" class="profile-img">
+                    <img src="https://images.unsplash.com/photo-1551836026-d5c88ac5c4d1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Татьяна Солнечная - проводник женской силы" class="profile-img">
                     <div class="profile-img-overlay">
-                        <p>"Ваше доверие - моя главная ценность"</p>
+                        <p>"Ваше доверие - моя главная ценность. Вместе мы раскроем вашу божественную сущность."</p>
                     </div>
                 </div>
                 <div>
                     <h3 style="color: var(--deep-burgundy); font-size: 2rem; margin-bottom: 1rem;">Татьяна Солнечная</h3>
-                    <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">Сертифицированный сексолог-психолог с 8-летним опытом работы. Специализируюсь на решении интимных вопросов и восстановлении гармонии в отношениях.</p>
+                    <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">Проводник женской силы с 8-летним опытом. Помогаю женщинам пробудить свою сексуальную энергию и раскрыть внутреннюю гармонию.</p>
                     
-                    <div style="background: var(--cream); padding: 1.5rem; border-radius: 15px; margin-bottom: 1.5rem; border: 2px solid var(--soft-pink);">
-                        <h4 style="color: var(--deep-burgundy); margin-bottom: 1rem;"><i class="fas fa-graduation-cap"></i> Образование и сертификации:</h4>
+                    <div style="background: var(--lavender); padding: 1.5rem; border-radius: 15px; margin-bottom: 1.5rem; border: 2px solid var(--soft-pink);">
+                        <h4 style="color: var(--deep-burgundy); margin-bottom: 1rem;"><i class="fas fa-graduation-cap"></i> Образование и путь:</h4>
                         <ul style="list-style: none;">
                             <li style="margin-bottom: 0.5rem;"><i class="fas fa-university" style="color: var(--vibrant-pink); margin-right: 0.5rem;"></i> МГУ им. Ломоносова, факультет психологии</li>
                             <li style="margin-bottom: 0.5rem;"><i class="fas fa-certificate" style="color: var(--vibrant-pink); margin-right: 0.5rem;"></i> Европейская ассоциация сексологов</li>
-                            <li><i class="fas fa-heart" style="color: var(--vibrant-pink); margin-right: 0.5rem;"></i> Сертификаты по семейной и парной терапии</li>
+                            <li><i class="fas fa-heart" style="color: var(--vibrant-pink); margin-right: 0.5rem;"></i> Изучение женских энергетических практик</li>
                         </ul>
                     </div>
                     
-                    <p>В своей работе создаю безопасное пространство, где вы можете открыто говорить о самых сокровенных вопросах. Индивидуальный подход к каждой ситуации.</p>
+                    <p>В своей работе создаю безопасное пространство, где вы можете раскрыть свою истинную природу и пробудить дремлющую энергию. Индивидуальный подход к каждой женщине.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Female Power Section -->
+    <section id="power" class="female-power">
+        <div class="container">
+            <div class="section-title">
+                <h2>Уровни женской силы</h2>
+                <p>Откройте свою истинную природу и пробудите внутреннюю богиню</p>
+            </div>
+            <div class="power-grid">
+                <div class="power-item floating" style="animation-delay: 0.1s;">
+                    <div class="power-icon">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3>Базовый уровень</h3>
+                    <p>Принятие своей женственности, исцеление ран, восстановление связи с телом</p>
+                </div>
+                <div class="power-item floating" style="animation-delay: 0.2s;">
+                    <div class="power-icon">
+                        <i class="fas fa-feather-alt"></i>
+                    </div>
+                    <h3>Продвинутый уровень</h3>
+                    <p>Активация сексуальной энергии, развитие интуиции, гармонизация циклов</p>
+                </div>
+                <div class="power-item floating" style="animation-delay: 0.3s;">
+                    <div class="power-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3>Мастерский уровень</h3>
+                    <p>Трансформация энергии в творчество, магнетизм и жизненную силу</p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 4rem; background: rgba(255, 255, 255, 0.9); padding: 2.5rem; border-radius: 20px; text-align: center;">
+                <h3 style="color: var(--deep-burgundy); margin-bottom: 1.5rem;">Признаки пробужденной женской силы</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                    <div>
+                        <i class="fas fa-magnet" style="color: var(--purple-mystic); font-size: 1.5rem; margin-bottom: 0.5rem;"></i>
+                        <p>Магнетическая привлекательность без усилий</p>
+                    </div>
+                    <div>
+                        <i class="fas fa-lightbulb" style="color: var(--purple-mystic); font-size: 1.5rem; margin-bottom: 0.5rem;"></i>
+                        <p>Творческая энергия, бьющая ключом</p>
+                    </div>
+                    <div>
+                        <i class="fas fa-brain" style="color: var(--purple-mystic); font-size: 1.5rem; margin-bottom: 0.5rem;"></i>
+                        <p>Интуитивная мудрость в принятии решений</p>
+                    </div>
+                    <div>
+                        <i class="fas fa-heart" style="color: var(--purple-mystic); font-size: 1.5rem; margin-bottom: 0.5rem;"></i>
+                        <p>Гармония в отношениях и сексуальности</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -118,419 +749,217 @@
     <section id="services" style="background: linear-gradient(135deg, var(--cream) 0%, var(--light-gold) 50%, var(--cream) 100%);">
         <div class="container">
             <div class="section-title">
-                <h2>Направления работы</h2>
-                <p>Комплексный подход к решению интимных вопросов</p>
+                <h2>Направления пробуждения</h2>
+                <p>Комплексный подход к раскрытию вашей женской силы</p>
             </div>
             <div class="services-grid">
                 <div class="service-card floating" style="animation-delay: 0.1s;">
                     <div class="service-icon">
                         <i class="fas fa-venus-mars"></i>
                     </div>
-                    <h3>Сексуальные дисфункции</h3>
-                    <p>Эректильная дисфункция, преждевременная эякуляция, аноргазмия, вагинизм и другие нарушения</p>
+                    <h3>Пробуждение женской сексуальности</h3>
+                    <p>Исцеление блоков, раскрытие чувственности, гармонизация интимной сферы</p>
                 </div>
                 <div class="service-card floating" style="animation-delay: 0.2s;">
                     <div class="service-icon">
                         <i class="fas fa-heartbeat"></i>
                     </div>
-                    <h3>Снижение либидо</h3>
-                    <p>Восстановление сексуального желания, поиск причин снижения влечения, работа с последствиями стресса</p>
+                    <h3>Восстановление энергии желания</h3>
+                    <p>Пробуждение сексуального аппетита, работа с последствиями стресса, наполнение энергией</p>
                 </div>
                 <div class="service-card floating" style="animation-delay: 0.3s;">
                     <div class="service-icon">
                         <i class="fas fa-fire"></i>
                     </div>
-                    <h3>Повышенное половое влечение </h3>
-                    <p>Гармонизация чрезмерного сексуального желания, поиск баланса в отношениях, управление энергией</p>
+                    <h3>Гармонизация сильного влечения</h3>
+                    <p>Направление мощной сексуальной энергии в творчество и самореализацию</p>
                 </div>
                 <div class="service-card floating" style="animation-delay: 0.4s;">
                     <div class="service-icon">
                         <i class="fas fa-people-arrows"></i>
                     </div>
-                    <h3>Кризисы в отношениях</h3>
-                    <p>Разница в сексуальных потребностях, несовпадение ожиданий, восстановление доверия и близости</p>
+                    <h3>Энергетика отношений</h3>
+                    <p>Создание гармоничных связей, привлечение достойных партнеров, исцеление ран</p>
                 </div>
                 <div class="service-card floating" style="animation-delay: 0.5s;">
                     <div class="service-icon">
                         <i class="fas fa-user-shield"></i>
                     </div>
-                    <h3>Неуверенность и тревожность</h3>
-                    <p>Принятие тела, работа с застенчивостью, страхом близости, повышение сексуальной самооценки</p>
+                    <h3>Раскрытие женской уверенности</h3>
+                    <p>Принятие тела, развитие самоценности, пробуждение внутренней королевы</p>
                 </div>
-            </div>
-            
-            <!-- Дополнительная информация о повышенном либидо -->
-            <div style="margin-top: 3rem; background: white; padding: 2rem; border-radius: 15px; border: 2px solid var(--soft-pink);">
-                <h3 style="color: var(--deep-burgundy); text-align: center; margin-bottom: 1.5rem;">
-                    <i class="fas fa-fire" style="color: #e74c3c; margin-right: 0.5rem;"></i>
-                    Особенности работы с повышенным половым влечением
-                </h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
-                    <div>
-                        <h4 style="color: var(--vibrant-pink); margin-bottom: 0.5rem;">Когда обращаться:</h4>
-                        <ul style="color: var(--dark-text);">
-                            <li>Сексуальное желание мешает повседневной жизни</li>
-                            <li>Напряжение в отношениях из-за разницы в потребностях</li>
-                            <li>Чувство стыда или вины из-за сильного влечения</li>
-                            <li>Трудности с концентрацией на работе или учебе</li>
-                        </ul>
+                <div class="service-card floating" style="animation-delay: 0.6s;">
+                    <div class="service-icon">
+                        <i class="fas fa-moon"></i>
                     </div>
-                    <div>
-                        <h4 style="color: var(--vibrant-pink); margin-bottom: 0.5rem;">Результаты работы:</h4>
-                        <ul style="color: var(--dark-text);">
-                            <li>Гармонизация сексуальной энергии</li>
-                            <li>Улучшение взаимопонимания в паре</li>
-                            <li>Снижение напряжения и тревожности</li>
-                            <li>Повышение качества жизни и продуктивности</li>
-                        </ul>
-                    </div>
+                    <h3>Следование природным циклам</h3>
+                    <p>Гармонизация с лунными и сезонными ритмами, использование цикличности для роста</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Test Section -->
-<section id="test">
-    <div class="container">
-        <div class="section-title">
-            <h2>Анкета женского полового влечения</h2>
-            <p>Профессиональная диагностика для понимания вашего сексуального здоровья</p>
-        </div>
-        
-        <div class="test-completion-message" id="testCompletionMessage">
-            <i class="fas fa-check-circle" style="color: #27ae60; font-size: 2rem; margin-bottom: 0.5rem;"></i>
-            <h4 style="color: #27ae60; margin-bottom: 0.5rem;">Тест пройден успешно!</h4>
-            <p>Теперь вы можете записаться на консультацию. Ваши ответы помогут мне лучше понять вашу ситуацию.</p>
-            <a href="#contact" class="btn" style="margin-top: 1rem;">
-                <i class="fas fa-calendar-check"></i> Записаться на консультацию
-            </a>
-        </div>
-
-        <div class="test-container">
-            <div class="test-header">
-                <h3>ТЕСТ АНКЕТА НА ЖЕНСКОЕ ЛИБИДО (ЖЕЛАНИЕ СЕКСА)</h3>
-                <p>Ответьте на вопросы максимально честно - это поможет получить точную картину. <strong>Все вопросы обязательны для заполнения.</strong></p>
+    <section id="test">
+        <div class="container">
+            <div class="section-title">
+                <h2>Тест женской энергии</h2>
+                <p>Определите уровень вашей сексуальной энергии и потенциал для раскрытия</p>
+            </div>
+            
+            <div class="test-completion-message" id="testCompletionMessage" style="display: none;">
+                <i class="fas fa-check-circle" style="color: #27ae60; font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                <h4 style="color: #27ae60; margin-bottom: 0.5rem;">Тест пройден успешно!</h4>
+                <p>Теперь вы можете записаться на консультацию. Ваши ответы помогут мне лучше понять вашу энергию.</p>
+                <a href="#contact" class="btn" style="margin-top: 1rem;">
+                    <i class="fas fa-calendar-check"></i> Записаться на пробуждение
+                </a>
             </div>
 
-            <form id="libidoTestForm">
-                <!-- Служебные поля Formspree -->
-                <input type="hidden" name="_language" value="ru" />
-                <input type="hidden" name="_subject" value="АНКЕТА ЛИБИДО: Полные результаты теста" />
-                <input type="hidden" name="_replyto" value="notifications@formspree.io" />
-                <input type="hidden" name="_next" value="https://makaka119911-oss.github.io/#testCompletionMessage" />
-                <input type="hidden" name="_format" value="plain" />
-                
-                <!-- Основное поле с читаемыми результатами -->
-                <input type="hidden" name="Читаемые_результаты_теста" id="readableResults" />
-                
-                <!-- Контактные данные -->
-                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem; border: 2px solid var(--soft-pink);">
-                    <h4 style="color: var(--deep-burgundy); margin-bottom: 1rem; text-align: center;">
-                        <i class="fas fa-user-circle"></i> Контактные данные
-                    </h4>
-                    <div class="form-group">
-                        <label for="clientName"><i class="fas fa-user"></i> Ваше имя (необязательно)</label>
-                        <input type="text" id="clientName" name="Имя_клиента" class="form-control" placeholder="Как к вам обращаться?">
-                    </div>
-                    <div class="form-group">
-                        <label for="clientContact"><i class="fas fa-phone"></i> Телефон или Telegram (необязательно)</label>
-                        <input type="text" id="clientContact" name="Контактные_данные" class="form-control" placeholder="Для связи с вами">
-                    </div>
+            <div class="test-container">
+                <div class="test-header">
+                    <h3>ТЕСТ ЖЕНСКОЙ ЭНЕРГИИ И СЕКСУАЛЬНОСТИ</h3>
+                    <p>Ответьте на вопросы максимально честно - это поможет определить ваш энергетический потенциал.</p>
                 </div>
 
-                <div class="form-message" id="testMessage"></div>
-                
-                <!-- Общие вопросы -->
-                <div class="test-section">
-                    <h4><i class="fas fa-chart-line"></i> Общие показатели либидо</h4>
-                    
-                    <div class="question-block">
-                        <h5 class="required-field">1. Как часто в целом хочется секса?</h5>
-                        <div class="error-message" id="question_1_error">Пожалуйста, выберите один из вариантов</div>
-                        <div class="options-grid">
-                            <label class="option-item">
-                                <input type="radio" name="question_1" value="Вообще не хочется" required data-question="Как часто в целом хочется секса?">
-                                Вообще не хочется
-                            </label>
-                            <label class="option-item">
-                                <input type="radio" name="question_1" value="Хочется 1 раза в неделю" data-question="Как часто в целом хочется секса?">
-                                Хочется 1 раза в неделю
-                            </label>
-                            <label class="option-item">
-                                <input type="radio" name="question_1" value="Хочется 1 раз в 3 дня" data-question="Как часто в целом хочется секса?">
-                                Хочется 1 раз в 3 дня
-                            </label>
-                            <label class="option-item">
-                                <input type="radio" name="question_1" value="Хочется через день" data-question="Как часто в целом хочется секса?">
-                                Хочется через день
-                            </label>
-                            <label class="option-item">
-                                <input type="radio" name="question_1" value="Хочется каждый день" data-question="Как часто в целом хочется секса?">
-                                Хочется каждый день
-                            </label>
-                            <label class="option-item">
-                                <input type="radio" name="question_1" value="Хочется каждый день по много раз" data-question="Как часто в целом хочется секса?">
-                                Хочется каждый день по много раз
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="question-block">
-                        <h5 class="required-field">2. Сила желания в те дни, когда хочется секса?</h5>
-                        <div class="error-message" id="question_2_error">Пожалуйста, выберите один из вариантов</div>
-                        <div class="options-grid">
-                            <label class="option-item">
-                                <input type="radio" name="question_2" value="Легкое желание" required data-question="Сила желания в те дни, когда хочется секса?">
-                                Легкое желание
-                            </label>
-                            <label class="option-item">
-                                <input type="radio" name="question_2" value="Среднее желание" data-question="Сила желания в те дни, когда хочется секса?">
-                                Среднее желание
-                            </label>
-                            <label class="option-item">
-                                <input type="radio" name="question_2" value="Сильное желание" data-question="Сила желания в те дни, когда хочется секса?">
-                                Сильное желание
-                            </label>
-                            <label class="option-item">
-                                <input type="radio" name="question_2" value="Очень сильное желание" data-question="Сила желания в те дни, когда хочется секса?">
-                                Очень сильное желание
-                            </label>
-                            <label class="option-item">
-                                <input type="radio" name="question_2" value="Максимально сильное желание" data-question="Сила желания в те дни, когда хочется секса?">
-                                Максимально сильное желание
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="question-block">
-                        <h5 class="required-field">3. Возбуждает ли Вас вид эрегированного полового члена?</h5>
-                        <div class="error-message" id="question_3_error">Пожалуйста, выберите один из вариантов</div>
-                        <div class="options-grid">
-                            <label class="option-item">
-                                <input type="radio" name="question_3" value="Вообще не возбуждает" required data-question="Возбуждает ли Вас вид эрегированного полового члена?">
-                                Вообще не возбуждает
-                            </label>
-                            <label class="option-item">
-                                <input type="radio" name="question_3" value="Немного возбуждает" data-question="Возбуждает ли Вас вид эрегированного полового члена?">
-                                Немного возбуждает
-                            </label>
-                            <label class="option-item">
-                                <input type="radio" name="question_3" value="Средне возбуждает" data-question="Возбуждает ли Вас вид эрегированного полового члена?">
-                                Средне возбуждает
-                            </label>
-                            <label class="option-item">
-                                <input type="radio" name="question_3" value="Сильно возбуждает" data-question="Возбуждает ли Вас вид эрегированного полового члена?">
-                                Сильно возбуждает
-                            </label>
-                            <label class="option-item">
-                                <input type="radio" name="question_3" value="Очень сильно возбуждает" data-question="Возбуждает ли Вас вид эрегированного полового члена?">
-                                Очень сильно возбуждает
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Периоды менструального цикла -->
-                <div class="test-section">
-                    <h4><i class="fas fa-calendar-alt"></i> Особенности либидо в разные периоды цикла</h4>
-                    
-                    <!-- Период 1: От конца месячных до овуляции -->
-                    <div class="question-block">
-                        <h5 class="required-field">4. От конца месячных до овуляции</h5>
-                        <table class="period-table">
-                            <tr>
-                                <th>Параметр</th>
-                                <th>В дни, когда НЕ хочется секса</th>
-                                <th>В дни, когда хочется секса</th>
-                            </tr>
-                            <tr>
-                                <td><strong>Частота/Сила желания</strong></td>
-                                <td>
-                                    <select name="question_4a" class="form-control" required data-question="Период 1 - В дни, когда НЕ хочется секса - Частота/Сила желания">
-                                        <option value="">Выберите</option>
-                                        <option value="Вообще не хочется">Вообще не хочется</option>
-                                        <option value="Хочется 1 раз в неделю">Хочется 1 раз в неделю</option>
-                                        <option value="Хочется 1 раз в 3 дня">Хочется 1 раз в 3 дня</option>
-                                        <option value="Хочется через день">Хочется через день</option>
-                                        <option value="Хочется каждый день">Хочется каждый день</option>
-                                        <option value="Хочется каждый день по много раз">Хочется каждый день по много раз</option>
-                                    </select>
-                                    <div class="error-message">Пожалуйста, выберите вариант</div>
-                                </td>
-                                <td>
-                                    <select name="question_4b" class="form-control" required data-question="Период 1 - В дни, когда хочется секса - Частота/Сила желания">
-                                        <option value="">Выберите</option>
-                                        <option value="Легкое желание">Легкое желание</option>
-                                        <option value="Среднее желание">Среднее желание</option>
-                                        <option value="Сильное желание">Сильное желание</option>
-                                        <option value="Очень сильное желание">Очень сильное желание</option>
-                                        <option value="Максимально сильное желание">Максимально сильное желание</option>
-                                    </select>
-                                    <div class="error-message">Пожалуйста, выберите вариант</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Возбуждение от вида</strong></td>
-                                <td>
-                                    <select name="question_4c" class="form-control" required data-question="Период 1 - В дни, когда НЕ хочется секса - Возбуждение от вида">
-                                        <option value="">Выберите</option>
-                                        <option value="Вообще не возбуждает">Вообще не возбуждает</option>
-                                        <option value="Немного возбуждает">Немного возбуждает</option>
-                                        <option value="Средне возбуждает">Средне возбуждает</option>
-                                        <option value="Сильно возбуждает">Сильно возбуждает</option>
-                                        <option value="Очень сильно возбуждает">Очень сильно возбуждает</option>
-                                    </select>
-                                    <div class="error-message">Пожалуйста, выберите вариант</div>
-                                </td>
-                                <td>
-                                    <select name="question_4d" class="form-control" required data-question="Период 1 - В дни, когда хочется секса - Возбуждение от вида">
-                                        <option value="">Выберите</option>
-                                        <option value="Вообще не возбуждает">Вообще не возбуждает</option>
-                                        <option value="Немного возбуждает">Немного возбуждает</option>
-                                        <option value="Средне возбуждает">Средне возбуждает</option>
-                                        <option value="Сильно возбуждает">Сильно возбуждает</option>
-                                        <option value="Очень сильно возбуждает">Очень сильно возбуждает</option>
-                                    </select>
-                                    <div class="error-message">Пожалуйста, выберите вариант</div>
-                                </td>
-                            </tr>
-                        </table>
-
-                        <!-- Мобильная версия карточки для периода 1 -->
-                        <div class="mobile-period-card">
-                            <div class="card-period-header">
-                                <h6>📅 От конца месячных до овуляции</h6>
+                <form id="energyTestForm">
+                    <div class="test-section">
+                        <h4><i class="fas fa-seedling"></i> Уровень энергии и жизненной силы</h4>
+                        
+                        <div class="question-block">
+                            <h5>1. Как часто вы чувствуете прилив энергии и желание активной деятельности?</h5>
+                            <div class="options-grid">
+                                <label class="option-item">
+                                    <input type="radio" name="energy_level" value="Редко, почти никогда">
+                                    Редко, почти никогда
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="energy_level" value="Иногда, в определенные дни">
+                                    Иногда, в определенные дни
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="energy_level" value="Довольно часто">
+                                    Довольно часто
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="energy_level" value="Почти каждый день">
+                                    Почти каждый день
+                                </label>
                             </div>
-                            
-                            <div class="card-section">
-                                <h6>📋 В дни, когда НЕ хочется секса</h6>
-                                <div class="mobile-form-group">
-                                    <label class="required-field">Частота/Сила желания:</label>
-                                    <select name="question_4a_mobile" class="form-control" required data-question="Период 1 - В дни, когда НЕ хочется секса - Частота/Сила желания">
-                                        <option value="">Выберите</option>
-                                        <option value="Вообще не хочется">Вообще не хочется</option>
-                                        <option value="Хочется 1 раз в неделю">Хочется 1 раз в неделю</option>
-                                        <option value="Хочется 1 раз в 3 дня">Хочется 1 раз в 3 дня</option>
-                                        <option value="Хочется через день">Хочется через день</option>
-                                        <option value="Хочется каждый день">Хочется каждый день</option>
-                                        <option value="Хочется каждый день по много раз">Хочется каждый день по много раз</option>
-                                    </select>
-                                    <div class="error-message">Пожалуйста, выберите вариант</div>
-                                </div>
-                                <div class="mobile-form-group">
-                                    <label class="required-field">Возбуждение от вида:</label>
-                                    <select name="question_4c_mobile" class="form-control" required data-question="Период 1 - В дни, когда НЕ хочется секса - Возбуждение от вида">
-                                        <option value="">Выберите</option>
-                                        <option value="Вообще не возбуждает">Вообще не возбуждает</option>
-                                        <option value="Немного возбуждает">Немного возбуждает</option>
-                                        <option value="Средне возбуждает">Средне возбуждает</option>
-                                        <option value="Сильно возбуждает">Сильно возбуждает</option>
-                                        <option value="Очень сильно возбуждает">Очень сильно возбуждает</option>
-                                    </select>
-                                    <div class="error-message">Пожалуйста, выберите вариант</div>
-                                </div>
-                            </div>
-                            
-                            <div class="card-section">
-                                <h6>💖 В дни, когда хочется секса</h6>
-                                <div class="mobile-form-group">
-                                    <label class="required-field">Частота/Сила желания:</label>
-                                    <select name="question_4b_mobile" class="form-control" required data-question="Период 1 - В дни, когда хочется секса - Частота/Сила желания">
-                                        <option value="">Выберите</option>
-                                        <option value="Легкое желание">Легкое желание</option>
-                                        <option value="Среднее желание">Среднее желание</option>
-                                        <option value="Сильное желание">Сильное желание</option>
-                                        <option value="Очень сильное желание">Очень сильное желание</option>
-                                        <option value="Максимально сильное желание">Максимально сильное желание</option>
-                                    </select>
-                                    <div class="error-message">Пожалуйста, выберите вариант</div>
-                                </div>
-                                <div class="mobile-form-group">
-                                    <label class="required-field">Возбуждение от вида:</label>
-                                    <select name="question_4d_mobile" class="form-control" required data-question="Период 1 - В дни, когда хочется секса - Возбуждение от вида">
-                                        <option value="">Выберите</option>
-                                        <option value="Вообще не возбуждает">Вообще не возбуждает</option>
-                                        <option value="Немного возбуждает">Немного возбуждает</option>
-                                        <option value="Средне возбуждает">Средне возбуждает</option>
-                                        <option value="Сильно возбуждает">Сильно возбуждает</option>
-                                        <option value="Очень сильно возбуждает">Очень сильно возбуждает</option>
-                                    </select>
-                                    <div class="error-message">Пожалуйста, выберите вариант</div>
-                                </div>
+                        </div>
+
+                        <div class="question-block">
+                            <h5>2. Насколько сильно вы чувствуете связь со своим телом?</h5>
+                            <div class="options-grid">
+                                <label class="option-item">
+                                    <input type="radio" name="body_connection" value="Почти не чувствую связи">
+                                    Почти не чувствую связи
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="body_connection" value="Иногда осознаю свое тело">
+                                    Иногда осознаю свое тело
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="body_connection" value="Чувствую связь, но не всегда">
+                                    Чувствую связь, но не всегда
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="body_connection" value="Чувствую сильную связь постоянно">
+                                    Чувствую сильную связь постоянно
+                                </label>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Здесь можно добавить остальные периоды аналогично -->
-                    <!-- Для экономии места оставлю только период 1 -->
+                    <div class="test-section">
+                        <h4><i class="fas fa-heart"></i> Сексуальность и чувственность</h4>
+                        
+                        <div class="question-block">
+                            <h5>3. Как вы относитесь к своей сексуальности?</h5>
+                            <div class="options-grid">
+                                <label class="option-item">
+                                    <input type="radio" name="sexuality_attitude" value="Стыжусь или избегаю этой темы">
+                                    Стыжусь или избегаю этой темы
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="sexuality_attitude" value="Принимаю, но не развиваю">
+                                    Принимаю, но не развиваю
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="sexuality_attitude" value="Изучаю и развиваю">
+                                    Изучаю и развиваю
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="sexuality_attitude" value="Чувствую свою силу через сексуальность">
+                                    Чувствую свою силу через сексуальность
+                                </label>
+                            </div>
+                        </div>
 
-                </div>
-
-                <!-- Финальный вопрос -->
-                <div class="test-section">
-                    <h4><i class="fas fa-tree"></i> Сезонные особенности</h4>
-                    <div class="question-block">
-                        <h5 class="required-field">5. Зависит ли Ваше либидо от времени года?</h5>
-                        <div class="error-message" id="question_5_error">Пожалуйста, выберите один из вариантов</div>
-                        <div class="options-grid">
-                            <label class="option-item">
-                                <input type="radio" name="question_5" value="Нет" required data-question="Зависит ли Ваше либидо от времени года?">
-                                Нет
-                            </label>
-                            <label class="option-item">
-                                <input type="radio" name="question_5" value="Да" data-question="Зависит ли Ваше либидо от времени года?">
-                                Да
-                            </label>
+                        <div class="question-block">
+                            <h5>4. Насколько вы осознаете свои желания и потребности?</h5>
+                            <div class="options-grid">
+                                <label class="option-item">
+                                    <input type="radio" name="desire_awareness" value="Почти не осознаю">
+                                    Почти не осознаю
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="desire_awareness" value="Осознаю иногда">
+                                    Осознаю иногда
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="desire_awareness" value="Осознаю достаточно хорошо">
+                                    Осознаю достаточно хорошо
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="desire_awareness" value="Ясно осознаю и выражаю">
+                                    Ясно осознаю и выражаю
+                                </label>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="question-block" id="seasonalDescription" style="display: none;">
-                        <h5 class="required-field">6. Опишите, как меняется ваше либидо в зависимости от времени года:</h5>
-                        <textarea name="question_6" rows="4" class="form-control" placeholder="Опишите особенности..." data-question="Опишите, как меняется ваше либидо в зависимости от времени года"></textarea>
-                        <div class="error-message">Пожалуйста, опишите сезонные изменения</div>
+                    <div class="form-group" style="text-align: center; margin-top: 2rem;">
+                        <button type="submit" class="btn" style="padding: 1rem 2rem; font-size: 1.1rem;">
+                            <i class="fas fa-paper-plane"></i> Узнать свой энергетический потенциал
+                        </button>
+                        <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--dark-text);">
+                            <i class="fas fa-lock" style="color: var(--deep-burgundy); margin-right: 0.5rem;"></i>
+                            Все ответы строго конфиденциальны
+                        </p>
                     </div>
-                </div>
-
-                <div class="form-group" style="text-align: center; margin-top: 2rem;">
-                    <button type="submit" class="btn" style="padding: 1rem 2rem; font-size: 1.1rem;">
-                        <i class="fas fa-paper-plane"></i> Отправить анкету
-                    </button>
-                    <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--dark-text);">
-                        <i class="fas fa-lock" style="color: var(--deep-burgundy); margin-right: 0.5rem;"></i>
-                        Все ответы строго конфиденциальны. После отправки я свяжусь с вами для обсуждения результатов
-                    </p>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
     <!-- Process Section -->
     <section id="process">
         <div class="container">
             <div class="section-title">
-                <h2>Процесс работы</h2>
+                <h2>Путь пробуждения</h2>
+                <p>Откройте свою истинную природу шаг за шагом</p>
             </div>
             <div class="process-steps">
                 <div class="step floating" style="animation-delay: 0.1s;">
                     <div class="step-number">1</div>
-                    <h3>Тестирование</h3>
-                    <p>Прохождение детальной анкеты для понимания вашей ситуации</p>
+                    <h3>Осознание</h3>
+                    <p>Диагностика текущего состояния энергии, выявление блоков и потенциала</p>
                 </div>
                 <div class="step floating" style="animation-delay: 0.2s;">
                     <div class="step-number">2</div>
-                    <h3>Первичная консультация</h3>
-                    <p>Анализ результатов теста, определение целей и составление плана работы</p>
+                    <h3>Исцеление</h3>
+                    <p>Работа с травмами, принятие тела, восстановление энергетических потоков</p>
                 </div>
                 <div class="step floating" style="animation-delay: 0.3s;">
                     <div class="step-number">3</div>
-                    <h3>Индивидуальная терапия</h3>
-                    <p>Разработка персональной программы с учетом ваших особенностей и потребностей</p>
+                    <h3>Пробуждение</h3>
+                    <p>Активация сексуальной энергии, развитие чувственности, раскрытие потенциала</p>
                 </div>
                 <div class="step floating" style="animation-delay: 0.4s;">
                     <div class="step-number">4</div>
-                    <h3>Поддержка и результат</h3>
-                    <p>Регулярные сессии, отслеживание прогресса, закрепление достигнутых изменений</p>
+                    <h3>Трансформация</h3>
+                    <p>Направление энергии в творчество, отношения и самореализацию</p>
                 </div>
             </div>
         </div>
@@ -541,15 +970,7 @@
         <div class="container">
             <div class="section-title">
                 <h2>Контакты и запись</h2>
-            </div>
-            
-            <div class="test-required-message" id="testRequiredMessage" style="background: #ffeaa7; border: 2px solid #fdcb6e; border-radius: 10px; padding: 1.5rem; margin-bottom: 2rem; text-align: center; display: none;">
-                <i class="fas fa-exclamation-circle" style="color: #e17055; font-size: 2rem; margin-bottom: 0.5rem;"></i>
-                <h4 style="color: #e17055; margin-bottom: 0.5rem;">Сначала пройдите тест</h4>
-                <p>Для записи на консультацию необходимо сначала пройти тест либидо. Это поможет мне лучше понять вашу ситуацию и подготовиться к нашей работе.</p>
-                <a href="#test" class="btn" style="margin-top: 1rem;">
-                    <i class="fas fa-clipboard-check"></i> Пройти тест
-                </a>
+                <p>Начните свой путь к пробуждению женской силы</p>
             </div>
             
             <div class="contact-container">
@@ -595,51 +1016,45 @@
                             <p>г. Реутов</p>
                         </div>
                     </div>
+                    
+                    <div style="margin-top: 2rem; padding: 1.5rem; background: var(--lavender); border-radius: 15px; text-align: center;">
+                        <h4 style="color: var(--deep-burgundy); margin-bottom: 1rem;">Первая консультация</h4>
+                        <p style="font-size: 1.1rem; color: var(--dark-text);">30 минут бесплатно</p>
+                        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Чтобы познакомиться и определить ваш путь</p>
+                    </div>
                 </div>
                 
                 <div class="booking-form">
-                    <h3 style="color: var(--deep-burgundy); margin-bottom: 2rem; text-align: center;">Запись на консультацию</h3>
+                    <h3 style="color: var(--deep-burgundy); margin-bottom: 2rem; text-align: center;">Запись на пробуждение</h3>
                     
                     <form id="bookingForm">
-                        <input type="hidden" name="_language" value="ru" />
-                        <input type="hidden" name="_subject" value="Новая заявка на консультацию" />
-                        <input type="hidden" name="_format" value="plain" />
-                        
                         <div class="form-group">
-                            <label for="name" class="required-field"><i class="fas fa-user"></i> Ваше имя</label>
+                            <label for="name"><i class="fas fa-user"></i> Ваше имя</label>
                             <input type="text" id="name" name="name" required>
-                            <div class="error-message">Пожалуйста, введите ваше имя</div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="contact" class="required-field"><i class="fas fa-phone"></i> Телефон или Telegram</label>
+                            <label for="contact"><i class="fas fa-phone"></i> Телефон или Telegram</label>
                             <input type="text" id="contact" name="contact" required>
-                            <div class="error-message">Пожалуйста, введите контактные данные</div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="email"><i class="fas fa-envelope"></i> Email (для ответа)</label>
-                            <input type="email" id="email" name="email">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="service" class="required-field"><i class="fas fa-concierge-bell"></i> Формат консультации</label>
+                            <label for="service"><i class="fas fa-concierge-bell"></i> Формат работы</label>
                             <select id="service" name="service" required>
                                 <option value="">Выберите формат</option>
                                 <option value="Индивидуальная консультация">Индивидуальная консультация</option>
-                                <option value="Консультация для пары">Консультация для пары</option>
-                                <option value="Онлайн-консультация">Онлайн-консультация</option>
+                                <option value="Онлайн-сессия">Онлайн-сессия</option>
+                                <option value="Программа пробуждения">Программа пробуждения</option>
                             </select>
-                            <div class="error-message">Пожалуйста, выберите формат консультации</div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="message"><i class="fas fa-comment"></i> Ваш вопрос (необязательно)</label>
-                            <textarea id="message" name="message" rows="4" placeholder="Опишите кратко вашу ситуацию..."></textarea>
+                            <label for="message"><i class="fas fa-comment"></i> Ваш запрос (необязательно)</label>
+                            <textarea id="message" name="message" rows="4" placeholder="Что бы вы хотели изменить в своей жизни?"></textarea>
                         </div>
                         
-                        <button type="submit" class="btn" style="width: 100%;" id="bookingSubmitBtn">
-                            <i class="fas fa-paper-plane"></i> Отправить заявку
+                        <button type="submit" class="btn" style="width: 100%;">
+                            <i class="fas fa-paper-plane"></i> Начать пробуждение
                         </button>
                         
                         <p style="margin-top: 1rem; font-size: 0.9rem; text-align: center; color: #666;">
@@ -647,22 +1062,6 @@
                         </p>
                     </form>
                 </div>
-            </div>
-            
-            <!-- Payment Methods -->
-            <div class="payment-methods">
-                <h3 style="color: var(--deep-burgundy); margin-bottom: 1rem;">Способы оплаты</h3>
-                <p>Безопасная оплата банковскими картами РФ через защищенный платежный шлюз</p>
-                <div class="payment-icons">
-                    <i class="fab fa-cc-visa"></i>
-                    <i class="fab fa-cc-mastercard"></i>
-                    <i class="fas fa-credit-card"></i>
-                    <i class="fas fa-shield-alt"></i>
-                </div>
-                <p style="margin-top: 1.5rem; font-size: 0.95rem; color: var(--dark-text);">
-                    <i class="fas fa-lock" style="color: var(--deep-burgundy); margin-right: 0.5rem;"></i>
-                    Поддерживаются карты Visa, MasterCard, МИР. Ссылка на оплату высылается после подтверждения записи
-                </p>
             </div>
         </div>
     </section>
@@ -672,35 +1071,27 @@
         <div class="container">
             <div class="footer-content">
                 <div>
-                    <h4 style="color: var(--gold); margin-bottom: 1rem;">Татьяна Солнечная</h4>
-                    <p>Профессиональный сексолог-психолог</p>
+                    <h4>Татьяна Солнечная</h4>
+                    <p>Проводник женской силы и сексуальной энергии</p>
                 </div>
                 <div>
-                    <h4 style="color: var(--gold); margin-bottom: 1rem;">Контакты</h4>
+                    <h4>Контакты</h4>
                     <p>Telegram: @Tan4ik77G</p>
                     <p>Email: Tan4ik017@gmail.com</p>
                 </div>
                 <div>
-                    <h4 style="color: var(--gold); margin-bottom: 1rem;">Принципы работы</h4>
-                    <p>Конфиденциальность • Профессионализм • Индивидуальный подход</p>
+                    <h4>Принципы работы</h4>
+                    <p>Конфиденциальность • Уважение к женской природе • Индивидуальный подход</p>
                 </div>
             </div>
-            <p>&copy; 2024 Татьяна Солнечная. Сексолог-психолог. Все права защищены.</p>
+            <p style="text-align: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.2);">
+                &copy; 2024 Татьяна Солнечная. Раскрытие женской силы. Все права защищены.
+            </p>
         </div>
     </footer>
 
     <script>
-        // Formspree endpoints
-        const FORMSPREE_BOOKING = 'https://formspree.io/f/xrbykqya'; // для записи
-        const FORMSPREE_TEST = 'https://formspree.io/f/xpwyrdyp'; // для теста
-
-        // Основная функция инициализации
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Сайт загружен');
-
-            // Проверяем, пройден ли тест
-            checkTestCompletion();
-
             // Mobile menu toggle
             const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
             const navLinks = document.querySelector('.nav-links');
@@ -727,236 +1118,33 @@
                 });
             });
 
-            // Показ/скрытие поля для сезонных изменений
-            const seasonalRadio = document.querySelectorAll('input[name="question_5"]');
-            const seasonalDescription = document.getElementById('seasonalDescription');
-            
-            if (seasonalRadio.length > 0 && seasonalDescription) {
-                seasonalRadio.forEach(radio => {
-                    radio.addEventListener('change', function() {
-                        const shouldShow = this.value === 'Да';
-                        seasonalDescription.style.display = shouldShow ? 'block' : 'none';
-                        
-                        // Делаем текстовое поле обязательным только если выбрано "Да"
-                        const textarea = seasonalDescription.querySelector('textarea');
-                        if (textarea) {
-                            textarea.required = shouldShow;
-                        }
-                    });
-                });
-            }
-
-            // Валидация форм в реальном времени
-            setupFormValidation();
-
-            // Функция для создания читаемого текста из ответов теста
-            function createTestSummary(form) {
-                let summary = "РЕЗУЛЬТАТЫ ТЕСТА ЛИБИДО\n\n";
-                summary += "==============================\n\n";
-                
-                // Собираем все вопросы и ответы
-                const formData = new FormData(form);
-                const questions = [];
-                
-                // Собираем радиокнопки
-                form.querySelectorAll('input[type="radio"]:checked').forEach(radio => {
-                    const question = radio.getAttribute('data-question');
-                    const answer = radio.value;
-                    if (question && answer) {
-                        questions.push({ question, answer });
-                    }
-                });
-                
-                // Собираем селекты
-                form.querySelectorAll('select').forEach(select => {
-                    const question = select.getAttribute('data-question');
-                    const answer = select.value;
-                    if (question && answer && answer !== '') {
-                        questions.push({ question, answer });
-                    }
-                });
-                
-                // Собираем текстовые поля
-                form.querySelectorAll('textarea').forEach(textarea => {
-                    const question = textarea.getAttribute('data-question');
-                    const answer = textarea.value;
-                    if (question && answer && answer.trim() !== '') {
-                        questions.push({ question, answer });
-                    }
-                });
-                
-                // Форматируем вопросы и ответы
-                questions.forEach((item, index) => {
-                    summary += `ВОПРОС ${index + 1}: ${item.question}\n`;
-                    summary += `ОТВЕТ: ${item.answer}\n\n`;
-                });
-                
-                summary += "==============================\n";
-                summary += "Дата заполнения: " + new Date().toLocaleString('ru-RU');
-                
-                return summary;
-            }
-
-            // Функция для отправки формы
-            async function submitForm(form, endpoint, successMessage, isTest = false) {
-                const submitBtn = form.querySelector('button[type="submit"]');
-                const originalText = submitBtn.innerHTML;
-                
-                // Проверяем валидность формы
-                if (!form.checkValidity()) {
-                    showFormErrors(form);
-                    return;
-                }
-                
-                // Для теста создаем читаемое резюме
-                if (isTest) {
-                    const summary = createTestSummary(form);
-                    const summaryField = form.querySelector('textarea[name="test_results_summary"]');
-                    if (summaryField) {
-                        summaryField.value = summary;
-                    }
-                }
-                
-                // Показываем загрузку
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
-                submitBtn.disabled = true;
-                
-                try {
-                    const formData = new FormData(form);
-                    
-                    const response = await fetch(endpoint, {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'Accept': 'application/json'
-                        }
-                    });
-                    
-                    if (response.ok) {
-                        // Успешная отправка
-                        alert(successMessage);
-                        
-                        // Если это тест, сохраняем факт прохождения
-                        if (isTest) {
-                            localStorage.setItem('testCompleted', 'true');
-                            showTestCompletionMessage();
-                            checkTestCompletion();
-                        }
-                        
-                        form.reset();
-                        
-                        // Сбрасываем сезонное описание если есть
-                        if (seasonalDescription) {
-                            seasonalDescription.style.display = 'none';
-                        }
-                        
-                        // Сбрасываем выбранные радиокнопки сезонности
-                        seasonalRadio.forEach(radio => {
-                            radio.checked = false;
-                        });
-                        
-                    } else {
-                        throw new Error('Ошибка отправки формы');
-                    }
-                    
-                } catch (error) {
-                    console.error('Ошибка:', error);
-                    alert('❌ Произошла ошибка при отправке. Пожалуйста, позвоните мне: +7 (905) 595-99-96');
-                } finally {
-                    // Восстанавливаем кнопку
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                }
-            }
-
-            // Форма теста
-            const testForm = document.getElementById('libidoTestForm');
-            if (testForm) {
-                testForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    submitForm(
-                        this, 
-                        FORMSPREE_TEST, 
-                        '✅ Анкета отправлена! Спасибо за ваши ответы. Я свяжусь с вами для обсуждения результатов.',
-                        true // это тест
-                    );
-                });
-            }
-
-            // Форма записи на консультацию
+            // Form submission
+            const energyTestForm = document.getElementById('energyTestForm');
             const bookingForm = document.getElementById('bookingForm');
+            
+            if (energyTestForm) {
+                energyTestForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    document.getElementById('testCompletionMessage').style.display = 'block';
+                    this.reset();
+                    
+                    // Scroll to completion message
+                    document.getElementById('testCompletionMessage').scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'center' 
+                    });
+                });
+            }
+            
             if (bookingForm) {
                 bookingForm.addEventListener('submit', function(e) {
                     e.preventDefault();
-                    
-                    // Проверяем, пройден ли тест
-                    if (localStorage.getItem('testCompleted') !== 'true') {
-                        document.getElementById('testRequiredMessage').style.display = 'block';
-                        document.getElementById('testRequiredMessage').scrollIntoView({ 
-                            behavior: 'smooth', 
-                            block: 'center' 
-                        });
-                        return;
-                    }
-                    
-                    submitForm(
-                        this, 
-                        FORMSPREE_BOOKING, 
-                        '✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.',
-                        false // это не тест
-                    );
+                    alert('Заявка отправлена! Я свяжусь с вами в течение 24 часов.');
+                    this.reset();
                 });
             }
 
-            // Синхронизация мобильных и десктопных полей
-            document.addEventListener('change', function(e) {
-                if (e.target.name && e.target.name.includes('_mobile')) {
-                    const mainFieldName = e.target.name.replace('_mobile', '');
-                    const mainField = document.querySelector(`[name="${mainFieldName}"]`);
-                    if (mainField) {
-                        mainField.value = e.target.value;
-                    }
-                }
-                
-                if (e.target.name && !e.target.name.includes('_mobile')) {
-                    const mobileFieldName = e.target.name + '_mobile';
-                    const mobileField = document.querySelector(`[name="${mobileFieldName}"]`);
-                    if (mobileField) {
-                        mobileField.value = e.target.value;
-                    }
-                }
-            });
-
-            // Адаптация таблиц для мобильных устройств
-            function adaptTablesForMobile() {
-                if (window.innerWidth <= 768) {
-                    const tables = document.querySelectorAll('.period-table');
-                    const mobileCards = document.querySelectorAll('.mobile-period-card');
-                    
-                    tables.forEach(table => {
-                        table.style.display = 'none';
-                    });
-                    mobileCards.forEach(card => {
-                        card.style.display = 'block';
-                    });
-                } else {
-                    const tables = document.querySelectorAll('.period-table');
-                    const mobileCards = document.querySelectorAll('.mobile-period-card');
-                    
-                    tables.forEach(table => {
-                        table.style.display = 'table';
-                    });
-                    mobileCards.forEach(card => {
-                        card.style.display = 'none';
-                    });
-                }
-            }
-
-            // Проверяем при загрузке и изменении размера окна
-            window.addEventListener('load', adaptTablesForMobile);
-            window.addEventListener('resize', adaptTablesForMobile);
-
-            // Анимация появления элементов при скролле
+            // Animation on scroll
             const observerOptions = {
                 threshold: 0.1,
                 rootMargin: '0px 0px -50px 0px'
@@ -971,109 +1159,19 @@
                 });
             }, observerOptions);
 
-            // Наблюдаем за всеми секциями для анимации
+            // Observe sections for animation
             document.querySelectorAll('section').forEach(section => {
                 section.style.opacity = '0';
                 section.style.transform = 'translateY(20px)';
                 section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
                 observer.observe(section);
             });
-
-            // Функция проверки прохождения теста
-            function checkTestCompletion() {
-                const testCompleted = localStorage.getItem('testCompleted') === 'true';
-                const testRequiredMessage = document.getElementById('testRequiredMessage');
-                const bookingSubmitBtn = document.getElementById('bookingSubmitBtn');
-                
-                if (testRequiredMessage) {
-                    testRequiredMessage.style.display = testCompleted ? 'none' : 'block';
-                }
-                
-                if (bookingSubmitBtn) {
-                    bookingSubmitBtn.disabled = !testCompleted;
-                    if (!testCompleted) {
-                        bookingSubmitBtn.title = 'Сначала пройдите тест либидо';
-                    } else {
-                        bookingSubmitBtn.title = '';
-                    }
-                }
-            }
-
-            // Функция показа сообщения о завершении теста
-            function showTestCompletionMessage() {
-                const message = document.getElementById('testCompletionMessage');
-                if (message) {
-                    message.style.display = 'block';
-                    message.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-            }
-
-            // Функция настройки валидации форм
-            function setupFormValidation() {
-                // Добавляем обработчики для полей ввода
-                document.querySelectorAll('input, select, textarea').forEach(field => {
-                    field.addEventListener('input', function() {
-                        clearFieldError(this);
-                    });
-                    
-                    field.addEventListener('change', function() {
-                        clearFieldError(this);
-                    });
-                    
-                    // Для радиокнопок добавляем обработчик на всю группу
-                    if (field.type === 'radio') {
-                        const radioGroup = document.querySelectorAll(`input[name="${field.name}"]`);
-                        radioGroup.forEach(radio => {
-                            radio.addEventListener('change', function() {
-                                radioGroup.forEach(r => clearFieldError(r));
-                            });
-                        });
-                    }
-                });
-            }
-
-            // Функция очистки ошибки поля
-            function clearFieldError(field) {
-                field.classList.remove('error');
-                const errorMessage = field.parentNode.querySelector('.error-message');
-                if (errorMessage) {
-                    errorMessage.style.display = 'none';
-                }
-            }
-
-            // Функция показа ошибок формы
-            function showFormErrors(form) {
-                let firstError = null;
-                
-                // Проверяем все обязательные поля
-                form.querySelectorAll('[required]').forEach(field => {
-                    if (!field.value || (field.type === 'radio' && !form.querySelector(`input[name="${field.name}"]:checked`))) {
-                        field.classList.add('error');
-                        const errorMessage = field.parentNode.querySelector('.error-message');
-                        if (errorMessage) {
-                            errorMessage.style.display = 'block';
-                        }
-                        
-                        // Запоминаем первое поле с ошибкой для скролла
-                        if (!firstError) {
-                            firstError = field;
-                        }
-                    }
-                });
-                
-                // Прокручиваем к первой ошибке
-                if (firstError) {
-                    firstError.scrollIntoView({ 
-                        behavior: 'smooth', 
-                        block: 'center' 
-                    });
-                    firstError.focus();
-                }
-            }
         });
     </script>
 </body>
 </html>
+
+
 
 
 
