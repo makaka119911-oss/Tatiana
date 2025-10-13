@@ -1424,8 +1424,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Сайт загружен');
-
             // Mobile menu toggle
             const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
             const navLinks = document.querySelector('.nav-links');
@@ -1549,24 +1547,38 @@
                     const summary = createTestSummary(this);
                     console.log(summary); // Для отладки
                     
-                    // Показываем сообщение об успехе
-                    document.getElementById('testCompletionMessage').style.display = 'block';
-                    this.reset();
-                    
-                    // Сбрасываем сезонное описание если есть
-                    if (seasonalDescription) {
-                        seasonalDescription.style.display = 'none';
-                    }
-                    
-                    // Сбрасываем выбранные радиокнопки сезонности
-                    seasonalRadio.forEach(radio => {
-                        radio.checked = false;
-                    });
-                    
-                    // Прокручиваем к сообщению об успехе
-                    document.getElementById('testCompletionMessage').scrollIntoView({ 
-                        behavior: 'smooth', 
-                        block: 'center' 
+                    // Отправка данных на сервер (заглушка)
+                    const formData = new FormData(this);
+                    fetch('/submit-test', {
+                        method: 'POST',
+                        body: formData
+                    }).then(response => {
+                        if (response.ok) {
+                            // Показываем сообщение об успехе
+                            document.getElementById('testCompletionMessage').style.display = 'block';
+                            this.reset();
+                            
+                            // Сбрасываем сезонное описание если есть
+                            if (seasonalDescription) {
+                                seasonalDescription.style.display = 'none';
+                            }
+                            
+                            // Сбрасываем выбранные радиокнопки сезонности
+                            seasonalRadio.forEach(radio => {
+                                radio.checked = false;
+                            });
+                            
+                            // Прокручиваем к сообщению об успехе
+                            document.getElementById('testCompletionMessage').scrollIntoView({ 
+                                behavior: 'smooth', 
+                                block: 'center' 
+                            });
+                        } else {
+                            alert('Произошла ошибка при отправке формы. Пожалуйста, попробуйте еще раз.');
+                        }
+                    }).catch(error => {
+                        console.error('Ошибка:', error);
+                        alert('Произошла ошибка при отправке формы. Пожалуйста, попробуйте еще раз.');
                     });
                 });
             }
@@ -1583,8 +1595,22 @@
                         return;
                     }
                     
-                    alert('✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.');
-                    this.reset();
+                    // Отправка данных на сервер (заглушка)
+                    const formData = new FormData(this);
+                    fetch('/submit-booking', {
+                        method: 'POST',
+                        body: formData
+                    }).then(response => {
+                        if (response.ok) {
+                            alert('✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.');
+                            this.reset();
+                        } else {
+                            alert('Произошла ошибка при отправке формы. Пожалуйста, попробуйте еще раз.');
+                        }
+                    }).catch(error => {
+                        console.error('Ошибка:', error);
+                        alert('Произошла ошибка при отправке формы. Пожалуйста, попробуйте еще раз.');
+                    });
                 });
             }
 
@@ -1677,4 +1703,3 @@
     </script>
 </body>
 </html>
-
