@@ -1,6 +1,6 @@
-// Formspree endpoints - ОБНОВЛЕНО
-const FORMSPREE_BOOKING = 'https://formspree.io/f/mblzyavy';
-const FORMSPREE_TEST = 'https://formspree.io/f/xwprbndl';
+// Конфигурация Telegram
+const TELEGRAM_BOT_TOKEN = '8402206062:AAEJim1GkriKqY_o1mOo0YWSWQDdw5Qy2h0';
+const TELEGRAM_CHAT_ID = '846572018';
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Сайт загружен');
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 return;
             }
-            submitForm(this, FORMSPREE_BOOKING, '✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.', false);
+            submitBookingForm(this, '✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.');
         });
     }
 
@@ -82,36 +82,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 showErrorMessage('❌ Пожалуйста, заполните все обязательные поля');
                 return;
             }
-            submitForm(this, FORMSPREE_TEST, '✅ Анкета отправлена! Спасибо за ваши ответы. Я свяжусь с вами для обсуждения результатов.', true);
+            submitTestForm(this, '✅ Анкета отправлена! Спасибо за ваши ответы. Я свяжусь с вами для обсуждения результатов.');
         });
     }
-
-    // Синхронизация мобильных полей
-    document.addEventListener('change', function(e) {
-        if (e.target.name && e.target.name.includes('_mobile')) {
-            const mainFieldName = e.target.name.replace('_mobile', '');
-            const mainField = document.querySelector(`[name="${mainFieldName}"]`);
-            if (mainField) mainField.value = e.target.value;
-        }
-        if (e.target.name && !e.target.name.includes('_mobile')) {
-            const mobileFieldName = e.target.name + '_mobile';
-            const mobileField = document.querySelector(`[name="${mobileFieldName}"]`);
-            if (mobileField) mobileField.value = e.target.value;
-        }
-    });
-
-    // Адаптация таблиц для мобильных
-    function adaptTablesForMobile() {
-        const isMobile = window.innerWidth <= 768;
-        document.querySelectorAll('.period-table').forEach(table => {
-            table.style.display = isMobile ? 'none' : 'table';
-        });
-        document.querySelectorAll('.mobile-period-card').forEach(card => {
-            card.style.display = isMobile ? 'block' : 'none';
-        });
-    }
-    window.addEventListener('load', adaptTablesForMobile);
-    window.addEventListener('resize', adaptTablesForMobile);
 
     // Анимации появления секций
     const observer = new IntersectionObserver((entries) => {
@@ -169,34 +142,111 @@ function createTestSummary(form) {
     return summary;
 }
 
-// Универсальная отправка формы
-async function submitForm(form, endpoint, successMessage, isTest = false) {
+// Отправка формы теста в Telegram
+async function submitTestForm(form, successMessage) {
     const submitBtn = form.querySelector('button[type="submit"]');
     const originalText = submitBtn.innerHTML;
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
     submitBtn.disabled = true;
+    
     try {
-        if (isTest) {
-            const summaryField = document.getElementById('readableResults');
-            if (summaryField) summaryField.value = createTestSummary(form);
-        }
-        const formData = new FormData(form);
-        formData.append('timestamp', new Date().toLocaleString('ru-RU'));
-        const response = await fetch(endpoint, {
-            method: 'POST', body: formData, headers: { 'Accept': 'application/json' }
+        // Создаем читаемую сводку
+        const summary = createTestSummary(form);
+        
+        // Форматируем для Telegram с эмодзи и разметкой
+        let telegramMessage = `📊 *Новая анкета теста либидо*\n\n`;
+        telegramMessage += summary.replace(/\n/g, '\n').replace(/\*\*/g, '*');
+        
+        // Отправляем в Telegram
+        const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                chat_id: TELEGRAM_CHAT_ID,
+                text: telegramMessage,
+                parse_mode: 'Markdown'
+            })
         });
+
         const result = await response.json();
-        if (!response.ok || !result.ok) throw new Error(result.error || 'Ошибка на сервере');
-        showSuccessMessage(successMessage);
-        if (isTest) {
-            localStorage.setItem('testCompleted', 'true');
-            showTestCompletionMessage();
-            checkTestCompletion();
+        
+        if (!response.ok || !result.ok) {
+            throw new Error(result.description || 'Ошибка отправки в Telegram');
         }
+
+        showSuccessMessage(successMessage);
+        
+        // Устанавливаем флаг прохождения теста
+        localStorage.setItem('testCompleted', 'true');
+        showTestCompletionMessage();
+        checkTestCompletion();
+        
         form.reset();
+        
+        // Сбрасываем сезонное описание
         const seasonalDescription = document.getElementById('seasonalDescription');
         if (seasonalDescription) seasonalDescription.style.display = 'none';
         document.querySelectorAll('input[name="seasonal_dependency"]').forEach(r => r.checked = false);
+        
+    } catch (error) {
+        console.error('Ошибка отправки формы:', error);
+        showErrorMessage('❌ Ошибка отправки. Позвоните: +7 (905) 595-99-96');
+    } finally {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }
+}
+
+// Отправка формы записи в Telegram
+async function submitBookingForm(form, successMessage) {
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+    submitBtn.disabled = true;
+    
+    try {
+        // Собираем данные формы
+        const formData = new FormData(form);
+        const data = {};
+        for (let [key, value] of formData.entries()) {
+            data[key] = value;
+        }
+        
+        // Форматируем сообщение для записи
+        let telegramMessage = `📅 *Новая запись на консультацию!*\n\n`;
+        telegramMessage += `*Имя:* ${data.name || 'Не указано'}\n`;
+        telegramMessage += `*Контакты:* ${data.contact || 'Не указано'}\n`;
+        telegramMessage += `*Email:* ${data.email || 'Не указан'}\n`;
+        telegramMessage += `*Формат работы:* ${data.service || 'Не указан'}\n`;
+        if (data.message) {
+            telegramMessage += `*Сообщение:* ${data.message}\n`;
+        }
+        telegramMessage += `\n*Дата заявки:* ${new Date().toLocaleString('ru-RU')}`;
+
+        // Отправляем в Telegram
+        const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                chat_id: TELEGRAM_CHAT_ID,
+                text: telegramMessage,
+                parse_mode: 'Markdown'
+            })
+        });
+
+        const result = await response.json();
+        
+        if (!response.ok || !result.ok) {
+            throw new Error(result.description || 'Ошибка отправки в Telegram');
+        }
+
+        showSuccessMessage(successMessage);
+        form.reset();
+        
     } catch (error) {
         console.error('Ошибка отправки формы:', error);
         showErrorMessage('❌ Ошибка отправки. Позвоните: +7 (905) 595-99-96');
@@ -209,14 +259,35 @@ async function submitForm(form, endpoint, successMessage, isTest = false) {
 // Уведомления
 function showSuccessMessage(message) {
     const el = document.createElement('div');
-    el.className = 'notification success';
+    el.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+        padding: 15px 20px;
+        border-radius: 10px;
+        z-index: 10000;
+        animation: slideInRight 0.5s ease-out;
+    `;
     el.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
     document.body.appendChild(el);
     setTimeout(() => el.remove(), 5000);
 }
+
 function showErrorMessage(message) {
     const el = document.createElement('div');
-    el.className = 'notification error';
+    el.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #dc3545, #e83e8c);
+        color: white;
+        padding: 15px 20px;
+        border-radius: 10px;
+        z-index: 10000;
+        animation: slideInRight 0.5s ease-out;
+    `;
     el.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
     document.body.appendChild(el);
     setTimeout(() => el.remove(), 8000);
@@ -248,21 +319,30 @@ function validateTestForm(form) {
 function highlightError(element) {
     const formGroup = element.closest('.question-block, .options-grid, .form-group');
     if (formGroup) {
-        formGroup.classList.add('error-highlight');
+        formGroup.style.border = '2px solid #e74c3c';
         formGroup.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        setTimeout(() => formGroup.classList.remove('error-highlight'), 3000);
+        setTimeout(() => formGroup.style.border = '', 3000);
     }
 }
 
 // Управление состоянием прохождения теста
 function checkTestCompletion() {
     const testCompleted = localStorage.getItem('testCompleted') === 'true';
+    const bookingForm = document.getElementById('bookingForm');
     const testRequiredMessage = document.getElementById('testRequiredMessage');
-    const bookingSubmitBtn = document.getElementById('bookingSubmitBtn');
-    if (testRequiredMessage) testRequiredMessage.style.display = testCompleted ? 'none' : 'block';
-    if (bookingSubmitBtn) {
-        bookingSubmitBtn.disabled = !testCompleted;
-        bookingSubmitBtn.title = testCompleted ? '' : 'Сначала пройдите тест либидо';
+    
+    if (bookingForm) {
+        if (!testCompleted) {
+            bookingForm.style.display = 'none';
+            if (testRequiredMessage) {
+                testRequiredMessage.style.display = 'block';
+            }
+        } else {
+            bookingForm.style.display = 'block';
+            if (testRequiredMessage) {
+                testRequiredMessage.style.display = 'none';
+            }
+        }
     }
 }
 
@@ -273,4 +353,20 @@ function showTestCompletionMessage() {
         message.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 }
+
+// Добавляем CSS для анимации
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+`;
+document.head.appendChild(style);
 
