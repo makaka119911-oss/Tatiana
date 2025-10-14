@@ -6,6 +6,7 @@
     <title>Татьяна Солнечная - Раскрытие женской силы | Пробуждение сексуальной энергии</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        /* Все ваши существующие стили остаются без изменений */
         :root {
             --deep-burgundy: #8B4352;
             --vibrant-pink: #D46A6A;
@@ -709,6 +710,11 @@
             .options-grid {
                 grid-template-columns: 1fr;
             }
+        }
+
+        /* ДОБАВЛЯЕМ ЭТОТ СТИЛЬ ДЛЯ СКРЫТИЯ ФОРМЫ ЗАПИСИ */
+        .hidden-form {
+            display: none !important;
         }
     </style>
 </head>
@@ -1533,51 +1539,85 @@
                     </div>
                 </div>
                 
-                <div class="booking-form">
-                    <h3 style="color: var(--deep-burgundy); margin-bottom: 2rem; text-align: center;">Запись на пробуждение</h3>
-                    
-                    <form id="bookingForm">
-                        <div class="form-group">
-                            <label for="name" class="required-field"><i class="fas fa-user"></i> Ваше имя</label>
-                            <input type="text" id="name" name="name" required>
-                            <div class="error-message">Пожалуйста, введите ваше имя</div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="contact" class="required-field"><i class="fas fa-phone"></i> Телефон или Telegram</label>
-                            <input type="text" id="contact" name="contact" required>
-                            <div class="error-message">Пожалуйста, введите контактные данные</div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="email"><i class="fas fa-envelope"></i> Email (для ответа)</label>
-                            <input type="email" id="email" name="email">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="service" class="required-field"><i class="fas fa-concierge-bell"></i> Формат работы</label>
-                            <select id="service" name="service" required>
-                                <option value="">Выберите формат</option>
-                                <option value="Индивидуальная консультация">Индивидуальная консультация</option>
-                                <option value="Онлайн-сессия">Онлайн-сессия</option>
-                                <option value="Программа пробуждения">Программа пробуждения</option>
-                            </select>
-                            <div class="error-message">Пожалуйста, выберите формат консультации</div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="message"><i class="fas fa-comment"></i> Ваш запрос (необязательно)</label>
-                            <textarea id="message" name="message" rows="4" placeholder="Что бы вы хотели изменить в своей жизни?"></textarea>
-                        </div>
-                        
-                        <button type="submit" class="btn" style="width: 100%;">
-                            <i class="fas fa-paper-plane"></i> Начать пробуждение
-                        </button>
-                        
-                        <p style="margin-top: 1rem; font-size: 0.9rem; text-align: center; color: #666;">
-                            После отправки формы я свяжусь с вами в течение 24 часов
+                <!-- ИЗМЕНЯЕМ ЭТУ СЕКЦИЮ - ДОБАВЛЯЕМ СООБЩЕНИЕ О НЕОБХОДИМОСТИ ТЕСТА -->
+                <div id="booking-section">
+                    <!-- Сообщение о необходимости теста (показывается по умолчанию) -->
+                    <div id="testRequiredMessage" class="test-required-message" style="
+                        background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+                        border: 2px solid #ffc107;
+                        border-radius: 15px;
+                        padding: 2rem;
+                        text-align: center;
+                        margin: 2rem 0;
+                    ">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🔒</div>
+                        <h3 style="color: #856404; margin-bottom: 1rem;">
+                            Для записи на консультацию необходимо пройти тест
+                        </h3>
+                        <p style="color: #856404; margin-bottom: 1.5rem;">
+                            Это поможет мне лучше понять вашу энергетику и подготовиться к нашей работе
                         </p>
-                    </form>
+                        <a href="#test" class="btn pulse" style="
+                            background: linear-gradient(135deg, var(--vibrant-pink), var(--purple-mystic));
+                            color: white;
+                            padding: 12px 30px;
+                            border-radius: 50px;
+                            text-decoration: none;
+                            font-weight: 600;
+                        ">
+                            <i class="fas fa-seedling"></i> Пройти тест энергии
+                        </a>
+                    </div>
+
+                    <!-- Форма записи (изначально скрыта) -->
+                    <div id="bookingFormContainer" class="hidden-form">
+                        <div class="booking-form">
+                            <h3 style="color: var(--deep-burgundy); margin-bottom: 2rem; text-align: center;">Запись на пробуждение</h3>
+                            
+                            <form id="bookingForm">
+                                <div class="form-group">
+                                    <label for="name" class="required-field"><i class="fas fa-user"></i> Ваше имя</label>
+                                    <input type="text" id="name" name="name" required>
+                                    <div class="error-message">Пожалуйста, введите ваше имя</div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="contact" class="required-field"><i class="fas fa-phone"></i> Телефон или Telegram</label>
+                                    <input type="text" id="contact" name="contact" required>
+                                    <div class="error-message">Пожалуйста, введите контактные данные</div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="email"><i class="fas fa-envelope"></i> Email (для ответа)</label>
+                                    <input type="email" id="email" name="email">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="service" class="required-field"><i class="fas fa-concierge-bell"></i> Формат работы</label>
+                                    <select id="service" name="service" required>
+                                        <option value="">Выберите формат</option>
+                                        <option value="Индивидуальная консультация">Индивидуальная консультация</option>
+                                        <option value="Онлайн-сессия">Онлайн-сессия</option>
+                                        <option value="Программа пробуждения">Программа пробуждения</option>
+                                    </select>
+                                    <div class="error-message">Пожалуйста, выберите формат консультации</div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="message"><i class="fas fa-comment"></i> Ваш запрос (необязательно)</label>
+                                    <textarea id="message" name="message" rows="4" placeholder="Что бы вы хотели изменить в своей жизни?"></textarea>
+                                </div>
+                                
+                                <button type="submit" class="btn" style="width: 100%;">
+                                    <i class="fas fa-paper-plane"></i> Начать пробуждение
+                                </button>
+                                
+                                <p style="margin-top: 1rem; font-size: 0.9rem; text-align: center; color: #666;">
+                                    После отправки формы я свяжусь с вами в течение 24 часов
+                                </p>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1641,7 +1681,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Проверка прохождения теста
+    // Проверка прохождения теста и скрытие/показ формы записи
     checkTestCompletion();
 
     // Переключение типа теста
@@ -1789,7 +1829,7 @@ function validateTestForm(form) {
     return isValid;
 }
 
-// Валидация формы записи - ИСПРАВЛЕННАЯ ВЕРСИЯ
+// Валидация формы записи
 function validateBookingForm(form) {
     // ПРОВЕРКА: прошел ли пользователь тест
     const testCompleted = localStorage.getItem('testCompleted') === 'true';
@@ -1968,7 +2008,7 @@ async function submitTestForm(form) {
     }
 }
 
-// Функция отправки формы записи - ИСПРАВЛЕННАЯ ВЕРСИЯ
+// Функция отправки формы записи
 async function submitBookingForm(form) {
     const submitBtn = form.querySelector('button[type="submit"]');
     const originalText = submitBtn.innerHTML;
@@ -1988,7 +2028,7 @@ async function submitBookingForm(form) {
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
         submitBtn.disabled = true;
         
-        // ... остальная часть вашего кода (сбор данных и отправка в Telegram) ...
+        // Собираем данные формы записи
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
         
@@ -2034,59 +2074,28 @@ async function submitBookingForm(form) {
     }
 }
 
-// Проверка прохождения теста
+// ПРОВЕРКА ПРОХОЖДЕНИЯ ТЕСТА И СКРЫТИЕ/ПОКАЗ ФОРМЫ ЗАПИСИ
 function checkTestCompletion() {
     const testCompleted = localStorage.getItem('testCompleted') === 'true';
-    const bookingForm = document.getElementById('bookingForm');
+    const testRequiredMessage = document.getElementById('testRequiredMessage');
+    const bookingFormContainer = document.getElementById('bookingFormContainer');
     
-    if (bookingForm) {
-        const testRequiredSection = document.getElementById('testRequiredSection');
-        
-        if (!testCompleted) {
-            // Скрываем форму записи и показываем сообщение
-            bookingForm.style.display = 'none';
-            
-            // Создаем сообщение о необходимости теста
-            if (!testRequiredSection) {
-                const messageHTML = `
-                    <div id="testRequiredSection" class="test-required-message" style="
-                        background: linear-gradient(135deg, #fff3cd, #ffeaa7);
-                        border: 2px solid #ffc107;
-                        border-radius: 15px;
-                        padding: 2rem;
-                        text-align: center;
-                        margin: 2rem 0;
-                    ">
-                        <div style="font-size: 3rem; margin-bottom: 1rem;">🔒</div>
-                        <h3 style="color: #856404; margin-bottom: 1rem;">
-                            Для записи на консультацию необходимо пройти тест
-                        </h3>
-                        <p style="color: #856404; margin-bottom: 1.5rem;">
-                            Это поможет мне лучше понять вашу энергетику и подготовиться к нашей работе
-                        </p>
-                        <a href="#test" class="btn pulse" style="
-                            background: linear-gradient(135deg, var(--vibrant-pink), var(--purple-mystic));
-                            color: white;
-                            padding: 12px 30px;
-                            border-radius: 50px;
-                            text-decoration: none;
-                            font-weight: 600;
-                        ">
-                            <i class="fas fa-seedling"></i> Пройти тест энергии
-                        </a>
-                    </div>
-                `;
-                bookingForm.insertAdjacentHTML('beforebegin', messageHTML);
-            } else {
-                testRequiredSection.style.display = 'block';
-            }
+    console.log('Статус теста:', testCompleted);
+    
+    if (testRequiredMessage && bookingFormContainer) {
+        if (testCompleted) {
+            // Тест пройден - показываем форму, скрываем сообщение
+            testRequiredMessage.style.display = 'none';
+            bookingFormContainer.classList.remove('hidden-form');
+            console.log('Показываем форму записи');
         } else {
-            // Показываем форму записи
-            bookingForm.style.display = 'block';
-            if (testRequiredSection) {
-                testRequiredSection.style.display = 'none';
-            }
+            // Тест не пройден - показываем сообщение, скрываем форму
+            testRequiredMessage.style.display = 'block';
+            bookingFormContainer.classList.add('hidden-form');
+            console.log('Показываем сообщение о необходимости теста');
         }
+    } else {
+        console.error('Не найдены элементы для управления отображением формы записи');
     }
 }
 
@@ -2157,6 +2166,7 @@ document.head.appendChild(style);
 </script>
 </body>
 </html>
+
 
 
 
