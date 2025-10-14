@@ -1607,104 +1607,362 @@
         </div>
     </footer>
 
-    <script>
+   <script>
+// Конфигурация Telegram
+const TELEGRAM_BOT_TOKEN = '8402206062:AAEJim1GkriKqY_o1mOo0YWSWQDdw5Qy2h0';
+const TELEGRAM_CHAT_ID = '846572018';
+
+// Функция для отправки данных в Telegram
+async function sendToTelegram(data) {
+    try {
+        // Форматируем сообщение для Telegram
+        let message = `📊 *Новая анкета теста либидо*\\n\\n`;
+        
+        // Добавляем контактные данные
+        if (data.Имя_клиента) message += `*Имя:* ${data.Имя_клиента}\\n`;
+        if (data.Возраст) message += `*Возраст:* ${data.Возраст}\\n`;
+        if (data.Контактные_данные) message += `*Контакты:* ${data.Контактные_данные}\\n`;
+        
+        message += `\\n*ОБЩИЕ ПОКАЗАТЕЛИ:*\\n`;
+        if (data.general_frequency) message += `• Частота: ${data.general_frequency}\\n`;
+        if (data.general_strength) message += `• Сила желания: ${data.general_strength}\\n`;
+        
+        // Добавляем данные по периодам цикла
+        message += `\\n*ПО ПЕРИОДАМ ЦИКЛА:*\\n`;
+        
+        const periods = [
+            { name: "📅 От конца месячных до овуляции", prefix: "period1" },
+            { name: "🌙 В период овуляции", prefix: "period2" },
+            { name: "🌿 От конца овуляции до начала месячных", prefix: "period3" },
+            { name: "🌸 В период месячных", prefix: "period4" }
+        ];
+        
+        periods.forEach(period => {
+            if (data[`${period.prefix}_frequency`]) {
+                message += `\\n${period.name}:\\n`;
+                message += `  Частота: ${data[`${period.prefix}_frequency`]}\\n`;
+                message += `  Сила: ${data[`${period.prefix}_strength`]}\\n`;
+                message += `  Возбуждение (с желанием): ${data[`${period.prefix}_erected_desire`]}\\n`;
+                if (data[`${period.prefix}_erected_no_desire`]) {
+                    message += `  Возбуждение (без желания): ${data[`${period.prefix}_erected_no_desire`]}\\n`;
+                }
+            }
+        });
+        
+        // Добавляем сезонные особенности
+        if (data.seasonal_dependency) {
+            message += `\\n*🌤️ Сезонная зависимость:* ${data.seasonal_dependency}\\n`;
+            if (data.seasonal_changes) {
+                message += `Описание: ${data.seasonal_changes}\\n`;
+            }
+        }
+        
+        message += `\\n*📅 Дата заполнения:* ${new Date().toLocaleString('ru-RU')}`;
+
+        // Отправляем в Telegram
+        const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                chat_id: TELEGRAM_CHAT_ID,
+                text: message,
+                parse_mode: 'Markdown'
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Ошибка отправки в Telegram');
+        }
+
+        return true;
+    } catch (error) {
+        console.error('Ошибка отправки в Telegram:', error);
+        return false;
+    }
+}
+
+// Функция для сбора всех данных формы
+function collectFormData(form) {
+    const formData = new FormData(form);
+    const data = {};
+    
+    // Собираем все данные формы
+    for (let [key, value] of formData.entries()) {
+        data[key] = value;
+    }
+    
+    return data;
+}
+
+// Проверка прохождения теста
+function checkTestCompletion() {
+    const testCompleted = localStorage.getItem('testCompleted') === 'true';
+    const bookingForm = document.getElementById('bookingForm');
+    const testRequiredSection = document.getElementById('testRequiredSection');
+    
+    if (bookingForm) {
+        if (!testCompleted) {
+            // Скрываем форму записи и показываем сообщение
+            bookingForm.style.display = 'none';
+            
+            // Создаем сообщение о необходимости теста
+            if (!testRequiredSection) {
+                const messageHTML = `
+                    <div id="testRequiredSection" class="test-required-message" style="
+                        background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+                        border: 2px solid #ffc107;
+                        border-radius: 15px;
+                        padding: 2rem;
+                        text-align: center;
+                        margin: 2rem 0;
+                    ">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🔒</div>
+                        <h3 style="color: #856404; margin-bottom: 1rem;">
+                            Для записи на консультацию необходимо пройти тест
+                        </h3>
+                        <p style="color: #856404; margin-bottom: 1.5rem;">
+                            Это поможет мне лучше понять вашу энергетику и подготовиться к нашей работе
+                        </p>
+                        <a href="#test" class="btn pulse" style="
+                            background: linear-gradient(135deg, var(--vibrant-pink), var(--purple-mystic));
+                            color: white;
+                            padding: 12px 30px;
+                            border-radius: 50px;
+                            text-decoration: none;
+                            font-weight: 600;
+                        ">
+                            <i class="fas fa-seedling"></i> Пройти тест энергии
+                        </a>
+                    </div>
+                `;
+                bookingForm.insertAdjacentHTML('beforebegin', messageHTML);
+            }
+        } else {
+            // Показываем форму записи
+            bookingForm.style.display = 'block';
+            if (testRequiredSection) {
+                testRequiredSection.style.display = 'none';
+            }
+        }
+    }
+}
+
+// Уведомления
+function showSuccessMessage(message) {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+        padding: 15px 20px;
+        border-radius: 10px;
+        z-index: 10000;
+        animation: slideInRight 0.5s ease-out;
+    `;
+    notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+    document.body.appendChild(notification);
+    setTimeout(() => notification.remove(), 5000);
+}
+
+function showErrorMessage(message) {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #dc3545, #e83e8c);
+        color: white;
+        padding: 15px 20px;
+        border-radius: 10px;
+        z-index: 10000;
+        animation: slideInRight 0.5s ease-out;
+    `;
+    notification.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
+    document.body.appendChild(notification);
+    setTimeout(() => notification.remove(), 8000);
+}
+
+// Основной код при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Сайт загружен');
 
-    // Mobile menu toggle - УПРОЩЕННАЯ ВЕРСИЯ
+    // Mobile menu toggle
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
     const navLinks = document.querySelector('.nav-links');
     
     if (mobileMenuBtn && navLinks) {
-        mobileMenuBtn.addEventListener('click', function(e) {
-            e.stopPropagation(); // Предотвращаем всплытие
-            console.log('Меню кликнуто');
+        mobileMenuBtn.addEventListener('click', function() {
             navLinks.classList.toggle('active');
-            
-            // Меняем иконку
-            const icon = this.querySelector('i');
-            if (navLinks.classList.contains('active')) {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times');
-            } else {
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            }
-        });
-
-        // Закрытие меню при клике на ссылку
-        navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', function() {
-                navLinks.classList.remove('active');
-                mobileMenuBtn.querySelector('i').classList.remove('fa-times');
-                mobileMenuBtn.querySelector('i').classList.add('fa-bars');
-            });
-        });
-
-        // Закрытие меню при клике вне его области
-        document.addEventListener('click', function(e) {
-            if (!navLinks.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
-                navLinks.classList.remove('active');
-                mobileMenuBtn.querySelector('i').classList.remove('fa-times');
-                mobileMenuBtn.querySelector('i').classList.add('fa-bars');
-            }
         });
     }
 
-    // Smooth scrolling for navigation links
+    // Smooth scrolling
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
+            if (navLinks) navLinks.classList.remove('active');
             
-            // Закрываем мобильное меню после клика
-            if (navLinks && navLinks.classList.contains('active')) {
-                navLinks.classList.remove('active');
-                if (mobileMenuBtn) {
-                    mobileMenuBtn.querySelector('i').classList.remove('fa-times');
-                    mobileMenuBtn.querySelector('i').classList.add('fa-bars');
-                }
-            }
-            
-            const targetId = this.getAttribute('href');
-            const target = document.querySelector(targetId);
+            const target = document.querySelector(this.getAttribute('href'));
             if (target) {
-                const header = document.querySelector('header');
-                const headerOffset = header ? header.offsetHeight : 0;
-                const elementPosition = target.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
                 });
             }
         });
     });
 
-    // Остальной код остается без изменений...
-    // [здесь должен быть остальной код из вашего script.js]
+    // Проверяем прохождение теста
+    checkTestCompletion();
+
+    // Форма теста
+    const testForm = document.getElementById('libidoTestForm');
+    if (testForm) {
+        testForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            try {
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+                submitBtn.disabled = true;
+                
+                // Собираем данные
+                const formData = collectFormData(this);
+                
+                // Отправляем в Telegram
+                const telegramSuccess = await sendToTelegram(formData);
+                
+                if (telegramSuccess) {
+                    // Сохраняем статус прохождения теста
+                    localStorage.setItem('testCompleted', 'true');
+                    localStorage.setItem('testCompletionTime', new Date().toISOString());
+                    
+                    showSuccessMessage('✅ Анкета отправлена! Теперь вы можете записаться на консультацию.');
+                    
+                    // Показываем сообщение о завершении теста
+                    document.getElementById('testCompletionMessage').style.display = 'block';
+                    document.getElementById('testCompletionMessage').scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'center' 
+                    });
+                    
+                    // Обновляем отображение формы записи
+                    checkTestCompletion();
+                    
+                    // Сбрасываем форму
+                    this.reset();
+                    
+                } else {
+                    throw new Error('Ошибка отправки в Telegram');
+                }
+                
+            } catch (error) {
+                console.error('Ошибка:', error);
+                showErrorMessage('❌ Ошибка отправки. Пожалуйста, свяжитесь со мной напрямую: +7 (905) 595-99-96');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+    }
+
+    // Форма записи
+    const bookingForm = document.getElementById('bookingForm');
+    if (bookingForm) {
+        bookingForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const testCompleted = localStorage.getItem('testCompleted') === 'true';
+            if (!testCompleted) {
+                showErrorMessage('❌ Пожалуйста, сначала пройдите тест энергии');
+                document.getElementById('test').scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+                return false;
+            }
+            
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            try {
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+                submitBtn.disabled = true;
+                
+                // Собираем данные формы записи
+                const formData = {
+                    name: document.getElementById('name').value,
+                    contact: document.getElementById('contact').value,
+                    service: document.getElementById('service').value,
+                    message: document.getElementById('message').value
+                };
+                
+                // Формируем сообщение для записи
+                let bookingMessage = `📅 *Новая запись на консультацию!*\\n\\n`;
+                bookingMessage += `*Имя:* ${formData.name}\\n`;
+                bookingMessage += `*Контакты:* ${formData.contact}\\n`;
+                bookingMessage += `*Формат работы:* ${formData.service}\\n`;
+                if (formData.message) {
+                    bookingMessage += `*Сообщение:* ${formData.message}\\n`;
+                }
+                bookingMessage += `\\n*Дата заявки:* ${new Date().toLocaleString('ru-RU')}`;
+                
+                // Отправляем в Telegram
+                const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: bookingMessage,
+                        parse_mode: 'Markdown'
+                    })
+                });
+
+                if (response.ok) {
+                    showSuccessMessage('✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.');
+                    this.reset();
+                } else {
+                    throw new Error('Ошибка отправки заявки');
+                }
+                
+            } catch (error) {
+                console.error('Ошибка:', error);
+                showErrorMessage('❌ Ошибка отправки заявки. Пожалуйста, свяжитесь со мной напрямую.');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+    }
 });
 
-// Добавляем этот CSS для исправления z-index
-const fixCSS = `
-@media (max-width: 768px) {
-    .nav-links {
-        z-index: 1001 !important;
-    }
-    
-    .mobile-menu-btn {
-        z-index: 1002 !important;
-        position: relative;
-    }
-}
-`;
-
+// Добавляем CSS для анимации уведомлений
 const style = document.createElement('style');
-style.textContent = fixCSS;
+style.textContent = `
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+`;
 document.head.appendChild(style);
 </script>
 </body>
 </html>
+
 
 
 
