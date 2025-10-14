@@ -919,6 +919,28 @@
                             <label for="clientName"><i class="fas fa-user"></i> Ваше имя (необязательно)</label>
                             <input type="text" id="clientName" name="Имя_клиента" class="form-control" placeholder="Как к вам обращаться?">
                         </div>
+                    <!-- Переключатель типа теста -->
+                    <div style="background: #f0e6ff; padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem; border: 2px solid var(--purple-mystic);">
+                        <h4 style="color: var(--deep-burgundy); margin-bottom: 1rem; text-align: center;">
+                            <i class="fas fa-toggle-on"></i> Выберите тип теста
+                        </h4>
+                        <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;">
+                            <label class="option-item" style="background: white; padding: 1rem 2rem; border-radius: 10px; cursor: pointer; min-width: 200px; display: flex; align-items: center; border: 2px solid var(--soft-pink);">
+                                <input type="radio" name="test_type" value="regular" id="regular_test" checked onchange="toggleTestType()" style="margin-right: 10px;">
+                                <div>
+                                    <strong>Обычный тест</strong><br>
+                                    <small>Для женщин с регулярными циклами</small>
+                                </div>
+                            </label>
+                            <label class="option-item" style="background: white; padding: 1rem 2rem; border-radius: 10px; cursor: pointer; min-width: 200px; display: flex; align-items: center; border: 2px solid var(--soft-pink);">
+                                <input type="radio" name="test_type" value="menopause" id="menopause_test" onchange="toggleTestType()" style="margin-right: 10px;">
+                                <div>
+                                    <strong>Тест на менопаузу</strong><br>
+                                    <small>Для женщин в периоде менопаузы</small>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
                         <div class="form-group">
                             <label for="clientAge"><i class="fas fa-birthday-cake"></i> Ваш возраст</label>
                             <input type="number" id="clientAge" name="Возраст" class="form-control" placeholder="Укажите ваш возраст" min="18" max="80">
@@ -993,7 +1015,7 @@
                     </div>
 
                     <!-- Периоды менструального цикла -->
-                    <div class="test-section">
+                    <div class="test-section" id="cycle-periods-section">
                         <h4><i class="fas fa-calendar-alt"></i> Особенности либидо в разные периоды цикла</h4>
                         
                         <!-- Период 1: От конца месячных до овуляции -->
@@ -1223,6 +1245,164 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Альтернативная секция для менопаузы -->
+                    <div class="test-section" id="menopause-section" style="display: none;">
+                        <h4><i class="fas fa-leaf"></i> Особенности либидо в период менопаузы</h4>
+
+                        <div class="question-block">
+                            <h5 class="required-field">Ваш статус менопаузы:</h5>
+                            <div class="error-message">Пожалуйста, выберите один из вариантов</div>
+                            <div class="options-grid">
+                                <label class="option-item">
+                                    <input type="radio" name="menopause_status" value="Пременопауза (нерегулярные циклы)" required>
+                                    Пременопауза (нерегулярные циклы)
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="menopause_status" value="Менопауза (нет месячных более года)">
+                                    Менопауза (нет месячных более года)
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="menopause_status" value="Постменопауза (более 5 лет без месячных)">
+                                    Постменопауза (более 5 лет без месячных)
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="question-block">
+                            <h5 class="required-field">Как изменилось ваше либидо с началом менопаузальных изменений?</h5>
+                            <div class="error-message">Пожалуйста, выберите один из вариантов</div>
+                            <div class="options-grid">
+                                <label class="option-item">
+                                    <input type="radio" name="menopause_libido_change" value="Значительно снизилось" required>
+                                    Значительно снизилось
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="menopause_libido_change" value="Немного снизилось">
+                                    Немного снизилось
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="menopause_libido_change" value="Осталось примерно таким же">
+                                    Осталось примерно таким же
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="menopause_libido_change" value="Увеличилось">
+                                    Увеличилось
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="question-block">
+                            <h5 class="required-field">Текущая частота сексуального желания:</h5>
+                            <div class="error-message">Пожалуйста, выберите один из вариантов</div>
+                            <div class="options-grid">
+                                <label class="option-item">
+                                    <input type="radio" name="menopause_current_frequency" value="Вообще не возникает" required>
+                                    Вообще не возникает
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="menopause_current_frequency" value="Очень редко (раз в месяц или реже)">
+                                    Очень редко (раз в месяц или реже)
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="menopause_current_frequency" value="Иногда (несколько раз в месяц)">
+                                    Иногда (несколько раз в месяц)
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="menopause_current_frequency" value="Регулярно (1-2 раза в неделю)">
+                                    Регулярно (1-2 раза в неделю)
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="menopause_current_frequency" value="Часто (ежедневно или почти каждый день)">
+                                    Часто (ежедневно или почти каждый день)
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="question-block">
+                            <h5 class="required-field">Интенсивность сексуального желания когда оно возникает:</h5>
+                            <div class="error-message">Пожалуйста, выберите один из вариантов</div>
+                            <div class="options-grid">
+                                <label class="option-item">
+                                    <input type="radio" name="menopause_intensity" value="Очень слабое" required>
+                                    Очень слабое
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="menopause_intensity" value="Слабое">
+                                    Слабое
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="menopause_intensity" value="Среднее">
+                                    Среднее
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="menopause_intensity" value="Сильное">
+                                    Сильное
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="menopause_intensity" value="Очень сильное">
+                                    Очень сильное
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="question-block">
+                            <h5 class="required-field">Физиологические изменения, влияющие на сексуальность:</h5>
+                            <div class="error-message">Пожалуйста, выберите все подходящие варианты</div>
+                            <div class="options-grid">
+                                <label class="option-item">
+                                    <input type="checkbox" name="menopause_physical_changes" value="Сухость влагалища">
+                                    Сухость влагалища
+                                </label>
+                                <label class="option-item">
+                                    <input type="checkbox" name="menopause_physical_changes" value="Болезненность при интимности">
+                                    Болезненность при интимности
+                                </label>
+                                <label class="option-item">
+                                    <input type="checkbox" name="menopause_physical_changes" value="Приливы жара">
+                                    Приливы жара
+                                </label>
+                                <label class="option-item">
+                                    <input type="checkbox" name="menopause_physical_changes" value="Нарушения сна">
+                                    Нарушения сна
+                                </label>
+                                <label class="option-item">
+                                    <input type="checkbox" name="menopause_physical_changes" value="Изменения настроения">
+                                    Изменения настроения
+                                </label>
+                                <label class="option-item">
+                                    <input type="checkbox" name="menopause_physical_changes" value="Снижение энергии">
+                                    Снижение энергии
+                                </label>
+                                <label class="option-item">
+                                    <input type="checkbox" name="menopause_physical_changes" value="Никаких особых изменений">
+                                    Никаких особых изменений
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="question-block">
+                            <h5>Принимаете ли вы гормональную заместительную терапию (ГЗТ)?</h5>
+                            <div class="options-grid">
+                                <label class="option-item">
+                                    <input type="radio" name="menopause_hrt" value="Да, принимаю">
+                                    Да, принимаю
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="menopause_hrt" value="Нет, не принимаю">
+                                    Нет, не принимаю
+                                </label>
+                                <label class="option-item">
+                                    <input type="radio" name="menopause_hrt" value="Рассматриваю возможность">
+                                    Рассматриваю возможность
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="question-block">
+                            <h5>Что беспокоит вас больше всего в отношении сексуальности в этот период?</h5>
+                            <textarea name="menopause_concerns" rows="4" class="form-control" placeholder="Поделитесь своими переживаниями и вопросами..."></textarea>
+                        </div>
+                    </div>
 
                     <!-- Сезонные особенности -->
                     <div class="test-section">
@@ -1428,7 +1608,60 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+                // Функция переключения типа теста
+        function toggleTestType() {
+            const regularTest = document.getElementById('regular_test');
+            const menopauseTest = document.getElementById('menopause_test');
+            const cyclePeriodSection = document.getElementById('cycle-periods-section');
+            const menopauseSection = document.getElementById('menopause-section');
+
+            if (regularTest && menopauseTest && cyclePeriodSection && menopauseSection) {
+                if (regularTest.checked) {
+                    // Показываем обычный тест, скрываем тест на менопаузу
+                    cyclePeriodSection.style.display = 'block';
+                    menopauseSection.style.display = 'none';
+
+                    // Снимаем обязательность с полей менопаузы
+                    menopauseSection.querySelectorAll('[required]').forEach(field => {
+                        field.removeAttribute('required');
+                        field.classList.remove('error');
+                    });
+
+                    // Добавляем обязательность к полям обычного теста
+                    cyclePeriodSection.querySelectorAll('select').forEach(select => {
+                        select.setAttribute('required', 'required');
+                    });
+
+                } else if (menopauseTest.checked) {
+                    // Показываем тест на менопаузу, скрываем обычный тест
+                    cyclePeriodSection.style.display = 'none';
+                    menopauseSection.style.display = 'block';
+
+                    // Снимаем обязательность с полей обычного теста
+                    cyclePeriodSection.querySelectorAll('[required]').forEach(field => {
+                        field.removeAttribute('required');
+                        field.classList.remove('error');
+                    });
+
+                    // Добавляем обязательность к полям менопаузы  
+                    menopauseSection.querySelectorAll('input[type="radio"]:not([name="menopause_hrt"])').forEach(radio => {
+                        radio.setAttribute('required', 'required');
+                    });
+                }
+
+                // Очищаем сообщения об ошибках
+                document.querySelectorAll('.error-message').forEach(msg => {
+                    msg.style.display = 'none';
+                });
+
+                // Убираем класс ошибки со всех полей
+                document.querySelectorAll('.error').forEach(field => {
+                    field.classList.remove('error');
+                });
+            }
+        }
+
+document.addEventListener('DOMContentLoaded', function() {
             // Mobile menu toggle
             const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
             const navLinks = document.querySelector('.nav-links');
@@ -1479,61 +1712,117 @@
 
             // Функция для создания читаемого текста из ответов теста
             function createTestSummary(form) {
-                let summary = "РЕЗУЛЬТАТЫ ТЕСТА ЛИБИДО\n\n";
-                summary += "==============================\n\n";
-                
-                // Собираем общие вопросы
-                const generalFrequency = form.querySelector('input[name="general_frequency"]:checked');
-                const generalStrength = form.querySelector('input[name="general_strength"]:checked');
-                
-                if (generalFrequency) {
-                    summary += `ОБЩАЯ ЧАСТОТА: ${generalFrequency.value}\n`;
+                const testType = form.querySelector('input[name="test_type"]:checked');
+                let summary = "";
+
+                if (testType && testType.value === 'menopause') {
+                    summary = "РЕЗУЛЬТАТЫ ТЕСТА ЛИБИДО В ПЕРИОД МЕНОПАУЗЫ\n\n";
+                    summary += "==============================\n\n";
+
+                    // Статус менопаузы
+                    const menopauseStatus = form.querySelector('input[name="menopause_status"]:checked');
+                    if (menopauseStatus) {
+                        summary += `СТАТУС МЕНОПАУЗЫ: ${menopauseStatus.value}\n`;
+                    }
+
+                    // Изменение либидо
+                    const libidoChange = form.querySelector('input[name="menopause_libido_change"]:checked');
+                    if (libidoChange) {
+                        summary += `ИЗМЕНЕНИЕ ЛИБИДО: ${libidoChange.value}\n`;
+                    }
+
+                    // Текущая частота
+                    const currentFreq = form.querySelector('input[name="menopause_current_frequency"]:checked');
+                    if (currentFreq) {
+                        summary += `ЧАСТОТА ЖЕЛАНИЯ: ${currentFreq.value}\n`;
+                    }
+
+                    // Интенсивность
+                    const intensity = form.querySelector('input[name="menopause_intensity"]:checked');
+                    if (intensity) {
+                        summary += `ИНТЕНСИВНОСТЬ: ${intensity.value}\n`;
+                    }
+
+                    // Физиологические изменения
+                    const physChanges = form.querySelectorAll('input[name="menopause_physical_changes"]:checked');
+                    if (physChanges.length > 0) {
+                        summary += "\nФИЗИОЛОГИЧЕСКИЕ ИЗМЕНЕНИЯ:\n";
+                        physChanges.forEach(change => {
+                            summary += `  - ${change.value}\n`;
+                        });
+                    }
+
+                    // ГЗТ
+                    const hrt = form.querySelector('input[name="menopause_hrt"]:checked');
+                    if (hrt) {
+                        summary += `\nГОРМОНАЛЬНАЯ ЗАМЕСТИТЕЛЬНАЯ ТЕРАПИЯ: ${hrt.value}\n`;
+                    }
+
+                    // Беспокойства
+                    const concerns = form.querySelector('textarea[name="menopause_concerns"]');
+                    if (concerns && concerns.value) {
+                        summary += `\nОСОБЕННОСТИ И БЕСПОКОЙСТВА: ${concerns.value}\n`;
+                    }
+
+                } else {
+                    // Стандартная версия для обычного теста
+                    summary = "РЕЗУЛЬТАТЫ ТЕСТА ЛИБИДО\n\n";
+                    summary += "==============================\n\n";
+
+                    // Собираем общие вопросы
+                    const generalFrequency = form.querySelector('input[name="general_frequency"]:checked');
+                    const generalStrength = form.querySelector('input[name="general_strength"]:checked');
+
+                    if (generalFrequency) {
+                        summary += `ОБЩАЯ ЧАСТОТА: ${generalFrequency.value}\n`;
+                    }
+                    if (generalStrength) {
+                        summary += `ОБЩАЯ СИЛА ЖЕЛАНИЯ: ${generalStrength.value}\n`;
+                    }
+
+                    summary += "\n--- ПО ПЕРИОДАМ ЦИКЛА ---\n\n";
+
+                    // Собираем ответы по периодам
+                    const periods = [
+                        { name: "От конца месячных до овуляции", prefix: "period1" },
+                        { name: "В период овуляции", prefix: "period2" },
+                        { name: "От конца овуляции до начала месячных", prefix: "period3" },
+                        { name: "В период месячных", prefix: "period4" }
+                    ];
+
+                    periods.forEach(period => {
+                        summary += `ПЕРИОД: ${period.name}\n`;
+
+                        const frequency = form.querySelector(`select[name="${period.prefix}_frequency"]`);
+                        const strength = form.querySelector(`select[name="${period.prefix}_strength"]`);
+                        const erectedDesire = form.querySelector(`select[name="${period.prefix}_erected_desire"]`);
+                        const erectedNoDesire = form.querySelector(`select[name="${period.prefix}_erected_no_desire"]`);
+
+                        if (frequency && frequency.value) summary += `  Частота: ${frequency.value}\n`;
+                        if (strength && strength.value) summary += `  Сила: ${strength.value}\n`;
+                        if (erectedDesire && erectedDesire.value) summary += `  Возбуждение (дни желания): ${erectedDesire.value}\n`;
+                        if (erectedNoDesire && erectedNoDesire.value) summary += `  Возбуждение (дни без желания): ${erectedNoDesire.value}\n`;
+
+                        summary += "\n";
+                    });
                 }
-                if (generalStrength) {
-                    summary += `ОБЩАЯ СИЛА ЖЕЛАНИЯ: ${generalStrength.value}\n`;
-                }
-                
-                summary += "\n--- ПО ПЕРИОДАМ ЦИКЛА ---\n\n";
-                
-                // Собираем ответы по периодам
-                const periods = [
-                    { name: "От конца месячных до овуляции", prefix: "period1" },
-                    { name: "В период овуляции", prefix: "period2" },
-                    { name: "От конца овуляции до начала месячных", prefix: "period3" },
-                    { name: "В период месячных", prefix: "period4" }
-                ];
-                
-                periods.forEach(period => {
-                    summary += `ПЕРИОД: ${period.name}\n`;
-                    
-                    const frequency = form.querySelector(`select[name="${period.prefix}_frequency"]`);
-                    const strength = form.querySelector(`select[name="${period.prefix}_strength"]`);
-                    const erectedDesire = form.querySelector(`select[name="${period.prefix}_erected_desire"]`);
-                    const erectedNoDesire = form.querySelector(`select[name="${period.prefix}_erected_no_desire"]`);
-                    
-                    if (frequency && frequency.value) summary += `  Частота: ${frequency.value}\n`;
-                    if (strength && strength.value) summary += `  Сила: ${strength.value}\n`;
-                    if (erectedDesire && erectedDesire.value) summary += `  Возбуждение (дни желания): ${erectedDesire.value}\n`;
-                    if (erectedNoDesire && erectedNoDesire.value) summary += `  Возбуждение (дни без желания): ${erectedNoDesire.value}\n`;
-                    
-                    summary += "\n";
-                });
-                
-                // Сезонные особенности
+
+                // Сезонные особенности (общие для обоих типов тестов)
                 const seasonal = form.querySelector('input[name="seasonal_dependency"]:checked');
                 const seasonalText = form.querySelector('textarea[name="seasonal_changes"]');
-                
+
                 if (seasonal) {
                     summary += `СЕЗОННАЯ ЗАВИСИМОСТЬ: ${seasonal.value}\n`;
                     if (seasonalText && seasonalText.value) {
                         summary += `ОПИСАНИЕ: ${seasonalText.value}\n`;
                     }
                 }
-                
+
                 summary += "==============================\n";
                 summary += "Дата заполнения: " + new Date().toLocaleString('ru-RU');
-                
+
                 return summary;
+            }
             }
 
             // Форма теста
@@ -1680,6 +1969,7 @@
     </script>
 </body>
 </html>
+
 
 
 
