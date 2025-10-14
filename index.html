@@ -1789,11 +1789,12 @@ function validateTestForm(form) {
     return isValid;
 }
 
-// Валидация формы записи
+// Валидация формы записи - ИСПРАВЛЕННАЯ ВЕРСИЯ
 function validateBookingForm(form) {
+    // ПРОВЕРКА: прошел ли пользователь тест
     const testCompleted = localStorage.getItem('testCompleted') === 'true';
     if (!testCompleted) {
-        showErrorMessage('❌ Пожалуйста, сначала пройдите тест энергии');
+        showErrorMessage('❌ Для записи на консультацию необходимо сначала пройти тест энергии');
         document.getElementById('test').scrollIntoView({ 
             behavior: 'smooth', 
             block: 'start' 
@@ -1967,12 +1968,25 @@ async function submitTestForm(form) {
     }
 }
 
-// Функция отправки формы записи
+// Функция отправки формы записи - ИСПРАВЛЕННАЯ ВЕРСИЯ
 async function submitBookingForm(form) {
     const submitBtn = form.querySelector('button[type="submit"]');
     const originalText = submitBtn.innerHTML;
     
     try {
+        // ПРОВЕРКА: прошел ли пользователь тест
+        const testCompleted = localStorage.getItem('testCompleted') === 'true';
+        
+        if (!testCompleted) {
+            showErrorMessage('❌ Для записи на консультацию необходимо сначала пройти тест энергии');
+            // Плавно прокручиваем к тесту
+            document.getElementById('test').scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
+            });
+            return false; // Останавливаем отправку формы
+        }
+        
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
         submitBtn.disabled = true;
         
@@ -2145,6 +2159,7 @@ document.head.appendChild(style);
 </script>
 </body>
 </html>
+
 
 
 
