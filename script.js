@@ -22,7 +22,10 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
-            if (navLinks) navLinks.classList.remove('active');
+            // Закрываем мобильное меню после клика
+            if (navLinks && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+            }
 
             const targetId = this.getAttribute('href');
             const target = document.querySelector(targetId);
@@ -51,135 +54,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 seasonalDescription.style.display = shouldShow ? 'block' : 'none';
             });
         });
-    }
-
-    // Создание текста-результата теста
-    function createTestSummary(form) {
-        let summary = "РЕЗУЛЬТАТЫ ТЕСТА ЛИБИДО\n\n";
-        summary += "==============================\n\n";
-        
-        const generalFrequency = form.querySelector('input[name="general_frequency"]:checked');
-        const generalStrength = form.querySelector('input[name="general_strength"]:checked');
-        
-        if (generalFrequency) summary += `ОБЩАЯ ЧАСТОТА: ${generalFrequency.value}\n`;
-        if (generalStrength) summary += `ОБЩАЯ СИЛА ЖЕЛАНИЯ: ${generalStrength.value}\n`;
-        
-        summary += "\n--- ПО ПЕРИОДАМ ЦИКЛА ---\n\n";
-        const periods = [
-            { name: "От конца месячных до овуляции", prefix: "period1" },
-            { name: "В период овуляции", prefix: "period2" },
-            { name: "От конца овуляции до начала месячных", prefix: "period3" },
-            { name: "В период месячных", prefix: "period4" }
-        ];
-        periods.forEach(period => {
-            summary += `ПЕРИОД: ${period.name}\n`;
-            const frequency = form.querySelector(`select[name="${period.prefix}_frequency"]`);
-            const strength = form.querySelector(`select[name="${period.prefix}_strength"]`);
-            const erectedDesire = form.querySelector(`select[name="${period.prefix}_erected_desire"]`);
-            const erectedNoDesire = form.querySelector(`select[name="${period.prefix}_erected_no_desire"]`);
-            if (frequency && frequency.value) summary += `  Частота: ${frequency.value}\n`;
-            if (strength && strength.value) summary += `  Сила: ${strength.value}\n`;
-            if (erectedDesire && erectedDesire.value) summary += `  Возбуждение (дни желания): ${erectedDesire.value}\n`;
-            if (erectedNoDesire && erectedNoDesire.value) summary += `  Возбуждение (дни без желания): ${erectedNoDesire.value}\n`;
-            summary += "\n";
-        });
-
-        const seasonal = form.querySelector('input[name="seasonal_dependency"]:checked');
-        const seasonalText = form.querySelector('textarea[name="seasonal_changes"]');
-        if (seasonal) {
-            summary += `СЕЗОННАЯ ЗАВИСИМОСТЬ: ${seasonal.value}\n`;
-            if (seasonalText && seasonalText.value) {
-                summary += `ОПИСАНИЕ: ${seasonalText.value}\n`;
-            }
-        }
-
-        summary += "==============================\n";
-        summary += "Дата заполнения: " + new Date().toLocaleString('ru-RU');
-        return summary;
-    }
-
-    // Универсальная отправка формы
-    async function submitForm(form, endpoint, successMessage, isTest = false) {
-        const submitBtn = form.querySelector('button[type="submit"]');
-        const originalText = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
-        submitBtn.disabled = true;
-
-        try {
-            if (isTest) {
-                const summary = createTestSummary(form);
-                const summaryField = document.getElementById('readableResults');
-                if (summaryField) summaryField.value = summary;
-            }
-
-            const formData = new FormData(form);
-            formData.append('timestamp', new Date().toLocaleString('ru-RU'));
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                body: formData,
-                headers: { 'Accept': 'application/json' }
-            });
-            const result = await response.json();
-
-            if (response.ok && result.ok) {
-                showSuccessMessage(successMessage);
-                if (isTest) {
-                    localStorage.setItem('testCompleted', 'true');
-                    showTestCompletionMessage();
-                    checkTestCompletion();
-                }
-                form.reset();
-                if (seasonalDescription) seasonalDescription.style.display = 'none';
-                seasonalRadio.forEach(radio => { radio.checked = false; });
-            } else {
-                throw new Error(result.error || 'Ошибка отправки формы');
-            }
-        } catch (error) {
-            console.error('Ошибка отправки:', error);
-            showErrorMessage('❌ Произошла ошибка при отправке. Пожалуйста, позвоните мне: +7 (905) 595-99-96');
-        } finally {
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
-        }
-    }
-
-    // Уведомления
-    function showSuccessMessage(message) {
-        const notification = document.createElement('div');
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #27ae60;
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            z-index: 10000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            animation: slideIn 0.3s ease;
-        `;
-        notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
-        document.body.appendChild(notification);
-        setTimeout(() => notification.remove(), 5000);
-    }
-
-    function showErrorMessage(message) {
-        const notification = document.createElement('div');
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #e74c3c;
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            z-index: 10000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            animation: slideIn 0.3s ease;
-        `;
-        notification.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
-        document.body.appendChild(notification);
-        setTimeout(() => notification.remove(), 5000);
     }
 
     // Запись на консультацию
@@ -212,48 +86,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Валидация теста
-    function validateTestForm(form) {
-        let isValid = true;
-        for (let i = 1; i <= 3; i++) {
-            const radio = form.querySelector(`input[name="question_${i}"]:checked`);
-            if (!radio) {
-                isValid = false;
-                highlightError(form.querySelector(`input[name="question_${i}"]`));
-            }
-        }
-        const periodFields = ['4a', '4b', '4c', '4d'];
-        periodFields.forEach(field => {
-            const select = form.querySelector(`select[name="question_${field}"]`) || form.querySelector(`select[name="question_${field}_mobile"]`);
-            if (select && !select.value) {
-                isValid = false;
-                highlightError(select);
-            }
-        });
-        const q5 = form.querySelector('input[name="question_5"]:checked');
-        if (!q5) {
-            isValid = false;
-            highlightError(form.querySelector('input[name="question_5"]'));
-        } else if (q5.value === 'Да') {
-            const q6 = form.querySelector('textarea[name="question_6"]')?.value;
-            if (!q6 || q6.trim() === '') {
-                isValid = false;
-                highlightError(form.querySelector('textarea[name="question_6"]'));
-            }
-        }
-        return isValid;
-    }
-
-    function highlightError(element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        element.style.borderColor = '#e74c3c';
-        element.style.boxShadow = '0 0 0 2px rgba(231, 76, 60, 0.2)';
-        setTimeout(() => {
-            element.style.borderColor = '';
-            element.style.boxShadow = '';
-        }, 3000);
-    }
-
     // Синхронизация мобильных полей
     document.addEventListener('change', function(e) {
         if (e.target.name && e.target.name.includes('_mobile')) {
@@ -270,21 +102,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Адаптация таблиц для мобильных
     function adaptTablesForMobile() {
-        if (window.innerWidth <= 768) {
-            document.querySelectorAll('.period-table').forEach(table => {
-                table.style.display = 'none';
-            });
-            document.querySelectorAll('.mobile-period-card').forEach(card => {
-                card.style.display = 'block';
-            });
-        } else {
-            document.querySelectorAll('.period-table').forEach(table => {
-                table.style.display = 'table';
-            });
-            document.querySelectorAll('.mobile-period-card').forEach(card => {
-                card.style.display = 'none';
-            });
-        }
+        const isMobile = window.innerWidth <= 768;
+        document.querySelectorAll('.period-table').forEach(table => {
+            table.style.display = isMobile ? 'none' : 'table';
+        });
+        document.querySelectorAll('.mobile-period-card').forEach(card => {
+            card.style.display = isMobile ? 'block' : 'none';
+        });
     }
     window.addEventListener('load', adaptTablesForMobile);
     window.addEventListener('resize', adaptTablesForMobile);
@@ -305,25 +129,148 @@ document.addEventListener('DOMContentLoaded', function() {
         section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         observer.observe(section);
     });
-
-    // Управление состоянием прохождения теста
-    function checkTestCompletion() {
-        const testCompleted = localStorage.getItem('testCompleted') === 'true';
-        const testRequiredMessage = document.getElementById('testRequiredMessage');
-        const bookingSubmitBtn = document.getElementById('bookingSubmitBtn');
-        if (testRequiredMessage) testRequiredMessage.style.display = testCompleted ? 'none' : 'block';
-        if (bookingSubmitBtn) {
-            bookingSubmitBtn.disabled = !testCompleted;
-            bookingSubmitBtn.title = testCompleted ? '' : 'Сначала пройдите тест либидо';
-        }
-    }
-
-    function showTestCompletionMessage() {
-        const message = document.getElementById('testCompletionMessage');
-        if (message) {
-            message.style.display = 'block';
-            message.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-    }
 });
+
+// --- Вспомогательные функции ---
+
+// Создание текста-результата теста
+function createTestSummary(form) {
+    let summary = "РЕЗУЛЬТАТЫ ТЕСТА ЛИБИДО\n\n==============================\n\n";
+    const generalFrequency = form.querySelector('input[name="general_frequency"]:checked');
+    const generalStrength = form.querySelector('input[name="general_strength"]:checked');
+    if (generalFrequency) summary += `ОБЩАЯ ЧАСТОТА: ${generalFrequency.value}\n`;
+    if (generalStrength) summary += `ОБЩАЯ СИЛА ЖЕЛАНИЯ: ${generalStrength.value}\n`;
+    summary += "\n--- ПО ПЕРИОДАМ ЦИКЛА ---\n\n";
+    const periods = [
+        { name: "От конца месячных до овуляции", prefix: "period1" },
+        { name: "В период овуляции", prefix: "period2" },
+        { name: "От конца овуляции до начала месячных", prefix: "period3" },
+        { name: "В период месячных", prefix: "period4" }
+    ];
+    periods.forEach(p => {
+        summary += `ПЕРИОД: ${p.name}\n`;
+        const f = form.querySelector(`select[name="${p.prefix}_frequency"]`);
+        const s = form.querySelector(`select[name="${p.prefix}_strength"]`);
+        const ed = form.querySelector(`select[name="${p.prefix}_erected_desire"]`);
+        const end = form.querySelector(`select[name="${p.prefix}_erected_no_desire"]`);
+        if (f && f.value) summary += `  Частота: ${f.value}\n`;
+        if (s && s.value) summary += `  Сила: ${s.value}\n`;
+        if (ed && ed.value) summary += `  Возбуждение (дни желания): ${ed.value}\n`;
+        if (end && end.value) summary += `  Возбуждение (дни без желания): ${end.value}\n`;
+        summary += "\n";
+    });
+    const seasonal = form.querySelector('input[name="seasonal_dependency"]:checked');
+    if (seasonal) {
+        summary += `СЕЗОННАЯ ЗАВИСИМОСТЬ: ${seasonal.value}\n`;
+        const seasonalText = form.querySelector('textarea[name="seasonal_changes"]');
+        if (seasonalText && seasonalText.value) summary += `ОПИСАНИЕ: ${seasonalText.value}\n`;
+    }
+    summary += "==============================\nДата заполнения: " + new Date().toLocaleString('ru-RU');
+    return summary;
+}
+
+// Универсальная отправка формы
+async function submitForm(form, endpoint, successMessage, isTest = false) {
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+    submitBtn.disabled = true;
+    try {
+        if (isTest) {
+            const summaryField = document.getElementById('readableResults');
+            if (summaryField) summaryField.value = createTestSummary(form);
+        }
+        const formData = new FormData(form);
+        formData.append('timestamp', new Date().toLocaleString('ru-RU'));
+        const response = await fetch(endpoint, {
+            method: 'POST', body: formData, headers: { 'Accept': 'application/json' }
+        });
+        const result = await response.json();
+        if (!response.ok || !result.ok) throw new Error(result.error || 'Ошибка на сервере');
+        showSuccessMessage(successMessage);
+        if (isTest) {
+            localStorage.setItem('testCompleted', 'true');
+            showTestCompletionMessage();
+            checkTestCompletion();
+        }
+        form.reset();
+        const seasonalDescription = document.getElementById('seasonalDescription');
+        if (seasonalDescription) seasonalDescription.style.display = 'none';
+        document.querySelectorAll('input[name="seasonal_dependency"]').forEach(r => r.checked = false);
+    } catch (error) {
+        console.error('Ошибка отправки формы:', error);
+        showErrorMessage('❌ Ошибка отправки. Позвоните: +7 (905) 595-99-96');
+    } finally {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }
+}
+
+// Уведомления
+function showSuccessMessage(message) {
+    const el = document.createElement('div');
+    el.className = 'notification success';
+    el.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 5000);
+}
+function showErrorMessage(message) {
+    const el = document.createElement('div');
+    el.className = 'notification error';
+    el.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 8000);
+}
+
+// Валидация теста
+function validateTestForm(form) {
+    let isValid = true;
+    const requiredFields = form.querySelectorAll('[required]');
+    requiredFields.forEach(field => {
+        let fieldValid = true;
+        if (field.type === 'radio' || field.type === 'checkbox') {
+            const groupName = field.name;
+            if (!form.querySelector(`input[name="${groupName}"]:checked`)) {
+                fieldValid = false;
+            }
+        } else if (!field.value.trim()) {
+            fieldValid = false;
+        }
+
+        if (!fieldValid) {
+            isValid = false;
+            highlightError(field);
+        }
+    });
+    return isValid;
+}
+
+function highlightError(element) {
+    const formGroup = element.closest('.question-block, .options-grid, .form-group');
+    if (formGroup) {
+        formGroup.classList.add('error-highlight');
+        formGroup.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => formGroup.classList.remove('error-highlight'), 3000);
+    }
+}
+
+// Управление состоянием прохождения теста
+function checkTestCompletion() {
+    const testCompleted = localStorage.getItem('testCompleted') === 'true';
+    const testRequiredMessage = document.getElementById('testRequiredMessage');
+    const bookingSubmitBtn = document.getElementById('bookingSubmitBtn');
+    if (testRequiredMessage) testRequiredMessage.style.display = testCompleted ? 'none' : 'block';
+    if (bookingSubmitBtn) {
+        bookingSubmitBtn.disabled = !testCompleted;
+        bookingSubmitBtn.title = testCompleted ? '' : 'Сначала пройдите тест либидо';
+    }
+}
+
+function showTestCompletionMessage() {
+    const message = document.getElementById('testCompletionMessage');
+    if (message) {
+        message.style.display = 'block';
+        message.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+}
 
