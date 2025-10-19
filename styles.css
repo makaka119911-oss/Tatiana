@@ -575,7 +575,153 @@ section.visible {
     margin-right: 1rem;
     transform: scale(1.2);
 }
+/* Улучшенная мобильная версия */
+/* Мягкая цветовая палитра для мобильных */
+.hero {
+  background: linear-gradient(135deg, rgba(157, 107, 126, 0.9) 0%, rgba(139, 107, 158, 0.85) 100%) !important;
+}
 
+/* Плавные анимации появления */
+.service-card,
+.power-item,
+.step,
+.test-section {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.service-card.visible,
+.power-item.visible,
+.step.visible,
+.test-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Улучшенное мобильное меню */
+.nav-links {
+  background: linear-gradient(135deg, #9D6B7E, #8B6B9E) !important;
+  backdrop-filter: blur(20px);
+  padding: 2rem 0;
+  transform: translateY(-100%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-links.active {
+  transform: translateY(0);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+}
+
+.nav-links li {
+  margin: 0;
+  padding: 0.8rem 2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  transition: all 0.3s ease;
+}
+
+.nav-links li:last-child {
+  border-bottom: none;
+}
+
+.nav-links li:hover {
+  background: rgba(255,255,255,0.1);
+  padding-left: 2.5rem;
+}
+
+/* Плавное появление героя */
+.hero-content h1 {
+  animation: softSlideUp 1s ease-out 0.2s both;
+}
+
+.hero-content p {
+  animation: softSlideUp 1s ease-out 0.4s both;
+}
+
+.hero-content .btn {
+  animation: softSlideUp 1s ease-out 0.6s both;
+}
+
+@keyframes softSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Улучшенные карточки услуг */
+.service-card {
+  background: #FFFAF7;
+  border: 1px solid #F5D8DF;
+  margin: 1rem 0;
+  transform-origin: center;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.service-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 15px 30px rgba(157, 107, 126, 0.15);
+}
+
+/* Плавное раскрытие тестовых секций */
+.test-section {
+  background: #F5F0FF;
+  border-radius: 20px;
+  margin: 1.5rem 0;
+  overflow: hidden;
+  max-height: 500px;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.test-section.collapsed {
+  max-height: 80px;
+  background: #FFFAF7;
+}
+
+/* Улучшенные кнопки */
+.btn {
+  background: linear-gradient(135deg, #9D6B7E, #8B6B9E);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn:hover::before {
+  left: 100%;
+}
+
+/* Плавный скролл */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Улучшенная навигация по тесту */
+.period-section {
+  background: #FFFAF7;
+  border: 1px solid #F5D8DF;
+  margin: 1rem 0;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.period-section:active {
+  transform: scale(0.98);
+}
 /* Period Sections for New Test Structure */
 .period-section {
     background: #f8f9fa;
