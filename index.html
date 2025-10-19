@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Татьяна Солнечная - Раскрытие женской силы | Пробуди свою сакральную женскую силу</title>
+    <title>Татьяна Солнечная - Раскрытие женской силы | Пробуждение сексуальной энергии</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* ===== ОБНОВЛЕННЫЕ CSS ПЕРЕМЕННЫЕ ===== */
+        /* Обновленная цветовая палитра */
         :root {
             --deep-burgundy: #8B4352;
             --vibrant-pink: #D46A6A;
@@ -19,26 +19,18 @@
             --lavender: #E6E6FA;
             --moonlight: #F0E6FF;
             
-            /* Мобильные оптимизированные цвета */
-            --mobile-soft-bg: #FFFAF7;
-            --mobile-card-bg: #FFFFFF;
-            --mobile-border: #F5D8DF;
-            --mobile-shadow: rgba(157, 107, 126, 0.15);
-            
-            /* Анимации */
-            --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            --ease-bounce: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            /* Новые цвета для мобильной версии */
+            --mobile-soft-burgundy: #9D6B7E;
+            --mobile-soft-pink: #F5D8DF;
+            --mobile-cream: #FFFAF7;
+            --mobile-lavender: #F5F0FF;
+            --mobile-gold: #FFE8A5;
         }
 
-        /* ===== БАЗОВЫЕ СТИЛИ ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
         }
 
         body {
@@ -56,7 +48,7 @@
             padding: 0 15px;
         }
 
-        /* ===== HEADER ===== */
+        /* Header */
         header {
             background: linear-gradient(135deg, var(--deep-burgundy) 0%, var(--purple-mystic) 100%);
             color: white;
@@ -66,18 +58,7 @@
             top: 0;
             z-index: 1000;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            animation: slideDown 0.8s var(--ease-smooth);
-        }
-
-        @keyframes slideDown {
-            from {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            transition: all 0.3s ease;
         }
 
         .nav-container {
@@ -95,7 +76,10 @@
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 2rem;
+        }
+
+        .nav-links li {
+            margin-left: 2rem;
         }
 
         .nav-links a {
@@ -139,7 +123,7 @@
             transform: scale(1.1);
         }
 
-        /* ===== HERO SECTION ===== */
+        /* Hero Section */
         .hero {
             background: linear-gradient(rgba(139, 67, 82, 0.7), rgba(139, 107, 158, 0.7)), 
                         url('https://images.unsplash.com/photo-1515377905703-c4788e51af15?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
@@ -151,32 +135,12 @@
             text-align: center;
             color: white;
             padding-top: 80px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><pattern id="hearts" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse"><path fill="%23FF4081" fill-opacity="0.1" d="M50,30 C60,20 70,25 75,35 C80,45 70,55 60,65 C50,75 40,65 35,55 C30,45 40,35 50,30 Z"/></pattern></defs><rect fill="url(%23hearts)" width="1200" height="800"/></svg>');
-            animation: float 20s infinite linear;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px) translateX(0px); }
-            50% { transform: translateY(-20px) translateX(20px); }
-            100% { transform: translateY(0px) translateX(0px); }
         }
 
         .hero-content h1 {
             font-size: 3.5rem;
             margin-bottom: 1.5rem;
             text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
-            animation: softSlideUp 1s var(--ease-smooth) 0.2s both;
         }
 
         .hero-content p {
@@ -184,18 +148,6 @@
             max-width: 800px;
             margin: 0 auto 2rem;
             text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
-            animation: softSlideUp 1s var(--ease-smooth) 0.4s both;
-        }
-
-        @keyframes softSlideUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         .btn {
@@ -206,22 +158,17 @@
             border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
-            transition: all 0.3s var(--ease-smooth);
+            transition: all 0.3s ease;
             border: none;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             position: relative;
             overflow: hidden;
-            animation: softSlideUp 1s var(--ease-smooth) 0.6s both;
         }
 
         .btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .btn:active {
-            transform: translateY(-1px);
         }
 
         .btn::before {
@@ -231,7 +178,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
             transition: left 0.5s;
         }
 
@@ -249,12 +196,12 @@
             100% { transform: scale(1); }
         }
 
-        /* ===== SECTION STYLES ===== */
+        /* Section Styles */
         section {
             padding: 5rem 0;
             opacity: 0;
             transform: translateY(30px);
-            transition: all 0.8s var(--ease-smooth);
+            transition: all 0.8s ease-out;
         }
 
         section.visible {
@@ -294,7 +241,7 @@
             margin: 0 auto;
         }
 
-        /* ===== ABOUT SECTION ===== */
+        /* About Section */
         .about-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -310,13 +257,6 @@
             width: 100%;
             max-width: 500px;
             margin: 0 auto;
-            transform: perspective(1000px) rotateY(0deg);
-            transition: all 0.5s var(--ease-smooth);
-        }
-
-        .profile-img-container:hover {
-            transform: perspective(1000px) rotateY(5deg) scale(1.03);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
         }
 
         .profile-img {
@@ -349,16 +289,16 @@
         }
 
         .floating {
-            animation: floating 3s var(--ease-smooth) infinite;
+            animation: floating 3s ease-in-out infinite;
         }
 
         @keyframes floating {
-            0% { transform: translate(0, 0px); }
-            50% { transform: translate(0, -15px); }
-            100% { transform: translate(0, 0px); }
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
         }
 
-        /* ===== SERVICES SECTION ===== */
+        /* Services Section */
         .services-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -371,31 +311,20 @@
             padding: 2rem;
             text-align: center;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            transition: all 0.4s var(--ease-smooth);
+            transition: all 0.3s ease;
             border-top: 5px solid var(--vibrant-pink);
-            position: relative;
-            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
-        .service-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(45deg, var(--deep-burgundy), var(--vibrant-pink));
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.4s var(--ease-smooth);
-        }
-
-        .service-card:hover::before {
-            transform: scaleX(1);
+        .service-card.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .service-card:hover {
-            transform: translateY(-10px) scale(1.02);
+            transform: translateY(-10px);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         }
 
@@ -403,26 +332,15 @@
             font-size: 3rem;
             color: var(--vibrant-pink);
             margin-bottom: 1.5rem;
-            transition: all 0.4s var(--ease-smooth);
-            display: inline-block;
-        }
-
-        .service-card:hover .service-icon {
-            transform: scale(1.2) rotate(5deg);
         }
 
         .service-card h3 {
             color: var(--deep-burgundy);
             margin-bottom: 1rem;
             font-size: 1.5rem;
-            transition: color 0.3s;
         }
 
-        .service-card:hover h3 {
-            color: var(--vibrant-pink);
-        }
-
-        /* ===== FEMALE POWER SECTION ===== */
+        /* Female Power Section */
         .female-power {
             background: linear-gradient(135deg, var(--moonlight) 0%, var(--lavender) 100%);
             position: relative;
@@ -453,8 +371,15 @@
             text-align: center;
             backdrop-filter: blur(10px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s var(--ease-smooth);
-            border: 1px solid var(--soft-pink);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .power-item.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .power-item:hover {
@@ -473,32 +398,12 @@
             margin-bottom: 1rem;
         }
 
-        /* ===== TEST SECTION ===== */
+        /* Test Section */
         .test-container {
             background: white;
             border-radius: 20px;
             padding: 3rem;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .test-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 6px;
-            background: linear-gradient(45deg, var(--deep-burgundy), var(--vibrant-pink), var(--purple-mystic));
-            background-size: 200% 100%;
-            animation: gradientShift 3s ease infinite;
-        }
-
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
         }
 
         .test-header {
@@ -515,17 +420,14 @@
 
         .test-section {
             margin-bottom: 3rem;
-            padding: 2rem;
-            background: linear-gradient(135deg, var(--cream) 0%, var(--light-gold) 100%);
-            border-radius: 15px;
-            border-left: 5px solid var(--vibrant-pink);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s var(--ease-smooth);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            max-height: 500px;
+            overflow: hidden;
         }
 
-        .test-section:hover {
-            transform: translateX(5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        .test-section.collapsed {
+            max-height: 80px;
+            background: var(--mobile-cream);
         }
 
         .test-section h4 {
@@ -535,6 +437,7 @@
             border-bottom: 1px solid #eee;
             display: flex;
             align-items: center;
+            cursor: pointer;
         }
 
         .test-section h4 i {
@@ -546,26 +449,11 @@
             padding: 1.5rem;
             background: #f9f9f9;
             border-radius: 10px;
-            border: 2px solid transparent;
-            transition: all 0.3s var(--ease-smooth);
-        }
-
-        .question-block:hover {
-            border-color: var(--soft-pink);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
         }
 
         .question-block h5 {
             margin-bottom: 1rem;
             color: var(--dark-text);
-            display: flex;
-            align-items: center;
-        }
-
-        .question-block h5::before {
-            content: '❖';
-            color: var(--vibrant-pink);
-            margin-right: 8px;
         }
 
         .options-grid {
@@ -581,20 +469,18 @@
             background: white;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s var(--ease-smooth);
+            transition: all 0.2s ease;
             border: 1px solid #eee;
+            min-height: 44px;
         }
 
         .option-item:hover {
             background: var(--lavender);
             border-color: var(--purple-mystic);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
         }
 
         .option-item input {
             margin-right: 10px;
-            transform: scale(1.2);
         }
 
         .period-section {
@@ -603,11 +489,6 @@
             padding: 1.5rem;
             margin-bottom: 1.5rem;
             border: 1px solid var(--soft-pink);
-            transition: all 0.3s ease;
-        }
-
-        .period-section:active {
-            transform: scale(0.98);
         }
 
         .period-title {
@@ -674,21 +555,9 @@
             margin: 1rem 0;
             text-align: center;
             display: none;
-            animation: slideIn 0.5s var(--ease-smooth);
         }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* ===== PROCESS SECTION ===== */
+        /* Process Section */
         .process-steps {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -702,12 +571,19 @@
             text-align: center;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
             position: relative;
-            transition: all 0.4s var(--ease-smooth);
-            border: 1px solid var(--soft-pink);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .step.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .step:hover {
-            transform: translateY(-10px) scale(1.02);
+            transform: translateY(-10px);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         }
 
@@ -723,12 +599,6 @@
             font-size: 1.5rem;
             font-weight: bold;
             margin: 0 auto 1.5rem;
-            box-shadow: 0 8px 20px rgba(139, 67, 82, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .step:hover .step-number {
-            transform: scale(1.1) rotate(10deg);
         }
 
         .step h3 {
@@ -736,7 +606,7 @@
             margin-bottom: 1rem;
         }
 
-        /* ===== CONTACT SECTION ===== */
+        /* Contact Section */
         .contact-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -748,23 +618,12 @@
             border-radius: 20px;
             padding: 2rem;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--soft-pink);
         }
 
         .contact-item {
             display: flex;
             align-items: center;
             margin-bottom: 2rem;
-            padding: 1.2rem;
-            border-radius: 15px;
-            transition: all 0.3s var(--ease-smooth);
-            background: var(--cream);
-        }
-
-        .contact-item:hover {
-            background: var(--light-gold);
-            transform: translateX(10px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         }
 
         .contact-icon {
@@ -778,11 +637,6 @@
             justify-content: center;
             font-size: 1.5rem;
             margin-right: 1.5rem;
-            transition: transform 0.3s ease;
-        }
-
-        .contact-item:hover .contact-icon {
-            transform: scale(1.2) rotate(10deg);
         }
 
         .contact-text h4 {
@@ -795,12 +649,10 @@
             border-radius: 20px;
             padding: 2rem;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--soft-pink);
         }
 
         .form-group {
             margin-bottom: 1.5rem;
-            position: relative;
         }
 
         .form-group label {
@@ -808,7 +660,6 @@
             margin-bottom: 0.5rem;
             color: var(--dark-text);
             font-weight: 500;
-            transition: color 0.3s;
         }
 
         .form-group input,
@@ -828,10 +679,9 @@
             outline: none;
             border-color: var(--purple-mystic);
             box-shadow: 0 0 0 3px rgba(139, 107, 158, 0.2);
-            transform: translateY(-2px);
         }
 
-        /* ===== FOOTER ===== */
+        /* Footer */
         footer {
             background: linear-gradient(135deg, var(--deep-burgundy) 0%, var(--purple-mystic) 100%);
             color: white;
@@ -854,10 +704,84 @@
             margin-bottom: 0.5rem;
         }
 
-        /* ===== МОБИЛЬНЫЕ СТИЛИ ===== */
-        @media (max-width: 992px) {
+        /* Улучшенная мобильная версия */
+        @media (max-width: 768px) {
+            /* Мягкая цветовая схема для мобильных */
+            body {
+                font-size: 16px;
+                line-height: 1.6;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: linear-gradient(135deg, var(--mobile-soft-burgundy), var(--purple-mystic));
+                flex-direction: column;
+                padding: 1rem 0;
+                transform: translateY(-100%);
+                transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                backdrop-filter: blur(20px);
+                z-index: 1001;
+            }
+            
+            .nav-links.active {
+                display: flex;
+                transform: translateY(0);
+                box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            }
+            
+            .nav-links li {
+                margin: 0;
+                text-align: center;
+                padding: 0.8rem 0;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+                transition: all 0.3s ease;
+            }
+            
+            .nav-links li:last-child {
+                border-bottom: none;
+            }
+            
+            .nav-links li:hover {
+                background: rgba(255,255,255,0.1);
+                padding-left: 1.5rem;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+                z-index: 1002;
+            }
+            
             .hero-content h1 {
-                font-size: 2.8rem;
+                font-size: 2.2rem;
+                animation: softSlideUp 1s ease-out 0.2s both;
+            }
+            
+            .hero-content p {
+                font-size: 1.1rem;
+                animation: softSlideUp 1s ease-out 0.4s both;
+            }
+
+            .btn {
+                animation: softSlideUp 1s ease-out 0.6s both;
+            }
+
+            @keyframes softSlideUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(40px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
             }
             
             .about-content {
@@ -867,61 +791,7 @@
             .contact-container {
                 grid-template-columns: 1fr;
             }
-        }
-
-        @media (max-width: 768px) {
-            /* Мобильная навигация */
-            .nav-links {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background: linear-gradient(135deg, var(--deep-burgundy) 0%, var(--purple-mystic) 100%);
-                flex-direction: column;
-                padding: 1rem 0;
-                z-index: 1001;
-                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-                transform: translateY(-100%);
-                transition: transform 0.4s var(--ease-smooth);
-            }
             
-            .nav-links.active {
-                display: flex;
-                transform: translateY(0);
-            }
-            
-            .nav-links li {
-                margin: 0;
-                text-align: center;
-                padding: 0.8rem 0;
-                border-bottom: 1px solid rgba(255,255,255,0.1);
-            }
-            
-            .nav-links li:last-child {
-                border-bottom: none;
-            }
-            
-            .mobile-menu-btn {
-                display: block;
-                z-index: 1002;
-            }
-            
-            /* Мобильный герой */
-            .hero-content h1 {
-                font-size: 2.2rem;
-            }
-            
-            .hero-content p {
-                font-size: 1.1rem;
-            }
-            
-            /* Мобильные секции */
-            .section-title h2 {
-                font-size: 2rem;
-            }
-            
-            /* Мобильный тест */
             .period-questions {
                 grid-template-columns: 1fr;
             }
@@ -929,66 +799,69 @@
             .period-section {
                 padding: 1rem;
             }
-            
-            .test-container {
-                padding: 1.5rem;
+
+            /* Улучшенные карточки услуг */
+            .service-card {
+                background: var(--mobile-cream);
+                border: 1px solid var(--mobile-soft-pink);
+                margin: 1rem 0;
+                transform-origin: center;
+                transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             }
-            
-            .options-grid {
-                grid-template-columns: 1fr;
+
+            .service-card:hover {
+                transform: scale(1.02);
+                box-shadow: 0 15px 30px rgba(157, 107, 126, 0.15);
             }
-            
-            /* Мобильные карточки */
-            .service-card,
-            .power-item,
-            .step,
+
+            /* Плавное раскрытие тестовых секций */
             .test-section {
-                opacity: 0;
-                transform: translateY(30px);
-                transition: all 0.6s var(--ease-smooth);
+                background: var(--mobile-lavender);
+                border-radius: 20px;
+                margin: 1.5rem 0;
+                overflow: hidden;
             }
-            
-            .service-card.visible,
-            .power-item.visible,
-            .step.visible,
-            .test-section.visible {
-                opacity: 1;
-                transform: translateY(0);
+
+            .test-section.collapsed {
+                background: var(--mobile-cream);
             }
-            
-            /* Задержки для анимации карточек */
-            .service-card:nth-child(1) { transition-delay: 0.1s; }
-            .service-card:nth-child(2) { transition-delay: 0.2s; }
-            .service-card:nth-child(3) { transition-delay: 0.3s; }
-            .service-card:nth-child(4) { transition-delay: 0.4s; }
-            .service-card:nth-child(5) { transition-delay: 0.5s; }
-            .service-card:nth-child(6) { transition-delay: 0.6s; }
-            
-            /* Мобильные цвета */
-            body {
-                background: var(--mobile-soft-bg);
-            }
-            
-            .service-card,
-            .power-item,
-            .step {
-                background: var(--mobile-card-bg);
-                border: 1px solid var(--mobile-border);
-                box-shadow: 0 8px 25px var(--mobile-shadow);
-            }
-            
-            .hero {
-                background: linear-gradient(135deg, rgba(157, 107, 126, 0.9) 0%, rgba(139, 107, 158, 0.85) 100%) !important;
-            }
-            
-            /* Мобильные кнопки */
+
+            /* Улучшенные кнопки */
             .btn {
-                transform: scale(0.98);
-                transition: all 0.3s var(--ease-smooth);
+                background: linear-gradient(135deg, var(--mobile-soft-burgundy), var(--purple-mystic));
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                position: relative;
+                overflow: hidden;
             }
-            
-            .btn:active {
-                transform: scale(0.95);
+
+            /* Плавный скролл */
+            html {
+                scroll-behavior: smooth;
+            }
+
+            /* Улучшенная навигация по тесту */
+            .period-section {
+                background: var(--mobile-cream);
+                border: 1px solid var(--mobile-soft-pink);
+                margin: 1rem 0;
+                border-radius: 16px;
+                transition: all 0.3s ease;
+            }
+
+            .period-section:active {
+                transform: scale(0.98);
+            }
+
+            /* Улучшенные формы */
+            .form-control {
+                font-size: 16px; /* Предотвращает зум в iOS */
+                padding: 12px 15px;
+            }
+
+            /* Лучшие тапы */
+            .option-item, .btn, .service-card {
+                min-height: 44px; /* Минимальный размер для тапов */
+                cursor: pointer;
             }
         }
 
@@ -1002,55 +875,28 @@
             }
             
             .test-container {
-                padding: 1rem;
+                padding: 1.5rem;
             }
             
             .options-grid {
                 grid-template-columns: 1fr;
             }
-            
-            .section-title h2 {
-                font-size: 1.8rem;
-            }
         }
 
-        /* ===== СКРЫТЫЕ ЭЛЕМЕНТЫ ===== */
+        /* ДОБАВЛЯЕМ ЭТОТ СТИЛЬ ДЛЯ СКРЫТИЯ ФОРМЫ ЗАПИСИ */
         .hidden-form {
             display: none !important;
         }
 
-        /* ===== УВЕДОМЛЕНИЯ ===== */
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            border-radius: 10px;
-            z-index: 10000;
-            animation: slideInRight 0.5s var(--ease-smooth);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            max-width: 400px;
+        /* Индикатор загрузки */
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 2rem;
         }
 
-        .notification.success {
-            background: linear-gradient(135deg, #28a745, #20c997);
-            color: white;
-        }
-
-        .notification.error {
-            background: linear-gradient(135deg, #dc3545, #e83e8c);
-            color: white;
-        }
-
-        @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+        .loading-spinner.active {
+            display: block;
         }
     </style>
 </head>
@@ -1078,7 +924,7 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="container hero-content">
-            <h1>Пробудите свою женскую силу!</h1>
+            <h1>Пробудите свою  женскую силу!</h1>
             <p>Трансформируйте сексуальную энергию в источник творчества, магнетизма и внутренней гармонии. Станьте той женщиной, которой восхищаются и которую желают.</p>
             <a href="#test" class="btn pulse">
                 <i class="fas fa-seedling"></i> Начать пробуждение
@@ -1095,19 +941,19 @@
             </div>
             <div class="about-content">
                 <div class="profile-img-container floating">
-                    <img src="photo_2025-10-14_19-13-06.jpg" alt="Татьяна Солнечная - проводник женской силы" class="profile-img">
+                    <img src="photo_2025-10-02_17-29-50.jpg" alt="Татьяна Солнечная - проводник женской силы" class="profile-img">
                     <div class="profile-img-overlay">
                         <p>"Ваше доверие - моя главная ценность. Вместе мы раскроем вашу божественную сущность."</p>
                     </div>
                 </div>
                 <div>
                     <h3 style="color: var(--deep-burgundy); font-size: 2rem; margin-bottom: 1rem;">Татьяна Солнечная</h3>
-                    <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">Проводник женской силы с 4х-летним опытом. Помогаю женщинам пробудить свою сексуальную энергию и раскрыть внутреннюю гармонию.</p>
+                    <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">Проводник женской силы с 8-летним опытом. Помогаю женщинам пробудить свою сексуальную энергию и раскрыть внутреннюю гармонию.</p>
                     
                     <div style="background: var(--lavender); padding: 1.5rem; border-radius: 15px; margin-bottom: 1.5rem; border: 2px solid var(--soft-pink);">
                         <h4 style="color: var(--deep-burgundy); margin-bottom: 1rem;"><i class="fas fa-graduation-cap"></i> Образование и путь:</h4>
                         <ul style="list-style: none;">
-                            <li style="margin-bottom: 0.5rem;"><i class="fas fa-university" style="color: var(--vibrant-pink); margin-right: 0.5rem;"></i> МИП, Московский институт психологии,квалификация сексолог психолог.</li>
+                            <li style="margin-bottom: 0.5rem;"><i class="fas fa-university" style="color: var(--vibrant-pink); margin-right: 0.5rem;"></i> МГУ им. Ломоносова, факультет психологии</li>
                             <li style="margin-bottom: 0.5rem;"><i class="fas fa-certificate" style="color: var(--vibrant-pink); margin-right: 0.5rem;"></i> Европейская ассоциация сексологов</li>
                             <li><i class="fas fa-heart" style="color: var(--vibrant-pink); margin-right: 0.5rem;"></i> Изучение женских энергетических практик</li>
                         </ul>
@@ -1983,527 +1829,607 @@
         </div>
     </footer>
 
-    <script>
-        // Конфигурация Telegram
-        const TELEGRAM_BOT_TOKEN = '8402206062:AAEJim1GkriKqY_o1mOo0YWSWQDdw5Qy2h0';
-        const TELEGRAM_CHAT_ID = '-1002313355102';
+<script>
+// Конфигурация Telegram
+const TELEGRAM_BOT_TOKEN = '8402206062:AAEJim1GkriKqY_o1mOo0YWSWQDdw5Qy2h0';
+const TELEGRAM_CHAT_ID = '-1002313355102';
 
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Сайт загружен');
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Сайт загружен');
 
-            // Mobile menu toggle
-            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-            const navLinks = document.querySelector('.nav-links');
+    // Mobile menu toggle
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+    const body = document.body;
+    
+    if (mobileMenuBtn && navLinks) {
+        mobileMenuBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            this.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            body.classList.toggle('menu-open');
             
-            if (mobileMenuBtn && navLinks) {
-                mobileMenuBtn.addEventListener('click', function() {
-                    navLinks.classList.toggle('active');
-                    document.body.classList.toggle('menu-open');
-                });
-            }
-
-            // Smooth scrolling
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    if (navLinks) {
-                        navLinks.classList.remove('active');
-                        document.body.classList.remove('menu-open');
-                    }
-                    
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
-                });
-            });
-
-            // Анимация появления элементов при скролле
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-
-            const observer = new IntersectionObserver(function(entries) {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        
-                        // Добавляем класс visible для карточек на мобильных
-                        if (window.innerWidth <= 768) {
-                            const cards = entry.target.querySelectorAll('.service-card, .power-item, .step, .test-section');
-                            cards.forEach((card, index) => {
-                                setTimeout(() => {
-                                    card.classList.add('visible');
-                                }, index * 100);
-                            });
-                        }
-                    }
-                });
-            }, observerOptions);
-
-            // Наблюдаем за секциями
-            document.querySelectorAll('section').forEach(section => {
-                observer.observe(section);
-            });
-
-            // Проверка прохождения теста и скрытие/показ формы записи
-            checkTestCompletion();
-
-            // Переключение типа теста
-            setupTestTypeToggle();
-
-            // Показ/скрытие поля для сезонных изменений
-            setupSeasonalField();
-
-            // Форма теста
-            const testForm = document.getElementById('libidoTestForm');
-            if (testForm) {
-                testForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    if (validateTestForm(this)) {
-                        submitTestForm(this);
-                    }
-                });
-            }
-
-            // Форма записи
-            const bookingForm = document.getElementById('bookingForm');
-            if (bookingForm) {
-                bookingForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    if (validateBookingForm(this)) {
-                        submitBookingForm(this);
-                    }
-                });
+            // Анимация иконки гамбургера
+            const icon = this.querySelector('i');
+            if (icon.classList.contains('fa-bars')) {
+                icon.classList.replace('fa-bars', 'fa-times');
+            } else {
+                icon.classList.replace('fa-times', 'fa-bars');
             }
         });
 
-        // Настройка переключения типа теста
-        function setupTestTypeToggle() {
-            const regularTest = document.getElementById('regular_test');
-            const menopauseTest = document.getElementById('menopause_test');
-            const cycleSection = document.getElementById('cycle-periods-section');
-            const menopauseSection = document.getElementById('menopause-section');
+        // Закрытие меню при клике на ссылку
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenuBtn.classList.remove('active');
+                navLinks.classList.remove('active');
+                body.classList.remove('menu-open');
+                mobileMenuBtn.querySelector('i').classList.replace('fa-times', 'fa-bars');
+            });
+        });
 
-            if (regularTest && menopauseTest && cycleSection && menopauseSection) {
-                function toggleTestType() {
-                    if (regularTest.checked) {
-                        cycleSection.style.display = 'block';
-                        menopauseSection.style.display = 'none';
-                        // Делаем поля периодов обязательными
-                        document.querySelectorAll('#cycle-periods-section [required]').forEach(el => {
-                            el.required = true;
-                        });
-                        // Делаем поля менопаузы необязательными
-                        document.querySelectorAll('#menopause-section [required]').forEach(el => {
-                            el.required = false;
-                        });
-                    } else {
-                        cycleSection.style.display = 'none';
-                        menopauseSection.style.display = 'block';
-                        // Делаем поля периодов необязательными
-                        document.querySelectorAll('#cycle-periods-section [required]').forEach(el => {
-                            el.required = false;
-                        });
-                        // Делаем поля менопаузы обязательными
-                        document.querySelectorAll('#menopause-section [required]').forEach(el => {
-                            el.required = true;
-                        });
-                    }
-                }
-                
-                regularTest.addEventListener('change', toggleTestType);
-                menopauseTest.addEventListener('change', toggleTestType);
-                
-                // Инициализация при загрузке
-                toggleTestType();
+        // Закрытие меню при клике вне его
+        document.addEventListener('click', function(e) {
+            if (!navLinks.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                mobileMenuBtn.classList.remove('active');
+                navLinks.classList.remove('active');
+                body.classList.remove('menu-open');
+                mobileMenuBtn.querySelector('i').classList.replace('fa-times', 'fa-bars');
             }
+        });
+    }
+
+    // Проверка прохождения теста и скрытие/показ формы записи
+    checkTestCompletion();
+
+    // Анимация появления элементов при скролле
+    const animatedElements = document.querySelectorAll('.service-card, .power-item, .step, section');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                // Добавляем задержку для каждого элемента
+                const delay = Array.from(animatedElements).indexOf(entry.target) * 100;
+                setTimeout(() => {
+                    entry.target.style.transitionDelay = '0s';
+                }, delay + 600);
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+
+    animatedElements.forEach(el => observer.observe(el));
+
+    // Переключение типа теста
+    setupTestTypeToggle();
+
+    // Показ/скрытие поля для сезонных изменений
+    setupSeasonalField();
+
+    // Плавное раскрытие секций теста
+    const testSections = document.querySelectorAll('.test-section');
+    testSections.forEach(section => {
+        const header = section.querySelector('h4');
+        if (header) {
+            header.style.cursor = 'pointer';
+            header.addEventListener('click', () => {
+                section.classList.toggle('collapsed');
+            });
         }
+    });
 
-        // Настройка сезонного поля
-        function setupSeasonalField() {
-            const seasonalRadio = document.querySelectorAll('input[name="seasonal_dependency"]');
-            const seasonalDescription = document.getElementById('seasonalDescription');
+    // Форма теста
+    const testForm = document.getElementById('libidoTestForm');
+    if (testForm) {
+        testForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (validateTestForm(this)) {
+                submitTestForm(this);
+            }
+        });
+    }
 
-            if (seasonalRadio.length > 0 && seasonalDescription) {
-                seasonalRadio.forEach(radio => {
-                    radio.addEventListener('change', function() {
-                        seasonalDescription.style.display = this.value === 'Да' ? 'block' : 'none';
-                    });
+    // Форма записи
+    const bookingForm = document.getElementById('bookingForm');
+    if (bookingForm) {
+        bookingForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (validateBookingForm(this)) {
+                submitBookingForm(this);
+            }
+        });
+    }
+
+    // Плавный скролл для якорных ссылок
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            if (navLinks) navLinks.classList.remove('active');
+            if (mobileMenuBtn) {
+                mobileMenuBtn.classList.remove('active');
+                mobileMenuBtn.querySelector('i').classList.replace('fa-times', 'fa-bars');
+                body.classList.remove('menu-open');
+            }
+            
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
                 });
             }
-        }
+        });
+    });
+});
 
-        // Валидация формы теста
-        function validateTestForm(form) {
-            let isValid = true;
-            
-            // Проверка возраста
-            const ageInput = document.getElementById('clientAge');
-            if (ageInput && (!ageInput.value || ageInput.value < 18 || ageInput.value > 80)) {
-                showErrorMessage('❌ Пожалуйста, укажите ваш реальный возраст (от 18 до 80 лет)');
-                ageInput.focus();
-                isValid = false;
-            }
-            
-            // Проверка обязательных полей в зависимости от типа теста
-            const isRegularTest = document.getElementById('regular_test').checked;
-            
-            if (isRegularTest) {
-                // Проверка общих вопросов для обычного теста
-                const generalFrequency = form.querySelector('input[name="general_frequency"]:checked');
-                const generalStrength = form.querySelector('input[name="general_strength"]:checked');
-                
-                if (!generalFrequency) {
-                    showErrorMessage('❌ Пожалуйста, ответьте на вопрос о частоте желания');
-                    isValid = false;
-                }
-                
-                if (!generalStrength) {
-                    showErrorMessage('❌ Пожалуйста, ответьте на вопрос о силе желания');
-                    isValid = false;
-                }
+// Настройка переключения типа теста
+function setupTestTypeToggle() {
+    const regularTest = document.getElementById('regular_test');
+    const menopauseTest = document.getElementById('menopause_test');
+    const cycleSection = document.getElementById('cycle-periods-section');
+    const menopauseSection = document.getElementById('menopause-section');
+
+    if (regularTest && menopauseTest && cycleSection && menopauseSection) {
+        function toggleTestType() {
+            if (regularTest.checked) {
+                cycleSection.style.display = 'block';
+                menopauseSection.style.display = 'none';
+                // Делаем поля периодов обязательными
+                document.querySelectorAll('#cycle-periods-section [required]').forEach(el => {
+                    el.required = true;
+                });
+                // Делаем поля менопаузы необязательными
+                document.querySelectorAll('#menopause-section [required]').forEach(el => {
+                    el.required = false;
+                });
             } else {
-                // Проверка обязательных полей для менопаузы
-                const menopauseStatus = form.querySelector('input[name="menopause_status"]:checked');
-                const menopauseLibidoChange = form.querySelector('input[name="menopause_libido_change"]:checked');
-                const menopauseCurrentFrequency = form.querySelector('input[name="menopause_current_frequency"]:checked');
-                const menopauseIntensity = form.querySelector('input[name="menopause_intensity"]:checked');
-                
-                if (!menopauseStatus) {
-                    showErrorMessage('❌ Пожалуйста, укажите ваш статус менопаузы');
-                    isValid = false;
-                }
-                
-                if (!menopauseLibidoChange) {
-                    showErrorMessage('❌ Пожалуйста, укажите, как изменилось либидо');
-                    isValid = false;
-                }
-                
-                if (!menopauseCurrentFrequency) {
-                    showErrorMessage('❌ Пожалуйста, укажите текущую частоту желания');
-                    isValid = false;
-                }
-                
-                if (!menopauseIntensity) {
-                    showErrorMessage('❌ Пожалуйста, укажите интенсивность желания');
-                    isValid = false;
-                }
-            }
-            
-            return isValid;
-        }
-
-        // Валидация формы записи
-        function validateBookingForm(form) {
-            // ПРОВЕРКА: прошел ли пользователь тест
-            const testCompleted = localStorage.getItem('testCompleted') === 'true';
-            if (!testCompleted) {
-                showErrorMessage('❌ Для записи на консультацию необходимо сначала пройти тест энергии');
-                document.getElementById('test').scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'start' 
+                cycleSection.style.display = 'none';
+                menopauseSection.style.display = 'block';
+                // Делаем поля периодов необязательными
+                document.querySelectorAll('#cycle-periods-section [required]').forEach(el => {
+                    el.required = false;
                 });
-                return false;
-            }
-            
-            const name = form.querySelector('#name');
-            const contact = form.querySelector('#contact');
-            const service = form.querySelector('#service');
-            
-            if (!name.value.trim()) {
-                showErrorMessage('❌ Пожалуйста, введите ваше имя');
-                name.focus();
-                return false;
-            }
-            
-            if (!contact.value.trim()) {
-                showErrorMessage('❌ Пожалуйста, введите контактные данные');
-                contact.focus();
-                return false;
-            }
-            
-            if (!service.value) {
-                showErrorMessage('❌ Пожалуйста, выберите формат работы');
-                service.focus();
-                return false;
-            }
-            
-            return true;
-        }
-
-        // Функция отправки формы теста
-        async function submitTestForm(form) {
-            const submitBtn = form.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            
-            try {
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
-                submitBtn.disabled = true;
-                
-                // Собираем данные формы
-                const formData = new FormData(form);
-                const data = {};
-                
-                // Преобразуем FormData в обычный объект
-                for (let [key, value] of formData.entries()) {
-                    // Обрабатываем чекбоксы для менопаузы
-                    if (key === 'menopause_physical_changes') {
-                        if (!data[key]) data[key] = [];
-                        data[key].push(value);
-                    } else {
-                        data[key] = value;
-                    }
-                }
-                
-                console.log('Данные формы:', data);
-                
-                // Форматируем красивое сообщение для Telegram с правильными переносами
-                let message = `🌸 *НОВАЯ АНКЕТА ТЕСТА ЛИБИДО* 🌸\n\n`;
-                
-                // Контактная информация
-                message += `👤 *Контактная информация:*\n`;
-                if (data.Имя_клиента) message += `   └ *Имя:* ${data.Имя_клиента}\n`;
-                if (data.Возраст) message += `   └ *Возраст:* ${data.Возраст}\n`;
-                if (data.Контактные_данные) message += `   └ *Контакты:* ${data.Контактные_данные}\n`;
-                
-                // Тип теста
-                const isRegularTest = document.getElementById('regular_test').checked;
-                message += `   └ *Тип теста:* ${isRegularTest ? 'Обычный' : 'Менопауза'}\n\n`;
-                
-                // Общие показатели
-                message += `📊 *Общие показатели:*\n`;
-                if (data.general_frequency) message += `   └ *Частота:* ${data.general_frequency}\n`;
-                if (data.general_strength) message += `   └ *Сила желания:* ${data.general_strength}\n\n`;
-                
-                if (isRegularTest) {
-                    // Данные для обычного теста
-                    message += `📅 *Периоды цикла:*\n\n`;
-                    
-                    const periods = [
-                        { name: "🌱 От конца месячных до овуляции", prefix: "period1" },
-                        { name: "🌺 В период овуляции", prefix: "period2" },
-                        { name: "🍂 От конца овуляции до начала месячных", prefix: "period3" },
-                        { name: "🌸 В период месячных", prefix: "period4" }
-                    ];
-                    
-                    periods.forEach(period => {
-                        message += `   ${period.name}:\n`;
-                        if (data[`${period.prefix}_frequency`]) message += `      └ *Частота:* ${data[`${period.prefix}_frequency`]}\n`;
-                        if (data[`${period.prefix}_strength`]) message += `      └ *Сила:* ${data[`${period.prefix}_strength`]}\n`;
-                        if (data[`${period.prefix}_erected_desire`]) message += `      └ *Возбуждение (с желанием):* ${data[`${period.prefix}_erected_desire`]}\n`;
-                        if (data[`${period.prefix}_erected_no_desire`]) message += `      └ *Возбуждение (без желания):* ${data[`${period.prefix}_erected_no_desire`]}\n`;
-                        message += `\n`;
-                    });
-                } else {
-                    // Данные для менопаузы
-                    message += `🍃 *Данные по менопаузе:*\n`;
-                    if (data.menopause_status) message += `   └ *Статус:* ${data.menopause_status}\n`;
-                    if (data.menopause_libido_change) message += `   └ *Изменение либидо:* ${data.menopause_libido_change}\n`;
-                    if (data.menopause_current_frequency) message += `   └ *Текущая частота:* ${data.menopause_current_frequency}\n`;
-                    if (data.menopause_intensity) message += `   └ *Интенсивность:* ${data.menopause_intensity}\n`;
-                    if (data.menopause_hrt) message += `   └ *ГЗТ:* ${data.menopause_hrt}\n`;
-                    if (data.menopause_physical_changes && Array.isArray(data.menopause_physical_changes)) {
-                        message += `   └ *Физические изменения:* ${data.menopause_physical_changes.join(', ')}\n`;
-                    }
-                    if (data.menopause_concerns) message += `   └ *Беспокойства:* ${data.menopause_concerns}\n\n`;
-                }
-                
-                // Сезонные особенности
-                if (data.seasonal_dependency) {
-                    message += `🌤️ *Сезонная зависимость:*\n`;
-                    message += `   └ *Наличие:* ${data.seasonal_dependency}\n`;
-                    if (data.seasonal_changes) {
-                        message += `   └ *Описание:* ${data.seasonal_changes}\n\n`;
-                    }
-                }
-                
-                message += `⏰ *Дата заполнения:* ${new Date().toLocaleString('ru-RU')}`;
-
-                console.log('Сообщение для Telegram:', message);
-
-                // Отправляем в Telegram - используем обычные переносы строк вместо \\n
-                const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        chat_id: TELEGRAM_CHAT_ID,
-                        text: message,
-                        parse_mode: 'Markdown'
-                    })
+                // Делаем поля менопаузы обязательными
+                document.querySelectorAll('#menopause-section [required]').forEach(el => {
+                    el.required = true;
                 });
-
-                const result = await response.json();
-                
-                if (!response.ok || !result.ok) {
-                    console.error('Ошибка Telegram API:', result);
-                    throw new Error(result.description || 'Ошибка отправки в Telegram');
-                }
-
-                showSuccessMessage('✅ Анкета отправлена! Теперь вы можете записаться на консультацию.');
-                
-                // Сохраняем статус прохождения теста
-                localStorage.setItem('testCompleted', 'true');
-                localStorage.setItem('testCompletionTime', new Date().toISOString());
-                
-                // Показываем сообщение о завершении теста
-                const completionMessage = document.getElementById('testCompletionMessage');
-                if (completionMessage) {
-                    completionMessage.style.display = 'block';
-                    completionMessage.scrollIntoView({ 
-                        behavior: 'smooth', 
-                        block: 'center' 
-                    });
-                }
-                
-                // Обновляем отображение формы записи
-                checkTestCompletion();
-                
-                // Сбрасываем форму
-                form.reset();
-                
-                // Сбрасываем отображение сезонного описания
-                const seasonalDescription = document.getElementById('seasonalDescription');
-                if (seasonalDescription) seasonalDescription.style.display = 'none';
-                
-            } catch (error) {
-                console.error('Ошибка отправки формы:', error);
-                showErrorMessage('❌ Ошибка отправки. Пожалуйста, свяжитесь со мной напрямую: +7 (905) 595-99-96');
-            } finally {
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
             }
         }
+        
+        regularTest.addEventListener('change', toggleTestType);
+        menopauseTest.addEventListener('change', toggleTestType);
+        
+        // Инициализация при загрузке
+        toggleTestType();
+    }
+}
 
-        // Функция отправки формы записи
-        async function submitBookingForm(form) {
-            const submitBtn = form.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
+// Настройка сезонного поля
+function setupSeasonalField() {
+    const seasonalRadio = document.querySelectorAll('input[name="seasonal_dependency"]');
+    const seasonalDescription = document.getElementById('seasonalDescription');
 
-            // ✅ СРАЗУ ПРОВЕРЯЕМ СТАТУС ТЕСТА ПРИ ЛЮБОЙ ПОПЫТКЕ ОТПРАВКИ
-            const testCompleted = localStorage.getItem('testCompleted') === 'true';
-            if (!testCompleted) {
-                showErrorMessage('❌ Для записи на консультацию необходимо сначала пройти тест энергии');
-                document.getElementById('test').scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'start' 
-                });
-                return; // Полностью останавливаем выполнение функции
-            }
-            
-            try {
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
-                submitBtn.disabled = true;
-                
-                // Собираем данные формы записи
-                const formData = new FormData(form);
-                const data = Object.fromEntries(formData.entries());
-                
-                // Формируем красивое сообщение для записи с правильными переносами
-                let bookingMessage = `💫 *НОВАЯ ЗАПИСЬ НА КОНСУЛЬТАЦИЮ!* 💫\n\n`;
-                
-                bookingMessage += `👤 *Контактные данные:*\n`;
-                bookingMessage += `   └ *Имя:* ${data.name}\n`;
-                bookingMessage += `   └ *Контакты:* ${data.contact}\n`;
-                bookingMessage += `   └ *Формат работы:* ${data.service}\n`;
-                if (data.email) bookingMessage += `   └ *Email:* ${data.email}\n`;
-                
-                if (data.message) {
-                    bookingMessage += `\n💬 *Сообщение клиента:*\n`;
-                    bookingMessage += `   └ ${data.message}\n`;
-                }
-                
-                bookingMessage += `\n⏰ *Дата заявки:* ${new Date().toLocaleString('ru-RU')}`;
-                
-                // Отправляем в Telegram - используем обычные переносы строк вместо \\n
-                const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        chat_id: TELEGRAM_CHAT_ID,
-                        text: bookingMessage,
-                        parse_mode: 'Markdown'
-                    })
-                });
+    if (seasonalRadio.length > 0 && seasonalDescription) {
+        seasonalRadio.forEach(radio => {
+            radio.addEventListener('change', function() {
+                seasonalDescription.style.display = this.value === 'Да' ? 'block' : 'none';
+            });
+        });
+    }
+}
 
-                const result = await response.json();
-                
-                if (!response.ok || !result.ok) {
-                    throw new Error(result.description || 'Ошибка отправки заявки');
-                }
-
-                showSuccessMessage('✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.');
-                form.reset();
-                
-            } catch (error) {
-                console.error('Ошибка:', error);
-                showErrorMessage('❌ Ошибка отправки заявки. Пожалуйста, свяжитесь со мной напрямую.');
-            } finally {
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            }
+// Валидация формы теста
+function validateTestForm(form) {
+    let isValid = true;
+    
+    // Проверка возраста
+    const ageInput = document.getElementById('clientAge');
+    if (ageInput && (!ageInput.value || ageInput.value < 18 || ageInput.value > 80)) {
+        showErrorMessage('❌ Пожалуйста, укажите ваш реальный возраст (от 18 до 80 лет)');
+        ageInput.focus();
+        isValid = false;
+    }
+    
+    // Проверка обязательных полей в зависимости от типа теста
+    const isRegularTest = document.getElementById('regular_test').checked;
+    
+    if (isRegularTest) {
+        // Проверка общих вопросов для обычного теста
+        const generalFrequency = form.querySelector('input[name="general_frequency"]:checked');
+        const generalStrength = form.querySelector('input[name="general_strength"]:checked');
+        
+        if (!generalFrequency) {
+            showErrorMessage('❌ Пожалуйста, ответьте на вопрос о частоте желания');
+            isValid = false;
         }
+        
+        if (!generalStrength) {
+            showErrorMessage('❌ Пожалуйста, ответьте на вопрос о силе желания');
+            isValid = false;
+        }
+    } else {
+        // Проверка обязательных полей для менопаузы
+        const menopauseStatus = form.querySelector('input[name="menopause_status"]:checked');
+        const menopauseLibidoChange = form.querySelector('input[name="menopause_libido_change"]:checked');
+        const menopauseCurrentFrequency = form.querySelector('input[name="menopause_current_frequency"]:checked');
+        const menopauseIntensity = form.querySelector('input[name="menopause_intensity"]:checked');
+        
+        if (!menopauseStatus) {
+            showErrorMessage('❌ Пожалуйста, укажите ваш статус менопаузы');
+            isValid = false;
+        }
+        
+        if (!menopauseLibidoChange) {
+            showErrorMessage('❌ Пожалуйста, укажите, как изменилось либидо');
+            isValid = false;
+        }
+        
+        if (!menopauseCurrentFrequency) {
+            showErrorMessage('❌ Пожалуйста, укажите текущую частоту желания');
+            isValid = false;
+        }
+        
+        if (!menopauseIntensity) {
+            showErrorMessage('❌ Пожалуйста, укажите интенсивность желания');
+            isValid = false;
+        }
+    }
+    
+    return isValid;
+}
 
-        // ПРОВЕРКА ПРОХОЖДЕНИЯ ТЕСТА И СКРЫТИЕ/ПОКАЗ ФОРМЫ ЗАПИСИ
-        function checkTestCompletion() {
-            const testCompleted = localStorage.getItem('testCompleted') === 'true';
-            const testRequiredMessage = document.getElementById('testRequiredMessage');
-            const bookingFormContainer = document.getElementById('bookingFormContainer');
-            
-            console.log('Статус теста:', testCompleted);
-            
-            if (testRequiredMessage && bookingFormContainer) {
-                if (testCompleted) {
-                    // Тест пройден - показываем форму, скрываем сообщение
-                    testRequiredMessage.style.display = 'none';
-                    bookingFormContainer.classList.remove('hidden-form');
-                    console.log('Показываем форму записи');
-                } else {
-                    // Тест не пройден - показываем сообщение, скрываем форму
-                    testRequiredMessage.style.display = 'block';
-                    bookingFormContainer.classList.add('hidden-form');
-                    console.log('Показываем сообщение о необходимости теста');
-                }
+// Валидация формы записи
+function validateBookingForm(form) {
+    // ПРОВЕРКА: прошел ли пользователь тест
+    const testCompleted = localStorage.getItem('testCompleted') === 'true';
+    if (!testCompleted) {
+        showErrorMessage('❌ Для записи на консультацию необходимо сначала пройти тест энергии');
+        document.getElementById('test').scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+        });
+        return false;
+    }
+    
+    const name = form.querySelector('#name');
+    const contact = form.querySelector('#contact');
+    const service = form.querySelector('#service');
+    
+    if (!name.value.trim()) {
+        showErrorMessage('❌ Пожалуйста, введите ваше имя');
+        name.focus();
+        return false;
+    }
+    
+    if (!contact.value.trim()) {
+        showErrorMessage('❌ Пожалуйста, введите контактные данные');
+        contact.focus();
+        return false;
+    }
+    
+    if (!service.value) {
+        showErrorMessage('❌ Пожалуйста, выберите формат работы');
+        service.focus();
+        return false;
+    }
+    
+    return true;
+}
+
+// Функция отправки формы теста
+async function submitTestForm(form) {
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    
+    try {
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+        submitBtn.disabled = true;
+        
+        // Собираем данные формы
+        const formData = new FormData(form);
+        const data = {};
+        
+        // Преобразуем FormData в обычный объект
+        for (let [key, value] of formData.entries()) {
+            // Обрабатываем чекбоксы для менопаузы
+            if (key === 'menopause_physical_changes') {
+                if (!data[key]) data[key] = [];
+                data[key].push(value);
             } else {
-                console.error('Не найдены элементы для управления отображением формы записи');
+                data[key] = value;
             }
         }
+        
+        console.log('Данные формы:', data);
+        
+        // Форматируем сообщение для Telegram
+        let message = `📊 *Новая анкета теста либидо*\\n\\n`;
+        
+        // Добавляем контактные данные
+        if (data.Имя_клиента) message += `*Имя:* ${data.Имя_клиента}\\n`;
+        if (data.Возраст) message += `*Возраст:* ${data.Возраст}\\n`;
+        if (data.Контактные_данные) message += `*Контакты:* ${data.Контактные_данные}\\n`;
+        
+        // Определяем тип теста
+        const isRegularTest = document.getElementById('regular_test').checked;
+        message += `*Тип теста:* ${isRegularTest ? 'Обычный' : 'Менопауза'}\\n`;
+        
+        message += `\\n*ОБЩИЕ ПОКАЗАТЕЛИ:*\\n`;
+        if (data.general_frequency) message += `• Частота: ${data.general_frequency}\\n`;
+        if (data.general_strength) message += `• Сила желания: ${data.general_strength}\\n`;
+        
+        if (isRegularTest) {
+            // Данные для обычного теста
+            message += `\\n*ПО ПЕРИОДАМ ЦИКЛА:*\\n`;
+            
+            const periods = [
+                { name: "📅 От конца месячных до овуляции", prefix: "period1" },
+                { name: "🌙 В период овуляции", prefix: "period2" },
+                { name: "🌿 От конца овуляции до начала месячных", prefix: "period3" },
+                { name: "🌸 В период месячных", prefix: "period4" }
+            ];
+            
+            periods.forEach(period => {
+                message += `\\n${period.name}:\\n`;
+                if (data[`${period.prefix}_frequency`]) message += `  Частота: ${data[`${period.prefix}_frequency`]}\\n`;
+                if (data[`${period.prefix}_strength`]) message += `  Сила: ${data[`${period.prefix}_strength`]}\\n`;
+                if (data[`${period.prefix}_erected_desire`]) message += `  Возбуждение (с желанием): ${data[`${period.prefix}_erected_desire`]}\\n`;
+                if (data[`${period.prefix}_erected_no_desire`]) message += `  Возбуждение (без желания): ${data[`${period.prefix}_erected_no_desire`]}\\n`;
+            });
+        } else {
+            // Данные для менопаузы
+            message += `\\n*ДАННЫЕ ПО МЕНОПАУЗЕ:*\\n`;
+            if (data.menopause_status) message += `• Статус: ${data.menopause_status}\\n`;
+            if (data.menopause_libido_change) message += `• Изменение либидо: ${data.menopause_libido_change}\\n`;
+            if (data.menopause_current_frequency) message += `• Текущая частота: ${data.menopause_current_frequency}\\n`;
+            if (data.menopause_intensity) message += `• Интенсивность: ${data.menopause_intensity}\\n`;
+            if (data.menopause_hrt) message += `• ГЗТ: ${data.menopause_hrt}\\n`;
+            if (data.menopause_physical_changes && Array.isArray(data.menopause_physical_changes)) {
+                message += `• Физические изменения: ${data.menopause_physical_changes.join(', ')}\\n`;
+            }
+            if (data.menopause_concerns) message += `• Беспокойства: ${data.menopause_concerns}\\n`;
+        }
+        
+        // Добавляем сезонные особенности
+        if (data.seasonal_dependency) {
+            message += `\\n*🌤️ Сезонная зависимость:* ${data.seasonal_dependency}\\n`;
+            if (data.seasonal_changes) {
+                message += `Описание: ${data.seasonal_changes}\\n`;
+            }
+        }
+        
+        message += `\\n*📅 Дата заполнения:* ${new Date().toLocaleString('ru-RU')}`;
 
-        // Уведомления
-        function showSuccessMessage(message) {
-            const notification = document.createElement('div');
-            notification.className = 'notification success';
-            notification.innerHTML = `<i class="fas fa-check-circle" style="margin-right: 8px;"></i> ${message}`;
-            document.body.appendChild(notification);
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.parentNode.removeChild(notification);
-                }
-            }, 5000);
+        console.log('Сообщение для Telegram:', message);
+
+        // Отправляем в Telegram
+        const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                chat_id: TELEGRAM_CHAT_ID,
+                text: message,
+                parse_mode: 'Markdown'
+            })
+        });
+
+        const result = await response.json();
+        
+        if (!response.ok || !result.ok) {
+            console.error('Ошибка Telegram API:', result);
+            throw new Error(result.description || 'Ошибка отправки в Telegram');
         }
 
-        function showErrorMessage(message) {
-            const notification = document.createElement('div');
-            notification.className = 'notification error';
-            notification.innerHTML = `<i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i> ${message}`;
-            document.body.appendChild(notification);
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.parentNode.removeChild(notification);
-                }
-            }, 8000);
+        showSuccessMessage('✅ Анкета отправлена! Теперь вы можете записаться на консультацию.');
+        
+        // Сохраняем статус прохождения теста
+        localStorage.setItem('testCompleted', 'true');
+        localStorage.setItem('testCompletionTime', new Date().toISOString());
+        
+        // Показываем сообщение о завершении теста
+        const completionMessage = document.getElementById('testCompletionMessage');
+        if (completionMessage) {
+            completionMessage.style.display = 'block';
+            completionMessage.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+            });
         }
-    </script>
+        
+        // Обновляем отображение формы записи
+        checkTestCompletion();
+        
+        // Сбрасываем форму
+        form.reset();
+        
+        // Сбрасываем отображение сезонного описания
+        const seasonalDescription = document.getElementById('seasonalDescription');
+        if (seasonalDescription) seasonalDescription.style.display = 'none';
+        
+    } catch (error) {
+        console.error('Ошибка отправки формы:', error);
+        showErrorMessage('❌ Ошибка отправки. Пожалуйста, свяжитесь со мной напрямую: +7 (905) 595-99-96');
+    } finally {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }
+}
+
+// Функция отправки формы записи
+async function submitBookingForm(form) {
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+
+    // ✅ СРАЗУ ПРОВЕРЯЕМ СТАТУС ТЕСТА ПРИ ЛЮБОЙ ПОПЫТКЕ ОТПРАВКИ
+    const testCompleted = localStorage.getItem('testCompleted') === 'true';
+    if (!testCompleted) {
+        showErrorMessage('❌ Для записи на консультацию необходимо сначала пройти тест энергии');
+        document.getElementById('test').scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+        });
+        return; // Полностью останавливаем выполнение функции
+    }
+    
+    try {
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+        submitBtn.disabled = true;
+        
+        // Собираем данные формы записи
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        
+        // Формируем сообщение для записи
+        let bookingMessage = `📅 *Новая запись на консультацию!*\\n\\n`;
+        bookingMessage += `*Имя:* ${data.name}\\n`;
+        bookingMessage += `*Контакты:* ${data.contact}\\n`;
+        bookingMessage += `*Формат работы:* ${data.service}\\n`;
+        if (data.email) bookingMessage += `*Email:* ${data.email}\\n`;
+        if (data.message) {
+            bookingMessage += `*Сообщение:* ${data.message}\\n`;
+        }
+        bookingMessage += `\\n*Дата заявки:* ${new Date().toLocaleString('ru-RU')}`;
+        
+        // Отправляем в Telegram
+        const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                chat_id: TELEGRAM_CHAT_ID,
+                text: bookingMessage,
+                parse_mode: 'Markdown'
+            })
+        });
+
+        const result = await response.json();
+        
+        if (!response.ok || !result.ok) {
+            throw new Error(result.description || 'Ошибка отправки заявки');
+        }
+
+        showSuccessMessage('✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.');
+        form.reset();
+        
+    } catch (error) {
+        console.error('Ошибка:', error);
+        showErrorMessage('❌ Ошибка отправки заявки. Пожалуйста, свяжитесь со мной напрямую.');
+    } finally {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }
+}
+
+// ПРОВЕРКА ПРОХОЖДЕНИЯ ТЕСТА И СКРЫТИЕ/ПОКАЗ ФОРМЫ ЗАПИСИ
+function checkTestCompletion() {
+    const testCompleted = localStorage.getItem('testCompleted') === 'true';
+    const testRequiredMessage = document.getElementById('testRequiredMessage');
+    const bookingFormContainer = document.getElementById('bookingFormContainer');
+    
+    console.log('Статус теста:', testCompleted);
+    
+    if (testRequiredMessage && bookingFormContainer) {
+        if (testCompleted) {
+            // Тест пройден - показываем форму, скрываем сообщение
+            testRequiredMessage.style.display = 'none';
+            bookingFormContainer.classList.remove('hidden-form');
+            console.log('Показываем форму записи');
+        } else {
+            // Тест не пройден - показываем сообщение, скрываем форму
+            testRequiredMessage.style.display = 'block';
+            bookingFormContainer.classList.add('hidden-form');
+            console.log('Показываем сообщение о необходимости теста');
+        }
+    } else {
+        console.error('Не найдены элементы для управления отображением формы записи');
+    }
+}
+
+// Уведомления
+function showSuccessMessage(message) {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+        padding: 15px 20px;
+        border-radius: 10px;
+        z-index: 10000;
+        animation: slideInRight 0.5s ease-out;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        max-width: 400px;
+    `;
+    notification.innerHTML = `<i class="fas fa-check-circle" style="margin-right: 8px;"></i> ${message}`;
+    document.body.appendChild(notification);
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+        }
+    }, 5000);
+}
+
+function showErrorMessage(message) {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #dc3545, #e83e8c);
+        color: white;
+        padding: 15px 20px;
+        border-radius: 10px;
+        z-index: 10000;
+        animation: slideInRight 0.5s ease-out;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        max-width: 400px;
+    `;
+    notification.innerHTML = `<i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i> ${message}`;
+    document.body.appendChild(notification);
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+        }
+    }, 8000);
+}
+
+// Добавляем CSS для анимации уведомлений
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes softSlideUp {
+        from {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+`;
+document.head.appendChild(style);
+</script>
 </body>
 </html>
+
 
 
 
