@@ -1893,27 +1893,27 @@ async function submitTestForm(form) {
         
         console.log('Данные формы:', data);
         
-        // Форматируем красивое сообщение для Telegram
-        let message = `🌸 *НОВАЯ АНКЕТА ТЕСТА ЛИБИДО* 🌸\\n\\n`;
+        // Форматируем красивое сообщение для Telegram с правильными переносами
+        let message = `🌸 *НОВАЯ АНКЕТА ТЕСТА ЛИБИДО* 🌸\n\n`;
         
         // Контактная информация
-        message += `👤 *Контактная информация:*\\n`;
-        if (data.Имя_клиента) message += `   └ *Имя:* ${data.Имя_клиента}\\n`;
-        if (data.Возраст) message += `   └ *Возраст:* ${data.Возраст}\\n`;
-        if (data.Контактные_данные) message += `   └ *Контакты:* ${data.Контактные_данные}\\n`;
+        message += `👤 *Контактная информация:*\n`;
+        if (data.Имя_клиента) message += `   └ *Имя:* ${data.Имя_клиента}\n`;
+        if (data.Возраст) message += `   └ *Возраст:* ${data.Возраст}\n`;
+        if (data.Контактные_данные) message += `   └ *Контакты:* ${data.Контактные_данные}\n`;
         
         // Тип теста
         const isRegularTest = document.getElementById('regular_test').checked;
-        message += `   └ *Тип теста:* ${isRegularTest ? 'Обычный' : 'Менопауза'}\\n\\n`;
+        message += `   └ *Тип теста:* ${isRegularTest ? 'Обычный' : 'Менопауза'}\n\n`;
         
         // Общие показатели
-        message += `📊 *Общие показатели:*\\n`;
-        if (data.general_frequency) message += `   └ *Частота:* ${data.general_frequency}\\n`;
-        if (data.general_strength) message += `   └ *Сила желания:* ${data.general_strength}\\n\\n`;
+        message += `📊 *Общие показатели:*\n`;
+        if (data.general_frequency) message += `   └ *Частота:* ${data.general_frequency}\n`;
+        if (data.general_strength) message += `   └ *Сила желания:* ${data.general_strength}\n\n`;
         
         if (isRegularTest) {
             // Данные для обычного теста
-            message += `📅 *Периоды цикла:*\\n\\n`;
+            message += `📅 *Периоды цикла:*\n\n`;
             
             const periods = [
                 { name: "🌱 От конца месячных до овуляции", prefix: "period1" },
@@ -1923,33 +1923,33 @@ async function submitTestForm(form) {
             ];
             
             periods.forEach(period => {
-                message += `   ${period.name}:\\n`;
-                if (data[`${period.prefix}_frequency`]) message += `      └ *Частота:* ${data[`${period.prefix}_frequency`]}\\n`;
-                if (data[`${period.prefix}_strength`]) message += `      └ *Сила:* ${data[`${period.prefix}_strength`]}\\n`;
-                if (data[`${period.prefix}_erected_desire`]) message += `      └ *Возбуждение (с желанием):* ${data[`${period.prefix}_erected_desire`]}\\n`;
-                if (data[`${period.prefix}_erected_no_desire`]) message += `      └ *Возбуждение (без желания):* ${data[`${period.prefix}_erected_no_desire`]}\\n`;
-                message += `\\n`;
+                message += `   ${period.name}:\n`;
+                if (data[`${period.prefix}_frequency`]) message += `      └ *Частота:* ${data[`${period.prefix}_frequency`]}\n`;
+                if (data[`${period.prefix}_strength`]) message += `      └ *Сила:* ${data[`${period.prefix}_strength`]}\n`;
+                if (data[`${period.prefix}_erected_desire`]) message += `      └ *Возбуждение (с желанием):* ${data[`${period.prefix}_erected_desire`]}\n`;
+                if (data[`${period.prefix}_erected_no_desire`]) message += `      └ *Возбуждение (без желания):* ${data[`${period.prefix}_erected_no_desire`]}\n`;
+                message += `\n`;
             });
         } else {
             // Данные для менопаузы
-            message += `🍃 *Данные по менопаузе:*\\n`;
-            if (data.menopause_status) message += `   └ *Статус:* ${data.menopause_status}\\n`;
-            if (data.menopause_libido_change) message += `   └ *Изменение либидо:* ${data.menopause_libido_change}\\n`;
-            if (data.menopause_current_frequency) message += `   └ *Текущая частота:* ${data.menopause_current_frequency}\\n`;
-            if (data.menopause_intensity) message += `   └ *Интенсивность:* ${data.menopause_intensity}\\n`;
-            if (data.menopause_hrt) message += `   └ *ГЗТ:* ${data.menopause_hrt}\\n`;
+            message += `🍃 *Данные по менопаузе:*\n`;
+            if (data.menopause_status) message += `   └ *Статус:* ${data.menopause_status}\n`;
+            if (data.menopause_libido_change) message += `   └ *Изменение либидо:* ${data.menopause_libido_change}\n`;
+            if (data.menopause_current_frequency) message += `   └ *Текущая частота:* ${data.menopause_current_frequency}\n`;
+            if (data.menopause_intensity) message += `   └ *Интенсивность:* ${data.menopause_intensity}\n`;
+            if (data.menopause_hrt) message += `   └ *ГЗТ:* ${data.menopause_hrt}\n`;
             if (data.menopause_physical_changes && Array.isArray(data.menopause_physical_changes)) {
-                message += `   └ *Физические изменения:* ${data.menopause_physical_changes.join(', ')}\\n`;
+                message += `   └ *Физические изменения:* ${data.menopause_physical_changes.join(', ')}\n`;
             }
-            if (data.menopause_concerns) message += `   └ *Беспокойства:* ${data.menopause_concerns}\\n\\n`;
+            if (data.menopause_concerns) message += `   └ *Беспокойства:* ${data.menopause_concerns}\n\n`;
         }
         
         // Сезонные особенности
         if (data.seasonal_dependency) {
-            message += `🌤️ *Сезонная зависимость:*\\n`;
-            message += `   └ *Наличие:* ${data.seasonal_dependency}\\n`;
+            message += `🌤️ *Сезонная зависимость:*\n`;
+            message += `   └ *Наличие:* ${data.seasonal_dependency}\n`;
             if (data.seasonal_changes) {
-                message += `   └ *Описание:* ${data.seasonal_changes}\\n\\n`;
+                message += `   └ *Описание:* ${data.seasonal_changes}\n\n`;
             }
         }
         
@@ -1957,7 +1957,7 @@ async function submitTestForm(form) {
 
         console.log('Сообщение для Telegram:', message);
 
-        // Отправляем в Telegram
+        // Отправляем в Telegram - используем обычные переносы строк вместо \\n
         const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: {
@@ -2036,23 +2036,23 @@ async function submitBookingForm(form) {
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
         
-        // Формируем красивое сообщение для записи
-        let bookingMessage = `💫 *НОВАЯ ЗАПИСЬ НА КОНСУЛЬТАЦИЮ!* 💫\\n\\n`;
+        // Формируем красивое сообщение для записи с правильными переносами
+        let bookingMessage = `💫 *НОВАЯ ЗАПИСЬ НА КОНСУЛЬТАЦИЮ!* 💫\n\n`;
         
-        bookingMessage += `👤 *Контактные данные:*\\n`;
-        bookingMessage += `   └ *Имя:* ${data.name}\\n`;
-        bookingMessage += `   └ *Контакты:* ${data.contact}\\n`;
-        bookingMessage += `   └ *Формат работы:* ${data.service}\\n`;
-        if (data.email) bookingMessage += `   └ *Email:* ${data.email}\\n`;
+        bookingMessage += `👤 *Контактные данные:*\n`;
+        bookingMessage += `   └ *Имя:* ${data.name}\n`;
+        bookingMessage += `   └ *Контакты:* ${data.contact}\n`;
+        bookingMessage += `   └ *Формат работы:* ${data.service}\n`;
+        if (data.email) bookingMessage += `   └ *Email:* ${data.email}\n`;
         
         if (data.message) {
-            bookingMessage += `\\n💬 *Сообщение клиента:*\\n`;
-            bookingMessage += `   └ ${data.message}\\n`;
+            bookingMessage += `\n💬 *Сообщение клиента:*\n`;
+            bookingMessage += `   └ ${data.message}\n`;
         }
         
-        bookingMessage += `\\n⏰ *Дата заявки:* ${new Date().toLocaleString('ru-RU')}`;
+        bookingMessage += `\n⏰ *Дата заявки:* ${new Date().toLocaleString('ru-RU')}`;
         
-        // Отправляем в Telegram
+        // Отправляем в Telegram - используем обычные переносы строк вместо \\n
         const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: {
@@ -2175,6 +2175,7 @@ document.head.appendChild(style);
 </script>
 </body>
 </html>
+
 
 
 
