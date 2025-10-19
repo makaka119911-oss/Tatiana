@@ -996,8 +996,9 @@
                             <i class="fas fa-user-circle"></i> Контактные данные
                         </h4>
                         <div class="form-group">
-                            <label for="clientName"><i class="fas fa-user"></i> Ваше имя </label>
-                            <input type="text" id="clientName" name="Имя_клиента" class="form-control" placeholder="Как к вам обращаться?">
+                            <label for="clientName" class="required-field"><i class="fas fa-user"></i> Ваше имя</label>
+                            <input type="text" id="clientName" name="Имя_клиента" class="form-control" placeholder="Как к вам обращаться?" required>
+                            <div class="error-message" id="clientNameError">Пожалуйста, введите ваше имя</div>
                         </div>
                     <!-- Переключатель типа теста -->
                     <div style="background: #f0e6ff; padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem; border: 2px solid var(--purple-mystic);">
@@ -1022,12 +1023,14 @@
                         </div>
                     </div>
                         <div class="form-group">
-                            <label for="clientAge"><i class="fas fa-birthday-cake"></i> Ваш возраст</label>
-                            <input type="number" id="clientAge" name="Возраст" class="form-control" placeholder="Укажите ваш возраст" min="18" max="80">
+                            <label for="clientAge" class="required-field"><i class="fas fa-birthday-cake"></i> Ваш возраст</label>
+                            <input type="number" id="clientAge" name="Возраст" class="form-control" placeholder="Укажите ваш возраст" min="18" max="80" required>
+                            <div class="error-message" id="clientAgeError">Пожалуйста, укажите ваш возраст (от 18 до 80 лет)</div>
                         </div>
                         <div class="form-group">
-                            <label for="clientContact"><i class="fas fa-phone"></i> Телефон или Telegram </label>
-                            <input type="text" id="clientContact" name="Контактные_данные" class="form-control" placeholder="Для связи с вами">
+                            <label for="clientContact" class="required-field"><i class="fas fa-phone"></i> Телефон или Telegram</label>
+                            <input type="text" id="clientContact" name="Контактные_данные" class="form-control" placeholder="Для связи с вами" required>
+                            <div class="error-message" id="clientContactError">Пожалуйста, введите контактные данные</div>
                         </div>
                     </div>
 
@@ -1651,35 +1654,35 @@
                             <form id="bookingForm">
                                 <div class="form-group">
                                     <label for="name" class="required-field"><i class="fas fa-user"></i> Ваше имя</label>
-                                    <input type="text" id="name" name="name" required>
-                                    <div class="error-message">Пожалуйста, введите ваше имя</div>
+                                    <input type="text" id="name" name="name" class="form-control" required>
+                                    <div class="error-message" id="nameError">Пожалуйста, введите ваше имя</div>
                                 </div>
                                 
                                 <div class="form-group">
                                     <label for="contact" class="required-field"><i class="fas fa-phone"></i> Телефон или Telegram</label>
-                                    <input type="text" id="contact" name="contact" required>
-                                    <div class="error-message">Пожалуйста, введите контактные данные</div>
+                                    <input type="text" id="contact" name="contact" class="form-control" required>
+                                    <div class="error-message" id="contactError">Пожалуйста, введите контактные данные</div>
                                 </div>
                                 
                                 <div class="form-group">
                                     <label for="email"><i class="fas fa-envelope"></i> Email (для ответа)</label>
-                                    <input type="email" id="email" name="email">
+                                    <input type="email" id="email" name="email" class="form-control">
                                 </div>
                                 
                                 <div class="form-group">
                                     <label for="service" class="required-field"><i class="fas fa-concierge-bell"></i> Формат работы</label>
-                                    <select id="service" name="service" required>
+                                    <select id="service" name="service" class="form-control" required>
                                         <option value="">Выберите формат</option>
                                         <option value="Индивидуальная консультация">Индивидуальная консультация</option>
                                         <option value="Онлайн-сессия">Онлайн-сессия</option>
                                         <option value="Программа пробуждения">Программа пробуждения</option>
                                     </select>
-                                    <div class="error-message">Пожалуйста, выберите формат консультации</div>
+                                    <div class="error-message" id="serviceError">Пожалуйста, выберите формат консультации</div>
                                 </div>
                                 
                                 <div class="form-group">
                                     <label for="message"><i class="fas fa-comment"></i> Ваш запрос (необязательно)</label>
-                                    <textarea id="message" name="message" rows="4" placeholder="Что бы вы хотели изменить в своей жизни?"></textarea>
+                                    <textarea id="message" name="message" rows="4" class="form-control" placeholder="Что бы вы хотели изменить в своей жизни?"></textarea>
                                 </div>
                                 
                                 <button type="submit" class="btn" style="width: 100%;">
@@ -1914,11 +1917,32 @@
         function validateTestForm(form) {
             let isValid = true;
             
+            // Проверка обязательных полей контактной информации
+            const clientName = document.getElementById('clientName');
+            const clientAge = document.getElementById('clientAge');
+            const clientContact = document.getElementById('clientContact');
+            
+            // Сброс предыдущих ошибок
+            resetValidationErrors();
+            
+            // Проверка имени
+            if (!clientName.value.trim()) {
+                showFieldError('clientNameError', '❌ Пожалуйста, введите ваше имя');
+                clientName.classList.add('error');
+                isValid = false;
+            }
+            
             // Проверка возраста
-            const ageInput = document.getElementById('clientAge');
-            if (ageInput && (!ageInput.value || ageInput.value < 18 || ageInput.value > 80)) {
-                showErrorMessage('❌ Пожалуйста, укажите ваш реальный возраст (от 18 до 80 лет)');
-                ageInput.focus();
+            if (!clientAge.value || clientAge.value < 18 || clientAge.value > 80) {
+                showFieldError('clientAgeError', '❌ Пожалуйста, укажите ваш реальный возраст (от 18 до 80 лет)');
+                clientAge.classList.add('error');
+                isValid = false;
+            }
+            
+            // Проверка контактных данных
+            if (!clientContact.value.trim()) {
+                showFieldError('clientContactError', '❌ Пожалуйста, введите контактные данные');
+                clientContact.classList.add('error');
                 isValid = false;
             }
             
@@ -1982,29 +2006,56 @@
                 return false;
             }
             
-            const name = form.querySelector('#name');
-            const contact = form.querySelector('#contact');
-            const service = form.querySelector('#service');
+            const name = document.getElementById('name');
+            const contact = document.getElementById('contact');
+            const service = document.getElementById('service');
+            
+            // Сброс предыдущих ошибок
+            resetValidationErrors();
+            
+            let isValid = true;
             
             if (!name.value.trim()) {
-                showErrorMessage('❌ Пожалуйста, введите ваше имя');
-                name.focus();
-                return false;
+                showFieldError('nameError', '❌ Пожалуйста, введите ваше имя');
+                name.classList.add('error');
+                isValid = false;
             }
             
             if (!contact.value.trim()) {
-                showErrorMessage('❌ Пожалуйста, введите контактные данные');
-                contact.focus();
-                return false;
+                showFieldError('contactError', '❌ Пожалуйста, введите контактные данные');
+                contact.classList.add('error');
+                isValid = false;
             }
             
             if (!service.value) {
-                showErrorMessage('❌ Пожалуйста, выберите формат работы');
-                service.focus();
-                return false;
+                showFieldError('serviceError', '❌ Пожалуйста, выберите формат работы');
+                service.classList.add('error');
+                isValid = false;
             }
             
-            return true;
+            return isValid;
+        }
+
+        // Функция сброса ошибок валидации
+        function resetValidationErrors() {
+            // Сбрасываем стили ошибок
+            document.querySelectorAll('.form-control.error').forEach(el => {
+                el.classList.remove('error');
+            });
+            
+            // Скрываем все сообщения об ошибках
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.style.display = 'none';
+            });
+        }
+
+        // Функция показа ошибки для конкретного поля
+        function showFieldError(fieldId, message) {
+            const errorElement = document.getElementById(fieldId);
+            if (errorElement) {
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+            }
         }
 
         async function submitTestForm(form) {
@@ -2287,6 +2338,7 @@
     </script>
 </body>
 </html>
+
 
 
 
