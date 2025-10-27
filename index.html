@@ -353,6 +353,75 @@
             margin-bottom: 1rem;
         }
 
+        /* Registration Section */
+        .registration-container {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .registration-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .registration-header h3 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--dark-text);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--purple-mystic);
+            box-shadow: 0 0 0 3px rgba(139, 107, 158, 0.2);
+        }
+
+        .required-field::after {
+            content: " *";
+            color: #e74c3c;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .form-control.error {
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2);
+        }
+
         /* Test Section */
         .test-container {
             background: white;
@@ -460,38 +529,6 @@
             font-size: 0.95rem;
         }
 
-        .form-control {
-            width: 100%;
-            padding: 10px 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--purple-mystic);
-            box-shadow: 0 0 0 3px rgba(139, 107, 158, 0.2);
-        }
-
-        .required-field::after {
-            content: " *";
-            color: #e74c3c;
-        }
-
-        .error-message {
-            color: #e74c3c;
-            font-size: 0.8rem;
-            margin-top: 0.25rem;
-            display: none;
-        }
-
-        .form-control.error {
-            border-color: #e74c3c;
-            box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2);
-        }
-
         .test-completion-message {
             background: #fff3cd;
             border: 1px solid #ffeaa7;
@@ -586,36 +623,6 @@
             border-radius: 20px;
             padding: 2rem;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--dark-text);
-            font-weight: 500;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--purple-mystic);
-            box-shadow: 0 0 0 3px rgba(139, 107, 158, 0.2);
         }
 
         /* Footer */
@@ -802,6 +809,7 @@
                     <li><a href="#about">Обо мне</a></li>
                     <li><a href="#power">Женская сила</a></li>
                     <li><a href="#services">Направления</a></li>
+                    <li><a href="#registration">Регистрация</a></li>
                     <li><a href="#test">Тест энергии</a></li>
                     <li><a href="#process">Процесс</a></li>
                     <li><a href="#contact">Контакты</a></li>
@@ -818,9 +826,70 @@
         <div class="container hero-content">
             <h1>Пробудите свою сакральную женскую силу.</h1>
             <p>Трансформируйте сексуальную энергию в источник творчества, магнетизма и внутренней гармонии. Станьте той женщиной, которой восхищаются и которую желают.</p>
-            <a href="#test" class="btn pulse">
-                <i class="fas fa-seedling"></i> Начать пробуждение
+            <a href="#registration" class="btn pulse">
+                <i class="fas fa-user-plus"></i> Регистрация
             </a>
+        </div>
+    </section>
+
+    <!-- Registration Section -->
+    <section id="registration">
+        <div class="container">
+            <div class="section-title">
+                <h2>Регистрация</h2>
+                <p>Заполните данные для участия в исследовании</p>
+            </div>
+            <div class="registration-container">
+                <div class="registration-header">
+                    <h3>Форма регистрации</h3>
+                    <p>Все данные строго конфиденциальны</p>
+                </div>
+                
+                <form id="registrationForm">
+                    <div class="form-group">
+                        <label for="lastName" class="required-field"><i class="fas fa-user"></i> Фамилия</label>
+                        <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Введите вашу фамилию" required>
+                        <div class="error-message" id="lastNameError">Пожалуйста, введите вашу фамилию</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="firstName" class="required-field"><i class="fas fa-user"></i> Имя</label>
+                        <input type="text" id="firstName" name="firstName" class="form-control" placeholder="Введите ваше имя" required>
+                        <div class="error-message" id="firstNameError">Пожалуйста, введите ваше имя</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="age" class="required-field"><i class="fas fa-birthday-cake"></i> Возраст</label>
+                        <input type="number" id="age" name="age" class="form-control" placeholder="Укажите ваш возраст" min="18" max="80" required>
+                        <div class="error-message" id="ageError">Пожалуйста, укажите ваш возраст (от 18 до 80 лет)</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone" class="required-field"><i class="fas fa-phone"></i> Телефон</label>
+                        <input type="tel" id="phone" name="phone" class="form-control" placeholder="+7 (XXX) XXX-XX-XX" required>
+                        <div class="error-message" id="phoneError">Пожалуйста, введите ваш номер телефона</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="telegram" class="required-field"><i class="fab fa-telegram"></i> Telegram</label>
+                        <input type="text" id="telegram" name="telegram" class="form-control" placeholder="@username" required>
+                        <div class="error-message" id="telegramError">Пожалуйста, введите ваш Telegram</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="photo" class="required-field"><i class="fas fa-camera"></i> Личная фотография</label>
+                        <input type="file" id="photo" name="photo" class="form-control" accept="image/*" required>
+                        <div class="error-message" id="photoError">Пожалуйста, загрузите вашу фотографию</div>
+                        <small style="color: #666; margin-top: 0.5rem; display: block;">Фотография используется только для идентификации и строго конфиденциальна</small>
+                    </div>
+                    
+                    <div class="form-group" style="text-align: center; margin-top: 2rem;">
+                        <button type="submit" class="btn" style="padding: 1rem 2rem; font-size: 1.1rem;">
+                            <i class="fas fa-paper-plane"></i> Зарегистрироваться и перейти к тесту
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </section>
 
@@ -845,7 +914,7 @@
                     <div style="background: var(--lavender); padding: 1.5rem; border-radius: 15px; margin-bottom: 1.5rem; border: 2px solid var(--soft-pink);">
                         <h4 style="color: var(--deep-burgundy); margin-bottom: 1rem;"><i class="fas fa-graduation-cap"></i> Образование и путь:</h4>
                         <ul style="list-style: none;">
-                            <li style="margin-bottom: 0.5rem;"><i class="fas fa-university" style="color: var(--vibrant-pink); margin-right: 0.5rem;"></i> МИП, Московский институт психологии,квалификация сексолог психолог.</li>
+                            <li style="margin-bottom: 0.5rem;"><i class="fas fa-university" style="color: var(--vibrant-pink); margin-right: 0.5rem;"></i> МИП, Московский институт психологии, квалификация сексолог психолог.</li>
                             <li style="margin-bottom: 0.5rem;"><i class="fas fa-certificate" style="color: var(--vibrant-pink); margin-right: 0.5rem;"></i> Европейская ассоциация сексологов</li>
                             <li><i class="fas fa-heart" style="color: var(--vibrant-pink); margin-right: 0.5rem;"></i> Изучение женских энергетических практик</li>
                         </ul>
@@ -967,7 +1036,7 @@
     </section>
 
     <!-- Test Section -->
-    <section id="test">
+    <section id="test" style="display: none;">
         <div class="container">
             <div class="section-title">
                 <h2>Тест женской энергии и либидо</h2>
@@ -990,16 +1059,6 @@
                 </div>
 
                 <form id="libidoTestForm">
-                    <!-- Контактные данные -->
-                    <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem; border: 2px solid var(--soft-pink);">
-                        <h4 style="color: var(--deep-burgundy); margin-bottom: 1rem; text-align: center;">
-                            <i class="fas fa-user-circle"></i> Контактные данные
-                        </h4>
-                        <div class="form-group">
-                            <label for="clientName" class="required-field"><i class="fas fa-user"></i> Ваше имя</label>
-                            <input type="text" id="clientName" name="Имя_клиента" class="form-control" placeholder="Как к вам обращаться?" required>
-                            <div class="error-message" id="clientNameError">Пожалуйста, введите ваше имя</div>
-                        </div>
                     <!-- Переключатель типа теста -->
                     <div style="background: #f0e6ff; padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem; border: 2px solid var(--purple-mystic);">
                         <h4 style="color: var(--deep-burgundy); margin-bottom: 1rem; text-align: center;">
@@ -1020,17 +1079,6 @@
                                     <small>Для женщин в периоде менопаузы</small>
                                 </div>
                             </label>
-                        </div>
-                    </div>
-                        <div class="form-group">
-                            <label for="clientAge" class="required-field"><i class="fas fa-birthday-cake"></i> Ваш возраст</label>
-                            <input type="number" id="clientAge" name="Возраст" class="form-control" placeholder="Укажите ваш возраст" min="18" max="80" required>
-                            <div class="error-message" id="clientAgeError">Пожалуйста, укажите ваш возраст (от 18 до 80 лет)</div>
-                        </div>
-                        <div class="form-group">
-                            <label for="clientContact" class="required-field"><i class="fas fa-phone"></i> Телефон или Telegram</label>
-                            <input type="text" id="clientContact" name="Контактные_данные" class="form-control" placeholder="Для связи с вами" required>
-                            <div class="error-message" id="clientContactError">Пожалуйста, введите контактные данные</div>
                         </div>
                     </div>
 
@@ -1328,6 +1376,7 @@
                             </div>
                         </div>
                     </div>
+
                     <!-- Альтернативная секция для менопаузы -->
                     <div class="test-section" id="menopause-section" style="display: none;">
                         <h4><i class="fas fa-leaf"></i> Особенности либидо в период менопаузы</h4>
@@ -1634,7 +1683,7 @@
                         <p style="color: #856404; margin-bottom: 1.5rem;">
                             Это поможет мне лучше понять вашу энергетику и подготовиться к нашей работе
                         </p>
-                        <a href="#test" class="btn pulse" style="
+                        <a href="#registration" class="btn pulse" style="
                             background: linear-gradient(135deg, var(--vibrant-pink), var(--purple-mystic));
                             color: white;
                             padding: 12px 30px;
@@ -1642,7 +1691,7 @@
                             text-decoration: none;
                             font-weight: 600;
                         ">
-                            <i class="fas fa-seedling"></i> Пройти тест энергии
+                            <i class="fas fa-user-plus"></i> Пройти регистрацию
                         </a>
                     </div>
 
@@ -1808,8 +1857,18 @@
                 });
             });
 
+            // Обработка формы регистрации
+            const registrationForm = document.getElementById('registrationForm');
+            if (registrationForm) {
+                registrationForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    if (validateRegistrationForm(this)) {
+                        submitRegistrationForm(this);
+                    }
+                });
+            }
+
             // Остальной ваш код для форм остается без изменений
-            checkTestCompletion();
             setupTestTypeToggle();
             setupSeasonalField();
 
@@ -1834,7 +1893,7 @@
             }
         });
 
-        // Остальные функции остаются без изменений
+        // Функция для переключения типа теста
         function setupTestTypeToggle() {
             const regularTest = document.getElementById('regular_test');
             const menopauseTest = document.getElementById('menopause_test');
@@ -1889,62 +1948,146 @@
             }
         }
 
-        function checkTestCompletion() {
-            const testCompleted = localStorage.getItem('testCompleted') === 'true';
-            const testRequiredMessage = document.getElementById('testRequiredMessage');
-            const bookingFormContainer = document.getElementById('bookingFormContainer');
-            
-            console.log('Статус теста:', testCompleted);
-            
-            if (testRequiredMessage && bookingFormContainer) {
-                if (testCompleted) {
-                    // Тест пройден - показываем форму, скрываем сообщение
-                    testRequiredMessage.style.display = 'none';
-                    bookingFormContainer.classList.remove('hidden-form');
-                    console.log('Показываем форму записи');
-                } else {
-                    // Тест не пройден - показываем сообщение, скрываем форму
-                    testRequiredMessage.style.display = 'block';
-                    bookingFormContainer.classList.add('hidden-form');
-                    console.log('Показываем сообщение о необходимости теста');
-                }
-            } else {
-                console.error('Не найдены элементы для управления отображением формы записи');
-            }
-        }
-
-        // Функции валидации и отправки форм остаются без изменений
-        function validateTestForm(form) {
+        // Функция валидации формы регистрации
+        function validateRegistrationForm(form) {
             let isValid = true;
-            
-            // Проверка обязательных полей контактной информации
-            const clientName = document.getElementById('clientName');
-            const clientAge = document.getElementById('clientAge');
-            const clientContact = document.getElementById('clientContact');
             
             // Сброс предыдущих ошибок
             resetValidationErrors();
             
+            // Проверка фамилии
+            const lastName = document.getElementById('lastName');
+            if (!lastName.value.trim()) {
+                showFieldError('lastNameError', '❌ Пожалуйста, введите вашу фамилию');
+                lastName.classList.add('error');
+                isValid = false;
+            }
+            
             // Проверка имени
-            if (!clientName.value.trim()) {
-                showFieldError('clientNameError', '❌ Пожалуйста, введите ваше имя');
-                clientName.classList.add('error');
+            const firstName = document.getElementById('firstName');
+            if (!firstName.value.trim()) {
+                showFieldError('firstNameError', '❌ Пожалуйста, введите ваше имя');
+                firstName.classList.add('error');
                 isValid = false;
             }
             
             // Проверка возраста
-            if (!clientAge.value || clientAge.value < 18 || clientAge.value > 80) {
-                showFieldError('clientAgeError', '❌ Пожалуйста, укажите ваш реальный возраст (от 18 до 80 лет)');
-                clientAge.classList.add('error');
+            const age = document.getElementById('age');
+            if (!age.value || age.value < 18 || age.value > 80) {
+                showFieldError('ageError', '❌ Пожалуйста, укажите ваш реальный возраст (от 18 до 80 лет)');
+                age.classList.add('error');
                 isValid = false;
             }
             
-            // Проверка контактных данных
-            if (!clientContact.value.trim()) {
-                showFieldError('clientContactError', '❌ Пожалуйста, введите контактные данные');
-                clientContact.classList.add('error');
+            // Проверка телефона
+            const phone = document.getElementById('phone');
+            if (!phone.value.trim()) {
+                showFieldError('phoneError', '❌ Пожалуйста, введите ваш номер телефона');
+                phone.classList.add('error');
                 isValid = false;
             }
+            
+            // Проверка телеграма
+            const telegram = document.getElementById('telegram');
+            if (!telegram.value.trim()) {
+                showFieldError('telegramError', '❌ Пожалуйста, введите ваш Telegram');
+                telegram.classList.add('error');
+                isValid = false;
+            }
+            
+            // Проверка фото
+            const photo = document.getElementById('photo');
+            if (!photo.value) {
+                showFieldError('photoError', '❌ Пожалуйста, загрузите вашу фотографию');
+                photo.classList.add('error');
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+
+        // Функция отправки формы регистрации
+        async function submitRegistrationForm(form) {
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            try {
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Регистрация...';
+                submitBtn.disabled = true;
+                
+                // Собираем данные формы
+                const formData = new FormData(form);
+                const data = {};
+                
+                // Преобразуем FormData в обычный объект
+                for (let [key, value] of formData.entries()) {
+                    data[key] = value;
+                }
+                
+                console.log('Данные регистрации:', data);
+                
+                // Форматируем красивое сообщение для Telegram с правильными переносами
+                let message = `🌟 *НОВАЯ РЕГИСТРАЦИЯ* 🌟\n\n`;
+                
+                message += `👤 *Контактная информация:*\n`;
+                if (data.lastName) message += `   └ *Фамилия:* ${data.lastName}\n`;
+                if (data.firstName) message += `   └ *Имя:* ${data.firstName}\n`;
+                if (data.age) message += `   └ *Возраст:* ${data.age}\n`;
+                if (data.phone) message += `   └ *Телефон:* ${data.phone}\n`;
+                if (data.telegram) message += `   └ *Telegram:* ${data.telegram}\n`;
+                
+                message += `\n⏰ *Дата регистрации:* ${new Date().toLocaleString('ru-RU')}`;
+
+                console.log('Сообщение для Telegram:', message);
+
+                // Отправляем в Telegram
+                const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: message,
+                        parse_mode: 'Markdown'
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (!response.ok || !result.ok) {
+                    console.error('Ошибка Telegram API:', result);
+                    throw new Error(result.description || 'Ошибка отправки в Telegram');
+                }
+
+                showSuccessMessage('✅ Регистрация прошла успешно! Теперь вы можете пройти тест.');
+                
+                // Сохраняем статус регистрации
+                localStorage.setItem('registrationCompleted', 'true');
+                localStorage.setItem('registrationTime', new Date().toISOString());
+                
+                // Показываем тест и скрываем регистрацию
+                document.getElementById('registration').style.display = 'none';
+                document.getElementById('test').style.display = 'block';
+                
+                // Прокручиваем к тесту
+                document.getElementById('test').scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+                
+            } catch (error) {
+                console.error('Ошибка отправки формы:', error);
+                showErrorMessage('❌ Ошибка регистрации. Пожалуйста, свяжитесь со мной напрямую: +7 (905) 595-99-96');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        // Остальные функции остаются без изменений
+        function validateTestForm(form) {
+            let isValid = true;
             
             // Проверка обязательных полей в зависимости от типа теста
             const isRegularTest = document.getElementById('regular_test').checked;
@@ -2086,12 +2229,6 @@
                 // Форматируем красивое сообщение для Telegram с правильными переносами
                 let message = `🌸 *НОВАЯ АНКЕТА ТЕСТА ЛИБИДО* 🌸\n\n`;
                 
-                // Контактная информация
-                message += `👤 *Контактная информация:*\n`;
-                if (data.Имя_клиента) message += `   └ *Имя:* ${data.Имя_клиента}\n`;
-                if (data.Возраст) message += `   └ *Возраст:* ${data.Возраст}\n`;
-                if (data.Контактные_данные) message += `   └ *Контакты:* ${data.Контактные_данные}\n`;
-                
                 // Тип теста
                 const isRegularTest = document.getElementById('regular_test').checked;
                 message += `   └ *Тип теста:* ${isRegularTest ? 'Обычный' : 'Менопауза'}\n\n`;
@@ -2182,9 +2319,6 @@
                         block: 'center' 
                     });
                 }
-                
-                // Обновляем отображение формы записи
-                checkTestCompletion();
                 
                 // Сбрасываем форму
                 form.reset();
@@ -2338,6 +2472,7 @@
     </script>
 </body>
 </html>
+
 
 
 
