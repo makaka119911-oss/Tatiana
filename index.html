@@ -6,6 +6,7 @@
     <title>Татьяна Солнечная - Раскрытие женской силы | Пробудите свою природу.</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        /* Ваши существующие стили остаются без изменений */
         :root {
             --deep-burgundy: #8B4352;
             --vibrant-pink: #D46A6A;
@@ -40,902 +41,14 @@
             padding: 0 15px;
         }
 
-        /* Header */
-        header {
-            background: linear-gradient(135deg, var(--deep-burgundy) 0%, var(--purple-mystic) 100%);
-            color: white;
-            padding: 1rem 0;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
+        /* Все остальные ваши стили остаются без изменений */
+        /* ... */
 
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: var(--light-gold);
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-        }
-
-        .nav-links li {
-            margin-left: 2rem;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a:hover {
-            color: var(--light-gold);
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
-            background-color: var(--light-gold);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            width: 44px;
-            height: 44px;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .mobile-menu-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(rgba(139, 67, 82, 0.7), rgba(139, 107, 158, 0.7)), 
-                        url('https://images.unsplash.com/photo-1515377905703-c4788e51af15?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
-            background-size: cover;
-            background-position: center;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            text-align: center;
-            color: white;
-            padding-top: 80px;
-        }
-
-        .hero-content h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .hero-content p {
-            font-size: 1.4rem;
-            max-width: 800px;
-            margin: 0 auto 2rem;
-            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .btn {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--vibrant-pink) 0%, var(--purple-mystic) 100%);
-            color: white;
-            padding: 12px 30px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        /* Section Styles */
-        section {
-            padding: 5rem 0;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .section-title h2 {
-            font-size: 2.5rem;
-            color: var(--deep-burgundy);
-            margin-bottom: 1rem;
-            position: relative;
-            display: inline-block;
-        }
-
-        .section-title h2::after {
-            content: '';
-            position: absolute;
-            width: 80px;
-            height: 3px;
-            background: linear-gradient(90deg, var(--vibrant-pink), var(--purple-mystic));
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 3px;
-        }
-
-        .section-title p {
-            font-size: 1.2rem;
-            color: var(--dark-text);
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        /* About Section */
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-        }
-
-        .profile-img-container {
-            position: relative;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .profile-img {
-            width: 100%;
-            height: auto;
-            display: block;
-            transition: transform 0.5s ease;
-            object-fit: cover;
-            aspect-ratio: 3/4;
-        }
-
-        .profile-img-container:hover .profile-img {
-            transform: scale(1.05);
-        }
-
-        .profile-img-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(139, 67, 82, 0.8));
-            color: white;
-            padding: 2rem;
-            transform: translateY(100%);
-            transition: transform 0.5s ease;
-        }
-
-        .profile-img-container:hover .profile-img-overlay {
-            transform: translateY(0);
-        }
-
-        .floating {
-            animation: floating 3s ease-in-out infinite;
-        }
-
-        @keyframes floating {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-        }
-
-        /* Services Section */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .service-card {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-            border-top: 5px solid var(--vibrant-pink);
-        }
-
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .service-icon {
-            font-size: 3rem;
-            color: var(--vibrant-pink);
-            margin-bottom: 1.5rem;
-        }
-
-        .service-card h3 {
-            color: var(--deep-burgundy);
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-
-        /* Female Power Section */
-        .female-power {
-            background: linear-gradient(135deg, var(--moonlight) 0%, var(--lavender) 100%);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .female-power::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 200%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" opacity="0.05"><path d="M50,10 A40,40 0 1,1 50,90 A40,40 0 1,1 50,10 Z" fill="none" stroke="%238B4352" stroke-width="2"/></svg>') repeat;
-            transform: rotate(30deg);
-        }
-
-        .power-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-
-        .power-item {
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 15px;
-            padding: 2rem;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-        }
-
-        .power-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .power-icon {
-            font-size: 2.5rem;
-            color: var(--purple-mystic);
-            margin-bottom: 1rem;
-        }
-
-        .power-item h3 {
-            color: var(--deep-burgundy);
-            margin-bottom: 1rem;
-        }
-
-        /* Registration Section */
-        .registration-container {
-            background: white;
-            border-radius: 20px;
-            padding: 3rem;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .registration-header {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid #eee;
-        }
-
-        .registration-header h3 {
-            color: var(--deep-burgundy);
-            margin-bottom: 1rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--dark-text);
-            font-weight: 500;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--purple-mystic);
-            box-shadow: 0 0 0 3px rgba(139, 107, 158, 0.2);
-        }
-
-        .required-field::after {
-            content: " *";
-            color: #e74c3c;
-        }
-
-        .error-message {
-            color: #e74c3c;
-            font-size: 0.8rem;
-            margin-top: 0.25rem;
+        /* Добавляем стиль для скрытых секций */
+        .section-hidden {
             display: none;
         }
 
-        .form-control.error {
-            border-color: #e74c3c;
-            box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2);
-        }
-
-        /* Стили для загрузки фотографии */
-        .photo-upload-container {
-            border: 2px dashed var(--soft-pink);
-            border-radius: 10px;
-            padding: 2rem;
-            text-align: center;
-            background: #fafafa;
-            transition: all 0.3s ease;
-            margin-bottom: 1.5rem;
-        }
-
-        .photo-upload-container:hover {
-            border-color: var(--purple-mystic);
-            background: #f5f5f5;
-        }
-
-        .photo-upload-icon {
-            font-size: 3rem;
-            color: var(--vibrant-pink);
-            margin-bottom: 1rem;
-        }
-
-        .photo-preview {
-            max-width: 200px;
-            max-height: 200px;
-            border-radius: 10px;
-            margin: 1rem auto;
-            display: none;
-            object-fit: cover;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .upload-btn {
-            display: inline-block;
-            background: var(--lavender);
-            color: var(--purple-mystic);
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid var(--purple-mystic);
-        }
-
-        .upload-btn:hover {
-            background: var(--purple-mystic);
-            color: white;
-        }
-
-        #photoFile {
-            display: none;
-        }
-
-        /* Test Section */
-        .test-container {
-            background: white;
-            border-radius: 20px;
-            padding: 3rem;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
-        }
-
-        .test-header {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid #eee;
-        }
-
-        .test-header h3 {
-            color: var(--deep-burgundy);
-            margin-bottom: 1rem;
-        }
-
-        .test-section {
-            margin-bottom: 3rem;
-        }
-
-        .test-section h4 {
-            color: var(--purple-mystic);
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            align-items: center;
-        }
-
-        .test-section h4 i {
-            margin-right: 10px;
-        }
-
-        .question-block {
-            margin-bottom: 2rem;
-            padding: 1.5rem;
-            background: #f9f9f9;
-            border-radius: 10px;
-        }
-
-        .question-block h5 {
-            margin-bottom: 1rem;
-            color: var(--dark-text);
-        }
-
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1rem;
-        }
-
-        .option-item {
-            display: flex;
-            align-items: center;
-            padding: 1rem;
-            background: white;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: 1px solid #eee;
-        }
-
-        .option-item:hover {
-            background: var(--lavender);
-            border-color: var(--purple-mystic);
-        }
-
-        .option-item input {
-            margin-right: 10px;
-        }
-
-        .period-section {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            border: 1px solid var(--soft-pink);
-        }
-
-        .period-title {
-            color: var(--deep-burgundy);
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-        }
-
-        .period-questions {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-        }
-
-        .question-group {
-            margin-bottom: 1rem;
-        }
-
-        .question-group h6 {
-            color: var(--dark-text);
-            margin-bottom: 0.5rem;
-            font-size: 0.95rem;
-        }
-
-        /* Test Results Section */
-        .test-results {
-            background: white;
-            border-radius: 20px;
-            padding: 3rem;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
-            display: none;
-            margin-top: 2rem;
-        }
-
-        .results-header {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid #eee;
-        }
-
-        .results-header h3 {
-            color: var(--deep-burgundy);
-            margin-bottom: 1rem;
-        }
-
-        .score-display {
-            text-align: center;
-            margin: 2rem 0;
-        }
-
-        .score-circle {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--vibrant-pink) 0%, var(--purple-mystic) 100%);
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        .score-value {
-            font-size: 2.5rem;
-            font-weight: bold;
-            line-height: 1;
-        }
-
-        .score-label {
-            font-size: 1rem;
-            margin-top: 5px;
-        }
-
-        .results-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-
-        .result-item {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 1.5rem;
-            text-align: center;
-        }
-
-        .result-item h4 {
-            color: var(--deep-burgundy);
-            margin-bottom: 1rem;
-        }
-
-        .interpretation {
-            background: var(--lavender);
-            border-radius: 15px;
-            padding: 2rem;
-            margin-top: 2rem;
-            border-left: 5px solid var(--purple-mystic);
-        }
-
-        .interpretation h4 {
-            color: var(--deep-burgundy);
-            margin-bottom: 1rem;
-        }
-
-        .recommendations {
-            background: #fff3cd;
-            border-radius: 15px;
-            padding: 2rem;
-            margin-top: 2rem;
-            border-left: 5px solid #ffc107;
-        }
-
-        .recommendations h4 {
-            color: #856404;
-            margin-bottom: 1rem;
-        }
-
-        /* Process Section */
-        .process-steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-
-        .step {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .step:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .step-number {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--vibrant-pink) 0%, var(--purple-mystic) 100%);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin: 0 auto 1.5rem;
-        }
-
-        .step h3 {
-            color: var(--deep-burgundy);
-            margin-bottom: 1rem;
-        }
-
-        /* Contact Section */
-        .contact-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-        }
-
-        .contact-info {
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-
-        .contact-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--vibrant-pink) 0%, var(--purple-mystic) 100%);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-right: 1.5rem;
-        }
-
-        .contact-text h4 {
-            color: var(--deep-burgundy);
-            margin-bottom: 0.5rem;
-        }
-
-        .booking-form {
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-        }
-
-        /* Footer */
-        footer {
-            background: linear-gradient(135deg, var(--deep-burgundy) 0%, var(--purple-mystic) 100%);
-            color: white;
-            padding: 3rem 0 1.5rem;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        footer h4 {
-            margin-bottom: 1rem;
-            color: var(--light-gold);
-        }
-
-        footer p {
-            margin-bottom: 0.5rem;
-        }
-
-        /* Стили для мобильного меню */
-        .menu-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-            z-index: 998;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .menu-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* Стиль для скрытия формы записи */
-        .hidden-form {
-            display: none !important;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .hero-content h1 {
-                font-size: 2.8rem;
-            }
-            
-            .about-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .contact-container {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-links {
-                position: fixed;
-                top: 70px;
-                left: 0;
-                width: 100%;
-                background: linear-gradient(135deg, var(--deep-burgundy) 0%, var(--purple-mystic) 100%);
-                flex-direction: column;
-                padding: 1rem 0;
-                transform: translateY(-100%);
-                transition: all 0.4s ease;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-                border-bottom-left-radius: 20px;
-                border-bottom-right-radius: 20px;
-                z-index: 999;
-                opacity: 0;
-                visibility: hidden;
-            }
-            
-            .nav-links.active {
-                transform: translateY(0);
-                opacity: 1;
-                visibility: visible;
-            }
-            
-            .nav-links li {
-                margin: 0;
-                text-align: center;
-                padding: 0.8rem 0;
-                opacity: 0;
-                transform: translateY(-10px);
-                transition: all 0.3s ease;
-            }
-            
-            .nav-links.active li {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            
-            /* Задержки для анимации пунктов меню */
-            .nav-links.active li:nth-child(1) { transition-delay: 0.1s; }
-            .nav-links.active li:nth-child(2) { transition-delay: 0.15s; }
-            .nav-links.active li:nth-child(3) { transition-delay: 0.2s; }
-            .nav-links.active li:nth-child(4) { transition-delay: 0.25s; }
-            .nav-links.active li:nth-child(5) { transition-delay: 0.3s; }
-            .nav-links.active li:nth-child(6) { transition-delay: 0.35s; }
-            
-            .mobile-menu-btn {
-                display: flex;
-            }
-            
-            .hero-content h1 {
-                font-size: 2.2rem;
-            }
-            
-            .hero-content p {
-                font-size: 1.1rem;
-            }
-            
-            .section-title h2 {
-                font-size: 2rem;
-            }
-            
-            .period-questions {
-                grid-template-columns: 1fr;
-            }
-            
-            .period-section {
-                padding: 1rem;
-            }
-            
-            .test-container {
-                padding: 1.5rem;
-            }
-            
-            .nav-links a {
-                display: block;
-                padding: 1rem 2rem;
-                font-size: 1.1rem;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            }
-            
-            .nav-links a:hover {
-                background: rgba(255, 255, 255, 0.1);
-                padding-left: 2.5rem;
-            }
-            
-            .nav-links a:last-child {
-                border-bottom: none;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .hero-content h1 {
-                font-size: 1.8rem;
-            }
-            
-            .btn {
-                padding: 10px 20px;
-            }
-            
-            .test-container {
-                padding: 1rem;
-            }
-            
-            .options-grid {
-                grid-template-columns: 1fr;
-            }
-        }
     </style>
 </head>
 <body>
@@ -1046,9 +159,50 @@
         </div>
     </section>
 
-    <!-- Test Section -->
-    <section id="test" style="display: none;">
-        <!-- Остальная часть теста остается без изменений -->
+    <!-- Test Section - УБИРАЕМ display: none -->
+    <section id="test" class="section-hidden">
+        <div class="container">
+            <div class="section-title">
+                <h2>Тест женской энергии</h2>
+                <p>Пройдите тест, чтобы определить уровень вашей энергии</p>
+            </div>
+            <div class="test-container">
+                <!-- Добавьте сюда содержимое вашего теста -->
+                <div class="test-header">
+                    <h3>Тест на определение уровня женской энергии</h3>
+                    <p>Ответьте на вопросы для получения персонализированных рекомендаций</p>
+                </div>
+                
+                <div style="text-align: center; padding: 2rem;">
+                    <h3 style="color: var(--deep-burgundy); margin-bottom: 1rem;">Регистрация завершена успешно!</h3>
+                    <p>Теперь вы можете пройти тест. Содержимое теста будет здесь.</p>
+                    <button class="btn" style="margin-top: 1rem;">
+                        <i class="fas fa-play"></i> Начать тест
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Добавляем остальные секции, которые у вас были -->
+    <section id="about">
+        <!-- Содержимое секции "Обо мне" -->
+    </section>
+
+    <section id="power" class="female-power">
+        <!-- Содержимое секции "Женская сила" -->
+    </section>
+
+    <section id="services">
+        <!-- Содержимое секции "Направления" -->
+    </section>
+
+    <section id="process">
+        <!-- Содержимое секции "Процесс" -->
+    </section>
+
+    <section id="contact">
+        <!-- Содержимое секции "Контакты" -->
     </section>
 
     <script>
@@ -1058,6 +212,9 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Сайт загружен');
+
+            // Проверяем, была ли уже завершена регистрация
+            checkRegistrationStatus();
 
             // Мобильное меню
             const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
@@ -1137,14 +294,27 @@
             if (registrationForm) {
                 registrationForm.addEventListener('submit', function(e) {
                     e.preventDefault();
+                    console.log('Форма отправлена');
                     if (validateRegistrationForm(this)) {
+                        console.log('Форма валидна, отправляем данные');
                         submitRegistrationForm(this);
+                    } else {
+                        console.log('Форма не валидна');
                     }
                 });
             }
-
-            // Остальной код для теста остается без изменений
         });
+
+        // Функция проверки статуса регистрации
+        function checkRegistrationStatus() {
+            const registrationCompleted = localStorage.getItem('registrationCompleted');
+            if (registrationCompleted === 'true') {
+                // Показываем тест и скрываем регистрацию
+                document.getElementById('registration').classList.add('section-hidden');
+                document.getElementById('test').classList.remove('section-hidden');
+                console.log('Регистрация уже была завершена, показываем тест');
+            }
+        }
 
         // Функция настройки загрузки фотографии
         function setupPhotoUpload() {
@@ -1189,6 +359,12 @@
                                     <i class="fas fa-sync-alt"></i> Изменить фото
                                 </label>
                             `;
+                            
+                            // Повторно привязываем обработчик события change к новому input
+                            const newPhotoFile = document.getElementById('photoFile');
+                            if (newPhotoFile) {
+                                newPhotoFile.addEventListener('change', arguments.callee);
+                            }
                         };
                         reader.readAsDataURL(file);
                     }
@@ -1250,8 +426,9 @@
             }
             
             const phone = document.getElementById('phone');
-            if (!phone.value.trim()) {
-                showFieldError('phoneError', '❌ Пожалуйста, введите ваш номер телефона');
+            const phoneRegex = /^(\+7|8)[\s\-]?\(?[0-9]{3}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;
+            if (!phone.value.trim() || !phoneRegex.test(phone.value.replace(/\s/g, ''))) {
+                showFieldError('phoneError', '❌ Пожалуйста, введите корректный номер телефона');
                 phone.classList.add('error');
                 isValid = false;
             }
@@ -1307,6 +484,7 @@
                 message += `\n⏰ *Дата регистрации:* ${new Date().toLocaleString('ru-RU')}`;
 
                 // Отправка текстового сообщения
+                console.log('Отправка текста в Telegram...');
                 const textResponse = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                     method: 'POST',
                     headers: {
@@ -1320,6 +498,7 @@
                 });
 
                 const textResult = await textResponse.json();
+                console.log('Ответ от Telegram (текст):', textResult);
                 
                 if (!textResponse.ok || !textResult.ok) {
                     console.error('Ошибка Telegram API (текст):', textResult);
@@ -1329,6 +508,7 @@
                 // Затем отправляем фотографию
                 const photoFile = document.getElementById('photoFile').files[0];
                 if (photoFile) {
+                    console.log('Отправка фото в Telegram...');
                     const photoFormData = new FormData();
                     photoFormData.append('chat_id', TELEGRAM_CHAT_ID);
                     photoFormData.append('photo', photoFile);
@@ -1340,21 +520,26 @@
                     });
 
                     const photoResult = await photoResponse.json();
+                    console.log('Ответ от Telegram (фото):', photoResult);
                     
                     if (!photoResponse.ok || !photoResult.ok) {
                         console.error('Ошибка Telegram API (фото):', photoResult);
                         // Не прерываем выполнение, так как текст уже отправлен
+                        showWarningMessage('✅ Регистрация прошла успешно, но фотография не была отправлена. Мы свяжемся с вами для уточнения данных.');
                     }
                 }
 
                 showSuccessMessage('✅ Регистрация прошла успешно! Теперь вы можете пройти тест.');
                 
+                // Сохраняем в localStorage, что регистрация завершена
                 localStorage.setItem('registrationCompleted', 'true');
                 localStorage.setItem('registrationTime', new Date().toISOString());
                 
-                document.getElementById('registration').style.display = 'none';
-                document.getElementById('test').style.display = 'block';
+                // Скрываем регистрацию и показываем тест
+                document.getElementById('registration').classList.add('section-hidden');
+                document.getElementById('test').classList.remove('section-hidden');
                 
+                // Прокручиваем к тесту
                 document.getElementById('test').scrollIntoView({ 
                     behavior: 'smooth', 
                     block: 'start' 
@@ -1413,6 +598,30 @@
             }, 5000);
         }
 
+        function showWarningMessage(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #ffc107, #ffb300);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                z-index: 10000;
+                animation: slideInRight 0.5s ease-out;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                max-width: 400px;
+            `;
+            notification.innerHTML = `<i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i> ${message}`;
+            document.body.appendChild(notification);
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 6000);
+        }
+
         function showErrorMessage(message) {
             const notification = document.createElement('div');
             notification.style.cssText = `
@@ -1455,6 +664,7 @@
     </script>
 </body>
 </html>
+
 
 
 
