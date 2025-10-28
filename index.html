@@ -3,9 +3,801 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Татьяна Солнечная - Раскрытие женской силы | Пробудите свою природу</title>
+    <title>Татьяна Солнечная - Раскрытие женской силы | Пробудите свою природу.</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --deep-burgundy: #8B4352;
+            --vibrant-pink: #D46A6A;
+            --soft-pink: #F8C8C8;
+            --cream: #FFF8F0;
+            --light-gold: #F5E6C8;
+            --dark-text: #4A4A4A;
+            --purple-mystic: #8B6B9E;
+            --peach-blossom: #FFB7B2;
+            --lavender: #E6E6FA;
+            --moonlight: #F0E6FF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-text);
+            background-color: var(--cream);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--deep-burgundy) 0%, var(--purple-mystic) 100%);
+            color: white;
+            padding: 0.8rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--light-gold);
+            padding: 0.5rem 0;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 1.5rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            font-size: 0.95rem;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a:hover {
+            color: var(--light-gold);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.4rem;
+            cursor: pointer;
+            width: 44px;
+            height: 44px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        .mobile-menu-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(139, 67, 82, 0.7), rgba(139, 107, 158, 0.7)), 
+                        url('https://images.unsplash.com/photo-1515377905703-c4788e51af15?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 80px 0 2rem;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(transparent, var(--cream));
+        }
+
+        .hero-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.2rem;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            line-height: 1.2;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+            line-height: 1.5;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--vibrant-pink) 0%, var(--purple-mystic) 100%);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            gap: 8px;
+            min-height: 50px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Section Styles */
+        section {
+            padding: 3.5rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title h2 {
+            font-size: 2rem;
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--vibrant-pink), var(--purple-mystic));
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 3px;
+        }
+
+        .section-title p {
+            font-size: 1.1rem;
+            color: var(--dark-text);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        /* Registration Section */
+        .registration-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .registration-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .registration-header h3 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--dark-text);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--purple-mystic);
+            box-shadow: 0 0 0 3px rgba(139, 107, 158, 0.15);
+            background: white;
+        }
+
+        .required-field::after {
+            content: " *";
+            color: #e74c3c;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .form-control.error {
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.15);
+        }
+
+        /* Test Section */
+        .test-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+            overflow-x: auto;
+        }
+
+        .test-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .test-header h3 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            border: 2px solid var(--purple-mystic);
+            padding: 1rem;
+            border-radius: 10px;
+            background: var(--moonlight);
+        }
+
+        .test-type-selector {
+            background: #f0e6ff;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 2px solid var(--purple-mystic);
+        }
+
+        .test-type-selector h4 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .test-type-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .test-type-option {
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            border: 2px solid var(--soft-pink);
+            transition: all 0.3s ease;
+        }
+
+        .test-type-option:hover {
+            border-color: var(--purple-mystic);
+            transform: translateY(-2px);
+        }
+
+        .test-type-option input {
+            margin-right: 12px;
+            transform: scale(1.2);
+        }
+
+        .test-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+            min-width: 800px;
+        }
+
+        .test-table th,
+        .test-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+            vertical-align: top;
+        }
+
+        .test-table th {
+            background: var(--lavender);
+            color: var(--deep-burgundy);
+            font-weight: 600;
+        }
+
+        .period-cell {
+            background: var(--soft-pink);
+            font-weight: 600;
+            text-align: left;
+            width: 180px;
+        }
+
+        .question-cell {
+            background: #f9f9f9;
+            min-width: 150px;
+        }
+
+        .options-vertical {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid #eee;
+            font-size: 0.9rem;
+        }
+
+        .option-item:hover {
+            background: var(--lavender);
+            border-color: var(--purple-mystic);
+        }
+
+        .option-item input {
+            margin-right: 8px;
+            transform: scale(1.1);
+        }
+
+        .season-question {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #f9f9f9;
+            border-radius: 12px;
+            border-left: 4px solid var(--purple-mystic);
+        }
+
+        .season-options {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .season-option {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1.2rem;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            transition: all 0.2s ease;
+        }
+
+        .season-option:hover {
+            background: var(--lavender);
+        }
+
+        .season-option input {
+            margin-right: 8px;
+        }
+
+        .season-description {
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .season-description textarea {
+            width: 100%;
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* Result Section */
+        .result-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .result-header {
+            margin-bottom: 2rem;
+        }
+
+        .result-level {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            padding: 1.2rem;
+            border-radius: 15px;
+            line-height: 1.2;
+        }
+
+        .level-low {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            color: #c62828;
+        }
+
+        .level-medium {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            color: #ef6c00;
+        }
+
+        .level-high {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            color: #2e7d32;
+        }
+
+        .level-very-high {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            color: #7b1fa2;
+        }
+
+        .result-description {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .result-actions {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* Consultation Section */
+        .consultation-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .consultation-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .consultation-header h3 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        /* Photo Upload */
+        .photo-upload {
+            margin-bottom: 1.5rem;
+        }
+
+        .photo-preview {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--soft-pink);
+            margin: 0 auto 1rem;
+            display: none;
+        }
+
+        .photo-upload-label {
+            display: block;
+            text-align: center;
+            padding: 12px 20px;
+            background: var(--lavender);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px dashed var(--purple-mystic);
+        }
+
+        .photo-upload-label:hover {
+            background: var(--moonlight);
+        }
+
+        .photo-upload input {
+            display: none;
+        }
+
+        /* Стиль для скрытия секций */
+        .section-hidden {
+            display: none;
+        }
+
+        /* Уведомления */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 12px;
+            z-index: 10000;
+            animation: slideInRight 0.5s ease-out;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            max-width: 350px;
+            color: white;
+            font-size: 0.95rem;
+        }
+
+        .notification.success {
+            background: linear-gradient(135deg, #28a745, #20c997);
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, #dc3545, #e83e8c);
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Progress Bar для теста */
+        .test-progress {
+            margin-bottom: 2rem;
+            background: #f0f0f0;
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+        }
+
+        .test-progress-bar {
+            height: 100%;
+            background: linear-gradient(135deg, var(--vibrant-pink) 0%, var(--purple-mystic) 100%);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--vibrant-pink) 0%, var(--purple-mystic) 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Стили для мобильного меню */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 280px;
+                height: 100%;
+                background: linear-gradient(135deg, var(--deep-burgundy) 0%, var(--purple-mystic) 100%);
+                flex-direction: column;
+                padding: 80px 0 2rem;
+                transform: translateX(-100%);
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow: 5px 0 25px rgba(0, 0, 0, 0.2);
+                z-index: 999;
+                opacity: 0;
+                visibility: hidden;
+                overflow-y: auto;
+            }
+            
+            .nav-links.active {
+                transform: translateX(0);
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            .nav-links li {
+                margin: 0;
+                width: 100%;
+                opacity: 0;
+                transform: translateX(-20px);
+                transition: all 0.3s ease;
+            }
+            
+            .nav-links.active li {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            
+            .mobile-menu-btn {
+                display: flex;
+            }
+            
+            .nav-links a {
+                display: block;
+                padding: 1rem 1.5rem;
+                font-size: 1rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                transition: all 0.3s ease;
+            }
+            
+            .nav-links a:hover {
+                background: rgba(255, 255, 255, 0.1);
+                padding-left: 2rem;
+            }
+            
+            .nav-links a:last-child {
+                border-bottom: none;
+            }
+
+            .test-table {
+                font-size: 0.85rem;
+            }
+            
+            .test-table th,
+            .test-table td {
+                padding: 8px;
+            }
+            
+            .period-cell {
+                width: 120px;
+            }
+            
+            .option-item {
+                padding: 6px;
+                font-size: 0.8rem;
+            }
+            
+            .test-type-options {
+                flex-direction: column;
+            }
+            
+            .season-options {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-content p {
+                font-size: 1rem;
+            }
+            
+            .registration-container,
+            .test-container,
+            .result-container,
+            .consultation-container {
+                padding: 1.5rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.7rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Back to top button -->
@@ -49,7 +841,7 @@
     <section id="registration">
         <div class="container">
             <div class="section-title">
-                <h2>Вход</h2>
+                <h2>Регистрация</h2>
                 <p>Заполните данные для участия в исследовании</p>
             </div>
             <div class="registration-container">
@@ -89,23 +881,14 @@
                         <div class="error-message" id="telegramError">Пожалуйста, введите ваш Telegram</div>
                     </div>
                     
-                    <!-- NEW: Photo upload field -->
-                    <div class="form-group">
-                        <label for="photo" class="required-field"><i class="fas fa-camera"></i> Личное фото</label>
-                        <div class="photo-upload-container">
-                            <input type="file" id="photo" name="photo" accept="image/*" required style="display: none;">
-                            <button type="button" class="btn-upload" onclick="document.getElementById('photo').click()">
-                                <i class="fas fa-upload"></i> Выбрать фото
-                            </button>
-                            <div id="photoPreview" class="photo-preview" style="display: none;">
-                                <img id="previewImage" src="" alt="Предпросмотр фото">
-                                <button type="button" class="btn-remove-photo" onclick="removePhoto()">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <small class="form-hint">Формат: JPG, PNG. Максимальный размер: 10 МБ</small>
-                        <div class="error-message" id="photoError">Пожалуйста, загрузите ваше фото</div>
+                    <div class="form-group photo-upload">
+                        <label for="photo" class="required-field"><i class="fas fa-camera"></i> Фотография</label>
+                        <img id="photoPreview" class="photo-preview" alt="Предпросмотр фото">
+                        <label for="photo" class="photo-upload-label">
+                            <i class="fas fa-upload"></i> Загрузить фотографию
+                        </label>
+                        <input type="file" id="photo" name="photo" accept="image/*" required>
+                        <div class="error-message" id="photoError">Пожалуйста, загрузите вашу фотографию</div>
                     </div>
                     
                     <div class="form-group" style="text-align: center; margin-top: 2rem;">
@@ -134,23 +917,22 @@
 
                 <div class="test-header">
                     <h3>ТЕСТ АНКЕТА НА ЖЕНСКОЕ ЛИБИДО (ЖЕЛАНИЕ СЕКСА)</h3>
-                    <p>Ответьте на вопросы максимально честно - это поможет получить точную картину</p>
                 </div>
 
-                <!-- Test type selector -->
+                <!-- Переключатель типа теста -->
                 <div class="test-type-selector">
                     <h4><i class="fas fa-toggle-on"></i> Выберите тип теста</h4>
                     <div class="test-type-options">
                         <label class="test-type-option">
                             <input type="radio" name="test_type" value="regular" id="regular_test" checked>
-                            <div class="option-content">
+                            <div>
                                 <strong>Обычный тест</strong><br>
                                 <small>Для женщин с регулярными циклами</small>
                             </div>
                         </label>
                         <label class="test-type-option">
                             <input type="radio" name="test_type" value="menopause" id="menopause_test">
-                            <div class="option-content">
+                            <div>
                                 <strong>Тест на менопаузу</strong><br>
                                 <small>Для женщин в периоде менопаузы</small>
                             </div>
@@ -159,551 +941,445 @@
                 </div>
 
                 <form id="libidoTestForm">
-                    <!-- Regular Test Section -->
-                    <div id="regularTestSection" class="test-type-section">
-                        <div class="test-matrix">
-                            <h4 class="matrix-title">Матрица вопросов по периодам цикла</h4>
-                            <p class="matrix-description">Ответьте на вопросы для каждого из 4 периодов вашего менструального цикла</p>
-                            
-                            <!-- Period 1: От конца месячных до овуляции -->
-                            <div class="period-block">
-                                <h5 class="period-title">
-                                    <i class="fas fa-moon"></i> Период 1: От конца месячных до овуляции
-                                </h5>
-                                
-                                <!-- Q1: Частота -->
-                                <div class="question-group">
-                                    <h6>Как часто хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="p1_frequency" value="0" required> Вообще не хочется</label>
-                                        <label><input type="radio" name="p1_frequency" value="1"> Хочется 1 раз в неделю</label>
-                                        <label><input type="radio" name="p1_frequency" value="2"> Хочется 1 раз в 3 дня</label>
-                                        <label><input type="radio" name="p1_frequency" value="3"> Хочется через день</label>
-                                        <label><input type="radio" name="p1_frequency" value="4"> Хочется каждый день</label>
-                                        <label><input type="radio" name="p1_frequency" value="5"> Хочется каждый день по много раз</label>
-                                    </div>
-                                </div>
-                                
-                                <!-- Q2: Сила желания -->
-                                <div class="question-group">
-                                    <h6>Сила желания в те дни, когда хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="p1_strength" value="1" required> Легкое желание</label>
-                                        <label><input type="radio" name="p1_strength" value="2"> Среднее желание</label>
-                                        <label><input type="radio" name="p1_strength" value="3"> Сильное желание</label>
-                                        <label><input type="radio" name="p1_strength" value="4"> Очень сильное желание</label>
-                                        <label><input type="radio" name="p1_strength" value="5"> Максимально сильное желание</label>
-                                    </div>
-                                </div>
-                                
-                                <!-- Q3: Эрегированный член (хочется) -->
-                                <div class="question-group">
-                                    <h6>Возбуждает ли вид ЭРЕГИРОВАННОГО члена в дни, когда хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="p1_erect_yes" value="0" required> Вообще не возбуждает</label>
-                                        <label><input type="radio" name="p1_erect_yes" value="1"> Немного возбуждает</label>
-                                        <label><input type="radio" name="p1_erect_yes" value="2"> Средне возбуждает</label>
-                                        <label><input type="radio" name="p1_erect_yes" value="3"> Сильно возбуждает</label>
-                                        <label><input type="radio" name="p1_erect_yes" value="4"> Очень сильно возбуждает</label>
-                                    </div>
-                                </div>
-                                
-                                <!-- Q4: Эрегированный член (не хочется) -->
-                                <div class="question-group">
-                                    <h6>Возбуждает ли вид ЭРЕГИРОВАННОГО члена в дни, когда НЕ хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="p1_erect_no" value="0" required> Вообще не возбуждает</label>
-                                        <label><input type="radio" name="p1_erect_no" value="1"> Немного возбуждает</label>
-                                        <label><input type="radio" name="p1_erect_no" value="2"> Средне возбуждает</label>
-                                        <label><input type="radio" name="p1_erect_no" value="3"> Сильно возбуждает</label>
-                                        <label><input type="radio" name="p1_erect_no" value="4"> Очень сильно возбуждает</label>
-                                    </div>
-                                </div>
-                                
-                                <!-- Q5: Неэрегированный член (хочется) -->
-                                <div class="question-group">
-                                    <h6>Возбуждает ли вид НЕэрегированного члена в дни, когда хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="p1_soft_yes" value="0" required> Вообще не возбуждает</label>
-                                        <label><input type="radio" name="p1_soft_yes" value="1"> Немного возбуждает</label>
-                                        <label><input type="radio" name="p1_soft_yes" value="2"> Средне возбуждает</label>
-                                        <label><input type="radio" name="p1_soft_yes" value="3"> Сильно возбуждает</label>
-                                        <label><input type="radio" name="p1_soft_yes" value="4"> Очень сильно возбуждает</label>
-                                    </div>
-                                </div>
-                                
-                                <!-- Q6: Неэрегированный член (не хочется) -->
-                                <div class="question-group">
-                                    <h6>Возбуждает ли вид НЕэрегированного члена в дни, когда НЕ хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="p1_soft_no" value="0" required> Вообще не возбуждает</label>
-                                        <label><input type="radio" name="p1_soft_no" value="1"> Немного возбуждает</label>
-                                        <label><input type="radio" name="p1_soft_no" value="2"> Средне возбуждает</label>
-                                        <label><input type="radio" name="p1_soft_no" value="3"> Сильно возбуждает</label>
-                                        <label><input type="radio" name="p1_soft_no" value="4"> Очень сильно возбуждает</label>
-                                    </div>
-                                </div>
-                            </div>
+                    <!-- Обычный тест (4 периода) -->
+                    <div id="regular-test">
+                        <table class="test-table">
+                            <thead>
+                                <tr>
+                                    <th>Период</th>
+                                    <th>Как часто хочется секса?</th>
+                                    <th>Сила желания в те дни, когда хочется секса?</th>
+                                    <th colspan="2">Возбуждает ли Вас вид эрегированного полового члена?</th>
+                                    <th colspan="2">Возбуждает ли Вас вид НЕэрегированного полового члена?</th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th>В дни, когда хочется секса</th>
+                                    <th>В дни, когда НЕ хочется секса</th>
+                                    <th>В дни, когда хочется секса</th>
+                                    <th>В дни, когда НЕ хочется секса</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Период 1 -->
+                                <tr>
+                                    <td class="period-cell">От конца месячных до овуляции</td>
+                                    <td class="question-cell">
+                                        <div class="options-vertical">
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_frequency" value="Вообще не хочется" required>
+                                                Вообще не хочется
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_frequency" value="Хочется 1 раза в неделю">
+                                                Хочется 1 раза в неделю
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_frequency" value="Хочется 1 раз в 3 дня">
+                                                Хочется 1 раз в 3 дня
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_frequency" value="Хочется через день">
+                                                Хочется через день
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_frequency" value="Хочется каждый день">
+                                                Хочется каждый день
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_frequency" value="Хочется каждый день по много раз">
+                                                Хочется каждый день по много раз
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td class="question-cell">
+                                        <div class="options-vertical">
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_strength" value="Легкое желание" required>
+                                                Легкое желание
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_strength" value="Среднее желание">
+                                                Среднее желание
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_strength" value="Сильное желание">
+                                                Сильное желание
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_strength" value="Очень сильное желание">
+                                                Очень сильное желание
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_strength" value="Максимально сильное желание">
+                                                Максимально сильное желание
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td class="question-cell">
+                                        <div class="options-vertical">
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_erected_want" value="Вообще не возбуждает" required>
+                                                Вообще не возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_erected_want" value="Немного возбуждает">
+                                                Немного возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_erected_want" value="Средне возбуждает">
+                                                Средне возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_erected_want" value="Сильно возбуждает">
+                                                Сильно возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_erected_want" value="Очень сильно возбуждает">
+                                                Очень сильно возбуждает
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td class="question-cell">
+                                        <div class="options-vertical">
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_erected_not_want" value="Вообще не возбуждает" required>
+                                                Вообще не возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_erected_not_want" value="Немного возбуждает">
+                                                Немного возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_erected_not_want" value="Средне возбуждает">
+                                                Средне возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_erected_not_want" value="Сильно возбуждает">
+                                                Сильно возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_erected_not_want" value="Очень сильно возбуждает">
+                                                Очень сильно возбуждает
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td class="question-cell">
+                                        <div class="options-vertical">
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_non_erected_want" value="Вообще не возбуждает" required>
+                                                Вообще не возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_non_erected_want" value="Немного возбуждает">
+                                                Немного возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_non_erected_want" value="Средне возбуждает">
+                                                Средне возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_non_erected_want" value="Сильно возбуждает">
+                                                Сильно возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_non_erected_want" value="Очень сильно возбуждает">
+                                                Очень сильно возбуждает
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td class="question-cell">
+                                        <div class="options-vertical">
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_non_erected_not_want" value="Вообще не возбуждает" required>
+                                                Вообще не возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_non_erected_not_want" value="Немного возбуждает">
+                                                Немного возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_non_erected_not_want" value="Средне возбуждает">
+                                                Средне возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_non_erected_not_want" value="Сильно возбуждает">
+                                                Сильно возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period1_non_erected_not_want" value="Очень сильно возбуждает">
+                                                Очень сильно возбуждает
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- Период 2 -->
+                                <tr>
+                                    <td class="period-cell">В период овуляции</td>
+                                    <td class="question-cell">
+                                        <div class="options-vertical">
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_frequency" value="Вообще не хочется" required>
+                                                Вообще не хочется
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_frequency" value="Хочется 1 раза в неделю">
+                                                Хочется 1 раза в неделю
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_frequency" value="Хочется 1 раз в 3 дня">
+                                                Хочется 1 раз в 3 дня
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_frequency" value="Хочется через день">
+                                                Хочется через день
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_frequency" value="Хочется каждый день">
+                                                Хочется каждый день
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_frequency" value="Хочется каждый день по много раз">
+                                                Хочется каждый день по много раз
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td class="question-cell">
+                                        <div class="options-vertical">
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_strength" value="Легкое желание" required>
+                                                Легкое желание
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_strength" value="Среднее желание">
+                                                Среднее желание
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_strength" value="Сильное желание">
+                                                Сильное желание
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_strength" value="Очень сильное желание">
+                                                Очень сильное желание
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_strength" value="Максимально сильное желание">
+                                                Максимально сильное желание
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td class="question-cell">
+                                        <div class="options-vertical">
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_erected_want" value="Вообще не возбуждает" required>
+                                                Вообще не возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_erected_want" value="Немного возбуждает">
+                                                Немного возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_erected_want" value="Средне возбуждает">
+                                                Средне возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_erected_want" value="Сильно возбуждает">
+                                                Сильно возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_erected_want" value="Очень сильно возбуждает">
+                                                Очень сильно возбуждает
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td class="question-cell">
+                                        <div class="options-vertical">
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_erected_not_want" value="Вообще не возбуждает" required>
+                                                Вообще не возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_erected_not_want" value="Немного возбуждает">
+                                                Немного возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_erected_not_want" value="Средне возбуждает">
+                                                Средне возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_erected_not_want" value="Сильно возбуждает">
+                                                Сильно возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_erected_not_want" value="Очень сильно возбуждает">
+                                                Очень сильно возбуждает
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td class="question-cell">
+                                        <div class="options-vertical">
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_non_erected_want" value="Вообще не возбуждает" required>
+                                                Вообще не возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_non_erected_want" value="Немного возбуждает">
+                                                Немного возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_non_erected_want" value="Средне возбуждает">
+                                                Средне возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_non_erected_want" value="Сильно возбуждает">
+                                                Сильно возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_non_erected_want" value="Очень сильно возбуждает">
+                                                Очень сильно возбуждает
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td class="question-cell">
+                                        <div class="options-vertical">
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_non_erected_not_want" value="Вообще не возбуждает" required>
+                                                Вообще не возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_non_erected_not_want" value="Немного возбуждает">
+                                                Немного возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_non_erected_not_want" value="Средне возбуждает">
+                                                Средне возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_non_erected_not_want" value="Сильно возбуждает">
+                                                Сильно возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period2_non_erected_not_want" value="Очень сильно возбуждает">
+                                                Очень сильно возбуждает
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- Период 3 -->
+                                <tr>
+                                    <td class="period-cell">От конца овуляции до начала месячных</td>
+                                    <td class="question-cell">
+                                        <div class="options-vertical">
+                                            <label class="option-item">
+                                                <input type="radio" name="period3_frequency" value="Вообще не хочется" required>
+                                                Вообще не хочется
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period3_frequency" value="Хочется 1 раза в неделю">
+                                                Хочется 1 раза в неделю
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period3_frequency" value="Хочется 1 раз в 3 дня">
+                                                Хочется 1 раз в 3 дня
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period3_frequency" value="Хочется через день">
+                                                Хочется через день
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period3_frequency" value="Хочется каждый день">
+                                                Хочется каждый день
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period3_frequency" value="Хочется каждый день по много раз">
+                                                Хочется каждый день по много раз
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td class="question-cell">
+                                        <div class="options-vertical">
+                                            <label class="option-item">
+                                                <input type="radio" name="period3_strength" value="Легкое желание" required>
+                                                Легкое желание
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period3_strength" value="Среднее желание">
+                                                Среднее желание
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period3_strength" value="Сильное желание">
+                                                Сильное желание
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period3_strength" value="Очень сильное желание">
+                                                Очень сильное желание
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period3_strength" value="Максимально сильное желание">
+                                                Максимально сильное желание
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td class="question-cell">
+                                        <div class="options-vertical">
+                                            <label class="option-item">
+                                                <input type="radio" name="period3_erected_want" value="Вообще не возбуждает" required>
+                                                Вообще не возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period3_erected_want" value="Немного возбуждает">
+                                                Немного возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period3_erected_want" value="Средне возбуждает">
+                                                Средне возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period3_erected_want" value="Сильно возбуждает">
+                                                Сильно возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period3_erected_want" value="Очень сильно возбуждает">
+                                                Очень сильно возбуждает
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td class="question-cell">
+                                        <div class="options-vertical">
+                                            <label class="option-item">
+                                                <input type="radio" name="period3_erected_not_want" value="Вообще не возбуждает" required>
+                                                Вообще не возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period3_erected_not_want" value="Немного возбуждает">
+                                                Немного возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period3_erected_not_want" value="Средне возбуждает">
+                                                Средне возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period3_erected_not_want" value="Сильно возбуждает">
+                                                Сильно возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period3_erected_not_want" value="Очень сильно возбуждает">
+                                                Очень сильно возбуждает
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td class="question-cell">
+                                        <div class="options-vertical">
+                                            <label class="option-item">
+                                                <input type="radio" name="period3_non_erected_want" value="Вообще не возбуждает" required>
+                                                Вообще не возбуждает
+                                            </label>
+                                            <label class="option-item">
+                                                <input type="radio" name="period3_non_erected_want" value="Немного возбуждает">
+                                                Немно
 
-                            <!-- Period 2: В период овуляции -->
-                            <div class="period-block">
-                                <h5 class="period-title">
-                                    <i class="fas fa-star"></i> Период 2: В период овуляции
-                                </h5>
-                                
-                                <div class="question-group">
-                                    <h6>Как часто хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="p2_frequency" value="0" required> Вообще не хочется</label>
-                                        <label><input type="radio" name="p2_frequency" value="1"> Хочется 1 раз в неделю</label>
-                                        <label><input type="radio" name="p2_frequency" value="2"> Хочется 1 раз в 3 дня</label>
-                                        <label><input type="radio" name="p2_frequency" value="3"> Хочется через день</label>
-                                        <label><input type="radio" name="p2_frequency" value="4"> Хочется каждый день</label>
-                                        <label><input type="radio" name="p2_frequency" value="5"> Хочется каждый день по много раз</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="question-group">
-                                    <h6>Сила желания в те дни, когда хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="p2_strength" value="1" required> Легкое желание</label>
-                                        <label><input type="radio" name="p2_strength" value="2"> Среднее желание</label>
-                                        <label><input type="radio" name="p2_strength" value="3"> Сильное желание</label>
-                                        <label><input type="radio" name="p2_strength" value="4"> Очень сильное желание</label>
-                                        <label><input type="radio" name="p2_strength" value="5"> Максимально сильное желание</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="question-group">
-                                    <h6>Возбуждает ли вид ЭРЕГИРОВАННОГО члена в дни, когда хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="p2_erect_yes" value="0" required> Вообще не возбуждает</label>
-                                        <label><input type="radio" name="p2_erect_yes" value="1"> Немного возбуждает</label>
-                                        <label><input type="radio" name="p2_erect_yes" value="2"> Средне возбуждает</label>
-                                        <label><input type="radio" name="p2_erect_yes" value="3"> Сильно возбуждает</label>
-                                        <label><input type="radio" name="p2_erect_yes" value="4"> Очень сильно возбуждает</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="question-group">
-                                    <h6>Возбуждает ли вид ЭРЕГИРОВАННОГО члена в дни, когда НЕ хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="p2_erect_no" value="0" required> Вообще не возбуждает</label>
-                                        <label><input type="radio" name="p2_erect_no" value="1"> Немного возбуждает</label>
-                                        <label><input type="radio" name="p2_erect_no" value="2"> Средне возбуждает</label>
-                                        <label><input type="radio" name="p2_erect_no" value="3"> Сильно возбуждает</label>
-                                        <label><input type="radio" name="p2_erect_no" value="4"> Очень сильно возбуждает</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="question-group">
-                                    <h6>Возбуждает ли вид НЕэрегированного члена в дни, когда хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="p2_soft_yes" value="0" required> Вообще не возбуждает</label>
-                                        <label><input type="radio" name="p2_soft_yes" value="1"> Немного возбуждает</label>
-                                        <label><input type="radio" name="p2_soft_yes" value="2"> Средне возбуждает</label>
-                                        <label><input type="radio" name="p2_soft_yes" value="3"> Сильно возбуждает</label>
-                                        <label><input type="radio" name="p2_soft_yes" value="4"> Очень сильно возбуждает</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="question-group">
-                                    <h6>Возбуждает ли вид НЕэрегированного члена в дни, когда НЕ хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="p2_soft_no" value="0" required> Вообще не возбуждает</label>
-                                        <label><input type="radio" name="p2_soft_no" value="1"> Немного возбуждает</label>
-                                        <label><input type="radio" name="p2_soft_no" value="2"> Средне возбуждает</label>
-                                        <label><input type="radio" name="p2_soft_no" value="3"> Сильно возбуждает</label>
-                                        <label><input type="radio" name="p2_soft_no" value="4"> Очень сильно возбуждает</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Period 3: От конца овуляции до начала месячных -->
-                            <div class="period-block">
-                                <h5 class="period-title">
-                                    <i class="fas fa-adjust"></i> Период 3: От конца овуляции до начала месячных
-                                </h5>
-                                
-                                <div class="question-group">
-                                    <h6>Как часто хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="p3_frequency" value="0" required> Вообще не хочется</label>
-                                        <label><input type="radio" name="p3_frequency" value="1"> Хочется 1 раз в неделю</label>
-                                        <label><input type="radio" name="p3_frequency" value="2"> Хочется 1 раз в 3 дня</label>
-                                        <label><input type="radio" name="p3_frequency" value="3"> Хочется через день</label>
-                                        <label><input type="radio" name="p3_frequency" value="4"> Хочется каждый день</label>
-                                        <label><input type="radio" name="p3_frequency" value="5"> Хочется каждый день по много раз</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="question-group">
-                                    <h6>Сила желания в те дни, когда хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="p3_strength" value="1" required> Легкое желание</label>
-                                        <label><input type="radio" name="p3_strength" value="2"> Среднее желание</label>
-                                        <label><input type="radio" name="p3_strength" value="3"> Сильное желание</label>
-                                        <label><input type="radio" name="p3_strength" value="4"> Очень сильное желание</label>
-                                        <label><input type="radio" name="p3_strength" value="5"> Максимально сильное желание</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="question-group">
-                                    <h6>Возбуждает ли вид ЭРЕГИРОВАННОГО члена в дни, когда хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="p3_erect_yes" value="0" required> Вообще не возбуждает</label>
-                                        <label><input type="radio" name="p3_erect_yes" value="1"> Немного возбуждает</label>
-                                        <label><input type="radio" name="p3_erect_yes" value="2"> Средне возбуждает</label>
-                                        <label><input type="radio" name="p3_erect_yes" value="3"> Сильно возбуждает</label>
-                                        <label><input type="radio" name="p3_erect_yes" value="4"> Очень сильно возбуждает</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="question-group">
-                                    <h6>Возбуждает ли вид ЭРЕГИРОВАННОГО члена в дни, когда НЕ хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="p3_erect_no" value="0" required> Вообще не возбуждает</label>
-                                        <label><input type="radio" name="p3_erect_no" value="1"> Немного возбуждает</label>
-                                        <label><input type="radio" name="p3_erect_no" value="2"> Средне возбуждает</label>
-                                        <label><input type="radio" name="p3_erect_no" value="3"> Сильно возбуждает</label>
-                                        <label><input type="radio" name="p3_erect_no" value="4"> Очень сильно возбуждает</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="question-group">
-                                    <h6>Возбуждает ли вид НЕэрегированного члена в дни, когда хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="p3_soft_yes" value="0" required> Вообще не возбуждает</label>
-                                        <label><input type="radio" name="p3_soft_yes" value="1"> Немного возбуждает</label>
-                                        <label><input type="radio" name="p3_soft_yes" value="2"> Средне возбуждает</label>
-                                        <label><input type="radio" name="p3_soft_yes" value="3"> Сильно возбуждает</label>
-                                        <label><input type="radio" name="p3_soft_yes" value="4"> Очень сильно возбуждает</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="question-group">
-                                    <h6>Возбуждает ли вид НЕэрегированного члена в дни, когда НЕ хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="p3_soft_no" value="0" required> Вообще не возбуждает</label>
-                                        <label><input type="radio" name="p3_soft_no" value="1"> Немного возбуждает</label>
-                                        <label><input type="radio" name="p3_soft_no" value="2"> Средне возбуждает</label>
-                                        <label><input type="radio" name="p3_soft_no" value="3"> Сильно возбуждает</label>
-                                        <label><input type="radio" name="p3_soft_no" value="4"> Очень сильно возбуждает</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Period 4: В период месячных -->
-                            <div class="period-block">
-                                <h5 class="period-title">
-                                    <i class="fas fa-droplet"></i> Период 4: В период месячных
-                                </h5>
-                                
-                                <div class="question-group">
-                                    <h6>Как часто хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="p4_frequency" value="0" required> Вообще не хочется</label>
-                                        <label><input type="radio" name="p4_frequency" value="1"> Хочется 1 раз в неделю</label>
-                                        <label><input type="radio" name="p4_frequency" value="2"> Хочется 1 раз в 3 дня</label>
-                                        <label><input type="radio" name="p4_frequency" value="3"> Хочется через день</label>
-                                        <label><input type="radio" name="p4_frequency" value="4"> Хочется каждый день</label>
-                                        <label><input type="radio" name="p4_frequency" value="5"> Хочется каждый день по много раз</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="question-group">
-                                    <h6>Сила желания в те дни, когда хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="p4_strength" value="1" required> Легкое желание</label>
-                                        <label><input type="radio" name="p4_strength" value="2"> Среднее желание</label>
-                                        <label><input type="radio" name="p4_strength" value="3"> Сильное желание</label>
-                                        <label><input type="radio" name="p4_strength" value="4"> Очень сильное желание</label>
-                                        <label><input type="radio" name="p4_strength" value="5"> Максимально сильное желание</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="question-group">
-                                    <h6>Возбуждает ли вид ЭРЕГИРОВАННОГО члена в дни, когда хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="p4_erect_yes" value="0" required> Вообще не возбуждает</label>
-                                        <label><input type="radio" name="p4_erect_yes" value="1"> Немного возбуждает</label>
-                                        <label><input type="radio" name="p4_erect_yes" value="2"> Средне возбуждает</label>
-                                        <label><input type="radio" name="p4_erect_yes" value="3"> Сильно возбуждает</label>
-                                        <label><input type="radio" name="p4_erect_yes" value="4"> Очень сильно возбуждает</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="question-group">
-                                    <h6>Возбуждает ли вид ЭРЕГИРОВАННОГО члена в дни, когда НЕ хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="p4_erect_no" value="0" required> Вообще не возбуждает</label>
-                                        <label><input type="radio" name="p4_erect_no" value="1"> Немного возбуждает</label>
-                                        <label><input type="radio" name="p4_erect_no" value="2"> Средне возбуждает</label>
-                                        <label><input type="radio" name="p4_erect_no" value="3"> Сильно возбуждает</label>
-                                        <label><input type="radio" name="p4_erect_no" value="4"> Очень сильно возбуждает</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="question-group">
-                                    <h6>Возбуждает ли вид НЕэрегированного члена в дни, когда хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="p4_soft_yes" value="0" required> Вообще не возбуждает</label>
-                                        <label><input type="radio" name="p4_soft_yes" value="1"> Немного возбуждает</label>
-                                        <label><input type="radio" name="p4_soft_yes" value="2"> Средне возбуждает</label>
-                                        <label><input type="radio" name="p4_soft_yes" value="3"> Сильно возбуждает</label>
-                                        <label><input type="radio" name="p4_soft_yes" value="4"> Очень сильно возбуждает</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="question-group">
-                                    <h6>Возбуждает ли вид НЕэрегированного члена в дни, когда НЕ хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="p4_soft_no" value="0" required> Вообще не возбуждает</label>
-                                        <label><input type="radio" name="p4_soft_no" value="1"> Немного возбуждает</label>
-                                        <label><input type="radio" name="p4_soft_no" value="2"> Средне возбуждает</label>
-                                        <label><input type="radio" name="p4_soft_no" value="3"> Сильно возбуждает</label>
-                                        <label><input type="radio" name="p4_soft_no" value="4"> Очень сильно возбуждает</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Seasonal dependency question -->
-                            <div class="period-block">
-                                <h5 class="period-title">
-                                    <i class="fas fa-calendar"></i> Дополнительный вопрос
-                                </h5>
-                                
-                                <div class="question-group">
-                                    <h6>Зависит ли Ваше либидо от времени года?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="seasonal" value="no" required> Нет</label>
-                                        <label><input type="radio" name="seasonal" value="yes"> Да</label>
-                                    </div>
-                                    <div id="seasonalDescription" style="display: none; margin-top: 1rem;">
-                                        <label for="seasonalText">Опишите, как меняется ваше либидо в зависимости от сезона:</label>
-                                        <textarea id="seasonalText" name="seasonalText" rows="3" class="form-control" placeholder="Например: зимой либидо снижается, летом увеличивается..."></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Menopause Test Section -->
-                    <div id="menopauseTestSection" class="test-type-section" style="display: none;">
-                        <div class="test-matrix">
-                            <h4 class="matrix-title">Менопауза - Тест на женское либидо</h4>
-                            <p class="matrix-description">Ответьте на вопросы о вашем текущем состоянии (без разделения по периодам цикла)</p>
-                            
-                            <div class="period-block">
-                                <h5 class="period-title">
-                                    <i class="fas fa-venus"></i> Общие вопросы
-                                </h5>
-                                
-                                <div class="question-group">
-                                    <h6>Как часто хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="m_frequency" value="0"> Вообще не хочется</label>
-                                        <label><input type="radio" name="m_frequency" value="1"> Хочется 1 раз в неделю</label>
-                                        <label><input type="radio" name="m_frequency" value="2"> Хочется 1 раз в 3 дня</label>
-                                        <label><input type="radio" name="m_frequency" value="3"> Хочется через день</label>
-                                        <label><input type="radio" name="m_frequency" value="4"> Хочется каждый день</label>
-                                        <label><input type="radio" name="m_frequency" value="5"> Хочется каждый день по много раз</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="question-group">
-                                    <h6>Сила желания в те дни, когда хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="m_strength" value="1"> Легкое желание</label>
-                                        <label><input type="radio" name="m_strength" value="2"> Среднее желание</label>
-                                        <label><input type="radio" name="m_strength" value="3"> Сильное желание</label>
-                                        <label><input type="radio" name="m_strength" value="4"> Очень сильное желание</label>
-                                        <label><input type="radio" name="m_strength" value="5"> Максимально сильное желание</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="question-group">
-                                    <h6>Возбуждает ли вид ЭРЕГИРОВАННОГО члена в дни, когда хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="m_erect_yes" value="0"> Вообще не возбуждает</label>
-                                        <label><input type="radio" name="m_erect_yes" value="1"> Немного возбуждает</label>
-                                        <label><input type="radio" name="m_erect_yes" value="2"> Средне возбуждает</label>
-                                        <label><input type="radio" name="m_erect_yes" value="3"> Сильно возбуждает</label>
-                                        <label><input type="radio" name="m_erect_yes" value="4"> Очень сильно возбуждает</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="question-group">
-                                    <h6>Возбуждает ли вид ЭРЕГИРОВАННОГО члена в дни, когда НЕ хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="m_erect_no" value="0"> Вообще не возбуждает</label>
-                                        <label><input type="radio" name="m_erect_no" value="1"> Немного возбуждает</label>
-                                        <label><input type="radio" name="m_erect_no" value="2"> Средне возбуждает</label>
-                                        <label><input type="radio" name="m_erect_no" value="3"> Сильно возбуждает</label>
-                                        <label><input type="radio" name="m_erect_no" value="4"> Очень сильно возбуждает</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="question-group">
-                                    <h6>Возбуждает ли вид НЕэрегированного члена в дни, когда хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="m_soft_yes" value="0"> Вообще не возбуждает</label>
-                                        <label><input type="radio" name="m_soft_yes" value="1"> Немного возбуждает</label>
-                                        <label><input type="radio" name="m_soft_yes" value="2"> Средне возбуждает</label>
-                                        <label><input type="radio" name="m_soft_yes" value="3"> Сильно возбуждает</label>
-                                        <label><input type="radio" name="m_soft_yes" value="4"> Очень сильно возбуждает</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="question-group">
-                                    <h6>Возбуждает ли вид НЕэрегированного члена в дни, когда НЕ хочется секса?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="m_soft_no" value="0"> Вообще не возбуждает</label>
-                                        <label><input type="radio" name="m_soft_no" value="1"> Немного возбуждает</label>
-                                        <label><input type="radio" name="m_soft_no" value="2"> Средне возбуждает</label>
-                                        <label><input type="radio" name="m_soft_no" value="3"> Сильно возбуждает</label>
-                                        <label><input type="radio" name="m_soft_no" value="4"> Очень сильно возбуждает</label>
-                                    </div>
-                                </div>
-
-                                <div class="question-group">
-                                    <h6>Зависит ли Ваше либидо от времени года?</h6>
-                                    <div class="radio-grid">
-                                        <label><input type="radio" name="m_seasonal" value="no"> Нет</label>
-                                        <label><input type="radio" name="m_seasonal" value="yes"> Да</label>
-                                    </div>
-                                    <div id="menopauseSeasonalDescription" style="display: none; margin-top: 1rem;">
-                                        <label for="menopauseSeasonalText">Опишите, как меняется ваше либидо:</label>
-                                        <textarea id="menopauseSeasonalText" name="menopauseSeasonalText" rows="3" class="form-control"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Submit button -->
-                    <div class="form-group" style="text-align: center; margin-top: 3rem;">
-                        <button type="submit" class="btn" style="padding: 1rem 2rem; font-size: 1.1rem;">
-                            <i class="fas fa-paper-plane"></i> Отправить анкету и получить результат
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- Result Section -->
-    <section id="result" class="section-hidden">
-        <div class="container">
-            <div class="section-title">
-                <h2>Результаты теста</h2>
-                <p>Узнайте ваш уровень либидо и получите рекомендации</p>
-            </div>
-            
-            <div class="result-container">
-                <div class="result-header">
-                    <h3>Ваш результат</h3>
-                    <p>На основе ваших ответов мы определили уровень вашего либидо</p>
-                </div>
-                
-                <div id="resultLevel" class="result-level">
-                    <!-- Результат будет вставлен сюда -->
-                </div>
-                
-                <div id="resultDescription" class="result-description">
-                    <!-- Описание результата будет вставлено сюда -->
-                </div>
-                
-                <div class="result-actions">
-                    <button id="backToTest" class="btn" style="background: var(--purple-mystic);">
-                        <i class="fas fa-arrow-left"></i> Вернуться к тесту
-                    </button>
-                    <button id="showConsultationForm" class="btn">
-                        <i class="fas fa-calendar-check"></i> Записаться на консультацию
-                    </button>
-                </div>
-
-                <!-- Consultation form (hidden by default) -->
-                <div id="consultationFormSection" class="consultation-form-section" style="display: none; margin-top: 2rem;">
-                    <h4 style="text-align: center; margin-bottom: 1.5rem; color: var(--deep-burgundy);">
-                        <i class="fas fa-clipboard-list"></i> Форма записи на консультацию
-                    </h4>
-                    <form id="consultationForm">
-                        <div class="form-group">
-                            <label for="consultName" class="required-field">Имя</label>
-                            <input type="text" id="consultName" name="consultName" class="form-control" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="consultEmail" class="required-field">Email</label>
-                            <input type="email" id="consultEmail" name="consultEmail" class="form-control" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="consultFormat" class="required-field">Формат работы</label>
-                            <select id="consultFormat" name="consultFormat" class="form-control" required>
-                                <option value="">Выберите формат</option>
-                                <option value="online">Онлайн консультация</option>
-                                <option value="offline">Очная консультация</option>
-                                <option value="mixed">Комбинированный формат</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="consultRequest" class="required-field">Ваш запрос</label>
-                            <textarea id="consultRequest" name="consultRequest" class="form-control" rows="4" placeholder="Опишите вашу ситуацию и ожидания от консультации" required></textarea>
-                        </div>
-                        
-                        <div class="form-group" style="text-align: center;">
-                            <button type="submit" class="btn">
-                                <i class="fas fa-paper-plane"></i> Отправить заявку
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about">
-        <div class="container">
-            <div class="section-title">
-                <h2>Обо мне</h2>
-                <p>Ваш проводник в мир женской силы и сексуальной энергии</p>
-            </div>
-            <div class="about-content">
-                <div>
-                    <h3 style="color: var(--deep-burgundy); font-size: 1.8rem; margin-bottom: 1rem;">Татьяна Солнечная</h3>
-                    <p style="font-size: 1.05rem; margin-bottom: 1.5rem; line-height: 1.6;">Проводник женской силы с 4х-летним опытом. Помогаю женщинам пробудить свою сексуальную энергию и раскрыть внутреннюю гармонию.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div>
-                    <h4>Татьяна Солнечная</h4>
-                    <p>Проводник женской силы и сексуальной энергии</p>
-                </div>
-                <div>
-                    <h4>Контакты</h4>
-                    <p>Telegram: @Tan4ik77G</p>
-                    <p>Email: Tan4ik017@gmail.com</p>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Overlay for mobile menu -->
-    <div class="menu-overlay" id="menuOverlay"></div>
-
-    <script src="script.js"></script>
-</body>
-</html>
 
 
 
