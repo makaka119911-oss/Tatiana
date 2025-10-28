@@ -2417,45 +2417,55 @@
             return isValid;
         }
 
-        // Функция валидации формы теста
-        function validateTestForm(form) {
-            let isValid = true;
-            
-            // Проверяем общие вопросы
-            const requiredQuestions = [
-                'general_frequency', 'general_strength', 
-                'erected_want_days', 'erected_not_want_days',
-                'non_erected_want_days', 'non_erected_not_want_days',
-                'season_dependency'
-            ];
-            
-            requiredQuestions.forEach(questionName => {
-                const question = document.querySelector(`input[name="${questionName}"]:checked`);
-                if (!question) {
-                    isValid = false;
-                }
-            });
-            
-            // Если выбран обычный тест, проверяем вопросы по периодам
-            const testType = document.querySelector('input[name="test_type"]:checked').value;
-            if (testType === 'regular') {
-                const periods = ['period1', 'period2', 'period3', 'period4'];
-                periods.forEach(period => {
-                    const frequency = document.querySelector(`input[name="${period}_frequency"]:checked`);
-                    const strength = document.querySelector(`input[name="${period}_strength"]:checked`);
-                    
-                    if (!frequency || !strength) {
-                        isValid = false;
-                    }
-                });
+// В функции validateTestForm улучшим проверку:
+function validateTestForm(form) {
+    let isValid = true;
+    
+    // Проверяем общие вопросы
+    const requiredQuestions = [
+        'general_frequency', 'general_strength', 
+        'erected_want_days', 'erected_not_want_days',
+        'non_erected_want_days', 'non_erected_not_want_days',
+        'season_dependency'
+    ];
+    
+    requiredQuestions.forEach(questionName => {
+        const question = document.querySelector(`input[name="${questionName}"]:checked`);
+        if (!question) {
+            isValid = false;
+            // Подсвечиваем незаполненные вопросы
+            const questionBlock = document.querySelector(`input[name="${questionName}"]`).closest('.question-block');
+            if (questionBlock) {
+                questionBlock.style.border = '2px solid #e74c3c';
             }
-            
-            if (!isValid) {
-                showErrorMessage('❌ Пожалуйста, ответьте на все вопросы перед отправкой теста');
-            }
-            
-            return isValid;
         }
+    });
+    
+    // Если выбран обычный тест, проверяем вопросы по периодам
+    const testType = document.querySelector('input[name="test_type"]:checked').value;
+    if (testType === 'regular') {
+        const periods = ['period1', 'period2', 'period3', 'period4'];
+        periods.forEach(period => {
+            const frequency = document.querySelector(`input[name="${period}_frequency"]:checked`);
+            const strength = document.querySelector(`input[name="${period}_strength"]:checked`);
+            
+            if (!frequency || !strength) {
+                isValid = false;
+            }
+        });
+    }
+    
+    if (!isValid) {
+        showErrorMessage('❌ Пожалуйста, ответьте на все вопросы перед отправкой теста');
+        // Прокручиваем к первой ошибке
+        const firstError = document.querySelector('.question-block[style*="border: 2px solid #e74c3c"]');
+        if (firstError) {
+            firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+    
+    return isValid;
+}
 
         // Функция отправки формы регистрации
         async function submitRegistrationForm(form) {
@@ -2832,6 +2842,7 @@ async function submitTestResults(data, testType, level, score) {
     </script>
 </body>
 </html>
+
 
 
 
