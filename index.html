@@ -42,7 +42,7 @@
             padding: 0 15px;
         }
 
-        /* Header - Улучшен для мобильных */
+        /* Header */
         header {
             background: linear-gradient(135deg, var(--deep-burgundy) 0%, var(--purple-mystic) 100%);
             color: white;
@@ -52,7 +52,6 @@
             top: 0;
             z-index: 1000;
             box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
         }
 
         .nav-container {
@@ -91,21 +90,6 @@
             color: var(--light-gold);
         }
 
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background-color: var(--light-gold);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
         .mobile-menu-btn {
             display: none;
             background: none;
@@ -126,7 +110,7 @@
             background: rgba(255, 255, 255, 0.1);
         }
 
-        /* Hero Section - Улучшен для мобильных */
+        /* Hero Section */
         .hero {
             background: linear-gradient(rgba(139, 67, 82, 0.7), rgba(139, 107, 158, 0.7)), 
                         url('https://images.unsplash.com/photo-1515377905703-c4788e51af15?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
@@ -199,7 +183,7 @@
             100% { transform: scale(1); }
         }
 
-        /* Section Styles - Улучшены для мобильных */
+        /* Section Styles */
         section {
             padding: 3.5rem 0;
         }
@@ -237,162 +221,7 @@
             line-height: 1.5;
         }
 
-        /* About Section - Улучшен для мобильных */
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2.5rem;
-            align-items: center;
-        }
-
-        .profile-img-container {
-            position: relative;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
-        .profile-img {
-            width: 100%;
-            height: auto;
-            display: block;
-            transition: transform 0.5s ease;
-            object-fit: cover;
-            aspect-ratio: 3/4;
-        }
-
-        .profile-img-container:hover .profile-img {
-            transform: scale(1.05);
-        }
-
-        .profile-img-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(139, 67, 82, 0.8));
-            color: white;
-            padding: 1.5rem;
-            transform: translateY(100%);
-            transition: transform 0.5s ease;
-        }
-
-        .profile-img-container:hover .profile-img-overlay {
-            transform: translateY(0);
-        }
-
-        .floating {
-            animation: floating 3s ease-in-out infinite;
-        }
-
-        @keyframes floating {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-
-        /* Services Section - Улучшен для мобильных */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .service-card {
-            background: white;
-            border-radius: 15px;
-            padding: 1.8rem;
-            text-align: center;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-            border-top: 5px solid var(--vibrant-pink);
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .service-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        .service-icon {
-            font-size: 2.5rem;
-            color: var(--vibrant-pink);
-            margin-bottom: 1.2rem;
-        }
-
-        .service-card h3 {
-            color: var(--deep-burgundy);
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-        }
-
-        .service-card p {
-            line-height: 1.5;
-        }
-
-        /* Female Power Section - Улучшен для мобильных */
-        .female-power {
-            background: linear-gradient(135deg, var(--moonlight) 0%, var(--lavender) 100%);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .female-power::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 200%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" opacity="0.05"><path d="M50,10 A40,40 0 1,1 50,90 A40,40 0 1,1 50,10 Z" fill="none" stroke="%238B4352" stroke-width="2"/></svg>') repeat;
-            transform: rotate(30deg);
-        }
-
-        .power-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .power-item {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            padding: 1.8rem;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-            height: 100%;
-        }
-
-        .power-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        .power-icon {
-            font-size: 2.2rem;
-            color: var(--purple-mystic);
-            margin-bottom: 1rem;
-        }
-
-        .power-item h3 {
-            color: var(--deep-burgundy);
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-        }
-
-        .power-item p {
-            line-height: 1.5;
-        }
-
-        /* Registration Section - Улучшен для мобильных */
+        /* Registration Section */
         .registration-container {
             background: white;
             border-radius: 20px;
@@ -465,7 +294,7 @@
             box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.15);
         }
 
-        /* Test Section - Улучшен для мобильных */
+        /* Test Section */
         .test-container {
             background: white;
             border-radius: 20px;
@@ -563,7 +392,7 @@
             display: none;
         }
 
-        /* Result Section - Улучшен для мобильных */
+        /* Result Section */
         .result-container {
             background: white;
             border-radius: 20px;
@@ -618,145 +447,6 @@
             display: flex;
             flex-direction: column;
             gap: 1rem;
-        }
-
-        /* Process Section - Улучшен для мобильных */
-        .process-steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .step {
-            background: white;
-            border-radius: 15px;
-            padding: 1.8rem;
-            text-align: center;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
-            position: relative;
-            transition: all 0.3s ease;
-            height: 100%;
-        }
-
-        .step:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        .step-number {
-            width: 55px;
-            height: 55px;
-            background: linear-gradient(135deg, var(--vibrant-pink) 0%, var(--purple-mystic) 100%);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            font-weight: bold;
-            margin: 0 auto 1.2rem;
-        }
-
-        .step h3 {
-            color: var(--deep-burgundy);
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-        }
-
-        .step p {
-            line-height: 1.5;
-        }
-
-        /* Contact Section - Улучшен для мобильных */
-        .contact-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2.5rem;
-        }
-
-        .contact-info {
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 1.8rem;
-        }
-
-        .contact-icon {
-            width: 55px;
-            height: 55px;
-            background: linear-gradient(135deg, var(--vibrant-pink) 0%, var(--purple-mystic) 100%);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            margin-right: 1.2rem;
-            flex-shrink: 0;
-        }
-
-        .contact-text h4 {
-            color: var(--deep-burgundy);
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-        }
-
-        .booking-form {
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
-        }
-
-        /* Footer - Улучшен для мобильных */
-        footer {
-            background: linear-gradient(135deg, var(--deep-burgundy) 0%, var(--purple-mystic) 100%);
-            color: white;
-            padding: 2.5rem 0 1.5rem;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        footer h4 {
-            margin-bottom: 1rem;
-            color: var(--light-gold);
-            font-size: 1.2rem;
-        }
-
-        footer p {
-            margin-bottom: 0.5rem;
-            line-height: 1.5;
-        }
-
-        /* Стили для мобильного меню - Улучшены */
-        .menu-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-            z-index: 998;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .menu-overlay.active {
-            opacity: 1;
-            visibility: visible;
         }
 
         /* Стиль для скрытия формы записи */
@@ -848,47 +538,28 @@
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
         }
 
-        /* Responsive Design - УЛУЧШЕНА МОБИЛЬНАЯ ВЕРСИЯ */
-        @media (max-width: 1200px) {
-            .container {
-                width: 95%;
-            }
+        /* Стили для мобильного меню */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
         }
 
-        @media (max-width: 992px) {
-            .hero-content h1 {
-                font-size: 2.2rem;
-            }
-            
-            .hero-content p {
-                font-size: 1.1rem;
-            }
-            
-            .about-content {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            
-            .contact-container {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            
-            .section-title h2 {
-                font-size: 1.8rem;
-            }
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
         }
 
+        /* Responsive Design */
         @media (max-width: 768px) {
-            /* Header Mobile Improvements */
-            header {
-                padding: 0.6rem 0;
-            }
-            
-            .logo {
-                font-size: 1.3rem;
-            }
-            
             .nav-links {
                 position: fixed;
                 top: 0;
@@ -926,126 +597,10 @@
                 transform: translateX(0);
             }
             
-            /* Задержки для анимации пунктов меню */
-            .nav-links.active li:nth-child(1) { transition-delay: 0.1s; }
-            .nav-links.active li:nth-child(2) { transition-delay: 0.15s; }
-            .nav-links.active li:nth-child(3) { transition-delay: 0.2s; }
-            .nav-links.active li:nth-child(4) { transition-delay: 0.25s; }
-            .nav-links.active li:nth-child(5) { transition-delay: 0.3s; }
-            .nav-links.active li:nth-child(6) { transition-delay: 0.35s; }
-            .nav-links.active li:nth-child(7) { transition-delay: 0.4s; }
-            
             .mobile-menu-btn {
                 display: flex;
             }
             
-            /* Hero Mobile Improvements */
-            .hero {
-                min-height: 90vh;
-                padding: 70px 0 1.5rem;
-            }
-            
-            .hero-content h1 {
-                font-size: 1.9rem;
-                margin-bottom: 1rem;
-            }
-            
-            .hero-content p {
-                font-size: 1rem;
-                margin-bottom: 1.5rem;
-            }
-            
-            .btn {
-                padding: 12px 24px;
-                min-height: 48px;
-                font-size: 0.95rem;
-            }
-            
-            /* Sections Mobile Improvements */
-            section {
-                padding: 2.5rem 0;
-            }
-            
-            .section-title {
-                margin-bottom: 2rem;
-            }
-            
-            .section-title h2 {
-                font-size: 1.6rem;
-            }
-            
-            .section-title p {
-                font-size: 1rem;
-            }
-            
-            /* Forms Mobile Improvements */
-            .registration-container,
-            .test-container,
-            .result-container {
-                padding: 1.8rem;
-                border-radius: 16px;
-            }
-            
-            .test-header h3 {
-                font-size: 1.3rem;
-            }
-            
-            .question-block {
-                padding: 1.2rem;
-            }
-            
-            .question-block h5 {
-                font-size: 1rem;
-            }
-            
-            .options-grid {
-                grid-template-columns: 1fr;
-                gap: 0.6rem;
-            }
-            
-            .option-item {
-                padding: 0.9rem;
-                min-height: 55px;
-            }
-            
-            /* Cards Mobile Improvements */
-            .service-card,
-            .power-item,
-            .step {
-                padding: 1.5rem;
-            }
-            
-            .service-icon,
-            .power-icon {
-                font-size: 2.2rem;
-                margin-bottom: 1rem;
-            }
-            
-            .step-number {
-                width: 50px;
-                height: 50px;
-                font-size: 1.2rem;
-                margin-bottom: 1rem;
-            }
-            
-            /* Contact Mobile Improvements */
-            .contact-info,
-            .booking-form {
-                padding: 1.5rem;
-            }
-            
-            .contact-item {
-                margin-bottom: 1.5rem;
-            }
-            
-            .contact-icon {
-                width: 50px;
-                height: 50px;
-                font-size: 1.2rem;
-                margin-right: 1rem;
-            }
-            
-            /* Navigation Mobile Improvements */
             .nav-links a {
                 display: block;
                 padding: 1rem 1.5rem;
@@ -1061,136 +616,6 @@
             
             .nav-links a:last-child {
                 border-bottom: none;
-            }
-            
-            .nav-links a::after {
-                display: none;
-            }
-            
-            /* Back to top mobile */
-            .back-to-top {
-                width: 45px;
-                height: 45px;
-                bottom: 20px;
-                right: 20px;
-            }
-        }
-
-        @media (max-width: 576px) {
-            /* Extra Small Devices */
-            .hero-content h1 {
-                font-size: 1.7rem;
-            }
-            
-            .btn {
-                padding: 12px 20px;
-                width: 100%;
-                max-width: 280px;
-            }
-            
-            .test-container {
-                padding: 1.5rem;
-            }
-            
-            .registration-container,
-            .result-container {
-                padding: 1.5rem;
-            }
-            
-            .section-title h2 {
-                font-size: 1.5rem;
-            }
-            
-            .services-grid,
-            .power-grid,
-            .process-steps {
-                grid-template-columns: 1fr;
-                gap: 1.2rem;
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-            
-            .result-level {
-                font-size: 1.7rem;
-                padding: 1rem;
-            }
-            
-            .result-actions {
-                flex-direction: column;
-            }
-            
-            .result-actions .btn {
-                width: 100%;
-                margin: 0.3rem 0;
-            }
-            
-            .notification {
-                right: 10px;
-                left: 10px;
-                max-width: none;
-            }
-        }
-
-        @media (max-width: 400px) {
-            /* Very Small Devices */
-            .container {
-                width: 97%;
-                padding: 0 10px;
-            }
-            
-            .hero-content h1 {
-                font-size: 1.5rem;
-            }
-            
-            .hero-content p {
-                font-size: 0.95rem;
-            }
-            
-            .registration-container,
-            .test-container,
-            .result-container {
-                padding: 1.2rem;
-            }
-            
-            .question-block {
-                padding: 1rem;
-            }
-            
-            .option-item {
-                padding: 0.8rem;
-            }
-            
-            .service-card,
-            .power-item,
-            .step {
-                padding: 1.2rem;
-            }
-        }
-
-        /* Touch device improvements */
-        @media (hover: none) and (pointer: coarse) {
-            .service-card:hover,
-            .power-item:hover,
-            .step:hover,
-            .option-item:hover {
-                transform: none;
-            }
-            
-            .btn:hover {
-                transform: none;
-            }
-            
-            .service-card:active,
-            .power-item:active,
-            .step:active {
-                transform: scale(0.98);
-            }
-            
-            .btn:active {
-                transform: scale(0.98);
             }
         }
     </style>
@@ -1277,13 +702,6 @@
                         <div class="error-message" id="telegramError">Пожалуйста, введите ваш Telegram</div>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="photo" class="required-field"><i class="fas fa-camera"></i> Личная фотография</label>
-                        <input type="file" id="photo" name="photo" class="form-control" accept="image/*" required>
-                        <div class="error-message" id="photoError">Пожалуйста, загрузите вашу фотографию</div>
-                        <small style="color: #666; margin-top: 0.5rem; display: block;">Фотография используется только для идентификации и строго конфиденциальна</small>
-                    </div>
-                    
                     <div class="form-group" style="text-align: center; margin-top: 2rem;">
                         <button type="submit" class="btn" style="padding: 1rem 2rem; font-size: 1.1rem;">
                             <i class="fas fa-paper-plane"></i> Зарегистрироваться и перейти к тесту
@@ -1320,14 +738,14 @@
                     </h4>
                     <div style="display: flex; flex-direction: column; gap: 1rem;">
                         <label class="option-item" style="background: white; padding: 1rem 1.5rem; border-radius: 10px; cursor: pointer; display: flex; align-items: center; border: 2px solid var(--soft-pink);">
-                            <input type="radio" name="test_type" value="regular" id="regular_test" checked onchange="toggleTestType()" style="margin-right: 12px;">
+                            <input type="radio" name="test_type" value="regular" id="regular_test" checked style="margin-right: 12px;">
                             <div>
                                 <strong>Обычный тест</strong><br>
                                 <small>Для женщин с регулярными циклами</small>
                             </div>
                         </label>
                         <label class="option-item" style="background: white; padding: 1rem 1.5rem; border-radius: 10px; cursor: pointer; display: flex; align-items: center; border: 2px solid var(--soft-pink);">
-                            <input type="radio" name="test_type" value="menopause" id="menopause_test" onchange="toggleTestType()" style="margin-right: 12px;">
+                            <input type="radio" name="test_type" value="menopause" id="menopause_test" style="margin-right: 12px;">
                             <div>
                                 <strong>Тест на менопаузу</strong><br>
                                 <small>Для женщин в периоде менопаузы</small>
@@ -1401,140 +819,19 @@
                             </div>
                         </div>
 
-                        <!-- Вопрос 3: Возбуждение от эрегированного члена -->
+                        <!-- Вопрос 3: Зависимость от времени года -->
                         <div class="question-block">
-                            <h5 class="required-field">3. Возбуждает ли Вас вид эрегированного полового члена?</h5>
-                            
-                            <div class="subquestion">
-                                <h6>В дни, когда хочется секса:</h6>
-                                <div class="options-grid">
-                                    <label class="option-item">
-                                        <input type="radio" name="erected_want_days" value="Вообще не возбуждает" required>
-                                        Вообще не возбуждает
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="erected_want_days" value="Немного возбуждает">
-                                        Немного возбуждает
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="erected_want_days" value="Средне возбуждает">
-                                        Средне возбуждает
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="erected_want_days" value="Сильно возбуждает">
-                                        Сильно возбуждает
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="erected_want_days" value="Очень сильно возбуждает">
-                                        Очень сильно возбуждает
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <div class="subquestion">
-                                <h6>В дни, когда НЕ хочется секса (если такие дни бывают):</h6>
-                                <div class="options-grid">
-                                    <label class="option-item">
-                                        <input type="radio" name="erected_not_want_days" value="Вообще не возбуждает" required>
-                                        Вообще не возбуждает
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="erected_not_want_days" value="Немного возбуждает">
-                                        Немного возбуждает
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="erected_not_want_days" value="Средне возбуждает">
-                                        Средне возбуждает
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="erected_not_want_days" value="Сильно возбуждает">
-                                        Сильно возбуждает
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="erected_not_want_days" value="Очень сильно возбуждает">
-                                        Очень сильно возбуждает
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Вопрос 4: Возбуждение от неэрегированного члена -->
-                        <div class="question-block">
-                            <h5 class="required-field">4. Возбуждает ли Вас вид НЕэрегированного полового члена?</h5>
-                            
-                            <div class="subquestion">
-                                <h6>В дни, когда хочется секса:</h6>
-                                <div class="options-grid">
-                                    <label class="option-item">
-                                        <input type="radio" name="non_erected_want_days" value="Вообще не возбуждает" required>
-                                        Вообще не возбуждает
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="non_erected_want_days" value="Немного возбуждает">
-                                        Немного возбуждает
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="non_erected_want_days" value="Средне возбуждает">
-                                        Средне возбуждает
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="non_erected_want_days" value="Сильно возбуждает">
-                                        Сильно возбуждает
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="non_erected_want_days" value="Очень сильно возбуждает">
-                                        Очень сильно возбуждает
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <div class="subquestion">
-                                <h6>В дни, когда НЕ хочется секса (если такие дни бывают):</h6>
-                                <div class="options-grid">
-                                    <label class="option-item">
-                                        <input type="radio" name="non_erected_not_want_days" value="Вообще не возбуждает" required>
-                                        Вообще не возбуждает
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="non_erected_not_want_days" value="Немного возбуждает">
-                                        Немного возбуждает
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="non_erected_not_want_days" value="Средне возбуждает">
-                                        Средне возбуждает
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="non_erected_not_want_days" value="Сильно возбуждает">
-                                        Сильно возбуждает
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="non_erected_not_want_days" value="Очень сильно возбуждает">
-                                        Очень сильно возбуждает
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Вопрос 5: Зависимость от времени года -->
-                        <div class="question-block">
-                            <h5 class="required-field">5. Зависит ли Ваше либидо от времени года?</h5>
-                            <div class="error-message" id="question_5_error">Пожалуйста, выберите один из вариантов</div>
+                            <h5 class="required-field">3. Зависит ли Ваше либидо от времени года?</h5>
+                            <div class="error-message" id="question_3_error">Пожалуйста, выберите один из вариантов</div>
                             <div class="options-grid">
                                 <label class="option-item">
-                                    <input type="radio" name="season_dependency" value="Нет" required onchange="toggleSeasonDescription()">
+                                    <input type="radio" name="season_dependency" value="Нет" required>
                                     Нет
                                 </label>
                                 <label class="option-item">
-                                    <input type="radio" name="season_dependency" value="Да" onchange="toggleSeasonDescription()">
+                                    <input type="radio" name="season_dependency" value="Да">
                                     Да
                                 </label>
-                            </div>
-                            
-                            <div id="seasonDescription" class="season-description">
-                                <div class="form-group" style="margin-top: 1rem;">
-                                    <label for="season_details"><i class="fas fa-edit"></i> Опишите, как оно меняется:</label>
-                                    <textarea id="season_details" name="season_details" class="form-control" rows="3" placeholder="Опишите, как меняется ваше либидо в зависимости от времени года..."></textarea>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -1551,7 +848,7 @@
                                 <h6>Частота желания:</h6>
                                 <div class="options-grid">
                                     <label class="option-item">
-                                        <input type="radio" name="period1_frequency" value="Вообще не хочется" required>
+                                        <input type="radio" name="period1_frequency" value="Вообще не хочется">
                                         Вообще не хочется
                                     </label>
                                     <label class="option-item">
@@ -1561,44 +858,6 @@
                                     <label class="option-item">
                                         <input type="radio" name="period1_frequency" value="Хочется 1 раз в 3 дня">
                                         Хочется 1 раз в 3 дня
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period1_frequency" value="Хочется через день">
-                                        Хочется через день
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period1_frequency" value="Хочется каждый день">
-                                        Хочется каждый день
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period1_frequency" value="Хочется каждый день по много раз">
-                                        Хочется каждый день по много раз
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <div class="subquestion">
-                                <h6>Сила желания:</h6>
-                                <div class="options-grid">
-                                    <label class="option-item">
-                                        <input type="radio" name="period1_strength" value="Легкое желание" required>
-                                        Легкое желание
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period1_strength" value="Среднее желание">
-                                        Среднее желание
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period1_strength" value="Сильное желание">
-                                        Сильное желание
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period1_strength" value="Очень сильное желание">
-                                        Очень сильное желание
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period1_strength" value="Максимально сильное желание">
-                                        Максимально сильное желание
                                     </label>
                                 </div>
                             </div>
@@ -1612,7 +871,7 @@
                                 <h6>Частота желания:</h6>
                                 <div class="options-grid">
                                     <label class="option-item">
-                                        <input type="radio" name="period2_frequency" value="Вообще не хочется" required>
+                                        <input type="radio" name="period2_frequency" value="Вообще не хочется">
                                         Вообще не хочется
                                     </label>
                                     <label class="option-item">
@@ -1622,166 +881,6 @@
                                     <label class="option-item">
                                         <input type="radio" name="period2_frequency" value="Хочется 1 раз в 3 дня">
                                         Хочется 1 раз в 3 дня
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period2_frequency" value="Хочется через день">
-                                        Хочется через день
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period2_frequency" value="Хочется каждый день">
-                                        Хочется каждый день
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period2_frequency" value="Хочется каждый день по много раз">
-                                        Хочется каждый день по много раз
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <div class="subquestion">
-                                <h6>Сила желания:</h6>
-                                <div class="options-grid">
-                                    <label class="option-item">
-                                        <input type="radio" name="period2_strength" value="Легкое желание" required>
-                                        Легкое желание
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period2_strength" value="Среднее желание">
-                                        Среднее желание
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period2_strength" value="Сильное желание">
-                                        Сильное желание
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period2_strength" value="Очень сильное желание">
-                                        Очень сильное желание
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period2_strength" value="Максимально сильное желание">
-                                        Максимально сильное желание
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Период 3: От конца овуляции до начала месячных -->
-                        <div class="question-block">
-                            <h5 class="required-field">Период: От конца овуляции до начала месячных</h5>
-                            
-                            <div class="subquestion">
-                                <h6>Частота желания:</h6>
-                                <div class="options-grid">
-                                    <label class="option-item">
-                                        <input type="radio" name="period3_frequency" value="Вообще не хочется" required>
-                                        Вообще не хочется
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period3_frequency" value="Хочется 1 раз в неделю">
-                                        Хочется 1 раз в неделю
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period3_frequency" value="Хочется 1 раз в 3 дня">
-                                        Хочется 1 раз в 3 дня
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period3_frequency" value="Хочется через день">
-                                        Хочется через день
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period3_frequency" value="Хочется каждый день">
-                                        Хочется каждый день
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period3_frequency" value="Хочется каждый день по много раз">
-                                        Хочется каждый день по много раз
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <div class="subquestion">
-                                <h6>Сила желания:</h6>
-                                <div class="options-grid">
-                                    <label class="option-item">
-                                        <input type="radio" name="period3_strength" value="Легкое желание" required>
-                                        Легкое желание
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period3_strength" value="Среднее желание">
-                                        Среднее желание
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period3_strength" value="Сильное желание">
-                                        Сильное желание
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period3_strength" value="Очень сильное желание">
-                                        Очень сильное желание
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period3_strength" value="Максимально сильное желание">
-                                        Максимально сильное желание
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Период 4: В период месячных -->
-                        <div class="question-block">
-                            <h5 class="required-field">Период: В период месячных</h5>
-                            
-                            <div class="subquestion">
-                                <h6>Частота желания:</h6>
-                                <div class="options-grid">
-                                    <label class="option-item">
-                                        <input type="radio" name="period4_frequency" value="Вообще не хочется" required>
-                                        Вообще не хочется
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period4_frequency" value="Хочется 1 раз в неделю">
-                                        Хочется 1 раз в неделю
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period4_frequency" value="Хочется 1 раз в 3 дня">
-                                        Хочется 1 раз в 3 дня
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period4_frequency" value="Хочется через день">
-                                        Хочется через день
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period4_frequency" value="Хочется каждый день">
-                                        Хочется каждый день
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period4_frequency" value="Хочется каждый день по много раз">
-                                        Хочется каждый день по много раз
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <div class="subquestion">
-                                <h6>Сила желания:</h6>
-                                <div class="options-grid">
-                                    <label class="option-item">
-                                        <input type="radio" name="period4_strength" value="Легкое желание" required>
-                                        Легкое желание
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period4_strength" value="Среднее желание">
-                                        Среднее желание
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period4_strength" value="Сильное желание">
-                                        Сильное желание
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period4_strength" value="Очень сильное желание">
-                                        Очень сильное желание
-                                    </label>
-                                    <label class="option-item">
-                                        <input type="radio" name="period4_strength" value="Максимально сильное желание">
-                                        Максимально сильное желание
                                     </label>
                                 </div>
                             </div>
@@ -1793,10 +892,6 @@
                         <button type="submit" class="btn" style="padding: 1rem 2rem; font-size: 1.1rem;">
                             <i class="fas fa-paper-plane"></i> Отправить анкету и получить результат
                         </button>
-                        <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--dark-text);">
-                            <i class="fas fa-lock" style="color: var(--deep-burgundy); margin-right: 0.5rem;"></i>
-                            Все ответы строго конфиденциальны
-                        </p>
                     </div>
                 </form>
             </div>
@@ -1845,243 +940,9 @@
                 <p>Ваш проводник в мир женской силы и сексуальной энергии</p>
             </div>
             <div class="about-content">
-                <div class="profile-img-container floating">
-                    <img src="photo_2025-10-14_19-13-06.jpg" alt="Татьяна Солнечная - проводник женской силы" class="profile-img">
-                    <div class="profile-img-overlay">
-                        <p>"Ваше доверие - моя главная ценность. Вместе мы раскроем вашу божественную сущность."</p>
-                    </div>
-                </div>
                 <div>
                     <h3 style="color: var(--deep-burgundy); font-size: 1.8rem; margin-bottom: 1rem;">Татьяна Солнечная</h3>
                     <p style="font-size: 1.05rem; margin-bottom: 1.5rem; line-height: 1.6;">Проводник женской силы с 4х-летним опытом. Помогаю женщинам пробудить свою сексуальную энергию и раскрыть внутреннюю гармонию.</p>
-                    
-                    <div style="background: var(--lavender); padding: 1.5rem; border-radius: 15px; margin-bottom: 1.5rem; border: 2px solid var(--soft-pink);">
-                        <h4 style="color: var(--deep-burgundy); margin-bottom: 1rem; font-size: 1.2rem;"><i class="fas fa-graduation-cap"></i> Образование и путь:</h4>
-                        <ul style="list-style: none;">
-                            <li style="margin-bottom: 0.5rem; display: flex; align-items: flex-start;">
-                                <i class="fas fa-university" style="color: var(--vibrant-pink); margin-right: 0.5rem; margin-top: 0.2rem; flex-shrink: 0;"></i>
-                                <span>МИП, Московский институт психологии, квалификация сексолог психолог.</span>
-                            </li>
-                            <li style="margin-bottom: 0.5rem; display: flex; align-items: flex-start;">
-                                <i class="fas fa-certificate" style="color: var(--vibrant-pink); margin-right: 0.5rem; margin-top: 0.2rem; flex-shrink: 0;"></i>
-                                <span>Европейская ассоциация сексологов</span>
-                            </li>
-                            <li style="display: flex; align-items: flex-start;">
-                                <i class="fas fa-heart" style="color: var(--vibrant-pink); margin-right: 0.5rem; margin-top: 0.2rem; flex-shrink: 0;"></i>
-                                <span>Изучение женских энергетических практик</span>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <p style="line-height: 1.6;">В своей работе создаю безопасное пространство, где вы можете раскрыть свою истинную природу и пробудить дремлющую энергию. Индивидуальный подход к каждой женщине.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Остальные секции (Female Power, Services, Process, Contact) остаются без изменений в HTML -->
-    <!-- Female Power Section -->
-    <section id="power" class="female-power">
-        <div class="container">
-            <div class="section-title">
-                <h2>Уровни женской силы</h2>
-                <p>Откройте свою истинную природу и пробудите внутреннюю богиню</p>
-            </div>
-            <div class="power-grid">
-                <div class="power-item floating" style="animation-delay: 0.1s;">
-                    <div class="power-icon">
-                        <i class="fas fa-seedling"></i>
-                    </div>
-                    <h3>Базовый уровень</h3>
-                    <p>Принятие своей женственности, исцеление ран, восстановление связи с телом</p>
-                </div>
-                <div class="power-item floating" style="animation-delay: 0.2s;">
-                    <div class="power-icon">
-                        <i class="fas fa-feather-alt"></i>
-                    </div>
-                    <h3>Продвинутый уровень</h3>
-                    <p>Активация сексуальной энергии, развитие интуиции, гармонизация циклов</p>
-                </div>
-                <div class="power-item floating" style="animation-delay: 0.3s;">
-                    <div class="power-icon">
-                        <i class="fas fa-crown"></i>
-                    </div>
-                    <h3>Мастерский уровень</h3>
-                    <p>Трансформация энергии в творчество, магнетизм и жизненную силу</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section id="services" style="background: linear-gradient(135deg, var(--cream) 0%, var(--light-gold) 50%, var(--cream) 100%);">
-        <div class="container">
-            <div class="section-title">
-                <h2>Направления пробуждения</h2>
-                <p>Комплексный подход к раскрытию вашей женской силы</p>
-            </div>
-            <div class="services-grid">
-                <div class="service-card floating" style="animation-delay: 0.1s;">
-                    <div class="service-icon">
-                        <i class="fas fa-venus-mars"></i>
-                    </div>
-                    <h3>Пробуждение женской сексуальности</h3>
-                    <p>Исцеление блоков, раскрытие чувственности, гармонизация интимной сферы</p>
-                </div>
-                <div class="service-card floating" style="animation-delay: 0.2s;">
-                    <div class="service-icon">
-                        <i class="fas fa-heartbeat"></i>
-                    </div>
-                    <h3>Восстановление энергии желания</h3>
-                    <p>Пробуждение сексуального аппетита, работа с последствиями стресса, наполнение энергией</p>
-                </div>
-                <div class="service-card floating" style="animation-delay: 0.3s;">
-                    <div class="service-icon">
-                        <i class="fas fa-fire"></i>
-                    </div>
-                    <h3>Гармонизация сильного влечения</h3>
-                    <p>Направление мощной сексуальной энергии в творчество и самореализацию</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Process Section -->
-    <section id="process">
-        <div class="container">
-            <div class="section-title">
-                <h2>Путь пробуждения</h2>
-                <p>Откройте свою истинную природу шаг за шагом</p>
-            </div>
-            <div class="process-steps">
-                <div class="step floating" style="animation-delay: 0.1s;">
-                    <div class="step-number">1</div>
-                    <h3>Осознание</h3>
-                    <p>Диагностика текущего состояния энергии, выявление блоков и потенциала</p>
-                </div>
-                <div class="step floating" style="animation-delay: 0.2s;">
-                    <div class="step-number">2</div>
-                    <h3>Исцеление</h3>
-                    <p>Работа с травмами, принятие тела, восстановление энергетических потоков</p>
-                </div>
-                <div class="step floating" style="animation-delay: 0.3s;">
-                    <div class="step-number">3</div>
-                    <h3>Пробуждение</h3>
-                    <p>Активация сексуальной энергии, развитие чувственности, раскрытие потенциала</p>
-                </div>
-                <div class="step floating" style="animation-delay: 0.4s;">
-                    <div class="step-number">4</div>
-                    <h3>Трансформация</h3>
-                    <p>Направление энергии в творчество, отношения и самореализацию</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" style="background: linear-gradient(135deg, var(--cream) 0%, var(--light-gold) 50%, var(--cream) 100%);">
-        <div class="container">
-            <div class="section-title">
-                <h2>Контакты и запись</h2>
-                <p>Начните свой путь к пробуждению женской силы</p>
-            </div>
-            
-            <div class="contact-container">
-                <div class="contact-info">
-                    <h3 style="color: var(--deep-burgundy); margin-bottom: 2rem; text-align: center;">Свяжитесь со мной</h3>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-phone"></i>
-                        </div>
-                        <div class="contact-text">
-                            <h4>Телефон</h4>
-                            <p>+7 (905) 595-99-96</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-paper-plane"></i>
-                        </div>
-                        <div class="contact-text">
-                            <h4>Telegram</h4>
-                            <p>@Tan4ik77G</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div class="contact-text">
-                            <h4>Email</h4>
-                            <p>Tan4ik017@gmail.com</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <div class="contact-text">
-                            <h4>Адрес</h4>
-                            <p>г. Реутов</p>
-                        </div>
-                    </div>
-                    
-                    <div style="margin-top: 2rem; padding: 1.5rem; background: var(--lavender); border-radius: 15px; text-align: center;">
-                        <h4 style="color: var(--deep-burgundy); margin-bottom: 1rem; font-size: 1.1rem;">Первая консультация</h4>
-                        <p style="font-size: 1rem; color: var(--dark-text);">30 минут бесплатно</p>
-                        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Чтобы познакомиться и определить ваш путь</p>
-                    </div>
-                </div>
-                
-                <div class="booking-form">
-                    <h3 style="color: var(--deep-burgundy); margin-bottom: 2rem; text-align: center;">Запись на пробуждение</h3>
-                    
-                    <form id="bookingForm">
-                        <div class="form-group">
-                            <label for="name" class="required-field"><i class="fas fa-user"></i> Ваше имя</label>
-                            <input type="text" id="name" name="name" class="form-control" required>
-                            <div class="error-message" id="nameError">Пожалуйста, введите ваше имя</div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="contact" class="required-field"><i class="fas fa-phone"></i> Телефон или Telegram</label>
-                            <input type="text" id="contact" name="contact" class="form-control" required>
-                            <div class="error-message" id="contactError">Пожалуйста, введите контактные данные</div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="email"><i class="fas fa-envelope"></i> Email (для ответа)</label>
-                            <input type="email" id="email" name="email" class="form-control">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="service" class="required-field"><i class="fas fa-concierge-bell"></i> Формат работы</label>
-                            <select id="service" name="service" class="form-control" required>
-                                <option value="">Выберите формат</option>
-                                <option value="Индивидуальная консультация">Индивидуальная консультация</option>
-                                <option value="Онлайн-сессия">Онлайн-сессия</option>
-                                <option value="Программа пробуждения">Программа пробуждения</option>
-                            </select>
-                            <div class="error-message" id="serviceError">Пожалуйста, выберите формат консультации</div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="message"><i class="fas fa-comment"></i> Ваш запрос (необязательно)</label>
-                            <textarea id="message" name="message" rows="4" class="form-control" placeholder="Что бы вы хотели изменить в своей жизни?"></textarea>
-                        </div>
-                        
-                        <button type="submit" class="btn" style="width: 100%;">
-                            <i class="fas fa-paper-plane"></i> Начать пробуждение
-                        </button>
-                        
-                        <p style="margin-top: 1rem; font-size: 0.9rem; text-align: center; color: #666;">
-                            После отправки формы я свяжусь с вами в течение 24 часов
-                        </p>
-                    </form>
                 </div>
             </div>
         </div>
@@ -2100,14 +961,7 @@
                     <p>Telegram: @Tan4ik77G</p>
                     <p>Email: Tan4ik017@gmail.com</p>
                 </div>
-                <div>
-                    <h4>Принципы работы</h4>
-                    <p>Конфиденциальность • Уважение к женской природе • Индивидуальный подход</p>
-                </div>
             </div>
-            <p style="text-align: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.2);">
-                &copy; 2024 Татьяна Солнечная. Раскрытие женской силы. Все права защищены.
-            </p>
         </div>
     </footer>
 
@@ -2116,21 +970,8 @@
         const TELEGRAM_BOT_TOKEN = '8402206062:AAEJim1GkriKqY_o1mOo0YWSWQDdw5Qy2h0';
         const TELEGRAM_CHAT_ID = '-1002313355102';
 
-        // Функция проверки статуса регистрации
-        function checkRegistrationStatus() {
-            const registrationCompleted = localStorage.getItem('registrationCompleted');
-            if (registrationCompleted === 'true') {
-                document.getElementById('registration').classList.add('section-hidden');
-                document.getElementById('test').classList.remove('section-hidden');
-                console.log('Регистрация уже завершена, показываем тест');
-            }
-        }
-
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Сайт загружен');
-
-            // Проверяем статус регистрации
-            checkRegistrationStatus();
 
             // Инициализация мобильного меню
             initMobileMenu();
@@ -2141,24 +982,11 @@
             // Инициализация кнопки "Наверх"
             initBackToTop();
 
-            // Инициализация прогресс-бара теста
-            initTestProgress();
-
             // Обработка кнопок регистрации
             document.querySelectorAll('.registration-link').forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
-                    
-                    // Показываем секцию регистрации
-                    document.getElementById('registration').classList.remove('section-hidden');
-                    document.getElementById('test').classList.add('section-hidden');
-                    document.getElementById('result').classList.add('section-hidden');
-                    
-                    // Прокручиваем к регистрации
-                    document.getElementById('registration').scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                    showRegistrationSection();
                 });
             });
 
@@ -2184,15 +1012,6 @@
                 });
             }
 
-            // Обработка формы записи
-            const bookingForm = document.getElementById('bookingForm');
-            if (bookingForm) {
-                bookingForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    submitBookingForm(this);
-                });
-            }
-
             // Обработка кнопки "Вернуться к тесту"
             const backToTestBtn = document.getElementById('backToTest');
             if (backToTestBtn) {
@@ -2202,9 +1021,45 @@
                 });
             }
 
-            // Инициализация переключения типа теста
-            toggleTestType();
+            // Обработка переключения типа теста
+            document.querySelectorAll('input[name="test_type"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    toggleTestType();
+                });
+            });
+
+            // Проверяем статус регистрации
+            checkRegistrationStatus();
         });
+
+        function checkRegistrationStatus() {
+            const registrationCompleted = localStorage.getItem('registrationCompleted');
+            if (registrationCompleted === 'true') {
+                showTestSection();
+            }
+        }
+
+        function showRegistrationSection() {
+            document.getElementById('registration').classList.remove('section-hidden');
+            document.getElementById('test').classList.add('section-hidden');
+            document.getElementById('result').classList.add('section-hidden');
+            
+            document.getElementById('registration').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        function showTestSection() {
+            document.getElementById('registration').classList.add('section-hidden');
+            document.getElementById('test').classList.remove('section-hidden');
+            document.getElementById('result').classList.add('section-hidden');
+            
+            document.getElementById('test').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
 
         // Инициализация мобильного меню
         function initMobileMenu() {
@@ -2245,15 +1100,6 @@
                         body.style.overflow = '';
                     });
                 });
-
-                window.addEventListener('resize', function() {
-                    if (window.innerWidth > 768) {
-                        navLinks.classList.remove('active');
-                        mobileMenuBtn.classList.remove('active');
-                        menuOverlay.classList.remove('active');
-                        body.style.overflow = '';
-                    }
-                });
             }
         }
 
@@ -2261,17 +1107,14 @@
         function initSmoothScroll() {
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
+                    const href = this.getAttribute('href');
+                    if (href === '#registration' || href === '#test') {
+                        return; // Эти случаи обрабатываются отдельно
+                    }
+                    
                     e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
+                    const target = document.querySelector(href);
                     if (target) {
-                        const navLinks = document.querySelector('.nav-links');
-                        if (navLinks && navLinks.classList.contains('active')) {
-                            navLinks.classList.remove('active');
-                            document.getElementById('mobileMenuBtn').classList.remove('active');
-                            document.querySelector('.menu-overlay').classList.remove('active');
-                            document.body.style.overflow = '';
-                        }
-                        
                         target.scrollIntoView({
                             behavior: 'smooth',
                             block: 'start'
@@ -2301,41 +1144,6 @@
             });
         }
 
-        // Инициализация прогресс-бара теста
-        function initTestProgress() {
-            const testForm = document.getElementById('libidoTestForm');
-            const progressBar = document.getElementById('testProgress');
-            
-            if (testForm && progressBar) {
-                // Считаем общее количество обязательных вопросов
-                const requiredInputs = testForm.querySelectorAll('input[required]');
-                let totalQuestions = 0;
-                const questionNames = new Set();
-                
-                requiredInputs.forEach(input => {
-                    if (input.type === 'radio') {
-                        questionNames.add(input.name);
-                    }
-                });
-                
-                totalQuestions = questionNames.size;
-                
-                // Обновляем прогресс при выборе ответов
-                testForm.addEventListener('change', function() {
-                    const answeredQuestions = new Set();
-                    
-                    requiredInputs.forEach(input => {
-                        if (input.checked) {
-                            answeredQuestions.add(input.name);
-                        }
-                    });
-                    
-                    const progress = (answeredQuestions.size / totalQuestions) * 100;
-                    progressBar.style.width = `${progress}%`;
-                });
-            }
-        }
-
         // Функция для переключения типа теста
         function toggleTestType() {
             const regularTest = document.getElementById('regular_test');
@@ -2351,121 +1159,58 @@
             }
         }
 
-        // Функция для показа/скрытия описания сезонности
-        function toggleSeasonDescription() {
-            const seasonYes = document.querySelector('input[name="season_dependency"][value="Да"]');
-            const seasonDescription = document.getElementById('seasonDescription');
-            
-            if (seasonYes && seasonDescription) {
-                if (seasonYes.checked) {
-                    seasonDescription.style.display = 'block';
-                } else {
-                    seasonDescription.style.display = 'none';
-                }
-            }
-        }
-
         // Функция валидации формы регистрации
         function validateRegistrationForm(form) {
             let isValid = true;
             
-            resetValidationErrors();
-            
-            const lastName = document.getElementById('lastName');
-            if (!lastName.value.trim()) {
-                showFieldError('lastNameError', '❌ Пожалуйста, введите вашу фамилию');
-                lastName.classList.add('error');
-                isValid = false;
-            }
-            
-            const firstName = document.getElementById('firstName');
-            if (!firstName.value.trim()) {
-                showFieldError('firstNameError', '❌ Пожалуйста, введите ваше имя');
-                firstName.classList.add('error');
-                isValid = false;
-            }
-            
-            const age = document.getElementById('age');
-            if (!age.value || age.value < 18 || age.value > 80) {
-                showFieldError('ageError', '❌ Пожалуйста, укажите ваш реальный возраст (от 18 до 80 лет)');
-                age.classList.add('error');
-                isValid = false;
-            }
-            
-            const phone = document.getElementById('phone');
-            const phoneRegex = /^(\+7|8)[\s\-]?\(?[0-9]{3}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;
-            if (!phone.value.trim() || !phoneRegex.test(phone.value.replace(/\s/g, ''))) {
-                showFieldError('phoneError', '❌ Пожалуйста, введите корректный номер телефона');
-                phone.classList.add('error');
-                isValid = false;
-            }
-            
-            const telegram = document.getElementById('telegram');
-            if (!telegram.value.trim()) {
-                showFieldError('telegramError', '❌ Пожалуйста, введите ваш Telegram');
-                telegram.classList.add('error');
-                isValid = false;
-            }
-            
-            const photo = document.getElementById('photo');
-            if (!photo.value) {
-                showFieldError('photoError', '❌ Пожалуйста, загрузите вашу фотографию');
-                photo.classList.add('error');
-                isValid = false;
-            }
+            // Простая валидация
+            const requiredFields = form.querySelectorAll('[required]');
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.classList.add('error');
+                } else {
+                    field.classList.remove('error');
+                }
+            });
             
             return isValid;
         }
 
-// В функции validateTestForm улучшим проверку:
-function validateTestForm(form) {
-    let isValid = true;
-    
-    // Проверяем общие вопросы
-    const requiredQuestions = [
-        'general_frequency', 'general_strength', 
-        'erected_want_days', 'erected_not_want_days',
-        'non_erected_want_days', 'non_erected_not_want_days',
-        'season_dependency'
-    ];
-    
-    requiredQuestions.forEach(questionName => {
-        const question = document.querySelector(`input[name="${questionName}"]:checked`);
-        if (!question) {
-            isValid = false;
-            // Подсвечиваем незаполненные вопросы
-            const questionBlock = document.querySelector(`input[name="${questionName}"]`).closest('.question-block');
-            if (questionBlock) {
-                questionBlock.style.border = '2px solid #e74c3c';
-            }
-        }
-    });
-    
-    // Если выбран обычный тест, проверяем вопросы по периодам
-    const testType = document.querySelector('input[name="test_type"]:checked').value;
-    if (testType === 'regular') {
-        const periods = ['period1', 'period2', 'period3', 'period4'];
-        periods.forEach(period => {
-            const frequency = document.querySelector(`input[name="${period}_frequency"]:checked`);
-            const strength = document.querySelector(`input[name="${period}_strength"]:checked`);
+        // Функция валидации формы теста
+        function validateTestForm(form) {
+            let isValid = true;
             
-            if (!frequency || !strength) {
-                isValid = false;
+            // Проверяем общие вопросы
+            const requiredQuestions = [
+                'general_frequency', 'general_strength', 'season_dependency'
+            ];
+            
+            requiredQuestions.forEach(questionName => {
+                const question = document.querySelector(`input[name="${questionName}"]:checked`);
+                if (!question) {
+                    isValid = false;
+                }
+            });
+            
+            // Если выбран обычный тест, проверяем вопросы по периодам
+            const testType = document.querySelector('input[name="test_type"]:checked').value;
+            if (testType === 'regular') {
+                const periods = ['period1', 'period2'];
+                periods.forEach(period => {
+                    const frequency = document.querySelector(`input[name="${period}_frequency"]:checked`);
+                    if (!frequency) {
+                        isValid = false;
+                    }
+                });
             }
-        });
-    }
-    
-    if (!isValid) {
-        showErrorMessage('❌ Пожалуйста, ответьте на все вопросы перед отправкой теста');
-        // Прокручиваем к первой ошибке
-        const firstError = document.querySelector('.question-block[style*="border: 2px solid #e74c3c"]');
-        if (firstError) {
-            firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            if (!isValid) {
+                showErrorMessage('❌ Пожалуйста, ответьте на все вопросы перед отправкой теста');
+            }
+            
+            return isValid;
         }
-    }
-    
-    return isValid;
-}
 
         // Функция отправки формы регистрации
         async function submitRegistrationForm(form) {
@@ -2486,14 +1231,12 @@ function validateTestForm(form) {
                 console.log('Данные регистрации:', data);
                 
                 let message = `🌟 *НОВАЯ РЕГИСТРАЦИЯ* 🌟\n\n`;
-                
                 message += `👤 *Контактная информация:*\n`;
                 if (data.lastName) message += `   └ *Фамилия:* ${data.lastName}\n`;
                 if (data.firstName) message += `   └ *Имя:* ${data.firstName}\n`;
                 if (data.age) message += `   └ *Возраст:* ${data.age}\n`;
                 if (data.phone) message += `   └ *Телефон:* ${data.phone}\n`;
                 if (data.telegram) message += `   └ *Telegram:* ${data.telegram}\n`;
-                
                 message += `\n⏰ *Дата регистрации:* ${new Date().toLocaleString('ru-RU')}`;
 
                 // Отправляем в Telegram
@@ -2512,7 +1255,6 @@ function validateTestForm(form) {
                 const result = await response.json();
                 
                 if (!response.ok || !result.ok) {
-                    console.error('Ошибка Telegram API:', result);
                     throw new Error(result.description || 'Ошибка отправки в Telegram');
                 }
 
@@ -2520,21 +1262,13 @@ function validateTestForm(form) {
                 
                 // Сохраняем статус регистрации
                 localStorage.setItem('registrationCompleted', 'true');
-                localStorage.setItem('registrationTime', new Date().toISOString());
                 
-                // Скрываем регистрацию и показываем тест
-                document.getElementById('registration').classList.add('section-hidden');
-                document.getElementById('test').classList.remove('section-hidden');
-                
-                // Прокручиваем к тесту
-                document.getElementById('test').scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'start' 
-                });
+                // Показываем тест
+                showTestSection();
                 
             } catch (error) {
                 console.error('Ошибка отправки формы:', error);
-                showErrorMessage('❌ Ошибка регистрации. Пожалуйста, свяжитесь со мной напрямую: +7 (905) 595-99-96');
+                showErrorMessage('❌ Ошибка регистрации. Пожалуйста, свяжитесь со мной напрямую.');
             } finally {
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
@@ -2545,7 +1279,7 @@ function validateTestForm(form) {
         function calculateAndShowResult(form) {
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
-            const testType = data.test_type;
+            const testType = document.querySelector('input[name="test_type"]:checked').value;
             
             // Подсчет баллов
             let totalScore = 0;
@@ -2566,78 +1300,41 @@ function validateTestForm(form) {
                 "Среднее желание": 2,
                 "Сильное желание": 3,
                 "Очень сильное желание": 4,
-                "Максимально сильное желание (на столько, что почти невозможно терпеть)": 5,
-                "Максимально сильное желание": 5
-            };
-            
-            // Баллы за возбуждение
-            const arousalScores = {
-                "Вообще не возбуждает": 0,
-                "Немного возбуждает": 1,
-                "Средне возбуждает": 2,
-                "Сильно возбуждает": 3,
-                "Очень сильно возбуждает": 4
+                "Максимально сильное желание (на столько, что почти невозможно терпеть)": 5
             };
             
             // Общие вопросы
             if (data.general_frequency) totalScore += frequencyScores[data.general_frequency] || 0;
             if (data.general_strength) totalScore += strengthScores[data.general_strength] || 0;
-            if (data.erected_want_days) totalScore += arousalScores[data.erected_want_days] || 0;
-            if (data.erected_not_want_days) totalScore += arousalScores[data.erected_not_want_days] || 0;
-            if (data.non_erected_want_days) totalScore += arousalScores[data.non_erected_want_days] || 0;
-            if (data.non_erected_not_want_days) totalScore += arousalScores[data.non_erected_not_want_days] || 0;
             
-            // Вопросы по периодам (только для обычного теста)
+            // Определение уровня либидо
+            let level, description;
+            
             if (testType === 'regular') {
-                const periods = ['period1', 'period2', 'period3', 'period4'];
-                periods.forEach(period => {
-                    if (data[`${period}_frequency`]) totalScore += frequencyScores[data[`${period}_frequency`]] || 0;
-                    if (data[`${period}_strength`]) totalScore += strengthScores[data[`${period}_strength`]] || 0;
-                });
+                // Для обычного теста
+                if (totalScore <= 3) {
+                    level = "Низкое либидо";
+                    description = "Ваше либидо находится на низком уровне. Рекомендуется консультация для выявления причин.";
+                } else if (totalScore <= 6) {
+                    level = "Среднее либидо";
+                    description = "У вас средний уровень либидо. Есть потенциал для усиления сексуальной энергии.";
+                } else {
+                    level = "Высокое либидо";
+                    description = "Поздравляем! У вас высокий уровень либидо. Ваша сексуальная энергия находится в хорошем состоянии.";
+                }
+            } else {
+                // Для теста на менопаузу
+                if (totalScore <= 2) {
+                    level = "Низкое либидо в менопаузе";
+                    description = "В период менопаузы снижение либидо является распространенным явлением. Существуют эффективные методы восстановления.";
+                } else if (totalScore <= 4) {
+                    level = "Среднее либидо в менопаузе";
+                    description = "У вас сохраняется умеренный уровень либидо. Есть возможности для усиления сексуальной энергии.";
+                } else {
+                    level = "Высокое либидо в менопаузе";
+                    description = "Поздравляем! Несмотря на менопаузу, у вас сохраняется высокий уровень либидо.";
+                }
             }
-            
- // В функции calculateAndShowResult заменим блок определения уровня либидо:
-
-// Определение уровня либидо
-let level, description;
-
-// Убедимся, что переменная testType определена корректно
-const testType = document.querySelector('input[name="test_type"]:checked').value;
-
-console.log("Тип теста:", testType); // Для отладки
-console.log("Общий счет:", totalScore); // Для отладки
-
-if (testType === 'regular') {
-    // Логика для ОБЫЧНОГО теста
-    if (totalScore <= 15) {
-        level = "Низкое либидо";
-        description = "Ваше либидо находится на низком уровне..."; // Ваш текст
-    } else if (totalScore <= 30) {
-        level = "Среднее либидо";
-        description = "У вас средний уровень либидо..."; // Ваш текст
-    } else if (totalScore <= 45) {
-        level = "Высокое либидо";
-        description = "Поздравляем! У вас высокий уровень либидо..."; // Ваш текст
-    } else {
-        level = "Очень высокое либидо";
-        description = "У вас очень высокий уровень либидо!..."; // Ваш текст
-    }
-} else {
-    // Логика для теста на МЕНОПАУЗУ
-    if (totalScore <= 10) {
-        level = "Низкое либидо в менопаузе";
-        description = "В период менопаузы снижение либидо..."; // Ваш текст
-    } else if (totalScore <= 20) {
-        level = "Среднее либидо в менопаузе";
-        description = "У вас сохраняется умеренный уровень либидо..."; // Ваш текст
-    } else if (totalScore <= 28) {
-        level = "Высокое либидо в менопаузе";
-        description = "Поздравляем! Несмотря на менопаузу..."; // Ваш текст
-    } else {
-        level = "Очень высокое либидо в менопаузе";
-        description = "Удивительно! В период менопаузы..."; // Ваш текст
-    }
-}
             
             // Показываем результат
             showTestResult(level, description, totalScore);
@@ -2658,10 +1355,8 @@ if (testType === 'regular') {
                 resultLevel.classList.add('level-low');
             } else if (level.includes('Среднее')) {
                 resultLevel.classList.add('level-medium');
-            } else if (level.includes('Высокое')) {
-                resultLevel.classList.add('level-high');
             } else {
-                resultLevel.classList.add('level-very-high');
+                resultLevel.classList.add('level-high');
             }
             
             resultLevel.textContent = level;
@@ -2678,140 +1373,32 @@ if (testType === 'regular') {
             });
         }
 
-// В функции submitTestResults добавим:
-async function submitTestResults(data, testType, level, score) {
-    try {
-        console.log("=== НАЧАЛО ОТПРАВКИ РЕЗУЛЬТАТОВ В TELEGRAM ===");
-        console.log("Тип теста:", testType);
-        console.log("Уровень:", level);
-        console.log("Баллы:", score);
-        console.log("Данные формы:", data);
-
-        // Формируем сообщение для Telegram
-        let message = `📊 *НОВЫЙ РЕЗУЛЬТАТ ТЕСТА ЛИБИДО* 📊\n\n`;
-        
-        message += `🔍 *Тип теста:* ${testType === 'regular' ? 'Обычный' : 'Менопауза'}\n`;
-        message += `📈 *Уровень либидо:* ${level}\n`;
-        message += `⭐ *Баллы:* ${score}\n\n`;
-        
-        message += `📝 *Ответы на вопросы:*\n`;
-        message += `   └ *Частота желания:* ${data.general_frequency || 'Не указано'}\n`;
-        message += `   └ *Сила желания:* ${data.general_strength || 'Не указано'}\n`;
-        message += `   └ *Возбуждение (эрегированный, дни желания):* ${data.erected_want_days || 'Не указано'}\n`;
-        message += `   └ *Возбуждение (эрегированный, дни без желания):* ${data.erected_not_want_days || 'Не указано'}\n`;
-        message += `   └ *Возбуждение (неэрегированный, дни желания):* ${data.non_erected_want_days || 'Не указано'}\n`;
-        message += `   └ *Возбуждение (неэрегированный, дни без желания):* ${data.non_erected_not_want_days || 'Не указано'}\n`;
-        message += `   └ *Зависимость от времени года:* ${data.season_dependency || 'Не указано'}\n`;
-        
-        if (data.season_dependency === 'Да' && data.season_details) {
-            message += `   └ *Описание сезонности:* ${data.season_details}\n`;
-        }
-        
-        // Только для обычного теста показываем периоды
-        if (testType === 'regular') {
-            message += `\n📅 *Ответы по периодам:*\n`;
-            const periods = [
-                {name: 'От конца месячных до овуляции', prefix: 'period1'},
-                {name: 'В период овуляции', prefix: 'period2'},
-                {name: 'От конца овуляции до начала месячных', prefix: 'period3'},
-                {name: 'В период месячных', prefix: 'period4'}
-            ];
-            
-            periods.forEach(period => {
-                message += `   └ *${period.name}:* ${data[`${period.prefix}_frequency`] || 'Не указано'} / ${data[`${period.prefix}_strength`] || 'Не указано'}\n`;
-            });
-        } else {
-            message += `\n🔸 *Тест выполнен для периода менопаузы*\n`;
-        }
-        
-        message += `\n⏰ *Дата заполнения:* ${new Date().toLocaleString('ru-RU')}`;
-
-        console.log("Сформированное сообщение:", message);
-        console.log("TELEGRAM_BOT_TOKEN:", TELEGRAM_BOT_TOKEN ? "Есть" : "Отсутствует");
-        console.log("TELEGRAM_CHAT_ID:", TELEGRAM_CHAT_ID);
-
-        // Отправляем в Telegram
-        const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-        console.log("URL для отправки:", telegramUrl);
-
-        const response = await fetch(telegramUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                chat_id: TELEGRAM_CHAT_ID,
-                text: message,
-                parse_mode: 'Markdown'
-            })
-        });
-
-        console.log("Ответ от Telegram API получен, статус:", response.status);
-
-        const result = await response.json();
-        console.log("Полный ответ от Telegram API:", result);
-
-        if (!response.ok || !result.ok) {
-            console.error('❌ Ошибка Telegram API:', result);
-            
-            // Пробуем отправить без Markdown разметки
-            console.log("Пробуем отправить без Markdown...");
-            const responsePlain = await fetch(telegramUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    chat_id: TELEGRAM_CHAT_ID,
-                    text: message.replace(/\*/g, ''), // Убираем Markdown
-                })
-            });
-            
-            const resultPlain = await responsePlain.json();
-            console.log("Результат отправки без Markdown:", resultPlain);
-            
-        } else {
-            console.log('✅ Результаты теста успешно отправлены в Telegram');
-        }
-
-    } catch (error) {
-        console.error('❌ Критическая ошибка отправки результатов теста:', error);
-        console.error('Детали ошибки:', {
-            name: error.name,
-            message: error.message,
-            stack: error.stack
-        });
-    }
-}
-
-        // Функция отправки формы записи
-        async function submitBookingForm(form) {
-            const submitBtn = form.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            
+        // Функция отправки результатов теста в Telegram
+        async function submitTestResults(data, testType, level, score) {
             try {
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
-                submitBtn.disabled = true;
+                console.log("Начало отправки результатов в Telegram...");
+
+                let message = `📊 *НОВЫЙ РЕЗУЛЬТАТ ТЕСТА ЛИБИДО* 📊\n\n`;
+                message += `🔍 *Тип теста:* ${testType === 'regular' ? 'Обычный' : 'Менопауза'}\n`;
+                message += `📈 *Уровень либидо:* ${level}\n`;
+                message += `⭐ *Баллы:* ${score}\n\n`;
+                message += `📝 *Ответы на вопросы:*\n`;
+                message += `   └ *Частота желания:* ${data.general_frequency || 'Не указано'}\n`;
+                message += `   └ *Сила желания:* ${data.general_strength || 'Не указано'}\n`;
+                message += `   └ *Зависимость от времени года:* ${data.season_dependency || 'Не указано'}\n`;
                 
-                const formData = new FormData(form);
-                const data = Object.fromEntries(formData.entries());
-                
-                let message = `💫 *НОВАЯ ЗАПИСЬ НА КОНСУЛЬТАЦИЮ* 💫\n\n`;
-                
-                message += `👤 *Контактные данные:*\n`;
-                message += `   └ *Имя:* ${data.name}\n`;
-                message += `   └ *Контакты:* ${data.contact}\n`;
-                message += `   └ *Формат работы:* ${data.service}\n`;
-                if (data.email) message += `   └ *Email:* ${data.email}\n`;
-                
-                if (data.message) {
-                    message += `\n💬 *Сообщение клиента:*\n`;
-                    message += `   └ ${data.message}\n`;
+                if (testType === 'regular') {
+                    message += `\n📅 *Ответы по периодам:*\n`;
+                    message += `   └ *Период 1:* ${data.period1_frequency || 'Не указано'}\n`;
+                    message += `   └ *Период 2:* ${data.period2_frequency || 'Не указано'}\n`;
+                } else {
+                    message += `\n🔸 *Тест выполнен для периода менопаузы*\n`;
                 }
                 
-                message += `\n⏰ *Дата заявки:* ${new Date().toLocaleString('ru-RU')}`;
-                
-                // Отправляем в Telegram
+                message += `\n⏰ *Дата заполнения:* ${new Date().toLocaleString('ru-RU')}`;
+
+                console.log("Отправляемое сообщение:", message);
+
                 const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                     method: 'POST',
                     headers: {
@@ -2827,40 +1414,17 @@ async function submitTestResults(data, testType, level, score) {
                 const result = await response.json();
                 
                 if (!response.ok || !result.ok) {
-                    throw new Error(result.description || 'Ошибка отправки заявки');
+                    console.error('Ошибка Telegram API:', result);
+                } else {
+                    console.log('✅ Результаты теста успешно отправлены в Telegram');
                 }
 
-                showSuccessMessage('✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.');
-                form.reset();
-                
             } catch (error) {
-                console.error('Ошибка:', error);
-                showErrorMessage('❌ Ошибка отправки заявки. Пожалуйста, свяжитесь со мной напрямую.');
-            } finally {
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
+                console.error('Ошибка отправки результатов теста:', error);
             }
         }
 
         // Вспомогательные функции
-        function resetValidationErrors() {
-            document.querySelectorAll('.form-control.error').forEach(el => {
-                el.classList.remove('error');
-            });
-            
-            document.querySelectorAll('.error-message').forEach(el => {
-                el.style.display = 'none';
-            });
-        }
-
-        function showFieldError(fieldId, message) {
-            const errorElement = document.getElementById(fieldId);
-            if (errorElement) {
-                errorElement.textContent = message;
-                errorElement.style.display = 'block';
-            }
-        }
-
         function showSuccessMessage(message) {
             const notification = document.createElement('div');
             notification.className = 'notification success';
