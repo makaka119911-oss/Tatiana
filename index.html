@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Татьяна Солнечная - Раскрытие женской силы | Пробудите свою природу.</title>
+    <title>Татьяна Солнечная - Раскрытие женской силы</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
@@ -187,11 +187,6 @@
         .btn-large {
             padding: 16px 40px;
             font-size: 1.1rem;
-        }
-
-        .btn-small {
-            padding: 10px 20px;
-            font-size: 0.9rem;
         }
 
         .pulse {
@@ -663,6 +658,23 @@
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: linear-gradient(135deg, var(--deep-burgundy) 0%, var(--purple-mystic) 100%);
+                padding: 1rem 0;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                margin: 0;
+                text-align: center;
+                padding: 0.5rem 0;
             }
 
             .mobile-menu-btn {
@@ -719,7 +731,7 @@
         <div class="container nav-container">
             <div class="logo">Татьяна Солнечная</div>
             <nav>
-                <ul class="nav-links">
+                <ul class="nav-links" id="navLinks">
                     <li><a href="#about">Обо мне</a></li>
                     <li><a href="#registration" class="registration-link">Регистрация</a></li>
                     <li><a href="#test">Тест энергии</a></li>
@@ -744,7 +756,7 @@
     </section>
 
     <!-- Registration Section -->
-    <section id="registration">
+    <section id="registration" class="section-hidden">
         <div class="container">
             <div class="section-title">
                 <h2>Регистрация</h2>
@@ -1032,9 +1044,6 @@
             initEventListeners();
             initTestSteps();
             initPhotoUpload();
-            
-            // Проверяем статус регистрации
-            checkRegistrationStatus();
         });
 
         function initEventListeners() {
@@ -1089,12 +1098,19 @@
 
             // Мобильное меню
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const navLinks = document.getElementById('navLinks');
             if (mobileMenuBtn) {
                 mobileMenuBtn.addEventListener('click', function() {
-                    const navLinks = document.querySelector('.nav-links');
-                    navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+                    navLinks.classList.toggle('active');
                 });
             }
+
+            // Закрытие меню при клике на ссылку
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.classList.remove('active');
+                });
+            });
         }
 
         function initTestSteps() {
@@ -1194,13 +1210,6 @@
             document.getElementById('photoPreview').src = '';
         }
 
-        function checkRegistrationStatus() {
-            const registrationCompleted = localStorage.getItem('registrationCompleted');
-            if (registrationCompleted === 'true') {
-                showTestSection();
-            }
-        }
-
         function nextStep(step) {
             if (step === 2) {
                 const testType = document.querySelector('input[name="test_type"]:checked');
@@ -1219,6 +1228,9 @@
             currentStep = step;
             
             updateProgress();
+            
+            // Прокрутка к верху страницы
+            scrollToTop();
         }
 
         function prevStep(step) {
@@ -1227,6 +1239,16 @@
             currentStep = step;
             
             updateProgress();
+            
+            // Прокрутка к верху страницы
+            scrollToTop();
+        }
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         }
 
         function updateProgress() {
@@ -1709,11 +1731,19 @@
                         message += `\n*${period.name}:*\n`;
                         message += `   └ *Частота:* ${data[`${period.prefix}_frequency`] || 'Не указано'}\n`;
                         message += `   └ *Сила желания:* ${data[`${period.prefix}_strength`] || 'Не указано'}\n`;
+                        message += `   └ *Эрегир. (да):* ${data[`${period.prefix}_erected_want`] || 'Не указано'}\n`;
+                        message += `   └ *Эрегир. (нет):* ${data[`${period.prefix}_erected_not_want`] || 'Не указано'}\n`;
+                        message += `   └ *Не эрегир. (да):* ${data[`${period.prefix}_non_erected_want`] || 'Не указано'}\n`;
+                        message += `   └ *Не эрегир. (нет):* ${data[`${period.prefix}_non_erected_not_want`] || 'Не указано'}\n`;
                     });
                 } else {
                     message += `🔸 *Ответы для менопаузы:*\n`;
                     message += `   └ *Частота:* ${data.menopause_frequency || 'Не указано'}\n`;
                     message += `   └ *Сила желания:* ${data.menopause_strength || 'Не указано'}\n`;
+                    message += `   └ *Эрегир. (да):* ${data.menopause_erected_want || 'Не указано'}\n`;
+                    message += `   └ *Эрегир. (нет):* ${data.menopause_erected_not_want || 'Не указано'}\n`;
+                    message += `   └ *Не эрегир. (да):* ${data.menopause_non_erected_want || 'Не указано'}\n`;
+                    message += `   └ *Не эрегир. (нет):* ${data.menopause_non_erected_not_want || 'Не указано'}\n`;
                 }
                 
                 message += `\n🍂 *Сезонная зависимость:* ${data.season_dependency || 'Не указано'}\n`;
@@ -1920,13 +1950,16 @@
             
             // Показываем секцию с результатом
             showResultSection();
+            
+            // Прокрутка к верху
+            scrollToTop();
         }
 
         // Навигация по секциям
         function showRegistrationSection() {
             hideAllSections();
             document.getElementById('registration').classList.remove('section-hidden');
-            scrollToSection('registration');
+            scrollToTop();
         }
 
         function showTestSection() {
@@ -1937,19 +1970,19 @@
             currentStep = 1;
             updateProgress();
             
-            scrollToSection('test');
+            scrollToTop();
         }
 
         function showResultSection() {
             hideAllSections();
             document.getElementById('result').classList.remove('section-hidden');
-            scrollToSection('result');
+            scrollToTop();
         }
 
         function showConsultationSection() {
             hideAllSections();
             document.getElementById('consultation').classList.remove('section-hidden');
-            scrollToSection('consultation');
+            scrollToTop();
         }
 
         function hideAllSections() {
@@ -1958,11 +1991,11 @@
             });
         }
 
-        function scrollToSection(sectionId) {
-            const element = document.getElementById(sectionId);
-            if (element) {
-                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         }
 
         // Уведомления
@@ -2003,6 +2036,7 @@
     </script>
 </body>
 </html>
+
 
 
 
