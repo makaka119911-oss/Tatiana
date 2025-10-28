@@ -300,7 +300,6 @@
             border-radius: 20px;
             padding: 2.5rem;
             box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
-            overflow-x: auto;
         }
 
         .test-header {
@@ -361,10 +360,15 @@
             transform: scale(1.2);
         }
 
+        /* Test Table Styles */
+        .test-table-container {
+            overflow-x: auto;
+            margin-bottom: 2rem;
+        }
+
         .test-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 2rem;
             min-width: 800px;
         }
 
@@ -422,6 +426,7 @@
             transform: scale(1.1);
         }
 
+        /* Season Question */
         .season-question {
             margin-top: 2rem;
             padding: 1.5rem;
@@ -943,443 +948,1729 @@
                 <form id="libidoTestForm">
                     <!-- Обычный тест (4 периода) -->
                     <div id="regular-test">
-                        <table class="test-table">
-                            <thead>
-                                <tr>
-                                    <th>Период</th>
-                                    <th>Как часто хочется секса?</th>
-                                    <th>Сила желания в те дни, когда хочется секса?</th>
-                                    <th colspan="2">Возбуждает ли Вас вид эрегированного полового члена?</th>
-                                    <th colspan="2">Возбуждает ли Вас вид НЕэрегированного полового члена?</th>
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th>В дни, когда хочется секса</th>
-                                    <th>В дни, когда НЕ хочется секса</th>
-                                    <th>В дни, когда хочется секса</th>
-                                    <th>В дни, когда НЕ хочется секса</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Период 1 -->
-                                <tr>
-                                    <td class="period-cell">От конца месячных до овуляции</td>
-                                    <td class="question-cell">
-                                        <div class="options-vertical">
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_frequency" value="Вообще не хочется" required>
-                                                Вообще не хочется
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_frequency" value="Хочется 1 раза в неделю">
-                                                Хочется 1 раза в неделю
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_frequency" value="Хочется 1 раз в 3 дня">
-                                                Хочется 1 раз в 3 дня
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_frequency" value="Хочется через день">
-                                                Хочется через день
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_frequency" value="Хочется каждый день">
-                                                Хочется каждый день
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_frequency" value="Хочется каждый день по много раз">
-                                                Хочется каждый день по много раз
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td class="question-cell">
-                                        <div class="options-vertical">
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_strength" value="Легкое желание" required>
-                                                Легкое желание
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_strength" value="Среднее желание">
-                                                Среднее желание
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_strength" value="Сильное желание">
-                                                Сильное желание
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_strength" value="Очень сильное желание">
-                                                Очень сильное желание
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_strength" value="Максимально сильное желание">
-                                                Максимально сильное желание
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td class="question-cell">
-                                        <div class="options-vertical">
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_erected_want" value="Вообще не возбуждает" required>
-                                                Вообще не возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_erected_want" value="Немного возбуждает">
-                                                Немного возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_erected_want" value="Средне возбуждает">
-                                                Средне возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_erected_want" value="Сильно возбуждает">
-                                                Сильно возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_erected_want" value="Очень сильно возбуждает">
-                                                Очень сильно возбуждает
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td class="question-cell">
-                                        <div class="options-vertical">
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_erected_not_want" value="Вообще не возбуждает" required>
-                                                Вообще не возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_erected_not_want" value="Немного возбуждает">
-                                                Немного возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_erected_not_want" value="Средне возбуждает">
-                                                Средне возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_erected_not_want" value="Сильно возбуждает">
-                                                Сильно возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_erected_not_want" value="Очень сильно возбуждает">
-                                                Очень сильно возбуждает
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td class="question-cell">
-                                        <div class="options-vertical">
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_non_erected_want" value="Вообще не возбуждает" required>
-                                                Вообще не возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_non_erected_want" value="Немного возбуждает">
-                                                Немного возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_non_erected_want" value="Средне возбуждает">
-                                                Средне возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_non_erected_want" value="Сильно возбуждает">
-                                                Сильно возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_non_erected_want" value="Очень сильно возбуждает">
-                                                Очень сильно возбуждает
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td class="question-cell">
-                                        <div class="options-vertical">
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_non_erected_not_want" value="Вообще не возбуждает" required>
-                                                Вообще не возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_non_erected_not_want" value="Немного возбуждает">
-                                                Немного возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_non_erected_not_want" value="Средне возбуждает">
-                                                Средне возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_non_erected_not_want" value="Сильно возбуждает">
-                                                Сильно возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period1_non_erected_not_want" value="Очень сильно возбуждает">
-                                                Очень сильно возбуждает
-                                            </label>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <!-- Период 2 -->
-                                <tr>
-                                    <td class="period-cell">В период овуляции</td>
-                                    <td class="question-cell">
-                                        <div class="options-vertical">
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_frequency" value="Вообще не хочется" required>
-                                                Вообще не хочется
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_frequency" value="Хочется 1 раза в неделю">
-                                                Хочется 1 раза в неделю
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_frequency" value="Хочется 1 раз в 3 дня">
-                                                Хочется 1 раз в 3 дня
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_frequency" value="Хочется через день">
-                                                Хочется через день
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_frequency" value="Хочется каждый день">
-                                                Хочется каждый день
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_frequency" value="Хочется каждый день по много раз">
-                                                Хочется каждый день по много раз
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td class="question-cell">
-                                        <div class="options-vertical">
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_strength" value="Легкое желание" required>
-                                                Легкое желание
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_strength" value="Среднее желание">
-                                                Среднее желание
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_strength" value="Сильное желание">
-                                                Сильное желание
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_strength" value="Очень сильное желание">
-                                                Очень сильное желание
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_strength" value="Максимально сильное желание">
-                                                Максимально сильное желание
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td class="question-cell">
-                                        <div class="options-vertical">
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_erected_want" value="Вообще не возбуждает" required>
-                                                Вообще не возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_erected_want" value="Немного возбуждает">
-                                                Немного возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_erected_want" value="Средне возбуждает">
-                                                Средне возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_erected_want" value="Сильно возбуждает">
-                                                Сильно возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_erected_want" value="Очень сильно возбуждает">
-                                                Очень сильно возбуждает
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td class="question-cell">
-                                        <div class="options-vertical">
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_erected_not_want" value="Вообще не возбуждает" required>
-                                                Вообще не возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_erected_not_want" value="Немного возбуждает">
-                                                Немного возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_erected_not_want" value="Средне возбуждает">
-                                                Средне возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_erected_not_want" value="Сильно возбуждает">
-                                                Сильно возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_erected_not_want" value="Очень сильно возбуждает">
-                                                Очень сильно возбуждает
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td class="question-cell">
-                                        <div class="options-vertical">
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_non_erected_want" value="Вообще не возбуждает" required>
-                                                Вообще не возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_non_erected_want" value="Немного возбуждает">
-                                                Немного возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_non_erected_want" value="Средне возбуждает">
-                                                Средне возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_non_erected_want" value="Сильно возбуждает">
-                                                Сильно возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_non_erected_want" value="Очень сильно возбуждает">
-                                                Очень сильно возбуждает
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td class="question-cell">
-                                        <div class="options-vertical">
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_non_erected_not_want" value="Вообще не возбуждает" required>
-                                                Вообще не возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_non_erected_not_want" value="Немного возбуждает">
-                                                Немного возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_non_erected_not_want" value="Средне возбуждает">
-                                                Средне возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_non_erected_not_want" value="Сильно возбуждает">
-                                                Сильно возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period2_non_erected_not_want" value="Очень сильно возбуждает">
-                                                Очень сильно возбуждает
-                                            </label>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <!-- Период 3 -->
-                                <tr>
-                                    <td class="period-cell">От конца овуляции до начала месячных</td>
-                                    <td class="question-cell">
-                                        <div class="options-vertical">
-                                            <label class="option-item">
-                                                <input type="radio" name="period3_frequency" value="Вообще не хочется" required>
-                                                Вообще не хочется
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period3_frequency" value="Хочется 1 раза в неделю">
-                                                Хочется 1 раза в неделю
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period3_frequency" value="Хочется 1 раз в 3 дня">
-                                                Хочется 1 раз в 3 дня
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period3_frequency" value="Хочется через день">
-                                                Хочется через день
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period3_frequency" value="Хочется каждый день">
-                                                Хочется каждый день
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period3_frequency" value="Хочется каждый день по много раз">
-                                                Хочется каждый день по много раз
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td class="question-cell">
-                                        <div class="options-vertical">
-                                            <label class="option-item">
-                                                <input type="radio" name="period3_strength" value="Легкое желание" required>
-                                                Легкое желание
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period3_strength" value="Среднее желание">
-                                                Среднее желание
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period3_strength" value="Сильное желание">
-                                                Сильное желание
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period3_strength" value="Очень сильное желание">
-                                                Очень сильное желание
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period3_strength" value="Максимально сильное желание">
-                                                Максимально сильное желание
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td class="question-cell">
-                                        <div class="options-vertical">
-                                            <label class="option-item">
-                                                <input type="radio" name="period3_erected_want" value="Вообще не возбуждает" required>
-                                                Вообще не возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period3_erected_want" value="Немного возбуждает">
-                                                Немного возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period3_erected_want" value="Средне возбуждает">
-                                                Средне возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period3_erected_want" value="Сильно возбуждает">
-                                                Сильно возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period3_erected_want" value="Очень сильно возбуждает">
-                                                Очень сильно возбуждает
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td class="question-cell">
-                                        <div class="options-vertical">
-                                            <label class="option-item">
-                                                <input type="radio" name="period3_erected_not_want" value="Вообще не возбуждает" required>
-                                                Вообще не возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period3_erected_not_want" value="Немного возбуждает">
-                                                Немного возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period3_erected_not_want" value="Средне возбуждает">
-                                                Средне возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period3_erected_not_want" value="Сильно возбуждает">
-                                                Сильно возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period3_erected_not_want" value="Очень сильно возбуждает">
-                                                Очень сильно возбуждает
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td class="question-cell">
-                                        <div class="options-vertical">
-                                            <label class="option-item">
-                                                <input type="radio" name="period3_non_erected_want" value="Вообще не возбуждает" required>
-                                                Вообще не возбуждает
-                                            </label>
-                                            <label class="option-item">
-                                                <input type="radio" name="period3_non_erected_want" value="Немного возбуждает">
-                                                Немно
+                        <div class="test-table-container">
+                            <table class="test-table">
+                                <thead>
+                                    <tr>
+                                        <th>Период</th>
+                                        <th>Как часто хочется секса?</th>
+                                        <th>Сила желания в те дни, когда хочется секса?</th>
+                                        <th colspan="2">Возбуждает ли Вас вид эрегированного полового члена?</th>
+                                        <th colspan="2">Возбуждает ли Вас вид НЕэрегированного полового члена?</th>
+                                    </tr>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th>В дни, когда хочется секса</th>
+                                        <th>В дни, когда НЕ хочется секса</th>
+                                        <th>В дни, когда хочется секса</th>
+                                        <th>В дни, когда НЕ хочется секса</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Период 1 -->
+                                    <tr>
+                                        <td class="period-cell">От конца месячных до овуляции</td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_frequency" value="Вообще не хочется" required>
+                                                    Вообще не хочется
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_frequency" value="Хочется 1 раза в неделю">
+                                                    Хочется 1 раза в неделю
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_frequency" value="Хочется 1 раз в 3 дня">
+                                                    Хочется 1 раз в 3 дня
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_frequency" value="Хочется через день">
+                                                    Хочется через день
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_frequency" value="Хочется каждый день">
+                                                    Хочется каждый день
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_frequency" value="Хочется каждый день по много раз">
+                                                    Хочется каждый день по много раз
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_strength" value="Легкое желание" required>
+                                                    Легкое желание
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_strength" value="Среднее желание">
+                                                    Среднее желание
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_strength" value="Сильное желание">
+                                                    Сильное желание
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_strength" value="Очень сильное желание">
+                                                    Очень сильное желание
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_strength" value="Максимально сильное желание">
+                                                    Максимально сильное желание
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_erected_want" value="Вообще не возбуждает" required>
+                                                    Вообще не возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_erected_want" value="Немного возбуждает">
+                                                    Немного возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_erected_want" value="Средне возбуждает">
+                                                    Средне возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_erected_want" value="Сильно возбуждает">
+                                                    Сильно возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_erected_want" value="Очень сильно возбуждает">
+                                                    Очень сильно возбуждает
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_erected_not_want" value="Вообще не возбуждает" required>
+                                                    Вообще не возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_erected_not_want" value="Немного возбуждает">
+                                                    Немного возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_erected_not_want" value="Средне возбуждает">
+                                                    Средне возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_erected_not_want" value="Сильно возбуждает">
+                                                    Сильно возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_erected_not_want" value="Очень сильно возбуждает">
+                                                    Очень сильно возбуждает
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_non_erected_want" value="Вообще не возбуждает" required>
+                                                    Вообще не возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_non_erected_want" value="Немного возбуждает">
+                                                    Немного возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_non_erected_want" value="Средне возбуждает">
+                                                    Средне возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_non_erected_want" value="Сильно возбуждает">
+                                                    Сильно возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_non_erected_want" value="Очень сильно возбуждает">
+                                                    Очень сильно возбуждает
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_non_erected_not_want" value="Вообще не возбуждает" required>
+                                                    Вообще не возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_non_erected_not_want" value="Немного возбуждает">
+                                                    Немного возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_non_erected_not_want" value="Средне возбуждает">
+                                                    Средне возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_non_erected_not_want" value="Сильно возбуждает">
+                                                    Сильно возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period1_non_erected_not_want" value="Очень сильно возбуждает">
+                                                    Очень сильно возбуждает
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <!-- Период 2 -->
+                                    <tr>
+                                        <td class="period-cell">В период овуляции</td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_frequency" value="Вообще не хочется" required>
+                                                    Вообще не хочется
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_frequency" value="Хочется 1 раза в неделю">
+                                                    Хочется 1 раза в неделю
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_frequency" value="Хочется 1 раз в 3 дня">
+                                                    Хочется 1 раз в 3 дня
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_frequency" value="Хочется через день">
+                                                    Хочется через день
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_frequency" value="Хочется каждый день">
+                                                    Хочется каждый день
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_frequency" value="Хочется каждый день по много раз">
+                                                    Хочется каждый день по много раз
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_strength" value="Легкое желание" required>
+                                                    Легкое желание
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_strength" value="Среднее желание">
+                                                    Среднее желание
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_strength" value="Сильное желание">
+                                                    Сильное желание
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_strength" value="Очень сильное желание">
+                                                    Очень сильное желание
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_strength" value="Максимально сильное желание">
+                                                    Максимально сильное желание
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_erected_want" value="Вообще не возбуждает" required>
+                                                    Вообще не возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_erected_want" value="Немного возбуждает">
+                                                    Немного возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_erected_want" value="Средне возбуждает">
+                                                    Средне возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_erected_want" value="Сильно возбуждает">
+                                                    Сильно возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_erected_want" value="Очень сильно возбуждает">
+                                                    Очень сильно возбуждает
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_erected_not_want" value="Вообще не возбуждает" required>
+                                                    Вообще не возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_erected_not_want" value="Немного возбуждает">
+                                                    Немного возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_erected_not_want" value="Средне возбуждает">
+                                                    Средне возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_erected_not_want" value="Сильно возбуждает">
+                                                    Сильно возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_erected_not_want" value="Очень сильно возбуждает">
+                                                    Очень сильно возбуждает
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_non_erected_want" value="Вообще не возбуждает" required>
+                                                    Вообще не возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_non_erected_want" value="Немного возбуждает">
+                                                    Немного возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_non_erected_want" value="Средне возбуждает">
+                                                    Средне возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_non_erected_want" value="Сильно возбуждает">
+                                                    Сильно возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_non_erected_want" value="Очень сильно возбуждает">
+                                                    Очень сильно возбуждает
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_non_erected_not_want" value="Вообще не возбуждает" required>
+                                                    Вообще не возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_non_erected_not_want" value="Немного возбуждает">
+                                                    Немного возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_non_erected_not_want" value="Средне возбуждает">
+                                                    Средне возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_non_erected_not_want" value="Сильно возбуждает">
+                                                    Сильно возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period2_non_erected_not_want" value="Очень сильно возбуждает">
+                                                    Очень сильно возбуждает
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <!-- Период 3 -->
+                                    <tr>
+                                        <td class="period-cell">От конца овуляции до начала месячных</td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_frequency" value="Вообще не хочется" required>
+                                                    Вообще не хочется
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_frequency" value="Хочется 1 раза в неделю">
+                                                    Хочется 1 раза в неделю
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_frequency" value="Хочется 1 раз в 3 дня">
+                                                    Хочется 1 раз в 3 дня
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_frequency" value="Хочется через день">
+                                                    Хочется через день
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_frequency" value="Хочется каждый день">
+                                                    Хочется каждый день
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_frequency" value="Хочется каждый день по много раз">
+                                                    Хочется каждый день по много раз
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_strength" value="Легкое желание" required>
+                                                    Легкое желание
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_strength" value="Среднее желание">
+                                                    Среднее желание
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_strength" value="Сильное желание">
+                                                    Сильное желание
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_strength" value="Очень сильное желание">
+                                                    Очень сильное желание
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_strength" value="Максимально сильное желание">
+                                                    Максимально сильное желание
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_erected_want" value="Вообще не возбуждает" required>
+                                                    Вообще не возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_erected_want" value="Немного возбуждает">
+                                                    Немного возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_erected_want" value="Средне возбуждает">
+                                                    Средне возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_erected_want" value="Сильно возбуждает">
+                                                    Сильно возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_erected_want" value="Очень сильно возбуждает">
+                                                    Очень сильно возбуждает
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_erected_not_want" value="Вообще не возбуждает" required>
+                                                    Вообще не возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_erected_not_want" value="Немного возбуждает">
+                                                    Немного возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_erected_not_want" value="Средне возбуждает">
+                                                    Средне возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_erected_not_want" value="Сильно возбуждает">
+                                                    Сильно возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_erected_not_want" value="Очень сильно возбуждает">
+                                                    Очень сильно возбуждает
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_non_erected_want" value="Вообще не возбуждает" required>
+                                                    Вообще не возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_non_erected_want" value="Немного возбуждает">
+                                                    Немного возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_non_erected_want" value="Средне возбуждает">
+                                                    Средне возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_non_erected_want" value="Сильно возбуждает">
+                                                    Сильно возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_non_erected_want" value="Очень сильно возбуждает">
+                                                    Очень сильно возбуждает
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_non_erected_not_want" value="Вообще не возбуждает" required>
+                                                    Вообще не возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_non_erected_not_want" value="Немного возбуждает">
+                                                    Немного возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_non_erected_not_want" value="Средне возбуждает">
+                                                    Средне возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_non_erected_not_want" value="Сильно возбуждает">
+                                                    Сильно возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period3_non_erected_not_want" value="Очень сильно возбуждает">
+                                                    Очень сильно возбуждает
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <!-- Период 4 -->
+                                    <tr>
+                                        <td class="period-cell">В период месячных</td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_frequency" value="Вообще не хочется" required>
+                                                    Вообще не хочется
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_frequency" value="Хочется 1 раза в неделю">
+                                                    Хочется 1 раза в неделю
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_frequency" value="Хочется 1 раз в 3 дня">
+                                                    Хочется 1 раз в 3 дня
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_frequency" value="Хочется через день">
+                                                    Хочется через день
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_frequency" value="Хочется каждый день">
+                                                    Хочется каждый день
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_frequency" value="Хочется каждый день по много раз">
+                                                    Хочется каждый день по много раз
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_strength" value="Легкое желание" required>
+                                                    Легкое желание
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_strength" value="Среднее желание">
+                                                    Среднее желание
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_strength" value="Сильное желание">
+                                                    Сильное желание
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_strength" value="Очень сильное желание">
+                                                    Очень сильное желание
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_strength" value="Максимально сильное желание">
+                                                    Максимально сильное желание
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_erected_want" value="Вообще не возбуждает" required>
+                                                    Вообще не возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_erected_want" value="Немного возбуждает">
+                                                    Немного возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_erected_want" value="Средне возбуждает">
+                                                    Средне возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_erected_want" value="Сильно возбуждает">
+                                                    Сильно возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_erected_want" value="Очень сильно возбуждает">
+                                                    Очень сильно возбуждает
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_erected_not_want" value="Вообще не возбуждает" required>
+                                                    Вообще не возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_erected_not_want" value="Немного возбуждает">
+                                                    Немного возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_erected_not_want" value="Средне возбуждает">
+                                                    Средне возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_erected_not_want" value="Сильно возбуждает">
+                                                    Сильно возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_erected_not_want" value="Очень сильно возбуждает">
+                                                    Очень сильно возбуждает
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_non_erected_want" value="Вообще не возбуждает" required>
+                                                    Вообще не возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_non_erected_want" value="Немного возбуждает">
+                                                    Немного возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_non_erected_want" value="Средне возбуждает">
+                                                    Средне возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_non_erected_want" value="Сильно возбуждает">
+                                                    Сильно возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_non_erected_want" value="Очень сильно возбуждает">
+                                                    Очень сильно возбуждает
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_non_erected_not_want" value="Вообще не возбуждает" required>
+                                                    Вообще не возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_non_erected_not_want" value="Немного возбуждает">
+                                                    Немного возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_non_erected_not_want" value="Средне возбуждает">
+                                                    Средне возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_non_erected_not_want" value="Сильно возбуждает">
+                                                    Сильно возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="period4_non_erected_not_want" value="Очень сильно возбуждает">
+                                                    Очень сильно возбуждает
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
 
+                    <!-- Тест на менопаузу (упрощенный) -->
+                    <div id="menopause-test" class="section-hidden">
+                        <div class="test-table-container">
+                            <table class="test-table">
+                                <thead>
+                                    <tr>
+                                        <th>Вопрос</th>
+                                        <th>Как часто хочется секса?</th>
+                                        <th>Сила желания в те дни, когда хочется секса?</th>
+                                        <th colspan="2">Возбуждает ли Вас вид эрегированного полового члена?</th>
+                                        <th colspan="2">Возбуждает ли Вас вид НЕэрегированного полового члена?</th>
+                                    </tr>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th>В дни, когда хочется секса</th>
+                                        <th>В дни, когда НЕ хочется секса</th>
+                                        <th>В дни, когда хочется секса</th>
+                                        <th>В дни, когда НЕ хочется секса</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="period-cell">Менопауза</td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_frequency" value="Вообще не хочется" required>
+                                                    Вообще не хочется
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_frequency" value="Хочется 1 раза в неделю">
+                                                    Хочется 1 раза в неделю
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_frequency" value="Хочется 1 раз в 3 дня">
+                                                    Хочется 1 раз в 3 дня
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_frequency" value="Хочется через день">
+                                                    Хочется через день
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_frequency" value="Хочется каждый день">
+                                                    Хочется каждый день
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_frequency" value="Хочется каждый день по много раз">
+                                                    Хочется каждый день по много раз
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_strength" value="Легкое желание" required>
+                                                    Легкое желание
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_strength" value="Среднее желание">
+                                                    Среднее желание
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_strength" value="Сильное желание">
+                                                    Сильное желание
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_strength" value="Очень сильное желание">
+                                                    Очень сильное желание
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_strength" value="Максимально сильное желание">
+                                                    Максимально сильное желание
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_erected_want" value="Вообще не возбуждает" required>
+                                                    Вообще не возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_erected_want" value="Немного возбуждает">
+                                                    Немного возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_erected_want" value="Средне возбуждает">
+                                                    Средне возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_erected_want" value="Сильно возбуждает">
+                                                    Сильно возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_erected_want" value="Очень сильно возбуждает">
+                                                    Очень сильно возбуждает
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_erected_not_want" value="Вообще не возбуждает" required>
+                                                    Вообще не возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_erected_not_want" value="Немного возбуждает">
+                                                    Немного возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_erected_not_want" value="Средне возбуждает">
+                                                    Средне возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_erected_not_want" value="Сильно возбуждает">
+                                                    Сильно возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_erected_not_want" value="Очень сильно возбуждает">
+                                                    Очень сильно возбуждает
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_non_erected_want" value="Вообще не возбуждает" required>
+                                                    Вообще не возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_non_erected_want" value="Немного возбуждает">
+                                                    Немного возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_non_erected_want" value="Средне возбуждает">
+                                                    Средне возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_non_erected_want" value="Сильно возбуждает">
+                                                    Сильно возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_non_erected_want" value="Очень сильно возбуждает">
+                                                    Очень сильно возбуждает
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="question-cell">
+                                            <div class="options-vertical">
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_non_erected_not_want" value="Вообще не возбуждает" required>
+                                                    Вообще не возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_non_erected_not_want" value="Немного возбуждает">
+                                                    Немного возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_non_erected_not_want" value="Средне возбуждает">
+                                                    Средне возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_non_erected_not_want" value="Сильно возбуждает">
+                                                    Сильно возбуждает
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="radio" name="menopause_non_erected_not_want" value="Очень сильно возбуждает">
+                                                    Очень сильно возбуждает
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Вопрос о сезонной зависимости -->
+                    <div class="season-question">
+                        <h5 class="required-field">Зависит ли Ваше либидо от времени года, если да, то опишите как оно меняется</h5>
+                        <div class="error-message" id="season_error">Пожалуйста, ответьте на этот вопрос</div>
+                        <div class="season-options">
+                            <label class="season-option">
+                                <input type="radio" name="season_dependency" value="Нет" required>
+                                Нет
+                            </label>
+                            <label class="season-option">
+                                <input type="radio" name="season_dependency" value="Да">
+                                Да
+                            </label>
+                        </div>
+                        <div class="season-description" id="seasonDescription">
+                            <textarea name="season_description" placeholder="Опишите, как меняется ваше либидо в зависимости от времени года..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Кнопка отправки теста -->
+                    <div class="form-group" style="text-align: center; margin-top: 3rem;">
+                        <button type="submit" class="btn" style="padding: 1rem 2rem; font-size: 1.1rem;">
+                            <i class="fas fa-paper-plane"></i> Отправить анкету и получить результат
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Result Section -->
+    <section id="result" class="section-hidden">
+        <div class="container">
+            <div class="section-title">
+                <h2>Результаты теста</h2>
+                <p>Узнайте ваш уровень либидо и получите рекомендации</p>
+            </div>
+            
+            <div class="result-container">
+                <div class="result-header">
+                    <h3>Ваш результат</h3>
+                    <p>На основе ваших ответов мы определили уровень вашего либидо</p>
+                </div>
+                
+                <div id="resultLevel" class="result-level">
+                    <!-- Результат будет вставлен сюда -->
+                </div>
+                
+                <div id="resultDescription" class="result-description">
+                    <!-- Описание результата будет вставлено сюда -->
+                </div>
+                
+                <div class="result-actions">
+                    <button id="backToTest" class="btn" style="background: var(--purple-mystic);">
+                        <i class="fas fa-arrow-left"></i> Вернуться к тесту
+                    </button>
+                    <a href="#consultation" class="btn consultation-link">
+                        <i class="fas fa-calendar-check"></i> Записаться на консультацию
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Consultation Section -->
+    <section id="consultation" class="section-hidden">
+        <div class="container">
+            <div class="section-title">
+                <h2>Запись на консультацию</h2>
+                <p>Выберите удобный формат работы и оставьте заявку</p>
+            </div>
+            
+            <div class="consultation-container">
+                <div class="consultation-header">
+                    <h3>Форма записи</h3>
+                    <p>Я свяжусь с вами в течение 24 часов</p>
+                </div>
+                
+                <form id="consultationForm">
+                    <div class="form-group">
+                        <label for="consultation_name" class="required-field"><i class="fas fa-user"></i> Имя</label>
+                        <input type="text" id="consultation_name" name="name" class="form-control" placeholder="Введите ваше имя" required>
+                        <div class="error-message" id="consultationNameError">Пожалуйста, введите ваше имя</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="consultation_email" class="required-field"><i class="fas fa-envelope"></i> Email</label>
+                        <input type="email" id="consultation_email" name="email" class="form-control" placeholder="Введите ваш email" required>
+                        <div class="error-message" id="consultationEmailError">Пожалуйста, введите ваш email</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="consultation_format" class="required-field"><i class="fas fa-calendar-alt"></i> Формат работы</label>
+                        <select id="consultation_format" name="format" class="form-control" required>
+                            <option value="">Выберите формат</option>
+                            <option value="Онлайн-консультация">Онлайн-консультация</option>
+                            <option value="Личная встреча">Личная встреча</option>
+                            <option value="Групповая сессия">Групповая сессия</option>
+                            <option value="Интенсив">Интенсив</option>
+                        </select>
+                        <div class="error-message" id="consultationFormatError">Пожалуйста, выберите формат работы</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="consultation_message"><i class="fas fa-comment"></i> Ваш запрос (необязательно)</label>
+                        <textarea id="consultation_message" name="message" class="form-control" placeholder="Опишите ваш запрос или вопросы..."></textarea>
+                    </div>
+                    
+                    <div class="form-group" style="text-align: center; margin-top: 2rem;">
+                        <button type="submit" class="btn" style="padding: 1rem 2rem; font-size: 1.1rem;">
+                            <i class="fas fa-paper-plane"></i> Отправить заявку
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>Обо мне</h2>
+                <p>Ваш проводник в мир женской силы и сексуальной энергии</p>
+            </div>
+            <div class="about-content">
+                <div>
+                    <h3 style="color: var(--deep-burgundy); font-size: 1.8rem; margin-bottom: 1rem;">Татьяна Солнечная</h3>
+                    <p style="font-size: 1.05rem; margin-bottom: 1.5rem; line-height: 1.6;">Проводник женской силы с 4х-летним опытом. Помогаю женщинам пробудить свою сексуальную энергию и раскрыть внутреннюю гармонию.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <h4>Татьяна Солнечная</h4>
+                    <p>Проводник женской силы и сексуальной энергии</p>
+                </div>
+                <div>
+                    <h4>Контакты</h4>
+                    <p>Telegram: @Tan4ik77G</p>
+                    <p>Email: Tan4ik017@gmail.com</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Конфигурация Telegram
+        const TELEGRAM_BOT_TOKEN = '8402206062:AAEJim1GkriKqY_o1mOo0YWSWQDdw5Qy2h0';
+        const TELEGRAM_CHAT_ID = '-1002313355102';
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Сайт загружен');
+
+            // Инициализация мобильного меню
+            initMobileMenu();
+
+            // Инициализация плавной прокрутки
+            initSmoothScroll();
+
+            // Инициализация кнопки "Наверх"
+            initBackToTop();
+
+            // Обработка кнопок регистрации
+            document.querySelectorAll('.registration-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showRegistrationSection();
+                });
+            });
+
+            // Обработка кнопок консультации
+            document.querySelectorAll('.consultation-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showConsultationSection();
+                });
+            });
+
+            // Обработка формы регистрации
+            const registrationForm = document.getElementById('registrationForm');
+            if (registrationForm) {
+                registrationForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    if (validateRegistrationForm(this)) {
+                        submitRegistrationForm(this);
+                    }
+                });
+            }
+
+            // Обработка формы теста
+            const testForm = document.getElementById('libidoTestForm');
+            if (testForm) {
+                testForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    if (validateTestForm(this)) {
+                        calculateAndShowResult(this);
+                    }
+                });
+            }
+
+            // Обработка формы консультации
+            const consultationForm = document.getElementById('consultationForm');
+            if (consultationForm) {
+                consultationForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    if (validateConsultationForm(this)) {
+                        submitConsultationForm(this);
+                    }
+                });
+            }
+
+            // Обработка кнопки "Вернуться к тесту"
+            const backToTestBtn = document.getElementById('backToTest');
+            if (backToTestBtn) {
+                backToTestBtn.addEventListener('click', function() {
+                    document.getElementById('result').classList.add('section-hidden');
+                    document.getElementById('test').classList.remove('section-hidden');
+                });
+            }
+
+            // Обработка переключения типа теста
+            document.querySelectorAll('input[name="test_type"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    toggleTestType();
+                });
+            });
+
+            // Обработка загрузки фото
+            const photoInput = document.getElementById('photo');
+            if (photoInput) {
+                photoInput.addEventListener('change', function(e) {
+                    handlePhotoUpload(e);
+                });
+            }
+
+            // Обработка сезонной зависимости
+            document.querySelectorAll('input[name="season_dependency"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    toggleSeasonDescription();
+                });
+            });
+
+            // Проверяем статус регистрации
+            checkRegistrationStatus();
+        });
+
+        function checkRegistrationStatus() {
+            const registrationCompleted = localStorage.getItem('registrationCompleted');
+            if (registrationCompleted === 'true') {
+                showTestSection();
+            }
+        }
+
+        function showRegistrationSection() {
+            document.getElementById('registration').classList.remove('section-hidden');
+            document.getElementById('test').classList.add('section-hidden');
+            document.getElementById('result').classList.add('section-hidden');
+            document.getElementById('consultation').classList.add('section-hidden');
+            
+            document.getElementById('registration').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        function showTestSection() {
+            document.getElementById('registration').classList.add('section-hidden');
+            document.getElementById('test').classList.remove('section-hidden');
+            document.getElementById('result').classList.add('section-hidden');
+            document.getElementById('consultation').classList.add('section-hidden');
+            
+            document.getElementById('test').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        function showConsultationSection() {
+            document.getElementById('registration').classList.add('section-hidden');
+            document.getElementById('test').classList.add('section-hidden');
+            document.getElementById('result').classList.add('section-hidden');
+            document.getElementById('consultation').classList.remove('section-hidden');
+            
+            document.getElementById('consultation').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        // Инициализация мобильного меню
+        function initMobileMenu() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const navLinks = document.querySelector('.nav-links');
+            const body = document.body;
+
+            if (mobileMenuBtn && navLinks) {
+                const menuOverlay = document.createElement('div');
+                menuOverlay.className = 'menu-overlay';
+                document.body.appendChild(menuOverlay);
+
+                mobileMenuBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    navLinks.classList.toggle('active');
+                    mobileMenuBtn.classList.toggle('active');
+                    menuOverlay.classList.toggle('active');
+                    
+                    if (navLinks.classList.contains('active')) {
+                        body.style.overflow = 'hidden';
+                    } else {
+                        body.style.overflow = '';
+                    }
+                });
+
+                menuOverlay.addEventListener('click', function() {
+                    navLinks.classList.remove('active');
+                    mobileMenuBtn.classList.remove('active');
+                    menuOverlay.classList.remove('active');
+                    body.style.overflow = '';
+                });
+
+                document.querySelectorAll('.nav-links a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        navLinks.classList.remove('active');
+                        mobileMenuBtn.classList.remove('active');
+                        menuOverlay.classList.remove('active');
+                        body.style.overflow = '';
+                    });
+                });
+            }
+        }
+
+        // Инициализация плавной прокрутки
+        function initSmoothScroll() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    const href = this.getAttribute('href');
+                    if (href === '#registration' || href === '#test' || href === '#consultation') {
+                        return; // Эти случаи обрабатываются отдельно
+                    }
+                    
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        }
+
+        // Инициализация кнопки "Наверх"
+        function initBackToTop() {
+            const backToTopBtn = document.getElementById('backToTop');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.add('visible');
+                } else {
+                    backToTopBtn.classList.remove('visible');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        // Функция для переключения типа теста
+        function toggleTestType() {
+            const regularTest = document.getElementById('regular_test');
+            const menopauseTest = document.getElementById('menopause_test');
+            const regularTestSection = document.getElementById('regular-test');
+            const menopauseTestSection = document.getElementById('menopause-test');
+
+            if (regularTest && menopauseTest && regularTestSection && menopauseTestSection) {
+                if (regularTest.checked) {
+                    regularTestSection.classList.remove('section-hidden');
+                    menopauseTestSection.classList.add('section-hidden');
+                } else {
+                    regularTestSection.classList.add('section-hidden');
+                    menopauseTestSection.classList.remove('section-hidden');
+                }
+            }
+        }
+
+        // Функция для переключения описания сезонной зависимости
+        function toggleSeasonDescription() {
+            const seasonYes = document.querySelector('input[name="season_dependency"][value="Да"]');
+            const seasonDescription = document.getElementById('seasonDescription');
+
+            if (seasonYes && seasonDescription) {
+                if (seasonYes.checked) {
+                    seasonDescription.style.display = 'block';
+                } else {
+                    seasonDescription.style.display = 'none';
+                }
+            }
+        }
+
+        // Обработка загрузки фото
+        function handlePhotoUpload(e) {
+            const file = e.target.files[0];
+            const preview = document.getElementById('photoPreview');
+            
+            if (file) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Функция валидации формы регистрации
+        function validateRegistrationForm(form) {
+            let isValid = true;
+            
+            // Простая валидация
+            const requiredFields = form.querySelectorAll('[required]');
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.classList.add('error');
+                } else {
+                    field.classList.remove('error');
+                }
+            });
+            
+            return isValid;
+        }
+
+        // Функция валидации формы теста
+        function validateTestForm(form) {
+            let isValid = true;
+            
+            // Проверяем тип теста
+            const testType = document.querySelector('input[name="test_type"]:checked').value;
+            
+            if (testType === 'regular') {
+                // Проверяем все периоды для обычного теста
+                const periods = ['period1', 'period2', 'period3', 'period4'];
+                const questions = ['frequency', 'strength', 'erected_want', 'erected_not_want', 'non_erected_want', 'non_erected_not_want'];
+                
+                periods.forEach(period => {
+                    questions.forEach(question => {
+                        const name = `${period}_${question}`;
+                        const checked = document.querySelector(`input[name="${name}"]:checked`);
+                        if (!checked) {
+                            isValid = false;
+                        }
+                    });
+                });
+            } else {
+                // Проверяем вопросы для менопаузы
+                const questions = ['frequency', 'strength', 'erected_want', 'erected_not_want', 'non_erected_want', 'non_erected_not_want'];
+                
+                questions.forEach(question => {
+                    const name = `menopause_${question}`;
+                    const checked = document.querySelector(`input[name="${name}"]:checked`);
+                    if (!checked) {
+                        isValid = false;
+                    }
+                });
+            }
+            
+            // Проверяем сезонную зависимость
+            const seasonChecked = document.querySelector('input[name="season_dependency"]:checked');
+            if (!seasonChecked) {
+                isValid = false;
+            }
+            
+            if (!isValid) {
+                showErrorMessage('❌ Пожалуйста, ответьте на все вопросы перед отправкой теста');
+            }
+            
+            return isValid;
+        }
+
+        // Функция валидации формы консультации
+        function validateConsultationForm(form) {
+            let isValid = true;
+            
+            // Простая валидация
+            const requiredFields = form.querySelectorAll('[required]');
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.classList.add('error');
+                } else {
+                    field.classList.remove('error');
+                }
+            });
+            
+            return isValid;
+        }
+
+        // Функция отправки формы регистрации
+        async function submitRegistrationForm(form) {
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            try {
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Регистрация...';
+                submitBtn.disabled = true;
+                
+                const formData = new FormData(form);
+                const data = {};
+                
+                for (let [key, value] of formData.entries()) {
+                    data[key] = value;
+                }
+                
+                console.log('Данные регистрации:', data);
+                
+                let message = `🌟 *НОВАЯ РЕГИСТРАЦИЯ* 🌟\n\n`;
+                message += `👤 *Контактная информация:*\n`;
+                if (data.lastName) message += `   └ *Фамилия:* ${data.lastName}\n`;
+                if (data.firstName) message += `   └ *Имя:* ${data.firstName}\n`;
+                if (data.age) message += `   └ *Возраст:* ${data.age}\n`;
+                if (data.phone) message += `   └ *Телефон:* ${data.phone}\n`;
+                if (data.telegram) message += `   └ *Telegram:* ${data.telegram}\n`;
+                message += `\n⏰ *Дата регистрации:* ${new Date().toLocaleString('ru-RU')}`;
+
+                // Отправляем в Telegram
+                const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: message,
+                        parse_mode: 'Markdown'
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (!response.ok || !result.ok) {
+                    throw new Error(result.description || 'Ошибка отправки в Telegram');
+                }
+
+                showSuccessMessage('✅ Регистрация прошла успешно! Теперь вы можете пройти тест.');
+                
+                // Сохраняем статус регистрации
+                localStorage.setItem('registrationCompleted', 'true');
+                
+                // Показываем тест
+                showTestSection();
+                
+            } catch (error) {
+                console.error('Ошибка отправки формы:', error);
+                showErrorMessage('❌ Ошибка регистрации. Пожалуйста, свяжитесь со мной напрямую.');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        // Функция расчета и показа результата теста
+        function calculateAndShowResult(form) {
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            const testType = document.querySelector('input[name="test_type"]:checked').value;
+            
+            // Подсчет баллов
+            let totalScore = 0;
+            
+            // Баллы за частоту
+            const frequencyScores = {
+                "Вообще не хочется": 0,
+                "Хочется 1 раза в неделю": 1,
+                "Хочется 1 раз в 3 дня": 2,
+                "Хочется через день": 3,
+                "Хочется каждый день": 4,
+                "Хочется каждый день по много раз": 5
+            };
+            
+            // Баллы за силу желания
+            const strengthScores = {
+                "Легкое желание": 1,
+                "Среднее желание": 2,
+                "Сильное желание": 3,
+                "Очень сильное желание": 4,
+                "Максимально сильное желание": 5
+            };
+            
+            // Баллы за возбуждение
+            const arousalScores = {
+                "Вообще не возбуждает": 0,
+                "Немного возбуждает": 1,
+                "Средне возбуждает": 2,
+                "Сильно возбуждает": 3,
+                "Очень сильно возбуждает": 4
+            };
+            
+            if (testType === 'regular') {
+                // Для обычного теста - усредняем показатели по всем периодам
+                const periods = ['period1', 'period2', 'period3', 'period4'];
+                
+                periods.forEach(period => {
+                    // Частота
+                    if (data[`${period}_frequency`]) {
+                        totalScore += frequencyScores[data[`${period}_frequency`]] || 0;
+                    }
+                    
+                    // Сила желания
+                    if (data[`${period}_strength`]) {
+                        totalScore += strengthScores[data[`${period}_strength`]] || 0;
+                    }
+                    
+                    // Возбуждение от эрегированного члена в дни желания
+                    if (data[`${period}_erected_want`]) {
+                        totalScore += arousalScores[data[`${period}_erected_want`]] || 0;
+                    }
+                    
+                    // Возбуждение от эрегированного члена в дни нежелания
+                    if (data[`${period}_erected_not_want`]) {
+                        totalScore += arousalScores[data[`${period}_erected_not_want`]] || 0;
+                    }
+                    
+                    // Возбуждение от неэрегированного члена в дни желания
+                    if (data[`${period}_non_erected_want`]) {
+                        totalScore += arousalScores[data[`${period}_non_erected_want`]] || 0;
+                    }
+                    
+                    // Возбуждение от неэрегированного члена в дни нежелания
+                    if (data[`${period}_non_erected_not_want`]) {
+                        totalScore += arousalScores[data[`${period}_non_erected_not_want`]] || 0;
+                    }
+                });
+                
+                // Усредняем баллы (делим на количество периодов)
+                totalScore = Math.round(totalScore / periods.length);
+            } else {
+                // Для теста на менопаузу
+                // Частота
+                if (data.menopause_frequency) {
+                    totalScore += frequencyScores[data.menopause_frequency] || 0;
+                }
+                
+                // Сила желания
+                if (data.menopause_strength) {
+                    totalScore += strengthScores[data.menopause_strength] || 0;
+                }
+                
+                // Возбуждение от эрегированного члена в дни желания
+                if (data.menopause_erected_want) {
+                    totalScore += arousalScores[data.menopause_erected_want] || 0;
+                }
+                
+                // Возбуждение от эрегированного члена в дни нежелания
+                if (data.menopause_erected_not_want) {
+                    totalScore += arousalScores[data.menopause_erected_not_want] || 0;
+                }
+                
+                // Возбуждение от неэрегированного члена в дни желания
+                if (data.menopause_non_erected_want) {
+                    totalScore += arousalScores[data.menopause_non_erected_want] || 0;
+                }
+                
+                // Возбуждение от неэрегированного члена в дни нежелания
+                if (data.menopause_non_erected_not_want) {
+                    totalScore += arousalScores[data.menopause_non_erected_not_want] || 0;
+                }
+            }
+            
+            // Определение уровня либидо
+            let level, description;
+            
+            if (testType === 'regular') {
+                // Для обычного теста
+                if (totalScore <= 5) {
+                    level = "Низкое либидо";
+                    description = "Ваше либидо находится на низком уровне. Это может быть связано с гормональными изменениями, стрессом или другими факторами. Рекомендуется консультация для выявления причин и разработки индивидуального плана восстановления.";
+                } else if (totalScore <= 10) {
+                    level = "Среднее либидо";
+                    description = "У вас средний уровень либидо. Есть потенциал для усиления сексуальной энергии через работу с гормональным балансом и психологическими аспектами.";
+                } else if (totalScore <= 15) {
+                    level = "Высокое либидо";
+                    description = "Поздравляем! У вас высокий уровень либидо. Ваша сексуальная энергия находится в хорошем состоянии, но есть возможности для дальнейшего развития и гармонизации.";
+                } else {
+                    level = "Очень высокое либидо";
+                    description = "У вас очень высокий уровень либидо! Это прекрасный показатель вашей сексуальной энергии. Важно научиться правильно направлять эту энергию для достижения гармонии во всех сферах жизни.";
+                }
+            } else {
+                // Для теста на менопаузу
+                if (totalScore <= 5) {
+                    level = "Низкое либидо в менопаузе";
+                    description = "В период менопаузы снижение либидо является распространенным явлением из-за гормональных изменений. Существуют эффективные методы восстановления, включая гормональную терапию и натуральные подходы.";
+                } else if (totalScore <= 10) {
+                    level = "Среднее либидо в менопаузе";
+                    description = "У вас сохраняется умеренный уровень либидо, что является хорошим показателем для периода менопаузы. Есть возможности для усиления сексуальной энергии через специальные методики.";
+                } else if (totalScore <= 15) {
+                    level = "Высокое либидо в менопаузе";
+                    description = "Поздравляем! Несмотря на менопаузу, у вас сохраняется высокий уровень либидо. Это прекрасная основа для дальнейшего развития вашей сексуальности.";
+                } else {
+                    level = "Очень высокое либидо в менопаузе";
+                    description = "У вас исключительно высокий уровень либидо для периода менопаузы! Это редкий и ценный показатель. Важно научиться управлять этой энергией для максимальной реализации.";
+                }
+            }
+            
+            // Показываем результат
+            showTestResult(level, description, totalScore);
+            
+            // Отправляем результаты в Telegram
+            submitTestResults(data, testType, level, totalScore);
+        }
+
+        // Функция показа результатов теста
+        function showTestResult(level, description, score) {
+            const resultLevel = document.getElementById('resultLevel');
+            const resultDescription = document.getElementById('resultDescription');
+            
+            // Устанавливаем класс в зависимости от уровня
+            resultLevel.className = 'result-level ';
+            
+            if (level.includes('Низкое')) {
+                resultLevel.classList.add('level-low');
+            } else if (level.includes('Среднее')) {
+                resultLevel.classList.add('level-medium');
+            } else if (level.includes('Высокое')) {
+                resultLevel.classList.add('level-high');
+            } else {
+                resultLevel.classList.add('level-very-high');
+            }
+            
+            resultLevel.textContent = level;
+            resultDescription.textContent = description;
+            
+            // Показываем секцию с результатом
+            document.getElementById('test').classList.add('section-hidden');
+            document.getElementById('result').classList.remove('section-hidden');
+            
+            // Прокручиваем к результату
+            document.getElementById('result').scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
+            });
+        }
+
+        // Функция отправки результатов теста в Telegram
+        async function submitTestResults(data, testType, level, score) {
+            try {
+                console.log("Начало отправки результатов в Telegram...");
+
+                let message = `📊 *НОВЫЙ РЕЗУЛЬТАТ ТЕСТА ЛИБИДО* 📊\n\n`;
+                message += `🔍 *Тип теста:* ${testType === 'regular' ? 'Обычный' : 'Менопауза'}\n`;
+                message += `📈 *Уровень либидо:* ${level}\n`;
+                message += `⭐ *Баллы:* ${score}\n\n`;
+                
+                if (testType === 'regular') {
+                    message += `📅 *Ответы по периодам:*\n`;
+                    
+                    const periods = [
+                        {name: 'От конца месячных до овуляции', prefix: 'period1'},
+                        {name: 'В период овуляции', prefix: 'period2'},
+                        {name: 'От конца овуляции до начала месячных', prefix: 'period3'},
+                        {name: 'В период месячных', prefix: 'period4'}
+                    ];
+                    
+                    periods.forEach(period => {
+                        message += `\n*${period.name}:*\n`;
+                        message += `   └ *Частота:* ${data[`${period.prefix}_frequency`] || 'Не указано'}\n`;
+                        message += `   └ *Сила желания:* ${data[`${period.prefix}_strength`] || 'Не указано'}\n`;
+                    });
+                } else {
+                    message += `🔸 *Ответы для менопаузы:*\n`;
+                    message += `   └ *Частота:* ${data.menopause_frequency || 'Не указано'}\n`;
+                    message += `   └ *Сила желания:* ${data.menopause_strength || 'Не указано'}\n`;
+                }
+                
+                message += `\n🍂 *Сезонная зависимость:* ${data.season_dependency || 'Не указано'}\n`;
+                if (data.season_description) {
+                    message += `   └ *Описание:* ${data.season_description}\n`;
+                }
+                
+                message += `\n⏰ *Дата заполнения:* ${new Date().toLocaleString('ru-RU')}`;
+
+                console.log("Отправляемое сообщение:", message);
+
+                const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: message,
+                        parse_mode: 'Markdown'
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (!response.ok || !result.ok) {
+                    console.error('Ошибка Telegram API:', result);
+                } else {
+                    console.log('✅ Результаты теста успешно отправлены в Telegram');
+                }
+
+            } catch (error) {
+                console.error('Ошибка отправки результатов теста:', error);
+            }
+        }
+
+        // Функция отправки формы консультации
+        async function submitConsultationForm(form) {
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            try {
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+                submitBtn.disabled = true;
+                
+                const formData = new FormData(form);
+                const data = {};
+                
+                for (let [key, value] of formData.entries()) {
+                    data[key] = value;
+                }
+                
+                console.log('Данные консультации:', data);
+                
+                let message = `📅 *НОВАЯ ЗАЯВКА НА КОНСУЛЬТАЦИЮ* 📅\n\n`;
+                message += `👤 *Контактная информация:*\n`;
+                message += `   └ *Имя:* ${data.name}\n`;
+                message += `   └ *Email:* ${data.email}\n`;
+                message += `   └ *Формат работы:* ${data.format}\n`;
+                
+                if (data.message) {
+                    message += `   └ *Запрос:* ${data.message}\n`;
+                }
+                
+                message += `\n⏰ *Дата заявки:* ${new Date().toLocaleString('ru-RU')}`;
+
+                // Отправляем в Telegram
+                const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: message,
+                        parse_mode: 'Markdown'
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (!response.ok || !result.ok) {
+                    throw new Error(result.description || 'Ошибка отправки в Telegram');
+                }
+
+                showSuccessMessage('✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.');
+                
+                // Очищаем форму
+                form.reset();
+                
+            } catch (error) {
+                console.error('Ошибка отправки формы:', error);
+                showErrorMessage('❌ Ошибка отправки заявки. Пожалуйста, свяжитесь со мной напрямую.');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        // Вспомогательные функции
+        function showSuccessMessage(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification success';
+            notification.innerHTML = `<i class="fas fa-check-circle" style="margin-right: 8px;"></i> ${message}`;
+            document.body.appendChild(notification);
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 5000);
+        }
+
+        function showErrorMessage(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification error';
+            notification.innerHTML = `<i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i> ${message}`;
+            document.body.appendChild(notification);
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 8000);
+        }
+    </script>
+</body>
+</html>
 
 
 
