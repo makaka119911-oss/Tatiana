@@ -672,44 +672,60 @@ footer p {
         grid-template-columns: 1fr;
     }
 }
-
+/* Улучшенные стили для мобильного меню */
 @media (max-width: 768px) {
     .nav-links {
         position: fixed;
-        top: 70px;
+        top: 0;
         left: 0;
-        width: 100%;
+        width: 280px;
+        height: 100vh; /* Изменено с 100% на 100vh */
         background: linear-gradient(135deg, var(--deep-burgundy) 0%, var(--purple-mystic) 100%);
         flex-direction: column;
-        padding: 1rem 0;
-        transform: translateY(-100%);
-        transition: all 0.4s ease;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        border-bottom-left-radius: 20px;
-        border-bottom-right-radius: 20px;
+        padding: 80px 0 2rem;
+        transform: translateX(-100%);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 5px 0 25px rgba(0, 0, 0, 0.2);
         z-index: 999;
         opacity: 0;
         visibility: hidden;
+        overflow-y: auto; /* Добавлена прокрутка если нужно */
     }
     
     .nav-links.active {
-        transform: translateY(0);
+        transform: translateX(0);
         opacity: 1;
         visibility: visible;
     }
     
     .nav-links li {
         margin: 0;
-        text-align: center;
-        padding: 0.8rem 0;
+        width: 100%;
         opacity: 0;
-        transform: translateY(-10px);
+        transform: translateX(-20px);
         transition: all 0.3s ease;
     }
     
     .nav-links.active li {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateX(0);
+    }
+    
+    /* Убедимся, что все пункты меню видны */
+    .nav-links a {
+        display: block;
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+        color: white;
+        text-decoration: none;
+    }
+    
+    .nav-links a:hover {
+        background: rgba(255, 255, 255, 0.1);
+        padding-left: 2rem;
+        color: var(--light-gold);
     }
     
     /* Задержки для анимации пунктов меню */
@@ -719,10 +735,13 @@ footer p {
     .nav-links.active li:nth-child(4) { transition-delay: 0.25s; }
     .nav-links.active li:nth-child(5) { transition-delay: 0.3s; }
     .nav-links.active li:nth-child(6) { transition-delay: 0.35s; }
+    .nav-links.active li:nth-child(7) { transition-delay: 0.4s; }
     
     .mobile-menu-btn {
         display: flex;
     }
+}
+
     
     .hero-content h1 {
         font-size: 2.2rem;
