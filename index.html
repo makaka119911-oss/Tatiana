@@ -2662,69 +2662,72 @@ if (testType === 'regular') {
             });
         }
 
-        // Функция отправки результатов теста в Telegram
-        async function submitTestResults(data, testType, level, score) {
-            try {
-                let message = `📊 *НОВЫЙ РЕЗУЛЬТАТ ТЕСТА ЛИБИДО* 📊\n\n`;
-                
-                message += `🔍 *Тип теста:* ${testType === 'regular' ? 'Обычный' : 'Менопауза'}\n`;
-                message += `📈 *Уровень либидо:* ${level}\n`;
-                message += `⭐ *Баллы:* ${score}\n\n`;
-                
-                message += `📝 *Ответы на вопросы:*\n`;
-                message += `   └ *Частота желания:* ${data.general_frequency || 'Не указано'}\n`;
-                message += `   └ *Сила желания:* ${data.general_strength || 'Не указано'}\n`;
-                message += `   └ *Возбуждение (эрегированный, дни желания):* ${data.erected_want_days || 'Не указано'}\n`;
-                message += `   └ *Возбуждение (эрегированный, дни без желания):* ${data.erected_not_want_days || 'Не указано'}\n`;
-                message += `   └ *Возбуждение (неэрегированный, дни желания):* ${data.non_erected_want_days || 'Не указано'}\n`;
-                message += `   └ *Возбуждение (неэрегированный, дни без желания):* ${data.non_erected_not_want_days || 'Не указано'}\n`;
-                message += `   └ *Зависимость от времени года:* ${data.season_dependency || 'Не указано'}\n`;
-                
-                if (data.season_dependency === 'Да' && data.season_details) {
-                    message += `   └ *Описание сезонности:* ${data.season_details}\n`;
-                }
-                
-                if (testType === 'regular') {
-                    message += `\n📅 *Ответы по периодам:*\n`;
-                    const periods = [
-                        {name: 'От конца месячных до овуляции', prefix: 'period1'},
-                        {name: 'В период овуляции', prefix: 'period2'},
-                        {name: 'От конца овуляции до начала месячных', prefix: 'period3'},
-                        {name: 'В период месячных', prefix: 'period4'}
-                    ];
-                    
-                    periods.forEach(period => {
-                        message += `   └ *${period.name}:* ${data[`${period.prefix}_frequency`] || 'Не указано'} / ${data[`${period.prefix}_strength`] || 'Не указано'}\n`;
-                    });
-                }
-                
-                message += `\n⏰ *Дата заполнения:* ${new Date().toLocaleString('ru-RU')}`;
-
-                // Отправляем в Telegram
-                const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        chat_id: TELEGRAM_CHAT_ID,
-                        text: message,
-                        parse_mode: 'Markdown'
-                    })
-                });
-
-                const result = await response.json();
-                
-                if (!response.ok || !result.ok) {
-                    console.error('Ошибка Telegram API:', result);
-                } else {
-                    console.log('Результаты теста отправлены в Telegram');
-                }
-                
-            } catch (error) {
-                console.error('Ошибка отправки результатов теста:', error);
-            }
+// В функции submitTestResults добавим:
+async function submitTestResults(data, testType, level, score) {
+    try {
+        let message = `📊 *НОВЫЙ РЕЗУЛЬТАТ ТЕСТА ЛИБИДО* 📊\n\n`;
+        
+        message += `🔍 *Тип теста:* ${testType === 'regular' ? 'Обычный' : 'Менопауза'}\n`;
+        message += `📈 *Уровень либидо:* ${level}\n`;
+        message += `⭐ *Баллы:* ${score}\n\n`;
+        
+        message += `📝 *Ответы на вопросы:*\n`;
+        message += `   └ *Частота желания:* ${data.general_frequency || 'Не указано'}\n`;
+        message += `   └ *Сила желания:* ${data.general_strength || 'Не указано'}\n`;
+        message += `   └ *Возбуждение (эрегированный, дни желания):* ${data.erected_want_days || 'Не указано'}\n`;
+        message += `   └ *Возбуждение (эрегированный, дни без желания):* ${data.erected_not_want_days || 'Не указано'}\n`;
+        message += `   └ *Возбуждение (неэрегированный, дни желания):* ${data.non_erected_want_days || 'Не указано'}\n`;
+        message += `   └ *Возбуждение (неэрегированный, дни без желания):* ${data.non_erected_not_want_days || 'Не указано'}\n`;
+        message += `   └ *Зависимость от времени года:* ${data.season_dependency || 'Не указано'}\n`;
+        
+        if (data.season_dependency === 'Да' && data.season_details) {
+            message += `   └ *Описание сезонности:* ${data.season_details}\n`;
         }
+        
+        // Только для обычного теста показываем периоды
+        if (testType === 'regular') {
+            message += `\n📅 *Ответы по периодам:*\n`;
+            const periods = [
+                {name: 'От конца месячных до овуляции', prefix: 'period1'},
+                {name: 'В период овуляции', prefix: 'period2'},
+                {name: 'От конца овуляции до начала месячных', prefix: 'period3'},
+                {name: 'В период месячных', prefix: 'period4'}
+            ];
+            
+            periods.forEach(period => {
+                message += `   └ *${period.name}:* ${data[`${period.prefix}_frequency`] || 'Не указано'} / ${data[`${period.prefix}_strength`] || 'Не указано'}\n`;
+            });
+        } else {
+            message += `\n🔸 *Тест выполнен для периода менопаузы*\n`;
+        }
+        
+        message += `\n⏰ *Дата заполнения:* ${new Date().toLocaleString('ru-RU')}`;
+
+        // Отправляем в Telegram
+        const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                chat_id: TELEGRAM_CHAT_ID,
+                text: message,
+                parse_mode: 'Markdown'
+            })
+        });
+
+        const result = await response.json();
+        
+        if (!response.ok || !result.ok) {
+            console.error('Ошибка Telegram API:', result);
+        } else {
+            console.log('Результаты теста отправлены в Telegram');
+        }
+        
+    } catch (error) {
+        console.error('Ошибка отправки результатов теста:', error);
+    }
+}
 
         // Функция отправки формы записи
         async function submitBookingForm(form) {
@@ -2829,6 +2832,7 @@ if (testType === 'regular') {
     </script>
 </body>
 </html>
+
 
 
 
