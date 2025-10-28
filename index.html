@@ -862,7 +862,7 @@
                     <li><a href="#about">Обо мне</a></li>
                     <li><a href="#power">Женская сила</a></li>
                     <li><a href="#services">Направления</a></li>
-                    <li><a href="#registration">Регистрация</a></li>
+                    <li><a href="#registration" class="registration-link">Регистрация</a></li>
                     <li><a href="#test">Тест энергии</a></li>
                     <li><a href="#process">Процесс</a></li>
                     <li><a href="#contact">Контакты</a></li>
@@ -879,7 +879,7 @@
         <div class="container hero-content">
             <h1>Пробудите свою сакральную женскую силу.</h1>
             <p>Трансформируйте сексуальную энергию в источник творчества, магнетизма и внутренней гармонии. Станьте той женщиной, которой восхищаются и которую желают.</p>
-            <a href="#registration" class="btn pulse">
+            <a href="#registration" class="btn pulse registration-link">
                 <i class="fas fa-user-plus"></i> Регистрация
             </a>
         </div>
@@ -1840,6 +1840,24 @@
                 });
             });
 
+            // Обработка кнопок регистрации
+            document.querySelectorAll('.registration-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Показываем секцию регистрации
+                    document.getElementById('registration').classList.remove('section-hidden');
+                    document.getElementById('test').classList.add('section-hidden');
+                    document.getElementById('result').classList.add('section-hidden');
+                    
+                    // Прокручиваем к регистрации
+                    document.getElementById('registration').scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                });
+            });
+
             // Обработка формы регистрации
             const registrationForm = document.getElementById('registrationForm');
             if (registrationForm) {
@@ -2384,6 +2402,7 @@
     </script>
 </body>
 </html>
+
 
 
 
