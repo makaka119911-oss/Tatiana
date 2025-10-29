@@ -719,6 +719,123 @@
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
         }
 
+        /* Female Power Section */
+        .female-power {
+            background: linear-gradient(135deg, var(--moonlight) 0%, var(--lavender) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .power-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .power-item {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .power-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .power-icon {
+            font-size: 2.5rem;
+            color: var(--purple-mystic);
+            margin-bottom: 1rem;
+        }
+
+        .power-item h3 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+        }
+
+        /* Services Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border-top: 5px solid var(--vibrant-pink);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            color: var(--vibrant-pink);
+            margin-bottom: 1.5rem;
+        }
+
+        .service-card h3 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        /* Process Section */
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .step {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--vibrant-pink) 0%, var(--purple-mystic) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto 1.5rem;
+        }
+
+        .step h3 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+        }
+
         /* Notification Styles */
         .notification {
             position: fixed;
@@ -762,6 +879,23 @@
         /* Section Hidden */
         .section-hidden {
             display: none;
+        }
+
+        /* Access Lock Message */
+        .access-lock {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .lock-icon {
+            font-size: 4rem;
+            color: var(--purple-mystic);
+            margin-bottom: 1.5rem;
         }
 
         /* Mobile Responsive */
@@ -852,6 +986,18 @@
                 grid-template-columns: 1fr;
             }
 
+            .power-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .process-steps {
+                grid-template-columns: 1fr;
+            }
+
             /* Центрирование кнопки в мобильной версии */
             .form-group[style*="text-align: center"] .btn {
                 width: 100%;
@@ -870,6 +1016,9 @@
             <nav>
                 <ul class="nav-links" id="navLinks">
                     <li><a href="#about" class="about-link">Обо мне</a></li>
+                    <li><a href="#power" class="power-link">Женская сила</a></li>
+                    <li><a href="#services" class="services-link">Направления</a></li>
+                    <li><a href="#process" class="process-link">Процесс</a></li>
                     <li><a href="#awakening" class="awakening-link">Пробуждение</a></li>
                     <li><a href="#contacts" class="contacts-link">Контакты</a></li>
                 </ul>
@@ -1111,14 +1260,25 @@
     <!-- About Section -->
     <section id="about" class="section-hidden">
         <div class="container">
-            <div class="section-title">
+            <div class="access-lock" id="aboutLock">
+                <div class="lock-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3>Доступ закрыт</h3>
+                <p>Для просмотра этой страницы необходимо пройти полную диагностику</p>
+                <a href="#registration" class="btn registration-link" style="margin-top: 1.5rem;">
+                    <i class="fas fa-user-plus"></i> Начать диагностику
+                </a>
+            </div>
+            
+            <div class="section-title" id="aboutContent" style="display: none;">
                 <h2>Обо мне</h2>
                 <p>Познакомимся ближе</p>
             </div>
             
-            <div class="about-content">
+            <div class="about-content" id="aboutContent" style="display: none;">
                 <div class="about-photo">
-                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Татьяна Солнечная">
+                    <img src="photo_2025-09-16_19-36-01.jpg" alt="Татьяна Солнечная">
                 </div>
                 <div class="about-text">
                     <h3>Татьяна Солнечная</h3>
@@ -1130,15 +1290,160 @@
         </div>
     </section>
 
+    <!-- Female Power Section -->
+    <section id="power" class="section-hidden female-power">
+        <div class="container">
+            <div class="access-lock" id="powerLock">
+                <div class="lock-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3>Доступ закрыт</h3>
+                <p>Для просмотра этой страницы необходимо пройти полную диагностику</p>
+                <a href="#registration" class="btn registration-link" style="margin-top: 1.5rem;">
+                    <i class="fas fa-user-plus"></i> Начать диагностику
+                </a>
+            </div>
+            
+            <div class="section-title" id="powerContent" style="display: none;">
+                <h2>Уровни женской силы</h2>
+                <p>Откройте свою истинную природу и пробудите внутреннюю богиню</p>
+            </div>
+            
+            <div class="power-grid" id="powerContent" style="display: none;">
+                <div class="power-item">
+                    <div class="power-icon">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3>Базовый уровень</h3>
+                    <p>Принятие своей женственности, исцеление ран, восстановление связи с телом</p>
+                </div>
+                <div class="power-item">
+                    <div class="power-icon">
+                        <i class="fas fa-feather-alt"></i>
+                    </div>
+                    <h3>Продвинутый уровень</h3>
+                    <p>Активация сексуальной энергии, развитие интуиции, гармонизация циклов</p>
+                </div>
+                <div class="power-item">
+                    <div class="power-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3>Мастерский уровень</h3>
+                    <p>Трансформация энергии в творчество, магнетизм и жизненную силу</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="section-hidden">
+        <div class="container">
+            <div class="access-lock" id="servicesLock">
+                <div class="lock-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3>Доступ закрыт</h3>
+                <p>Для просмотра этой страницы необходимо пройти полную диагностику</p>
+                <a href="#registration" class="btn registration-link" style="margin-top: 1.5rem;">
+                    <i class="fas fa-user-plus"></i> Начать диагностику
+                </a>
+            </div>
+            
+            <div class="section-title" id="servicesContent" style="display: none;">
+                <h2>Направления пробуждения</h2>
+                <p>Комплексный подход к раскрытию вашей женской силы</p>
+            </div>
+            
+            <div class="services-grid" id="servicesContent" style="display: none;">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-venus-mars"></i>
+                    </div>
+                    <h3>Пробуждение женской сексуальности</h3>
+                    <p>Исцеление блоков, раскрытие чувственности, гармонизация интимной сферы</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h3>Восстановление энергии желания</h3>
+                    <p>Пробуждение сексуального аппетита, работа с последствиями стресса, наполнение энергией</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <h3>Гармонизация сильного влечения</h3>
+                    <p>Направление мощной сексуальной энергии в творчество и самореализацию</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section id="process" class="section-hidden">
+        <div class="container">
+            <div class="access-lock" id="processLock">
+                <div class="lock-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3>Доступ закрыт</h3>
+                <p>Для просмотра этой страницы необходимо пройти полную диагностику</p>
+                <a href="#registration" class="btn registration-link" style="margin-top: 1.5rem;">
+                    <i class="fas fa-user-plus"></i> Начать диагностику
+                </a>
+            </div>
+            
+            <div class="section-title" id="processContent" style="display: none;">
+                <h2>Путь пробуждения</h2>
+                <p>Откройте свою истинную природу шаг за шагом</p>
+            </div>
+            
+            <div class="process-steps" id="processContent" style="display: none;">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Осознание</h3>
+                    <p>Диагностика текущего состояния энергии, выявление блоков и потенциала</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Исцеление</h3>
+                    <p>Работа с травмами, принятие тела, восстановление энергетических потоков</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Пробуждение</h3>
+                    <p>Активация сексуальной энергии, развитие чувственности, раскрытие потенциала</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Трансформация</h3>
+                    <p>Направление энергии в творчество, отношения и самореализацию</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Awakening Section -->
     <section id="awakening" class="section-hidden">
         <div class="container">
-            <div class="section-title">
+            <div class="access-lock" id="awakeningLock">
+                <div class="lock-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3>Доступ закрыт</h3>
+                <p>Для просмотра этой страницы необходимо пройти полную диагностику</p>
+                <a href="#registration" class="btn registration-link" style="margin-top: 1.5rem;">
+                    <i class="fas fa-user-plus"></i> Начать диагностику
+                </a>
+            </div>
+            
+            <div class="section-title" id="awakeningContent" style="display: none;">
                 <h2>Пробуждение женской силы</h2>
                 <p>Комплексный подход к раскрытию вашего потенциала</p>
             </div>
             
-            <div class="awakening-grid">
+            <div class="awakening-grid" id="awakeningContent" style="display: none;">
                 <div class="awakening-card">
                     <h3>Направления пробуждения</h3>
                     <p>Работа с энергией на физическом, эмоциональном и духовном уровнях. Восстановление естественного потока жизненной силы через телесные практики, дыхательные техники и медитации.</p>
@@ -1165,12 +1470,23 @@
     <!-- Contacts Section -->
     <section id="contacts" class="section-hidden">
         <div class="container">
-            <div class="section-title">
+            <div class="access-lock" id="contactsLock">
+                <div class="lock-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3>Доступ закрыт</h3>
+                <p>Для просмотра этой страницы необходимо пройти полную диагностику</p>
+                <a href="#registration" class="btn registration-link" style="margin-top: 1.5rem;">
+                    <i class="fas fa-user-plus"></i> Начать диагностику
+                </a>
+            </div>
+            
+            <div class="section-title" id="contactsContent" style="display: none;">
                 <h2>Контакты</h2>
                 <p>Свяжитесь со мной для консультации</p>
             </div>
             
-            <div class="contacts-content">
+            <div class="contacts-content" id="contactsContent" style="display: none;">
                 <div class="contact-info">
                     <h3>Контактная информация</h3>
                     
@@ -1260,11 +1576,34 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Сайт загружен');
 
+            // Проверяем, пройдена ли диагностика
+            checkDiagnosticStatus();
+
             // Инициализация
             initEventListeners();
             initTestSteps();
             initPhotoUpload();
         });
+
+        function checkDiagnosticStatus() {
+            const diagnosticCompleted = localStorage.getItem('diagnosticCompleted') === 'true';
+            if (diagnosticCompleted) {
+                unlockAllSections();
+            }
+        }
+
+        function unlockAllSections() {
+            // Скрываем замки и показываем контент для всех секций
+            const sections = ['about', 'power', 'services', 'process', 'awakening', 'contacts'];
+            
+            sections.forEach(section => {
+                const lock = document.getElementById(section + 'Lock');
+                const content = document.getElementById(section + 'Content');
+                
+                if (lock) lock.style.display = 'none';
+                if (content) content.style.display = 'block';
+            });
+        }
 
         function initEventListeners() {
             // Форма регистрации
@@ -1320,6 +1659,27 @@
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
                     showAboutSection();
+                });
+            });
+
+            document.querySelectorAll('.power-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showPowerSection();
+                });
+            });
+
+            document.querySelectorAll('.services-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showServicesSection();
+                });
+            });
+
+            document.querySelectorAll('.process-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showProcessSection();
                 });
             });
 
@@ -1853,7 +2213,11 @@
                 // Отправляем результаты в Telegram
                 await sendTestResultsToTelegram(testData, result);
                 
-                showSuccessMessage('✅ Результаты теста сохранены!');
+                // Разблокируем все разделы
+                localStorage.setItem('diagnosticCompleted', 'true');
+                unlockAllSections();
+                
+                showSuccessMessage('✅ Диагностика завершена! Теперь вам доступны все разделы сайта.');
                 
             } catch (error) {
                 console.error('Ошибка обработки теста:', error);
@@ -1882,9 +2246,6 @@
                 
                 showSuccessMessage('✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.');
                 form.reset();
-                
-                // После отправки формы консультации показываем раздел "Пробуждение"
-                setTimeout(() => showAwakeningSection(), 1500);
                 
             } catch (error) {
                 console.error('Ошибка отправки заявки:', error);
@@ -2240,6 +2601,24 @@
         function showAboutSection() {
             hideAllSections();
             document.getElementById('about').classList.remove('section-hidden');
+            scrollToTop();
+        }
+
+        function showPowerSection() {
+            hideAllSections();
+            document.getElementById('power').classList.remove('section-hidden');
+            scrollToTop();
+        }
+
+        function showServicesSection() {
+            hideAllSections();
+            document.getElementById('services').classList.remove('section-hidden');
+            scrollToTop();
+        }
+
+        function showProcessSection() {
+            hideAllSections();
+            document.getElementById('process').classList.remove('section-hidden');
             scrollToTop();
         }
 
