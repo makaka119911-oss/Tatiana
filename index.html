@@ -609,6 +609,116 @@
             gap: 1rem;
         }
 
+        /* About Section */
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .about-photo {
+            flex: 0 0 300px;
+        }
+
+        .about-photo img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-text {
+            flex: 1;
+        }
+
+        .about-text h3 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        /* Awakening Section */
+        .awakening-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .awakening-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .awakening-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .awakening-card h3 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .awakening-card p {
+            color: var(--dark-text);
+            line-height: 1.6;
+        }
+
+        /* Contacts Section */
+        .contacts-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .contact-info {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .contact-info h3 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .contact-details {
+            margin-bottom: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .contact-item i {
+            width: 30px;
+            color: var(--purple-mystic);
+            font-size: 1.2rem;
+        }
+
+        /* Consultation Form in Contacts */
+        .consultation-form {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
         /* Notification Styles */
         .notification {
             position: fixed;
@@ -722,6 +832,33 @@
                 width: 120px;
                 height: 120px;
             }
+
+            .about-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .about-photo {
+                flex: 0 0 auto;
+                max-width: 300px;
+                margin: 0 auto;
+            }
+
+            .contacts-content {
+                grid-template-columns: 1fr;
+            }
+
+            .awakening-grid {
+                grid-template-columns: 1fr;
+            }
+
+            /* Центрирование кнопки в мобильной версии */
+            .form-group[style*="text-align: center"] .btn {
+                width: 100%;
+                max-width: 300px;
+                margin: 0 auto;
+                display: block;
+            }
         }
     </style>
 </head>
@@ -732,10 +869,9 @@
             <div class="logo">Татьяна Солнечная</div>
             <nav>
                 <ul class="nav-links" id="navLinks">
-                    <li><a href="#about">Обо мне</a></li>
-                    <li><a href="#registration" class="registration-link">Регистрация</a></li>
-                    <li><a href="#test">Тест энергии</a></li>
-                    <li><a href="#contact">Контакты</a></li>
+                    <li><a href="#about" class="about-link">Обо мне</a></li>
+                    <li><a href="#awakening" class="awakening-link">Пробуждение</a></li>
+                    <li><a href="#contacts" class="contacts-link">Контакты</a></li>
                 </ul>
                 <button class="mobile-menu-btn" id="mobileMenuBtn">
                     <i class="fas fa-bars"></i>
@@ -750,7 +886,7 @@
             <h1>Пробудите свою женскую силу.</h1>
             <p>Трансформируйте сексуальную энергию в источник творчества, магнетизма и внутренней гармонии.</p>
             <a href="#registration" class="btn pulse registration-link">
-                <i class="fas fa-user-plus"></i> ПРОЙТИ ТЕСТ НА ЛИБИДО
+                <i class="fas fa-user-plus"></i> НАЧАТЬ ДИАГНОСТИКУ
             </a>
         </div>
     </section>
@@ -811,7 +947,7 @@
                                     <h4>Добавьте вашу фотографию</h4>
                                     <p>Перетащите сюда фото или нажмите для выбора</p>
                                 </div>
-                                <button type="button" class="btn-upload" onclick="document.getElementById('photoInput').click()">
+                                <button type="button" class="btn-upload" id="uploadButton">
                                     <i class="fas fa-upload"></i> Выбрать файл
                                 </button>
                                 <input type="file" id="photoInput" class="file-input" accept="image/*" required>
@@ -823,7 +959,7 @@
                             <div class="photo-preview-container" id="photoPreviewContainer">
                                 <div class="photo-preview">
                                     <img id="photoPreview" src="" alt="Предпросмотр фото">
-                                    <button type="button" class="btn-remove-photo" onclick="removePhoto()">
+                                    <button type="button" class="btn-remove-photo" id="removePhotoButton">
                                         <i class="fas fa-times"></i>
                                     </button>
                                 </div>
@@ -964,63 +1100,147 @@
                     <button id="backToTest" class="btn btn-outline">
                         <i class="fas fa-arrow-left"></i> Пройти тест заново
                     </button>
-                    <a href="#consultation" class="btn consultation-link">
+                    <button class="btn consultation-link">
                         <i class="fas fa-calendar-check"></i> Записаться на консультацию
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Consultation Section -->
-    <section id="consultation" class="section-hidden">
+    <!-- About Section -->
+    <section id="about" class="section-hidden">
         <div class="container">
             <div class="section-title">
-                <h2>Запись на консультацию</h2>
-                <p>Выберите удобный формат работы и оставьте заявку</p>
+                <h2>Обо мне</h2>
+                <p>Познакомимся ближе</p>
             </div>
             
-            <div class="form-container">
-                <div class="form-header">
-                    <h3>Форма записи</h3>
-                    <p>Я свяжусь с вами в течение 24 часов</p>
+            <div class="about-content">
+                <div class="about-photo">
+                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Татьяна Солнечная">
+                </div>
+                <div class="about-text">
+                    <h3>Татьяна Солнечная</h3>
+                    <p>Приветствую вас на пути к раскрытию вашей истинной женской природы! Я - эксперт по женской энергии и либидо, помогаю женщинам обрести гармонию, уверенность и внутреннюю силу.</p>
+                    <p>Специализируюсь на работе с сексуальной энергией как источником творчества, магнетизма и жизненной силы. Мой подход сочетает древние практики с современными знаниями о женской физиологии и психологии.</p>
+                    <p>Более 10 лет я помогаю женщинам пробудить их природную энергию, восстановить гормональный баланс и научиться управлять своей сексуальной силой для достижения успеха во всех сферах жизни.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Awakening Section -->
+    <section id="awakening" class="section-hidden">
+        <div class="container">
+            <div class="section-title">
+                <h2>Пробуждение женской силы</h2>
+                <p>Комплексный подход к раскрытию вашего потенциала</p>
+            </div>
+            
+            <div class="awakening-grid">
+                <div class="awakening-card">
+                    <h3>Направления пробуждения</h3>
+                    <p>Работа с энергией на физическом, эмоциональном и духовном уровнях. Восстановление естественного потока жизненной силы через телесные практики, дыхательные техники и медитации.</p>
                 </div>
                 
-                <form id="consultationForm">
-                    <div class="form-group">
-                        <label for="consultation_name" class="required-field">Имя</label>
-                        <input type="text" id="consultation_name" name="name" class="form-control" placeholder="Введите ваше имя" required>
-                        <div class="error-message" id="consultationNameError">Пожалуйста, введите ваше имя</div>
+                <div class="awakening-card">
+                    <h3>Комплексный подход к раскрытию женской силы</h3>
+                    <p>Индивидуальные программы, сочетающие работу с телом, психикой и энергетикой. Восстановление гормонального баланса, усиление либидо, развитие чувственности и уверенности в себе.</p>
+                </div>
+                
+                <div class="awakening-card">
+                    <h3>Признаки пробуждения женской силы</h3>
+                    <p>Увеличение жизненной энергии, гармонизация менструального цикла, усиление интуиции, естественная привлекательность, внутренняя уверенность, творческий подъем и ясность жизненных целей.</p>
+                </div>
+                
+                <div class="awakening-card">
+                    <h3>Путь пробуждения</h3>
+                    <p>Поэтапное раскрытие женственности через осознание тела, работу с энергией, развитие чувственности и обучение управлению своей сексуальной силой для создания гармоничной и наполненной жизни.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contacts Section -->
+    <section id="contacts" class="section-hidden">
+        <div class="container">
+            <div class="section-title">
+                <h2>Контакты</h2>
+                <p>Свяжитесь со мной для консультации</p>
+            </div>
+            
+            <div class="contacts-content">
+                <div class="contact-info">
+                    <h3>Контактная информация</h3>
+                    
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>+7 (XXX) XXX-XX-XX</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>tatyana@example.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-telegram"></i>
+                            <span>@tatyana_solnechnaya</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Москва, Россия</span>
+                        </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="consultation_email" class="required-field">Email</label>
-                        <input type="email" id="consultation_email" name="email" class="form-control" placeholder="Введите ваш email" required>
-                        <div class="error-message" id="consultationEmailError">Пожалуйста, введите ваш email</div>
+                    <div class="contact-hours">
+                        <h4>Время для консультаций:</h4>
+                        <p>Пн-Пт: 10:00 - 20:00</p>
+                        <p>Сб: 11:00 - 18:00</p>
+                        <p>Вс: выходной</p>
                     </div>
+                </div>
+                
+                <div class="consultation-form">
+                    <h3>Запись на консультацию</h3>
+                    <p>Заполните форму, и я свяжусь с вами в течение 24 часов</p>
                     
-                    <div class="form-group">
-                        <label for="consultation_format" class="required-field">Формат работы</label>
-                        <select id="consultation_format" name="format" class="form-control" required>
-                            <option value="">Выберите формат</option>
-                            <option value="Онлайн-консультация">Онлайн-консультация</option>
-                            <option value="Личная встреча">Личная встреча</option>
-                            <option value="Групповая сессия">Групповая сессия</option>
-                        </select>
-                        <div class="error-message" id="consultationFormatError">Пожалуйста, выберите формат работы</div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="consultation_message">Ваш запрос (необязательно)</label>
-                        <textarea id="consultation_message" name="message" class="form-control" placeholder="Опишите ваш запрос или вопросы..." rows="4"></textarea>
-                    </div>
-                    
-                    <div class="form-group" style="text-align: center; margin-top: 2rem;">
-                        <button type="submit" class="btn btn-large">
-                            <i class="fas fa-paper-plane"></i> Отправить заявку
-                        </button>
-                    </div>
-                </form>
+                    <form id="consultationForm">
+                        <div class="form-group">
+                            <label for="consultation_name" class="required-field">Имя</label>
+                            <input type="text" id="consultation_name" name="name" class="form-control" placeholder="Введите ваше имя" required>
+                            <div class="error-message" id="consultationNameError">Пожалуйста, введите ваше имя</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="consultation_email" class="required-field">Email</label>
+                            <input type="email" id="consultation_email" name="email" class="form-control" placeholder="Введите ваш email" required>
+                            <div class="error-message" id="consultationEmailError">Пожалуйста, введите ваш email</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="consultation_format" class="required-field">Формат работы</label>
+                            <select id="consultation_format" name="format" class="form-control" required>
+                                <option value="">Выберите формат</option>
+                                <option value="Онлайн-консультация">Онлайн-консультация</option>
+                                <option value="Личная встреча">Личная встреча</option>
+                                <option value="Групповая сессия">Групповая сессия</option>
+                            </select>
+                            <div class="error-message" id="consultationFormatError">Пожалуйста, выберите формат работы</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="consultation_message">Ваш запрос (необязательно)</label>
+                            <textarea id="consultation_message" name="message" class="form-control" placeholder="Опишите ваш запрос или вопросы..." rows="4"></textarea>
+                        </div>
+                        
+                        <div class="form-group" style="text-align: center; margin-top: 2rem;">
+                            <button type="submit" class="btn btn-large">
+                                <i class="fas fa-paper-plane"></i> Отправить заявку
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
@@ -1092,7 +1312,28 @@
             document.querySelectorAll('.consultation-link').forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
-                    showConsultationSection();
+                    showContactsSection();
+                });
+            });
+
+            document.querySelectorAll('.about-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showAboutSection();
+                });
+            });
+
+            document.querySelectorAll('.awakening-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showAwakeningSection();
+                });
+            });
+
+            document.querySelectorAll('.contacts-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showContactsSection();
                 });
             });
 
@@ -1136,10 +1377,24 @@
             const photoUploadArea = document.getElementById('photoUploadArea');
             const photoPreview = document.getElementById('photoPreview');
             const photoPreviewContainer = document.getElementById('photoPreviewContainer');
+            const uploadButton = document.getElementById('uploadButton');
+            const removePhotoButton = document.getElementById('removePhotoButton');
 
             // Обработчик выбора файла
             photoInput.addEventListener('change', function(e) {
                 handlePhotoUpload(e);
+            });
+
+            // Обработчик клика по кнопке загрузки
+            uploadButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                photoInput.click();
+            });
+
+            // Обработчик удаления фото
+            removePhotoButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                removePhoto();
             });
 
             // Drag and drop функционал
@@ -1628,6 +1883,9 @@
                 showSuccessMessage('✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.');
                 form.reset();
                 
+                // После отправки формы консультации показываем раздел "Пробуждение"
+                setTimeout(() => showAwakeningSection(), 1500);
+                
             } catch (error) {
                 console.error('Ошибка отправки заявки:', error);
                 showErrorMessage('❌ Ошибка отправки заявки. Пожалуйста, попробуйте еще раз.');
@@ -1979,9 +2237,21 @@
             scrollToTop();
         }
 
-        function showConsultationSection() {
+        function showAboutSection() {
             hideAllSections();
-            document.getElementById('consultation').classList.remove('section-hidden');
+            document.getElementById('about').classList.remove('section-hidden');
+            scrollToTop();
+        }
+
+        function showAwakeningSection() {
+            hideAllSections();
+            document.getElementById('awakening').classList.remove('section-hidden');
+            scrollToTop();
+        }
+
+        function showContactsSection() {
+            hideAllSections();
+            document.getElementById('contacts').classList.remove('section-hidden');
             scrollToTop();
         }
 
@@ -2036,6 +2306,7 @@
     </script>
 </body>
 </html>
+
 
 
 
