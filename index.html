@@ -656,6 +656,7 @@
             padding: 2rem;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
         }
 
         .awakening-card:hover {
@@ -898,6 +899,116 @@
             margin-bottom: 1.5rem;
         }
 
+        /* Profile Image Container */
+        .profile-img-container {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+            object-fit: cover;
+            aspect-ratio: 3/4;
+        }
+
+        .profile-img-container:hover .profile-img {
+            transform: scale(1.05);
+        }
+
+        .profile-img-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(139, 67, 82, 0.8));
+            color: white;
+            padding: 2rem;
+            transform: translateY(100%);
+            transition: transform 0.5s ease;
+        }
+
+        .profile-img-container:hover .profile-img-overlay {
+            transform: translateY(0);
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Education Block */
+        .education-block {
+            background: var(--lavender);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            border: 2px solid var(--soft-pink);
+        }
+
+        .education-block h4 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .education-block ul {
+            list-style: none;
+        }
+
+        .education-block li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .education-block i {
+            color: var(--vibrant-pink);
+        }
+
+        /* Awakening Signs */
+        .awakening-signs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .awakening-sign {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .awakening-sign:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .awakening-sign i {
+            font-size: 2rem;
+            color: var(--purple-mystic);
+            margin-bottom: 0.5rem;
+        }
+
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .nav-links {
@@ -998,6 +1109,10 @@
                 grid-template-columns: 1fr;
             }
 
+            .awakening-signs {
+                grid-template-columns: 1fr;
+            }
+
             /* Центрирование кнопки в мобильной версии */
             .form-group[style*="text-align: center"] .btn {
                 width: 100%;
@@ -1035,7 +1150,7 @@
             <h1>Пробудите свою женскую силу.</h1>
             <p>Трансформируйте сексуальную энергию в источник творчества, магнетизма и внутренней гармонии.</p>
             <a href="#registration" class="btn pulse registration-link">
-                <i class="fas fa-user-plus"></i> РЕГИСТРАЦИЯ
+                <i class="fas fa-user-plus"></i> НАЧАТЬ ДИАГНОСТИКУ
             </a>
         </div>
     </section>
@@ -1134,7 +1249,7 @@
     <section id="test" class="section-hidden">
         <div class="container">
             <div class="section-title">
-                <h2>Анонимная Тест анкета на женское либидо</h2>
+                <h2>Тест женской энергии и либидо</h2>
                 <p>Ответьте на вопросы для точной диагностики вашего состояния</p>
             </div>
             
@@ -1167,7 +1282,7 @@
                                 <label class="option-item">
                                     <input type="radio" name="test_type" value="menopause">
                                     <div>
-                                        <strong>Тест с менопаузой</strong><br>
+                                        <strong>Тест на менопаузу</strong><br>
                                         <small>Для женщин в периоде менопаузы</small>
                                     </div>
                                 </label>
@@ -1274,18 +1389,30 @@
             <div id="aboutContent" style="display: none;">
                 <div class="section-title">
                     <h2>Обо мне</h2>
-                    <p>Познакомимся ближе</p>
+                    <p>Ваш проводник в мир женской силы и сексуальной энергии</p>
                 </div>
                 
                 <div class="about-content">
-                    <div class="about-photo">
-                        <img src="photo_2025-09-16_19-36-01.jpg" alt="Татьяна Солнечная">
+                    <div class="profile-img-container floating">
+                        <img src="photo_2025-10-02_17-29-50.jpg" alt="Татьяна Солнечная - проводник женской силы" class="profile-img">
+                        <div class="profile-img-overlay">
+                            <p>"Ваше доверие - моя главная ценность. Вместе мы раскроем вашу божественную сущность."</p>
+                        </div>
                     </div>
-                    <div class="about-text">
-                        <h3>Татьяна Солнечная</h3>
-                        <p>Приветствую вас на пути к раскрытию вашей истинной женской природы! Я - эксперт по женской энергии и либидо, помогаю женщинам обрести гармонию, уверенность и внутреннюю силу.</p>
-                        <p>Специализируюсь на работе с сексуальной энергией как источником творчества, магнетизма и жизненной силы. Мой подход сочетает древние практики с современными знаниями о женской физиологии и психологии.</p>
-                        <p>Более 10 лет я помогаю женщинам пробудить их природную энергию, восстановить гормональный баланс и научиться управлять своей сексуальной силой для достижения успеха во всех сферах жизни.</p>
+                    <div>
+                        <h3 style="color: var(--deep-burgundy); font-size: 2rem; margin-bottom: 1rem;">Татьяна Солнечная</h3>
+                        <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">Проводник женской силы с 8-летним опытом. Помогаю женщинам пробудить свою сексуальную энергию и раскрыть внутреннюю гармонию.</p>
+                        
+                        <div class="education-block">
+                            <h4><i class="fas fa-graduation-cap"></i> Образование и путь:</h4>
+                            <ul>
+                                <li><i class="fas fa-university"></i> МГУ им. Ломоносова, факультет психологии</li>
+                                <li><i class="fas fa-certificate"></i> Европейская ассоциация сексологов</li>
+                                <li><i class="fas fa-heart"></i> Изучение женских энергетических практик</li>
+                            </ul>
+                        </div>
+                        
+                        <p>В своей работе создаю безопасное пространство, где вы можете раскрыть свою истинную природу и пробудить дремлющую энергию. Индивидуальный подход к каждой женщине.</p>
                     </div>
                 </div>
             </div>
@@ -1333,6 +1460,29 @@
                         </div>
                         <h3>Мастерский уровень</h3>
                         <p>Трансформация энергии в творчество, магнетизм и жизненную силу</p>
+                    </div>
+                </div>
+                
+                <!-- Добавляем блок с признаками пробуждения -->
+                <div style="margin-top: 4rem; background: rgba(255, 255, 255, 0.9); padding: 2.5rem; border-radius: 20px; text-align: center;">
+                    <h3 style="color: var(--deep-burgundy); margin-bottom: 1.5rem;">Признаки пробужденной женской силы</h3>
+                    <div class="awakening-signs">
+                        <div class="awakening-sign">
+                            <i class="fas fa-magnet"></i>
+                            <p>Магнетическая привлекательность без усилий</p>
+                        </div>
+                        <div class="awakening-sign">
+                            <i class="fas fa-lightbulb"></i>
+                            <p>Творческая энергия, бьющая ключом</p>
+                        </div>
+                        <div class="awakening-sign">
+                            <i class="fas fa-brain"></i>
+                            <p>Интуитивная мудрость в принятии решений</p>
+                        </div>
+                        <div class="awakening-sign">
+                            <i class="fas fa-heart"></i>
+                            <p>Гармония в отношениях и сексуальности</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1454,21 +1604,33 @@
                 
                 <div class="awakening-grid">
                     <div class="awakening-card">
+                        <div class="power-icon">
+                            <i class="fas fa-seedling"></i>
+                        </div>
                         <h3>Направления пробуждения</h3>
                         <p>Работа с энергией на физическом, эмоциональном и духовном уровнях. Восстановление естественного потока жизненной силы через телесные практики, дыхательные техники и медитации.</p>
                     </div>
                     
                     <div class="awakening-card">
+                        <div class="power-icon">
+                            <i class="fas fa-venus-mars"></i>
+                        </div>
                         <h3>Комплексный подход к раскрытию женской силы</h3>
                         <p>Индивидуальные программы, сочетающие работу с телом, психикой и энергетикой. Восстановление гормонального баланса, усиление либидо, развитие чувственности и уверенности в себе.</p>
                     </div>
                     
                     <div class="awakening-card">
+                        <div class="power-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
                         <h3>Признаки пробуждения женской силы</h3>
                         <p>Увеличение жизненной энергии, гармонизация менструального цикла, усиление интуиции, естественная привлекательность, внутренняя уверенность, творческий подъем и ясность жизненных целей.</p>
                     </div>
                     
                     <div class="awakening-card">
+                        <div class="power-icon">
+                            <i class="fas fa-road"></i>
+                        </div>
                         <h3>Путь пробуждения</h3>
                         <p>Поэтапное раскрытие женственности через осознание тела, работу с энергией, развитие чувственности и обучение управлению своей сексуальной силой для создания гармоничной и наполненной жизни.</p>
                     </div>
@@ -1504,19 +1666,19 @@
                         <div class="contact-details">
                             <div class="contact-item">
                                 <i class="fas fa-phone"></i>
-                                <span>+7 (XXX) XXX-XX-XX</span>
+                                <span>+7 (905) 595-99-96</span>
                             </div>
                             <div class="contact-item">
                                 <i class="fas fa-envelope"></i>
-                                <span>tatyana@example.com</span>
+                                <span>Tan4ik017@gmail.com</span>
                             </div>
                             <div class="contact-item">
                                 <i class="fab fa-telegram"></i>
-                                <span>@tatyana_solnechnaya</span>
+                                <span>@Tan4ik77G</span>
                             </div>
                             <div class="contact-item">
                                 <i class="fas fa-map-marker-alt"></i>
-                                <span>Москва, Россия</span>
+                                <span>г. Реутов</span>
                             </div>
                         </div>
                         
@@ -1837,7 +1999,60 @@
             document.getElementById('photoPreview').src = '';
         }
 
+        // Функция проверки валидности шага
+        function validateStep(step) {
+            const stepElement = document.getElementById('step' + step);
+            if (!stepElement) return true;
+
+            const requiredInputs = stepElement.querySelectorAll('[required]');
+            let isValid = true;
+
+            // Сбрасываем предыдущие ошибки
+            stepElement.querySelectorAll('.error-message').forEach(error => {
+                error.style.display = 'none';
+            });
+            stepElement.querySelectorAll('.form-control.error').forEach(input => {
+                input.classList.remove('error');
+            });
+
+            // Проверяем каждое обязательное поле
+            requiredInputs.forEach(input => {
+                if (input.type === 'radio') {
+                    // Для радио-кнопок проверяем, что хотя бы одна в группе выбрана
+                    const radioGroup = stepElement.querySelectorAll(`input[name="${input.name}"]`);
+                    const isChecked = Array.from(radioGroup).some(radio => radio.checked);
+                    
+                    if (!isChecked) {
+                        isValid = false;
+                        // Показываем ошибку для этой группы
+                        const errorElement = document.getElementById(input.name + 'Error');
+                        if (errorElement) {
+                            errorElement.style.display = 'block';
+                        }
+                    }
+                } else {
+                    // Для других типов полей проверяем значение
+                    if (!input.value.trim()) {
+                        isValid = false;
+                        input.classList.add('error');
+                        const errorElement = document.getElementById(input.name + 'Error');
+                        if (errorElement) {
+                            errorElement.style.display = 'block';
+                        }
+                    }
+                }
+            });
+
+            return isValid;
+        }
+
         function nextStep(step) {
+            // Проверяем валидность текущего шага перед переходом
+            if (!validateStep(step - 1)) {
+                showErrorMessage('Пожалуйста, ответьте на все обязательные вопросы этого шага');
+                return;
+            }
+
             if (step === 2) {
                 const testType = document.querySelector('input[name="test_type"]:checked');
                 if (!testType) {
@@ -2203,6 +2418,12 @@
 
         async function handleTestSubmit(e) {
             e.preventDefault();
+            
+            // Проверяем валидность последнего шага
+            if (!validateStep(6)) {
+                showErrorMessage('Пожалуйста, ответьте на все обязательные вопросы этого шага');
+                return;
+            }
             
             const form = e.target;
             const submitBtn = form.querySelector('button[type="submit"]');
