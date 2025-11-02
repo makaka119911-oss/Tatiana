@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Татьяна Солнечная - Раскрытие женской силы</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --deep-burgundy: #8B4352;
@@ -20,6 +21,7 @@
             --success-green: #4CAF50;
             --warning-orange: #FF9800;
             --info-blue: #2196F3;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         * {
@@ -29,11 +31,12 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: var(--dark-text);
             background-color: var(--cream);
             overflow-x: hidden;
+            transition: var(--transition);
         }
 
         .container {
@@ -53,6 +56,7 @@
             top: 0;
             z-index: 1000;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
         }
 
         .nav-container {
@@ -62,9 +66,17 @@
         }
 
         .logo {
+            font-family: 'Playfair Display', serif;
             font-size: 1.8rem;
             font-weight: bold;
             color: var(--light-gold);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 1.5rem;
         }
 
         .nav-links {
@@ -80,12 +92,28 @@
             color: white;
             text-decoration: none;
             font-weight: 500;
-            transition: all 0.3s ease;
+            transition: var(--transition);
             position: relative;
+            padding: 0.5rem 0;
         }
 
         .nav-links a:hover {
             color: var(--light-gold);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--light-gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
         }
 
         .mobile-menu-btn {
@@ -95,12 +123,23 @@
             color: white;
             font-size: 1.5rem;
             cursor: pointer;
+            width: 44px;
+            height: 44px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .mobile-menu-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
         }
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(rgba(139, 67, 82, 0.7), rgba(139, 107, 158, 0.7)), 
-                        url('https://images.unsplash.com/photo-1515377905703-c4788e51af15?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background: 
+                linear-gradient(rgba(139, 67, 82, 0.7), rgba(139, 107, 158, 0.7)), 
+                url('https://images.unsplash.com/photo-1515377905703-c4788e51af15?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
             background-size: cover;
             background-position: center;
             height: 100vh;
@@ -109,12 +148,41 @@
             text-align: center;
             color: white;
             padding-top: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(212, 106, 106, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 107, 158, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(245, 230, 200, 0.05) 0%, transparent 50%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(1deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
         }
 
         .hero-content h1 {
+            font-family: 'Playfair Display', serif;
             font-size: 3.5rem;
             margin-bottom: 1.5rem;
             text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            line-height: 1.2;
         }
 
         .hero-content p {
@@ -135,7 +203,7 @@
             border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: var(--transition);
             border: none;
             cursor: pointer;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
@@ -143,6 +211,7 @@
             font-size: 1.05rem;
             position: relative;
             overflow: hidden;
+            transform: translateZ(0);
         }
 
         .btn::before {
@@ -189,6 +258,16 @@
             font-size: 1.1rem;
         }
 
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn:disabled:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
         .pulse {
             animation: pulse 2s infinite;
         }
@@ -202,6 +281,7 @@
         /* Section Styles */
         section {
             padding: 5rem 0;
+            transition: var(--transition);
         }
 
         .section-title {
@@ -210,6 +290,7 @@
         }
 
         .section-title h2 {
+            font-family: 'Playfair Display', serif;
             font-size: 2.5rem;
             color: var(--deep-burgundy);
             margin-bottom: 1rem;
@@ -244,6 +325,7 @@
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
             max-width: 800px;
             margin: 0 auto;
+            transition: var(--transition);
         }
 
         .form-header {
@@ -257,6 +339,7 @@
             color: var(--deep-burgundy);
             margin-bottom: 1rem;
             font-size: 1.8rem;
+            font-family: 'Playfair Display', serif;
         }
 
         .form-group {
@@ -278,8 +361,9 @@
             border: 1px solid #ddd;
             border-radius: 10px;
             font-size: 1rem;
-            transition: all 0.3s ease;
+            transition: var(--transition);
             background: #fafafa;
+            font-family: 'Inter', sans-serif;
         }
 
         .form-group input:focus,
@@ -309,8 +393,19 @@
         }
 
         /* Test Progress */
+        .progress-container {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 1rem 2rem;
+            margin: 2rem auto;
+            max-width: 600px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
         .test-progress-container {
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             background: #f0f0f0;
             border-radius: 10px;
             height: 8px;
@@ -322,15 +417,58 @@
             height: 100%;
             background: linear-gradient(135deg, var(--vibrant-pink) 0%, var(--purple-mystic) 100%);
             border-radius: 10px;
-            transition: width 0.5s ease;
+            transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
             width: 0%;
+            position: relative;
+        }
+
+        .test-progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
         .test-progress-text {
             text-align: center;
-            margin-top: 0.5rem;
             color: var(--dark-text);
             font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .step-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ddd;
+            transition: var(--transition);
+        }
+
+        .dot.active {
+            background: var(--purple-mystic);
+            transform: scale(1.2);
         }
 
         /* Test Steps */
@@ -357,6 +495,7 @@
             color: var(--deep-burgundy);
             font-size: 1.5rem;
             margin-bottom: 0.5rem;
+            font-family: 'Playfair Display', serif;
         }
 
         .question-block {
@@ -365,7 +504,7 @@
             padding: 2rem;
             margin-bottom: 1.5rem;
             border-left: 4px solid var(--purple-mystic);
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
 
         .question-block.error-highlight {
@@ -380,11 +519,31 @@
             75% { transform: translateX(5px); }
         }
 
+        .question-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 1.5rem;
+        }
+
+        .question-number {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--vibrant-pink) 0%, var(--purple-mystic) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
         .question-text {
             font-size: 1.1rem;
             font-weight: 600;
-            margin-bottom: 1rem;
             color: var(--dark-text);
+            line-height: 1.4;
         }
 
         .options-grid {
@@ -393,32 +552,71 @@
             gap: 1rem;
         }
 
-        .option-item {
+        .option-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            cursor: pointer;
+            border: 2px solid transparent;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.6s;
+        }
+
+        .option-card:hover::before {
+            left: 100%;
+        }
+
+        .option-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            border-color: var(--purple-mystic);
+        }
+
+        .option-card.selected {
+            background: linear-gradient(135deg, var(--moonlight), var(--lavender));
+            border-color: var(--purple-mystic);
+            transform: translateY(-3px);
+        }
+
+        .option-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: var(--soft-pink);
             display: flex;
             align-items: center;
-            padding: 1rem 1.2rem;
-            background: white;
-            border-radius: 10px;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            color: var(--deep-burgundy);
+        }
+
+        .option-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .option-content input {
+            transform: scale(1.3);
             cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        .option-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            border-color: var(--soft-pink);
-        }
-
-        .option-item.selected {
-            border-color: var(--purple-mystic);
-            background: var(--moonlight);
-        }
-
-        .option-item input {
-            margin-right: 12px;
-            transform: scale(1.2);
+        .option-text {
+            flex: 1;
         }
 
         .test-navigation {
@@ -445,7 +643,7 @@
             padding: 2rem;
             background: var(--moonlight);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--transition);
             position: relative;
         }
 
@@ -490,7 +688,7 @@
             border: none;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
 
         .btn-upload:hover {
@@ -532,7 +730,7 @@
             align-items: center;
             justify-content: center;
             font-size: 14px;
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
 
         .btn-remove-photo:hover {
@@ -579,6 +777,31 @@
             padding: 1.5rem;
             border-radius: 15px;
             line-height: 1.2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            transition: var(--transition);
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        .result-level.animated {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .result-icon {
+            font-size: 3rem;
+        }
+
+        .result-title {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .result-score {
+            font-size: 1.2rem;
+            opacity: 0.8;
         }
 
         .level-low {
@@ -615,6 +838,36 @@
             border-radius: 10px;
         }
 
+        .result-tips {
+            margin-top: 1.5rem;
+            text-align: left;
+        }
+
+        .result-tips h5 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .result-tips ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .result-tips li {
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .result-tips li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success-green);
+            font-weight: bold;
+        }
+
         .result-actions {
             margin-top: 2rem;
             display: flex;
@@ -622,271 +875,43 @@
             gap: 1rem;
         }
 
-        /* About Section */
-        .about-content {
-            display: flex;
-            align-items: center;
-            gap: 3rem;
-            margin-top: 2rem;
-        }
-
-        .about-photo {
-            flex: 0 0 300px;
-        }
-
-        .about-photo img {
-            width: 100%;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .about-text {
-            flex: 1;
-        }
-
-        .about-text h3 {
-            color: var(--deep-burgundy);
-            margin-bottom: 1.5rem;
-            font-size: 1.8rem;
-        }
-
-        .about-text p {
-            margin-bottom: 1.5rem;
-            font-size: 1.1rem;
-        }
-
-        /* Awakening Section */
-        .awakening-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .awakening-card {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            text-align: center;
-        }
-
-        .awakening-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .awakening-card h3 {
-            color: var(--deep-burgundy);
-            margin-bottom: 1rem;
-            font-size: 1.4rem;
-        }
-
-        .awakening-card p {
-            color: var(--dark-text);
-            line-height: 1.6;
-        }
-
-        /* Contacts Section */
-        .contacts-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            margin-top: 2rem;
-        }
-
-        .contact-info {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-        }
-
-        .contact-info h3 {
-            color: var(--deep-burgundy);
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
-        }
-
-        .contact-details {
-            margin-bottom: 2rem;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .contact-item i {
-            width: 30px;
-            color: var(--purple-mystic);
-            font-size: 1.2rem;
-        }
-
-        /* Consultation Form in Contacts */
-        .consultation-form {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-        }
-
-        /* Female Power Section */
-        .female-power {
-            background: linear-gradient(135deg, var(--moonlight) 0%, var(--lavender) 100%);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .power-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .power-item {
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 15px;
-            padding: 2rem;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-        }
-
-        .power-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .power-icon {
-            font-size: 2.5rem;
-            color: var(--purple-mystic);
-            margin-bottom: 1rem;
-        }
-
-        .power-item h3 {
-            color: var(--deep-burgundy);
-            margin-bottom: 1rem;
-        }
-
-        /* Services Section */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .service-card {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-            border-top: 5px solid var(--vibrant-pink);
-        }
-
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .service-icon {
-            font-size: 3rem;
-            color: var(--vibrant-pink);
-            margin-bottom: 1.5rem;
-        }
-
-        .service-card h3 {
-            color: var(--deep-burgundy);
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-
-        /* Process Section */
-        .process-steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .step {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .step:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .step-number {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--vibrant-pink) 0%, var(--purple-mystic) 100%);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin: 0 auto 1.5rem;
-        }
-
-        .step h3 {
-            color: var(--deep-burgundy);
-            margin-bottom: 1rem;
-        }
-
-        /* Notification Styles */
-        .notification {
+        /* Floating Messages */
+        .floating-message {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            border-radius: 12px;
-            z-index: 10000;
-            animation: slideInRight 0.5s ease-out;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            max-width: 350px;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: linear-gradient(135deg, var(--vibrant-pink), var(--purple-mystic));
             color: white;
-            font-size: 0.95rem;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            z-index: 10001;
+            animation: floatIn 0.5s ease-out, floatOut 0.5s ease-in 2.5s forwards;
             display: flex;
             align-items: center;
+            gap: 10px;
         }
 
-        .notification.success {
-            background: linear-gradient(135deg, var(--success-green), #45a049);
-        }
-
-        .notification.error {
-            background: linear-gradient(135deg, #dc3545, #e83e8c);
-        }
-
-        .notification.info {
-            background: linear-gradient(135deg, var(--info-blue), #1976D2);
-        }
-
-        @keyframes slideInRight {
+        @keyframes floatIn {
             from {
-                transform: translateX(100%);
                 opacity: 0;
+                transform: translateX(-50%) translateY(20px);
             }
             to {
-                transform: translateX(0);
                 opacity: 1;
+                transform: translateX(-50%) translateY(-20px);
+            }
+        }
+
+        @keyframes floatOut {
+            from {
+                opacity: 1;
+                transform: translateX(-50%) translateY(-20px);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-40px);
             }
         }
 
@@ -977,6 +1002,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            font-family: 'Playfair Display', serif;
         }
 
         .education-block ul {
@@ -1008,7 +1034,7 @@
             background: rgba(255, 255, 255, 0.9);
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
 
         .awakening-sign:hover {
@@ -1020,6 +1046,303 @@
             font-size: 2rem;
             color: var(--purple-mystic);
             margin-bottom: 0.5rem;
+        }
+
+        /* About Section */
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .about-photo {
+            flex: 0 0 300px;
+        }
+
+        .about-photo img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-text {
+            flex: 1;
+        }
+
+        .about-text h3 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        /* Awakening Section */
+        .awakening-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .awakening-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .awakening-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .awakening-card h3 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .awakening-card p {
+            color: var(--dark-text);
+            line-height: 1.6;
+        }
+
+        /* Contacts Section */
+        .contacts-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .contact-info {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .contact-info h3 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .contact-details {
+            margin-bottom: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .contact-item i {
+            width: 30px;
+            color: var(--purple-mystic);
+            font-size: 1.2rem;
+        }
+
+        /* Consultation Form in Contacts */
+        .consultation-form {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Female Power Section */
+        .female-power {
+            background: linear-gradient(135deg, var(--moonlight) 0%, var(--lavender) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .power-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .power-item {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+
+        .power-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .power-icon {
+            font-size: 2.5rem;
+            color: var(--purple-mystic);
+            margin-bottom: 1rem;
+        }
+
+        .power-item h3 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Services Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            border-top: 5px solid var(--vibrant-pink);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            color: var(--vibrant-pink);
+            margin-bottom: 1.5rem;
+        }
+
+        .service-card h3 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Process Section */
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .step {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .step:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--vibrant-pink) 0%, var(--purple-mystic) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto 1.5rem;
+        }
+
+        .step h3 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 12px;
+            z-index: 10000;
+            animation: slideInRight 0.5s ease-out;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            max-width: 350px;
+            color: white;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification.success {
+            background: linear-gradient(135deg, var(--success-green), #45a049);
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, #dc3545, #e83e8c);
+        }
+
+        .notification.info {
+            background: linear-gradient(135deg, var(--info-blue), #1976D2);
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Loading Animation */
+        .loading-dots {
+            display: inline-flex;
+            gap: 4px;
+        }
+
+        .loading-dots span {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+            animation: bounce 1.4s infinite ease-in-out;
+        }
+
+        .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
         }
 
         /* Mobile Responsive */
@@ -1046,7 +1369,7 @@
             }
 
             .mobile-menu-btn {
-                display: block;
+                display: flex;
             }
 
             .hero-content h1 {
@@ -1126,12 +1449,23 @@
                 grid-template-columns: 1fr;
             }
 
-            /* Центрирование кнопки в мобильной версии */
-            .form-group[style*="text-align: center"] .btn {
-                width: 100%;
-                max-width: 300px;
-                margin: 0 auto;
-                display: block;
+            .progress-container {
+                padding: 1rem;
+            }
+
+            .question-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .question-number {
+                align-self: flex-start;
+            }
+
+            .floating-message {
+                width: 90%;
+                text-align: center;
             }
         }
     </style>
@@ -1140,7 +1474,10 @@
     <!-- Header -->
     <header>
         <div class="container nav-container">
-            <div class="logo">Татьяна Солнечная</div>
+            <div class="logo">
+                <i class="fas fa-feather-alt"></i>
+                Татьяна Солнечная
+            </div>
             <nav>
                 <ul class="nav-links" id="navLinks">
                     <li><a href="#about" class="about-link">Обо мне</a></li>
@@ -1163,7 +1500,7 @@
             <h1>Пробудите свою женскую силу.</h1>
             <p>Трансформируйте сексуальную энергию в источник творчества, магнетизма и внутренней гармонии.</p>
             <a href="#registration" class="btn pulse registration-link">
-                <i class="fas fa-user-plus"></i> Регистрация
+                <i class="fas fa-user-plus"></i> Начать диагностику
             </a>
         </div>
     </section>
@@ -1267,11 +1604,21 @@
             </div>
             
             <div class="form-container">
-                <!-- Progress Bar -->
-                <div class="test-progress-container">
-                    <div class="test-progress-bar" id="testProgress"></div>
+                <!-- Progress Container -->
+                <div class="progress-container">
+                    <div class="test-progress-container">
+                        <div class="test-progress-bar" id="testProgress"></div>
+                    </div>
+                    <div class="test-progress-text">
+                        <div class="step-indicator">
+                            <div class="step-dots" id="stepDots">
+                                <!-- Dots will be generated by JavaScript -->
+                            </div>
+                            <span id="progressText">Шаг 1 из 6</span>
+                        </div>
+                        <span id="userGreeting"></span>
+                    </div>
                 </div>
-                <div class="test-progress-text" id="progressText">Шаг 1 из 6</div>
 
                 <!-- Test Steps -->
                 <form id="libidoTestForm">
@@ -1283,28 +1630,41 @@
                         </div>
                         
                         <div class="question-block">
-                            <div class="question-text">Какой тип теста вам подходит?</div>
+                            <div class="question-header">
+                                <div class="question-number">1</div>
+                                <div class="question-text">Какой тип теста вам подходит?</div>
+                            </div>
                             <div class="options-grid">
-                                <label class="option-item">
-                                    <input type="radio" name="test_type" value="regular" required>
-                                    <div>
-                                        <strong>Обычный тест</strong><br>
-                                        <small>Для женщин с регулярными циклами</small>
+                                <div class="option-card">
+                                    <div class="option-icon">
+                                        <i class="fas fa-venus"></i>
                                     </div>
-                                </label>
-                                <label class="option-item">
-                                    <input type="radio" name="test_type" value="menopause">
-                                    <div>
-                                        <strong>Тест с менопаузой</strong><br>
-                                        <small>Для женщин в периоде менопаузы</small>
+                                    <div class="option-content">
+                                        <input type="radio" name="test_type" value="regular" id="regular_test" required>
+                                        <div class="option-text">
+                                            <strong>Обычный тест</strong>
+                                            <p>Для женщин с регулярными циклами</p>
+                                        </div>
                                     </div>
-                                </label>
+                                </div>
+                                <div class="option-card">
+                                    <div class="option-icon">
+                                        <i class="fas fa-leaf"></i>
+                                    </div>
+                                    <div class="option-content">
+                                        <input type="radio" name="test_type" value="menopause" id="menopause_test">
+                                        <div class="option-text">
+                                            <strong>Тест с менопаузой</strong>
+                                            <p>Для женщин в периоде менопаузы</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         
                         <div class="test-navigation">
                             <div></div> <!-- Empty div for spacing -->
-                            <button type="button" class="btn btn-secondary" onclick="nextStep(2)">
+                            <button type="button" class="btn btn-secondary" id="nextStep1" onclick="nextStep(2)" disabled>
                                 Далее <i class="fas fa-arrow-right"></i>
                             </button>
                         </div>
@@ -1319,16 +1679,27 @@
                         </div>
                         
                         <div class="question-block">
-                            <div class="question-text">Зависит ли Ваше либидо от времени года?</div>
+                            <div class="question-header">
+                                <div class="question-number" id="seasonQuestionNumber">6</div>
+                                <div class="question-text">Зависит ли Ваше либидо от времени года?</div>
+                            </div>
                             <div class="options-grid">
-                                <label class="option-item">
-                                    <input type="radio" name="season_dependency" value="Нет" required>
-                                    Нет, не зависит
-                                </label>
-                                <label class="option-item">
-                                    <input type="radio" name="season_dependency" value="Да">
-                                    Да, зависит
-                                </label>
+                                <div class="option-card">
+                                    <div class="option-content">
+                                        <input type="radio" name="season_dependency" value="Нет" id="season_no" required>
+                                        <div class="option-text">
+                                            Нет, не зависит
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="option-card">
+                                    <div class="option-content">
+                                        <input type="radio" name="season_dependency" value="Да" id="season_yes">
+                                        <div class="option-text">
+                                            Да, зависит
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             
                             <div id="seasonDescription" style="display: none; margin-top: 1rem;">
@@ -1412,9 +1783,9 @@
                             <p>"Ваше доверие - моя главная ценность. Вместе мы раскроем вашу божественную сущность."</p>
                         </div>
                     </div>
-                    <div>
-                        <h3 style="color: var(--deep-burgundy); font-size: 2rem; margin-bottom: 1rem;">Татьяна Солнечная</h3>
-                        <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">Проводник женской силы с 8-летним опытом. Помогаю женщинам пробудить свою сексуальную энергию и раскрыть внутреннюю гармонию.</p>
+                    <div class="about-text">
+                        <h3>Татьяна Солнечная</h3>
+                        <p>Проводник женской силы с 8-летним опытом. Помогаю женщинам пробудить свою сексуальную энергию и раскрыть внутреннюю гармонию.</p>
                         
                         <div class="education-block">
                             <h4><i class="fas fa-graduation-cap"></i> Образование и путь:</h4>
@@ -1759,6 +2130,17 @@
         let testData = {};
         let registrationData = {};
         let userPhoto = null;
+        let userName = '';
+
+        // Мотивационные сообщения для каждого шага
+        const motivationalMessages = [
+            "Отлично! Вы начинаете путь к самопознанию 🌟",
+            "Прекрасно! Вы уже на втором шаге 🚀",
+            "Замечательно! Продолжаем исследование 💫",
+            "Великолепно! Вы уже на полпути к результату 🌈",
+            "Почти готово! Остался последний рывок ⭐",
+            "Поздравляем! Вы завершили диагностику 🎉"
+        ];
 
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Сайт загружен');
@@ -1770,6 +2152,7 @@
             initEventListeners();
             initTestSteps();
             initPhotoUpload();
+            initStepDots();
         });
 
         function checkDiagnosticStatus() {
@@ -1899,6 +2282,30 @@
                     navLinks.classList.remove('active');
                 });
             });
+
+            // Обработчики для опций теста
+            document.querySelectorAll('.option-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const radio = this.querySelector('input[type="radio"]');
+                    if (radio) {
+                        radio.checked = true;
+                        
+                        // Убираем выделение у всех карточек в этой группе
+                        const groupName = radio.name;
+                        document.querySelectorAll(`input[name="${groupName}"]`).forEach(input => {
+                            input.closest('.option-card').classList.remove('selected');
+                        });
+                        
+                        // Добавляем выделение к выбранной карточке
+                        this.classList.add('selected');
+                        
+                        // Включаем кнопку "Далее" для первого шага
+                        if (groupName === 'test_type') {
+                            document.getElementById('nextStep1').disabled = false;
+                        }
+                    }
+                });
+            });
         }
 
         function initTestSteps() {
@@ -1916,6 +2323,28 @@
                         this.classList.add('selected');
                     }
                 });
+            });
+        }
+
+        function initStepDots() {
+            const stepDotsContainer = document.getElementById('stepDots');
+            stepDotsContainer.innerHTML = '';
+            
+            for (let i = 1; i <= totalSteps; i++) {
+                const dot = document.createElement('span');
+                dot.className = 'dot' + (i === 1 ? ' active' : '');
+                stepDotsContainer.appendChild(dot);
+            }
+        }
+
+        function updateStepDots(step) {
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, index) => {
+                if (index < step) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
             });
         }
 
@@ -2019,6 +2448,7 @@
 
             const requiredInputs = stepElement.querySelectorAll('[required]');
             let isValid = true;
+            let firstUnansweredQuestion = null;
 
             // Сбрасываем предыдущие ошибки
             stepElement.querySelectorAll('.error-message').forEach(error => {
@@ -2042,10 +2472,10 @@
                     
                     if (!isChecked) {
                         isValid = false;
-                        // Показываем ошибку для этой группы
-                        const errorElement = document.getElementById(input.name + 'Error');
-                        if (errorElement) {
-                            errorElement.style.display = 'block';
+                        
+                        // Сохраняем первый неотвеченный вопрос для прокрутки
+                        if (!firstUnansweredQuestion) {
+                            firstUnansweredQuestion = input.closest('.question-block');
                         }
                         
                         // Выделяем вопрос красным
@@ -2067,7 +2497,36 @@
                 }
             });
 
+            // Прокручиваем к первому неотвеченному вопросу
+            if (firstUnansweredQuestion) {
+                firstUnansweredQuestion.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            }
+
             return isValid;
+        }
+
+        function showMotivationalMessage(step) {
+            const message = motivationalMessages[step - 1];
+            if (message) {
+                showFloatingMessage(message);
+            }
+        }
+
+        function showFloatingMessage(text) {
+            const messageEl = document.createElement('div');
+            messageEl.className = 'floating-message';
+            messageEl.innerHTML = `
+                <i class="fas fa-sparkles"></i>
+                <span>${text}</span>
+            `;
+            document.body.appendChild(messageEl);
+            
+            setTimeout(() => {
+                messageEl.remove();
+            }, 3000);
         }
 
         function nextStep(step) {
@@ -2076,6 +2535,9 @@
                 showErrorMessage('Пожалуйста, ответьте на все обязательные вопросы этого шага');
                 return;
             }
+
+            // Показываем мотивационное сообщение
+            showMotivationalMessage(step);
 
             if (step === 2) {
                 const testType = document.querySelector('input[name="test_type"]:checked');
@@ -2087,16 +2549,38 @@
                 // Генерируем шаги на основе типа теста
                 generateTestSteps(testType.value);
                 totalSteps = testType.value === 'regular' ? 6 : 2;
+                initStepDots();
             }
             
-            document.querySelector('.test-step.active').classList.remove('active');
-            document.getElementById('step' + step).classList.add('active');
-            currentStep = step;
+            // Анимация перехода между шагами
+            const currentStepEl = document.querySelector('.test-step.active');
+            currentStepEl.style.animation = 'slideOutLeft 0.5s ease-in';
             
-            updateProgress();
-            
-            // Прокрутка к верху страницы
-            scrollToTop();
+            setTimeout(() => {
+                currentStepEl.classList.remove('active');
+                currentStepEl.style.animation = '';
+                
+                const nextStepEl = document.getElementById('step' + step);
+                nextStepEl.classList.add('active');
+                nextStepEl.style.animation = 'slideInRight 0.5s ease-out';
+                
+                currentStep = step;
+                updateProgress();
+                updateStepDots(step);
+                
+                // Обновляем номер вопроса для сезонного вопроса
+                if (step === 6) {
+                    document.getElementById('seasonQuestionNumber').textContent = totalSteps;
+                }
+                
+                setTimeout(() => {
+                    nextStepEl.style.animation = '';
+                }, 500);
+                
+                // Прокрутка к верху страницы
+                scrollToTop();
+                
+            }, 500);
         }
 
         function prevStep(step) {
@@ -2105,6 +2589,7 @@
             currentStep = step;
             
             updateProgress();
+            updateStepDots(step);
             
             // Прокрутка к верху страницы
             scrollToTop();
@@ -2121,6 +2606,11 @@
             const progress = (currentStep / totalSteps) * 100;
             document.getElementById('testProgress').style.width = progress + '%';
             document.getElementById('progressText').textContent = `Шаг ${currentStep} из ${totalSteps}`;
+            
+            // Обновляем приветствие с именем пользователя
+            if (userName) {
+                document.getElementById('userGreeting').textContent = `Привет, ${userName}!`;
+            }
         }
 
         function generateTestSteps(testType) {
@@ -2202,7 +2692,10 @@
         function generatePeriodQuestions(periodId, periodName) {
             return `
                 <div class="question-block">
-                    <div class="question-text">Как часто хочется секса в период "${periodName}"?</div>
+                    <div class="question-header">
+                        <div class="question-number">${periodId}</div>
+                        <div class="question-text">Как часто хочется секса в период "${periodName}"?</div>
+                    </div>
                     <div class="options-grid">
                         ${generateOptions(`period${periodId}_frequency`, [
                             'Вообще не хочется',
@@ -2216,7 +2709,10 @@
                 </div>
                 
                 <div class="question-block">
-                    <div class="question-text">Сила желания в те дни, когда хочется секса?</div>
+                    <div class="question-header">
+                        <div class="question-number">${periodId}</div>
+                        <div class="question-text">Сила желания в те дни, когда хочется секса?</div>
+                    </div>
                     <div class="options-grid">
                         ${generateOptions(`period${periodId}_strength`, [
                             'Легкое желание',
@@ -2229,7 +2725,10 @@
                 </div>
                 
                 <div class="question-block">
-                    <div class="question-text">Возбуждает ли Вас вид эрегированного полового члена в дни, когда хочется секса?</div>
+                    <div class="question-header">
+                        <div class="question-number">${periodId}</div>
+                        <div class="question-text">Возбуждает ли Вас вид эрегированного полового члена в дни, когда хочется секса?</div>
+                    </div>
                     <div class="options-grid">
                         ${generateOptions(`period${periodId}_erected_want`, [
                             'Вообще не возбуждает',
@@ -2242,7 +2741,10 @@
                 </div>
                 
                 <div class="question-block">
-                    <div class="question-text">Возбуждает ли Вас вид эрегированного полового члена в дни, когда НЕ хочется секса?</div>
+                    <div class="question-header">
+                        <div class="question-number">${periodId}</div>
+                        <div class="question-text">Возбуждает ли Вас вид эрегированного полового члена в дни, когда НЕ хочется секса?</div>
+                    </div>
                     <div class="options-grid">
                         ${generateOptions(`period${periodId}_erected_not_want`, [
                             'Вообще не возбуждает',
@@ -2255,7 +2757,10 @@
                 </div>
                 
                 <div class="question-block">
-                    <div class="question-text">Возбуждает ли Вас вид НЕэрегированного полового члена в дни, когда хочется секса?</div>
+                    <div class="question-header">
+                        <div class="question-number">${periodId}</div>
+                        <div class="question-text">Возбуждает ли Вас вид НЕэрегированного полового члена в дни, когда хочется секса?</div>
+                    </div>
                     <div class="options-grid">
                         ${generateOptions(`period${periodId}_non_erected_want`, [
                             'Вообще не возбуждает',
@@ -2268,7 +2773,10 @@
                 </div>
                 
                 <div class="question-block">
-                    <div class="question-text">Возбуждает ли Вас вид НЕэрегированного полового члена в дни, когда НЕ хочется секса?</div>
+                    <div class="question-header">
+                        <div class="question-number">${periodId}</div>
+                        <div class="question-text">Возбуждает ли Вас вид НЕэрегированного полового члена в дни, когда НЕ хочется секса?</div>
+                    </div>
                     <div class="options-grid">
                         ${generateOptions(`period${periodId}_non_erected_not_want`, [
                             'Вообще не возбуждает',
@@ -2285,7 +2793,10 @@
         function generateMenopauseQuestions() {
             return `
                 <div class="question-block">
-                    <div class="question-text">Как часто хочется секса в текущий период?</div>
+                    <div class="question-header">
+                        <div class="question-number">2</div>
+                        <div class="question-text">Как часто хочется секса в текущий период?</div>
+                    </div>
                     <div class="options-grid">
                         ${generateOptions('menopause_frequency', [
                             'Вообще не хочется',
@@ -2299,7 +2810,10 @@
                 </div>
                 
                 <div class="question-block">
-                    <div class="question-text">Сила желания в те дни, когда хочется секса?</div>
+                    <div class="question-header">
+                        <div class="question-number">2</div>
+                        <div class="question-text">Сила желания в те дни, когда хочется секса?</div>
+                    </div>
                     <div class="options-grid">
                         ${generateOptions('menopause_strength', [
                             'Легкое желание',
@@ -2312,7 +2826,10 @@
                 </div>
                 
                 <div class="question-block">
-                    <div class="question-text">Возбуждает ли Вас вид эрегированного полового члена в дни, когда хочется секса?</div>
+                    <div class="question-header">
+                        <div class="question-number">2</div>
+                        <div class="question-text">Возбуждает ли Вас вид эрегированного полового члена в дни, когда хочется секса?</div>
+                    </div>
                     <div class="options-grid">
                         ${generateOptions('menopause_erected_want', [
                             'Вообще не возбуждает',
@@ -2325,7 +2842,10 @@
                 </div>
                 
                 <div class="question-block">
-                    <div class="question-text">Возбуждает ли Вас вид эрегированного полового члена в дни, когда НЕ хочется секса?</div>
+                    <div class="question-header">
+                        <div class="question-number">2</div>
+                        <div class="question-text">Возбуждает ли Вас вид эрегированного полового члена в дни, когда НЕ хочется секса?</div>
+                    </div>
                     <div class="options-grid">
                         ${generateOptions('menopause_erected_not_want', [
                             'Вообще не возбуждает',
@@ -2338,7 +2858,10 @@
                 </div>
                 
                 <div class="question-block">
-                    <div class="question-text">Возбуждает ли Вас вид НЕэрегированного полового члена в дни, когда хочется секса?</div>
+                    <div class="question-header">
+                        <div class="question-number">2</div>
+                        <div class="question-text">Возбуждает ли Вас вид НЕэрегированного полового члена в дни, когда хочется секса?</div>
+                    </div>
                     <div class="options-grid">
                         ${generateOptions('menopause_non_erected_want', [
                             'Вообще не возбуждает',
@@ -2351,7 +2874,10 @@
                 </div>
                 
                 <div class="question-block">
-                    <div class="question-text">Возбуждает ли Вас вид НЕэрегированного полового члена в дни, когда НЕ хочется секса?</div>
+                    <div class="question-header">
+                        <div class="question-number">2</div>
+                        <div class="question-text">Возбуждает ли Вас вид НЕэрегированного полового члена в дни, когда НЕ хочется секса?</div>
+                    </div>
                     <div class="options-grid">
                         ${generateOptions('menopause_non_erected_not_want', [
                             'Вообще не возбуждает',
@@ -2367,10 +2893,12 @@
 
         function generateOptions(name, options) {
             return options.map(option => `
-                <label class="option-item">
-                    <input type="radio" name="${name}" value="${option}" required>
-                    ${option}
-                </label>
+                <div class="option-card">
+                    <div class="option-content">
+                        <input type="radio" name="${name}" value="${option}" required>
+                        <div class="option-text">${option}</div>
+                    </div>
+                </div>
             `).join('');
         }
 
@@ -2456,6 +2984,7 @@
                 // Собираем данные формы
                 const formData = new FormData(form);
                 registrationData = Object.fromEntries(formData.entries());
+                userName = registrationData.firstName;
                 
                 // Проверяем наличие фото
                 if (!userPhoto) {
@@ -2811,58 +3340,127 @@
             }
             
             // Определяем уровень либидо
-            let level, description;
+            let level, description, className;
             
             if (testType === 'regular') {
                 if (totalScore <= 8) {
                     level = 'Низкое либидо';
                     description = 'Ваше либидо находится на низком уровне. Это может быть связано с гормональными изменениями, стрессом или другими факторами. Рекомендуется консультация для выявления причин и разработки индивидуального плана восстановления.';
+                    className = 'level-low';
                 } else if (totalScore <= 16) {
                     level = 'Среднее либидо';
                     description = 'У вас средний уровень либидо. Есть потенциал для усиления сексуальной энергии через работу с гормональным балансом и психологическими аспектами.';
+                    className = 'level-medium';
                 } else if (totalScore <= 24) {
                     level = 'Высокое либидо';
                     description = 'Поздравляем! У вас высокий уровень либидо. Ваша сексуальная энергия находится в хорошем состоянии, но есть возможности для дальнейшего развития и гармонизации.';
+                    className = 'level-high';
                 } else {
                     level = 'Очень высокое либидо';
                     description = 'У вас очень высокий уровень либидо! Это прекрасный показатель вашей сексуальной энергии. Важно научиться правильно направлять эту энергию для достижения гармонии во всех сферах жизни.';
+                    className = 'level-very-high';
                 }
             } else {
                 if (totalScore <= 6) {
                     level = 'Низкое либидо в менопаузе';
                     description = 'В период менопаузы снижение либидо является распространенным явлением из-за гормональных изменений. Существуют эффективные методы восстановления, включая гормональную терапию и натуральные подходы.';
+                    className = 'level-low';
                 } else if (totalScore <= 12) {
                     level = 'Среднее либидо в менопаузе';
                     description = 'У вас сохраняется умеренный уровень либидо, что является хорошим показателем для периода менопаузы. Есть возможности для усиления сексуальной энергии через специальные методики.';
+                    className = 'level-medium';
                 } else if (totalScore <= 18) {
                     level = 'Высокое либидо в менопаузе';
                     description = 'Поздравляем! Несмотря на менопаузу, у вас сохраняется высокий уровень либидо. Это прекрасная основа для дальнейшего развития вашей сексуальности.';
+                    className = 'level-high';
                 } else {
                     level = 'Очень высокое либидо в менопаузе';
                     description = 'У вас исключительно высокий уровень либидо для периода менопаузы! Это редкий и ценный показатель. Важно научиться управлять этой энергией для максимальной реализации.';
+                    className = 'level-very-high';
                 }
             }
             
-            return { level, description, score: totalScore, testType };
+            return { level, description, score: totalScore, testType, className };
+        }
+
+        function getResultIcon(level) {
+            const icons = {
+                'Низкое либидо': '🌱',
+                'Среднее либидо': '🌿',
+                'Высокое либидо': '🌺',
+                'Очень высокое либидо': '🔥',
+                'Низкое либидо в менопаузе': '🍂',
+                'Среднее либидо в менопаузе': '🍁',
+                'Высокое либидо в менопаузе': '🌸',
+                'Очень высокое либидо в менопаузе': '💫'
+            };
+            return icons[level] || '🌟';
+        }
+
+        function getRecommendations(level) {
+            const recommendations = {
+                'Низкое либидо': [
+                    'Пройдите консультацию для выявления причин снижения либидо',
+                    'Попробуйте практики осознанности и медитации',
+                    'Обратите внимание на гормональный баланс',
+                    'Уделите время самоисследованию и принятию тела'
+                ],
+                'Среднее либидо': [
+                    'Используйте техники для усиления сексуальной энергии',
+                    'Практикуйте тантрические дыхательные упражнения',
+                    'Исследуйте новые способы самовыражения',
+                    'Работайте с эмоциональными блоками'
+                ],
+                'Высокое либидо': [
+                    'Научитесь направлять энергию в творчество',
+                    'Используйте практики для балансировки энергии',
+                    'Исследуйте глубины своей сексуальности',
+                    'Развивайте осознанные отношения с партнером'
+                ],
+                'Очень высокое либидо': [
+                    'Освойте техники трансформации сексуальной энергии',
+                    'Используйте мощь своей энергии для самореализации',
+                    'Практикуйте тантрические методы управления энергией',
+                    'Станьте проводником исцеления для других'
+                ]
+            };
+            
+            return recommendations[level] || [
+                'Пройдите индивидуальную консультацию для персонализированных рекомендаций',
+                'Исследуйте различные практики самопознания',
+                'Уделяйте внимание гармонизации всех сфер жизни'
+            ];
         }
 
         function showTestResult(result) {
             const resultLevel = document.getElementById('resultLevel');
             const resultDescription = document.getElementById('resultDescription');
             
-            // Устанавливаем класс и текст
-            if (result.level.includes('Низкое')) {
-                resultLevel.className = 'result-level level-low';
-            } else if (result.level.includes('Среднее')) {
-                resultLevel.className = 'result-level level-medium';
-            } else if (result.level.includes('Высокое')) {
-                resultLevel.className = 'result-level level-high';
-            } else {
-                resultLevel.className = 'result-level level-very-high';
-            }
+            // Создаем контент для результата
+            resultLevel.className = `result-level ${result.className}`;
+            resultLevel.innerHTML = `
+                <div class="result-icon">${getResultIcon(result.level)}</div>
+                <div class="result-title">${result.level}</div>
+                <div class="result-score">${result.score} баллов</div>
+            `;
             
-            resultLevel.textContent = result.level;
-            resultDescription.textContent = result.description;
+            resultDescription.innerHTML = `
+                <div class="result-description-content">
+                    <h4>Что это значит?</h4>
+                    <p>${result.description}</p>
+                    <div class="result-tips">
+                        <h5>Рекомендации:</h5>
+                        <ul>
+                            ${getRecommendations(result.level).map(tip => `<li>${tip}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+            
+            // Анимируем появление результата
+            setTimeout(() => {
+                resultLevel.classList.add('animated');
+            }, 100);
             
             // Показываем секцию с результатом
             showResultSection();
@@ -2885,6 +3483,7 @@
             // Сбрасываем прогресс
             currentStep = 1;
             updateProgress();
+            updateStepDots(1);
             
             scrollToTop();
         }
@@ -2965,9 +3564,8 @@
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
             notification.innerHTML = `
-                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-triangle' : 'info-circle'}" 
-                   style="margin-right: 8px;"></i> 
-                ${text}
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                <span>${text}</span>
             `;
             
             document.body.appendChild(notification);
@@ -2982,6 +3580,7 @@
     </script>
 </body>
 </html>
+
 
 
 
