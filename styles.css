@@ -1,4 +1,20 @@
-/* ===== PHOTO UPLOAD STYLES ===== */
+/* Добавьте в существующие стили */
+.question-block.error-highlight {
+    border-left-color: #e74c3c !important;
+    background: #fdf2f2 !important;
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+.form-control.error {
+    border-color: #e74c3c;
+    box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.15);
+}/* ===== PHOTO UPLOAD STYLES ===== */
 .photo-upload-container {
     text-align: center;
     margin-top: 0.5rem;
