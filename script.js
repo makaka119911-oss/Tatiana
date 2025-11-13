@@ -7,7 +7,6 @@ let currentStep = 1;
 let totalSteps = 6;
 let testData = {};
 let registrationData = {};
-let userPhoto = null;
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Сайт загружен');
@@ -18,7 +17,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Инициализация
     initEventListeners();
     initTestSteps();
-    initPhotoUpload();
 });
 
 function checkDiagnosticStatus() {
@@ -166,99 +164,6 @@ function initTestSteps() {
             }
         });
     });
-}
-
-function initPhotoUpload() {
-    const photoInput = document.getElementById('photoInput');
-    const photoUploadArea = document.getElementById('photoUploadArea');
-    const photoPreview = document.getElementById('photoPreview');
-    const photoPreviewContainer = document.getElementById('photoPreviewContainer');
-    const uploadButton = document.getElementById('uploadButton');
-    const removePhotoButton = document.getElementById('removePhotoButton');
-
-    // Обработчик выбора файла
-    photoInput.addEventListener('change', function(e) {
-        handlePhotoUpload(e);
-    });
-
-    // Обработчик клика по кнопке загрузки
-    uploadButton.addEventListener('click', function(e) {
-        e.stopPropagation();
-        photoInput.click();
-    });
-
-    // Обработчик удаления фото
-    removePhotoButton.addEventListener('click', function(e) {
-        e.stopPropagation();
-        removePhoto();
-    });
-
-    // Drag and drop функционал
-    photoUploadArea.addEventListener('dragover', function(e) {
-        e.preventDefault();
-        this.classList.add('dragover');
-    });
-
-    photoUploadArea.addEventListener('dragleave', function(e) {
-        e.preventDefault();
-        this.classList.remove('dragover');
-    });
-
-    photoUploadArea.addEventListener('drop', function(e) {
-        e.preventDefault();
-        this.classList.remove('dragover');
-        
-        const files = e.dataTransfer.files;
-        if (files.length > 0) {
-            handleFileSelection(files[0]);
-        }
-    });
-
-    // Клик по области загрузки
-    photoUploadArea.addEventListener('click', function() {
-        photoInput.click();
-    });
-
-    function handleFileSelection(file) {
-        // Проверка типа файла
-        if (!file.type.match('image.*')) {
-            showErrorMessage('Пожалуйста, выберите файл изображения (JPG, PNG, GIF)');
-            return;
-        }
-
-        // Проверка размера файла (5 МБ)
-        if (file.size > 5 * 1024 * 1024) {
-            showErrorMessage('Размер файла не должен превышать 5 МБ');
-            return;
-        }
-
-        userPhoto = file;
-
-        // Показываем превью
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            photoPreview.src = e.target.result;
-            photoPreviewContainer.style.display = 'block';
-            
-            // Скрываем ошибку если была
-            document.getElementById('photoError').style.display = 'none';
-        };
-        reader.readAsDataURL(file);
-    }
-
-    function handlePhotoUpload(e) {
-        const file = e.target.files[0];
-        if (file) {
-            handleFileSelection(file);
-        }
-    }
-}
-
-function removePhoto() {
-    userPhoto = null;
-    document.getElementById('photoInput').value = '';
-    document.getElementById('photoPreviewContainer').style.display = 'none';
-    document.getElementById('photoPreview').src = '';
 }
 
 // Функция проверки валидности шага
@@ -638,14 +543,7 @@ function validateRegistrationForm(form) {
     // Проверяем обязательные поля
     const requiredFields = form.querySelectorAll('[required]');
     requiredFields.forEach(field => {
-        if (field.type === 'file') {
-            if (!userPhoto) {
-                isValid = false;
-                document.getElementById('photoError').style.display = 'block';
-            } else {
-                document.getElementById('photoError').style.display = 'none';
-            }
-        } else if (!field.value.trim()) {
+        if (!field.value.trim()) {
             isValid = false;
             field.classList.add('error');
             const errorId = field.id + 'Error';
@@ -706,13 +604,8 @@ async function handleRegistrationSubmit(e) {
         const formData = new FormData(form);
         registrationData = Object.fromEntries(formData.entries());
         
-        // Проверяем наличие фото
-        if (!userPhoto) {
-            throw new Error('Пожалуйста, загрузите фотографию');
-        }
-        
         // Отправляем в Telegram
-        await sendRegistrationToTelegram(registrationData, userPhoto);
+        await sendRegistrationToTelegram(registrationData);
         
         showSuccessMessage('✅ Регистрация прошла успешно! Переходим к тесту.');
         
@@ -803,9 +696,9 @@ async function handleConsultationSubmit(e) {
 }
 
 // Функции для отправки в Telegram
-async function sendRegistrationToTelegram(data, photoFile) {
+async function sendRegistrationToTelegram(data) {
     try {
-        // Сначала отправляем текстовое сообщение
+        // Отправляем текстовое сообщение
         let message = `🌟 *НОВАЯ РЕГИСТРАЦИЯ* 🌟\n\n`;
         message += `👤 *Контактная информация:*\n`;
         message += `   └ *Фамилия:* ${data.lastName}\n`;
@@ -813,10 +706,9 @@ async function sendRegistrationToTelegram(data, photoFile) {
         message += `   └ *Возраст:* ${data.age}\n`;
         message += `   └ *Телефон:* ${data.phone}\n`;
         message += `   └ *Telegram:* ${data.telegram}\n`;
-        message += `   └ *Фото:* ${photoFile ? 'Да' : 'Нет'}\n`;
         message += `\n⏰ *Дата регистрации:* ${new Date().toLocaleString('ru-RU')}`;
 
-        const textResponse = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -828,47 +720,16 @@ async function sendRegistrationToTelegram(data, photoFile) {
             })
         });
 
-        const textResult = await textResponse.json();
+        const result = await response.json();
         
-        if (!textResponse.ok || !textResult.ok) {
-            throw new Error(textResult.description || 'Ошибка отправки текста в Telegram');
-        }
-
-        // Затем отправляем фото, если есть
-        if (photoFile) {
-            await sendPhotoToTelegram(photoFile, `Фото: ${data.firstName} ${data.lastName}`);
+        if (!response.ok || !result.ok) {
+            throw new Error(result.description || 'Ошибка отправки в Telegram');
         }
 
         console.log('✅ Регистрация успешно отправлена в Telegram');
         
     } catch (error) {
         console.error('Ошибка отправки регистрации:', error);
-        throw error;
-    }
-}
-
-async function sendPhotoToTelegram(photoFile, caption) {
-    try {
-        const formData = new FormData();
-        formData.append('chat_id', TELEGRAM_CHAT_ID);
-        formData.append('photo', photoFile);
-        formData.append('caption', caption);
-
-        const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
-            method: 'POST',
-            body: formData
-        });
-
-        const result = await response.json();
-        
-        if (!response.ok || !result.ok) {
-            throw new Error(result.description || 'Ошибка отправки фото');
-        }
-
-        console.log('✅ Фото успешно отправлено в Telegram');
-        
-    } catch (error) {
-        console.error('Ошибка отправки фото:', error);
         throw error;
     }
 }
@@ -1228,4 +1089,3 @@ function showNotification(text, type) {
         }
     }, 5000);
 }
-
