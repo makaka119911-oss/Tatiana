@@ -1,26 +1,82 @@
-# JavaScript код (script.js)
-
-```javascript
 // Конфигурация Telegram
 const TELEGRAM_BOT_TOKEN = '8402206062:AAEJim1GkriKqY_o1mOo0YWSWQDdw5Qy2h0';
 const TELEGRAM_CHAT_ID = '-1002313355102';
 
 // Глобальные переменные
-let userPhoto = null;
+let currentStep = 1;
+let totalSteps = 6;
+let testData = {};
 let registrationData = {};
+let userPhoto = null;
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Сайт загружен');
 
-    // Инициализация компонентов
-    initMobileMenu();
-    initSmoothScroll();
-    initBackToTop();
-    initPhotoUpload();
-    initTestTypeSwitch();
-    initSeasonalQuestions();
+    // Проверяем, пройдена ли диагностика
+    checkDiagnosticStatus();
 
-    // Обработка кнопок регистрации
+    // Инициализация
+    initEventListeners();
+    initTestSteps();
+    initPhotoUpload();
+});
+
+function checkDiagnosticStatus() {
+    const diagnosticCompleted = localStorage.getItem('diagnosticCompleted') === 'true';
+    if (diagnosticCompleted) {
+        unlockAllSections();
+    }
+}
+
+function unlockAllSections() {
+    // Скрываем замки и показываем контент для всех секций
+    const sections = ['about', 'power', 'services', 'process', 'awakening', 'contacts'];
+    
+    sections.forEach(section => {
+        const lock = document.getElementById(section + 'Lock');
+        const content = document.getElementById(section + 'Content');
+        
+        if (lock) lock.style.display = 'none';
+        if (content) content.style.display = 'block';
+    });
+}
+
+function initEventListeners() {
+    // Форма регистрации
+    const registrationForm = document.getElementById('registrationForm');
+    if (registrationForm) {
+        registrationForm.addEventListener('submit', handleRegistrationSubmit);
+    }
+
+    // Форма теста
+    const testForm = document.getElementById('libidoTestForm');
+    if (testForm) {
+        testForm.addEventListener('submit', handleTestSubmit);
+    }
+
+    // Форма консультации
+    const consultationForm = document.getElementById('consultationForm');
+    if (consultationForm) {
+        consultationForm.addEventListener('submit', handleConsultationSubmit);
+    }
+
+    // Кнопка "Назад к тесту"
+    const backToTestBtn = document.getElementById('backToTest');
+    if (backToTestBtn) {
+        backToTestBtn.addEventListener('click', function() {
+            showTestSection();
+        });
+    }
+
+    // Сезонная зависимость
+    document.querySelectorAll('input[name="season_dependency"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            const description = document.getElementById('seasonDescription');
+            description.style.display = this.value === 'Да' ? 'block' : 'none';
+        });
+    });
+
+    // Навигационные ссылки
     document.querySelectorAll('.registration-link').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
@@ -28,426 +84,739 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Обработка формы регистрации
-    const registrationForm = document.getElementById('registrationForm');
-    if (registrationForm) {
-        registrationForm.addEventListener('submit', handleRegistrationSubmit);
-    }
-
-    // Обработка формы теста
-    const testForm = document.getElementById('libidoTestForm');
-    if (testForm) {
-        testForm.addEventListener('submit', handleTestSubmit);
-    }
-
-    // Обработка кнопки "Вернуться к тесту"
-    const backToTestBtn = document.getElementById('backToTest');
-    if (backToTestBtn) {
-        backToTestBtn.addEventListener('click', function() {
-            document.getElementById('result').classList.add('section-hidden');
-            document.getElementById('test').classList.remove('section-hidden');
-            scrollToSection('test');
+    document.querySelectorAll('.consultation-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            showContactsSection();
         });
-    }
+    });
 
-    // Обработка кнопки "Записаться на консультацию"
-    const showConsultBtn = document.getElementById('showConsultationForm');
-    if (showConsultBtn) {
-        showConsultBtn.addEventListener('click', function() {
-            const consultSection = document.getElementById('consultationFormSection');
-            if (consultSection.style.display === 'none') {
-                consultSection.style.display = 'block';
-                this.innerHTML = '<i class="fas fa-times"></i> Скрыть форму';
-            } else {
-                consultSection.style.display = 'none';
-                this.innerHTML = '<i class="fas fa-calendar-check"></i> Записаться на консультацию';
-            }
+    document.querySelectorAll('.about-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            showAboutSection();
         });
-    }
+    });
 
-    // Обработка формы консультации
-    const consultForm = document.getElementById('consultationForm');
-    if (consultForm) {
-        consultForm.addEventListener('submit', handleConsultationSubmit);
-    }
+    document.querySelectorAll('.power-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            showPowerSection();
+        });
+    });
 
-    // Проверяем статус регистрации
-    checkRegistrationStatus();
-});
+    document.querySelectorAll('.services-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            showServicesSection();
+        });
+    });
 
-// ===== MOBILE MENU =====
-function initMobileMenu() {
+    document.querySelectorAll('.process-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            showProcessSection();
+        });
+    });
+
+    document.querySelectorAll('.awakening-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            showAwakeningSection();
+        });
+    });
+
+    document.querySelectorAll('.contacts-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            showContactsSection();
+        });
+    });
+
+    // Мобильное меню
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const navLinks = document.querySelector('.nav-links');
-    const menuOverlay = document.getElementById('menuOverlay');
-    const body = document.body;
-
-    if (mobileMenuBtn && navLinks) {
-        mobileMenuBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
+    const navLinks = document.getElementById('navLinks');
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', function() {
             navLinks.classList.toggle('active');
-            mobileMenuBtn.classList.toggle('active');
-            menuOverlay.classList.toggle('active');
-            
-            if (navLinks.classList.contains('active')) {
-                body.style.overflow = 'hidden';
-            } else {
-                body.style.overflow = '';
-            }
-        });
-
-        menuOverlay.addEventListener('click', function() {
-            navLinks.classList.remove('active');
-            mobileMenuBtn.classList.remove('active');
-            menuOverlay.classList.remove('active');
-            body.style.overflow = '';
-        });
-
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', function() {
-                navLinks.classList.remove('active');
-                mobileMenuBtn.classList.remove('active');
-                menuOverlay.classList.remove('active');
-                body.style.overflow = '';
-            });
         });
     }
+
+    // Закрытие меню при клике на ссылку
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', function() {
+            navLinks.classList.remove('active');
+        });
+    });
 }
 
-// ===== SMOOTH SCROLL =====
-function initSmoothScroll() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            const href = this.getAttribute('href');
-            if (href === '#registration' || href === '#test') {
-                return;
-            }
-            
-            e.preventDefault();
-            const target = document.querySelector(href);
-            if (target) {
-                scrollToSection(href.substring(1));
+function initTestSteps() {
+    // Добавляем обработчики для опций
+    document.querySelectorAll('.option-item').forEach(item => {
+        item.addEventListener('click', function() {
+            const radio = this.querySelector('input[type="radio"]');
+            if (radio) {
+                radio.checked = true;
+                
+                // Добавляем визуальное выделение
+                this.parentElement.querySelectorAll('.option-item').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                this.classList.add('selected');
             }
         });
     });
 }
 
-function scrollToSection(sectionId) {
-    const target = document.getElementById(sectionId);
-    if (target) {
-        target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
-    }
-}
+function initPhotoUpload() {
+    const photoInput = document.getElementById('photoInput');
+    const photoUploadArea = document.getElementById('photoUploadArea');
+    const photoPreview = document.getElementById('photoPreview');
+    const photoPreviewContainer = document.getElementById('photoPreviewContainer');
+    const uploadButton = document.getElementById('uploadButton');
+    const removePhotoButton = document.getElementById('removePhotoButton');
 
-// ===== BACK TO TOP =====
-function initBackToTop() {
-    const backToTopBtn = document.getElementById('backToTop');
-    
-    window.addEventListener('scroll', function() {
-        if (window.pageYOffset > 300) {
-            backToTopBtn.classList.add('visible');
-        } else {
-            backToTopBtn.classList.remove('visible');
+    // Обработчик выбора файла
+    photoInput.addEventListener('change', function(e) {
+        handlePhotoUpload(e);
+    });
+
+    // Обработчик клика по кнопке загрузки
+    uploadButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        photoInput.click();
+    });
+
+    // Обработчик удаления фото
+    removePhotoButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        removePhoto();
+    });
+
+    // Drag and drop функционал
+    photoUploadArea.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        this.classList.add('dragover');
+    });
+
+    photoUploadArea.addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        this.classList.remove('dragover');
+    });
+
+    photoUploadArea.addEventListener('drop', function(e) {
+        e.preventDefault();
+        this.classList.remove('dragover');
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            handleFileSelection(files[0]);
         }
     });
 
-    backToTopBtn.addEventListener('click', function() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
+    // Клик по области загрузки
+    photoUploadArea.addEventListener('click', function() {
+        photoInput.click();
     });
-}
 
-// ===== PHOTO UPLOAD =====
-function initPhotoUpload() {
-    const photoInput = document.getElementById('photo');
-    const previewImage = document.getElementById('previewImage');
-    const photoPreview = document.getElementById('photoPreview');
+    function handleFileSelection(file) {
+        // Проверка типа файла
+        if (!file.type.match('image.*')) {
+            showErrorMessage('Пожалуйста, выберите файл изображения (JPG, PNG, GIF)');
+            return;
+        }
 
-    if (photoInput) {
-        photoInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
+        // Проверка размера файла (5 МБ)
+        if (file.size > 5 * 1024 * 1024) {
+            showErrorMessage('Размер файла не должен превышать 5 МБ');
+            return;
+        }
+
+        userPhoto = file;
+
+        // Показываем превью
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            photoPreview.src = e.target.result;
+            photoPreviewContainer.style.display = 'block';
             
-            if (file) {
-                // Проверка размера файла (макс 10 МБ)
-                if (file.size > 10 * 1024 * 1024) {
-                    showErrorMessage('Размер файла не должен превышать 10 МБ');
-                    photoInput.value = '';
-                    return;
-                }
+            // Скрываем ошибку если была
+            document.getElementById('photoError').style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+    }
 
-                // Проверка типа файла
-                if (!file.type.match('image.*')) {
-                    showErrorMessage('Пожалуйста, выберите изображение');
-                    photoInput.value = '';
-                    return;
-                }
-
-                // Сохраняем файл
-                userPhoto = file;
-
-                // Показываем предпросмотр
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    previewImage.src = e.target.result;
-                    photoPreview.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
-            }
-        });
+    function handlePhotoUpload(e) {
+        const file = e.target.files[0];
+        if (file) {
+            handleFileSelection(file);
+        }
     }
 }
 
 function removePhoto() {
     userPhoto = null;
-    document.getElementById('photo').value = '';
-    document.getElementById('photoPreview').style.display = 'none';
-    document.getElementById('previewImage').src = '';
+    document.getElementById('photoInput').value = '';
+    document.getElementById('photoPreviewContainer').style.display = 'none';
+    document.getElementById('photoPreview').src = '';
 }
 
-// ===== TEST TYPE SWITCH =====
-function initTestTypeSwitch() {
-    const regularTestRadio = document.getElementById('regular_test');
-    const menopauseTestRadio = document.getElementById('menopause_test');
+// Функция проверки валидности шага
+function validateStep(step) {
+    const stepElement = document.getElementById('step' + step);
+    if (!stepElement) return true;
+
+    const requiredInputs = stepElement.querySelectorAll('[required]');
+    let isValid = true;
+
+    // Сбрасываем предыдущие ошибки
+    stepElement.querySelectorAll('.error-message').forEach(error => {
+        error.style.display = 'none';
+    });
+    stepElement.querySelectorAll('.form-control.error').forEach(input => {
+        input.classList.remove('error');
+    });
+
+    // Убираем выделение ошибок с вопросов
+    stepElement.querySelectorAll('.question-block').forEach(block => {
+        block.classList.remove('error-highlight');
+    });
+
+    // Проверяем каждое обязательное поле
+    requiredInputs.forEach(input => {
+        if (input.type === 'radio') {
+            // Для радио-кнопок проверяем, что хотя бы одна в группе выбрана
+            const radioGroup = stepElement.querySelectorAll(`input[name="${input.name}"]`);
+            const isChecked = Array.from(radioGroup).some(radio => radio.checked);
+            
+            if (!isChecked) {
+                isValid = false;
+                // Показываем ошибку для этой группы
+                const errorElement = document.getElementById(input.name + 'Error');
+                if (errorElement) {
+                    errorElement.style.display = 'block';
+                }
+                
+                // Выделяем вопрос красным
+                const questionBlock = input.closest('.question-block');
+                if (questionBlock) {
+                    questionBlock.classList.add('error-highlight');
+                }
+            }
+        } else {
+            // Для других типов полей проверяем значение
+            if (!input.value.trim()) {
+                isValid = false;
+                input.classList.add('error');
+                const errorElement = document.getElementById(input.name + 'Error');
+                if (errorElement) {
+                    errorElement.style.display = 'block';
+                }
+            }
+        }
+    });
+
+    return isValid;
+}
+
+function nextStep(step) {
+    // Проверяем валидность текущего шага перед переходом
+    if (!validateStep(currentStep)) {
+        showErrorMessage('Пожалуйста, ответьте на все обязательные вопросы этого шага');
+        return;
+    }
+
+    if (step === 2) {
+        const testType = document.querySelector('input[name="test_type"]:checked');
+        if (!testType) {
+            showErrorMessage('Пожалуйста, выберите тип теста');
+            return;
+        }
+        
+        // Генерируем шаги на основе типа теста
+        generateTestSteps(testType.value);
+        totalSteps = testType.value === 'regular' ? 6 : 2;
+    }
     
-    if (regularTestRadio && menopauseTestRadio) {
-        regularTestRadio.addEventListener('change', toggleTestSections);
-        menopauseTestRadio.addEventListener('change', toggleTestSections);
-    }
+    document.querySelector('.test-step.active').classList.remove('active');
+    document.getElementById('step' + step).classList.add('active');
+    currentStep = step;
+    
+    updateProgress();
+    
+    // Прокрутка к верху страницы
+    scrollToTop();
 }
 
-function toggleTestSections() {
-    const regularSection = document.getElementById('regularTestSection');
-    const menopauseSection = document.getElementById('menopauseTestSection');
-    const isRegular = document.getElementById('regular_test').checked;
+function prevStep(step) {
+    document.querySelector('.test-step.active').classList.remove('active');
+    document.getElementById('step' + step).classList.add('active');
+    currentStep = step;
+    
+    updateProgress();
+    
+    // Прокрутка к верху страницы
+    scrollToTop();
+}
 
-    if (isRegular) {
-        regularSection.style.display = 'block';
-        menopauseSection.style.display = 'none';
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+function updateProgress() {
+    const progress = (currentStep / totalSteps) * 100;
+    document.getElementById('testProgress').style.width = progress + '%';
+    document.getElementById('progressText').textContent = `Шаг ${currentStep} из ${totalSteps}`;
+}
+
+function generateTestSteps(testType) {
+    const stepsContainer = document.getElementById('libidoTestForm');
+    
+    // Удаляем предыдущие сгенерированные шаги (кроме первого и последнего)
+    document.querySelectorAll('.test-step:not(#step1):not(#step6)').forEach(step => {
+        step.remove();
+    });
+    
+    if (testType === 'regular') {
+        // Генерируем 4 периода для обычного теста
+        const periods = [
+            { id: 1, name: 'От конца месячных до овуляции' },
+            { id: 2, name: 'В период овуляции' },
+            { id: 3, name: 'От конца овуляции до начала месячных' },
+            { id: 4, name: 'В период месячных' }
+        ];
         
-        // Удаляем required у полей менопаузы
-        menopauseSection.querySelectorAll('input[type="radio"]').forEach(input => {
-            input.removeAttribute('required');
+        periods.forEach((period, index) => {
+            const stepNumber = index + 2;
+            const stepHTML = `
+                <div class="test-step" id="step${stepNumber}">
+                    <div class="step-header">
+                        <h4>Период: ${period.name}</h4>
+                        <p>Ответьте на вопросы для этого периода цикла</p>
+                    </div>
+                    
+                    ${generatePeriodQuestions(period.id, period.name)}
+                    
+                    <div class="test-navigation">
+                        <button type="button" class="btn btn-outline" onclick="prevStep(${stepNumber - 1})">
+                            <i class="fas fa-arrow-left"></i> Назад
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="nextStep(${stepNumber + 1})">
+                            Далее <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Вставляем перед последним шагом (сезонным вопросом)
+            const lastStep = document.getElementById('step6');
+            lastStep.insertAdjacentHTML('beforebegin', stepHTML);
         });
         
-        // Добавляем required к полям обычного теста
-        regularSection.querySelectorAll('input[type="radio"][required]').forEach(input => {
-            input.setAttribute('required', 'required');
-        });
+        totalSteps = 6;
     } else {
-        regularSection.style.display = 'none';
-        menopauseSection.style.display = 'block';
+        // Для менопаузы - один шаг с вопросами
+        const stepHTML = `
+            <div class="test-step" id="step2">
+                <div class="step-header">
+                    <h4>Вопросы для периода менопаузы</h4>
+                    <p>Ответьте на вопросы о вашем текущем состоянии</p>
+                </div>
+                
+                ${generateMenopauseQuestions()}
+                
+                <div class="test-navigation">
+                    <button type="button" class="btn btn-outline" onclick="prevStep(1)">
+                        <i class="fas fa-arrow-left"></i> Назад
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="nextStep(6)">
+                        Далее <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        `;
         
-        // Удаляем required у полей обычного теста
-        regularSection.querySelectorAll('input[type="radio"]').forEach(input => {
-            input.removeAttribute('required');
-        });
+        const lastStep = document.getElementById('step6');
+        lastStep.insertAdjacentHTML('beforebegin', stepHTML);
+        totalSteps = 2;
+    }
+    
+    // Переинициализируем обработчики
+    initTestSteps();
+}
+
+function generatePeriodQuestions(periodId, periodName) {
+    return `
+        <div class="question-block">
+            <div class="question-text">Как часто хочется секса в период "${periodName}"?</div>
+            <div class="options-grid">
+                ${generateOptions(`period${periodId}_frequency`, [
+                    'Вообще не хочется',
+                    'Хочется 1 раза в неделю',
+                    'Хочется 1 раз в 3 дня',
+                    'Хочется через день',
+                    'Хочется каждый день',
+                    'Хочется каждый день по много раз'
+                ])}
+            </div>
+        </div>
         
-        // Добавляем required к полям менопаузы
-        menopauseSection.querySelectorAll('input[type="radio"]').forEach(input => {
-            if (!input.name.includes('seasonal')) {
-                input.setAttribute('required', 'required');
-            }
-        });
-    }
+        <div class="question-block">
+            <div class="question-text">Сила желания в те дни, когда хочется секса?</div>
+            <div class="options-grid">
+                ${generateOptions(`period${periodId}_strength`, [
+                    'Легкое желание',
+                    'Среднее желание',
+                    'Сильное желание',
+                    'Очень сильное желание',
+                    'Максимально сильное желание(на столько,что почти невозможно терпеть)'
+                ])}
+            </div>
+        </div>
+        
+        <div class="question-block">
+            <div class="question-text">Возбуждает ли Вас вид эрегированного полового члена в дни, когда хочется секса?</div>
+            <div class="options-grid">
+                ${generateOptions(`period${periodId}_erected_want`, [
+                    'Вообще не возбуждает',
+                    'Немного возбуждает',
+                    'Средне возбуждает',
+                    'Сильно возбуждает',
+                    'Очень сильно возбуждает'
+                ])}
+            </div>
+        </div>
+        
+        <div class="question-block">
+            <div class="question-text">Возбуждает ли Вас вид эрегированного полового члена в дни, когда НЕ хочется секса?</div>
+            <div class="options-grid">
+                ${generateOptions(`period${periodId}_erected_not_want`, [
+                    'Вообще не возбуждает',
+                    'Немного возбуждает',
+                    'Средне возбуждает',
+                    'Сильно возбуждает',
+                    'Очень сильно возбуждает'
+                ])}
+            </div>
+        </div>
+        
+        <div class="question-block">
+            <div class="question-text">Возбуждает ли Вас вид НЕэрегированного полового члена в дни, когда хочется секса?</div>
+            <div class="options-grid">
+                ${generateOptions(`period${periodId}_non_erected_want`, [
+                    'Вообще не возбуждает',
+                    'Немного возбуждает',
+                    'Средне возбуждает',
+                    'Сильно возбуждает',
+                    'Очень сильно возбуждает'
+                ])}
+            </div>
+        </div>
+        
+        <div class="question-block">
+            <div class="question-text">Возбуждает ли Вас вид НЕэрегированного полового члена в дни, когда НЕ хочется секса?</div>
+            <div class="options-grid">
+                ${generateOptions(`period${periodId}_non_erected_not_want`, [
+                    'Вообще не возбуждает',
+                    'Немного возбуждает',
+                    'Средне возбуждает',
+                    'Сильно возбуждает',
+                    'Очень сильно возбуждает'
+                ])}
+            </div>
+        </div>
+    `;
 }
 
-// ===== SEASONAL QUESTIONS =====
-function initSeasonalQuestions() {
-    // Для обычного теста
-    const seasonalRadios = document.querySelectorAll('input[name="seasonal"]');
-    seasonalRadios.forEach(radio => {
-        radio.addEventListener('change', function() {
-            const description = document.getElementById('seasonalDescription');
-            if (this.value === 'yes') {
-                description.style.display = 'block';
-            } else {
-                description.style.display = 'none';
-            }
-        });
-    });
-
-    // Для теста менопаузы
-    const mSeasonalRadios = document.querySelectorAll('input[name="m_seasonal"]');
-    mSeasonalRadios.forEach(radio => {
-        radio.addEventListener('change', function() {
-            const description = document.getElementById('menopauseSeasonalDescription');
-            if (this.value === 'yes') {
-                description.style.display = 'block';
-            } else {
-                description.style.display = 'none';
-            }
-        });
-    });
+function generateMenopauseQuestions() {
+    return `
+        <div class="question-block">
+            <div class="question-text">Как часто хочется секса в текущий период?</div>
+            <div class="options-grid">
+                ${generateOptions('menopause_frequency', [
+                    'Вообще не хочется',
+                    'Хочется 1 раза в неделю',
+                    'Хочется 1 раз в 3 дня',
+                    'Хочется через день',
+                    'Хочется каждый день',
+                    'Хочется каждый день по много раз'
+                ])}
+            </div>
+        </div>
+        
+        <div class="question-block">
+            <div class="question-text">Сила желания в те дни, когда хочется секса?</div>
+            <div class="options-grid">
+                ${generateOptions('menopause_strength', [
+                    'Легкое желание',
+                    'Среднее желание',
+                    'Сильное желание',
+                    'Очень сильное желание',
+                    'Максимально сильное желание(на столько,что почти невозможно терпеть)'
+                ])}
+            </div>
+        </div>
+        
+        <div class="question-block">
+            <div class="question-text">Возбуждает ли Вас вид эрегированного полового члена в дни, когда хочется секса?</div>
+            <div class="options-grid">
+                ${generateOptions('menopause_erected_want', [
+                    'Вообще не возбуждает',
+                    'Немного возбуждает',
+                    'Средне возбуждает',
+                    'Сильно возбуждает',
+                    'Очень сильно возбуждает'
+                ])}
+            </div>
+        </div>
+        
+        <div class="question-block">
+            <div class="question-text">Возбуждает ли Вас вид эрегированного полового члена в дни, когда НЕ хочется секса?</div>
+            <div class="options-grid">
+                ${generateOptions('menopause_erected_not_want', [
+                    'Вообще не возбуждает',
+                    'Немного возбуждает',
+                    'Средне возбуждает',
+                    'Сильно возбуждает',
+                    'Очень сильно возбуждает'
+                ])}
+            </div>
+        </div>
+        
+        <div class="question-block">
+            <div class="question-text">Возбуждает ли Вас вид НЕэрегированного полового члена в дни, когда хочется секса?</div>
+            <div class="options-grid">
+                ${generateOptions('menopause_non_erected_want', [
+                    'Вообще не возбуждает',
+                    'Немного возбуждает',
+                    'Средне возбуждает',
+                    'Сильно возбуждает',
+                    'Очень сильно возбуждает'
+                ])}
+            </div>
+        </div>
+        
+        <div class="question-block">
+            <div class="question-text">Возбуждает ли Вас вид НЕэрегированного полового члена в дни, когда НЕ хочется секса?</div>
+            <div class="options-grid">
+                ${generateOptions('menopause_non_erected_not_want', [
+                    'Вообще не возбуждает',
+                    'Немного возбуждает',
+                    'Средне возбуждает',
+                    'Сильно возбуждает',
+                    'Очень сильно возбуждает'
+                ])}
+            </div>
+        </div>
+    `;
 }
 
-// ===== SECTION NAVIGATION =====
-function checkRegistrationStatus() {
-    const registrationCompleted = localStorage.getItem('registrationCompleted');
-    if (registrationCompleted === 'true') {
-        showTestSection();
-    }
+function generateOptions(name, options) {
+    return options.map(option => `
+        <label class="option-item">
+            <input type="radio" name="${name}" value="${option}" required>
+            ${option}
+        </label>
+    `).join('');
 }
 
-function showRegistrationSection() {
-    document.getElementById('registration').classList.remove('section-hidden');
-    document.getElementById('test').classList.add('section-hidden');
-    document.getElementById('result').classList.add('section-hidden');
-    scrollToSection('registration');
-}
-
-function showTestSection() {
-    document.getElementById('registration').classList.add('section-hidden');
-    document.getElementById('test').classList.remove('section-hidden');
-    document.getElementById('result').classList.add('section-hidden');
-    scrollToSection('test');
-}
-
-function showResultSection() {
-    document.getElementById('registration').classList.add('section-hidden');
-    document.getElementById('test').classList.add('section-hidden');
-    document.getElementById('result').classList.remove('section-hidden');
-    scrollToSection('result');
-}
-
-// ===== FORM VALIDATION =====
+// Валидация формы регистрации
 function validateRegistrationForm(form) {
     let isValid = true;
     
+    // Сбрасываем предыдущие ошибки
+    form.querySelectorAll('.error-message').forEach(error => {
+        error.style.display = 'none';
+    });
+    form.querySelectorAll('.form-control.error').forEach(input => {
+        input.classList.remove('error');
+    });
+    
+    // Проверяем обязательные поля
     const requiredFields = form.querySelectorAll('[required]');
     requiredFields.forEach(field => {
         if (field.type === 'file') {
             if (!userPhoto) {
                 isValid = false;
-                field.classList.add('error');
-                const errorMsg = document.getElementById('photoError');
-                if (errorMsg) errorMsg.style.display = 'block';
+                document.getElementById('photoError').style.display = 'block';
             } else {
-                field.classList.remove('error');
-                const errorMsg = document.getElementById('photoError');
-                if (errorMsg) errorMsg.style.display = 'none';
+                document.getElementById('photoError').style.display = 'none';
             }
         } else if (!field.value.trim()) {
             isValid = false;
             field.classList.add('error');
-        } else {
-            field.classList.remove('error');
+            const errorId = field.id + 'Error';
+            const errorElement = document.getElementById(errorId);
+            if (errorElement) {
+                errorElement.style.display = 'block';
+            }
         }
     });
     
-    return isValid;
-}
-
-function validateTestForm() {
-    const testType = document.querySelector('input[name="test_type"]:checked').value;
-    let isValid = true;
-    
-    if (testType === 'regular') {
-        // Проверяем все 4 периода × 6 вопросов
-        for (let p = 1; p <= 4; p++) {
-            const questions = ['frequency', 'strength', 'erect_yes', 'erect_no', 'soft_yes', 'soft_no'];
-            for (let q of questions) {
-                const name = `p${p}_${q}`;
-                const checked = document.querySelector(`input[name="${name}"]:checked`);
-                if (!checked) {
-                    isValid = false;
-                    console.log(`Missing answer for ${name}`);
-                }
-            }
-        }
-        
-        // Проверяем сезонный вопрос
-        const seasonal = document.querySelector('input[name="seasonal"]:checked');
-        if (!seasonal) {
+    // Дополнительные проверки
+    const age = document.getElementById('age');
+    if (age.value) {
+        const ageNum = parseInt(age.value);
+        if (ageNum < 18 || ageNum > 80) {
             isValid = false;
-        }
-    } else {
-        // Проверяем вопросы менопаузы
-        const questions = ['frequency', 'strength', 'erect_yes', 'erect_no', 'soft_yes', 'soft_no'];
-        for (let q of questions) {
-            const name = `m_${q}`;
-            const checked = document.querySelector(`input[name="${name}"]:checked`);
-            if (!checked) {
-                isValid = false;
-                console.log(`Missing answer for ${name}`);
-            }
+            age.classList.add('error');
+            document.getElementById('ageError').textContent = 'Пожалуйста, укажите возраст от 18 до 80 лет';
+            document.getElementById('ageError').style.display = 'block';
         }
     }
     
-    if (!isValid) {
-        showErrorMessage('Пожалуйста, ответьте на все вопросы перед отправкой теста');
+    const phone = document.getElementById('phone');
+    if (phone.value && !isValidPhone(phone.value)) {
+        isValid = false;
+        phone.classList.add('error');
+        document.getElementById('phoneError').textContent = 'Пожалуйста, введите корректный номер телефона';
+        document.getElementById('phoneError').style.display = 'block';
     }
     
     return isValid;
 }
 
-// ===== REGISTRATION FORM SUBMIT =====
+// Вспомогательная функция для проверки телефона
+function isValidPhone(phone) {
+    const phoneRegex = /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;
+    return phoneRegex.test(phone.replace(/\s/g, ''));
+}
+
+// Обработчики форм
 async function handleRegistrationSubmit(e) {
     e.preventDefault();
     
-    if (!validateRegistrationForm(this)) {
-        showErrorMessage('Пожалуйста, заполните все обязательные поля');
+    if (!validateRegistrationForm(e.target)) {
+        showErrorMessage('Пожалуйста, заполните все обязательные поля корректно');
         return;
     }
     
-    const submitBtn = this.querySelector('button[type="submit"]');
+    const form = e.target;
+    const submitBtn = form.querySelector('button[type="submit"]');
     const originalText = submitBtn.innerHTML;
     
     try {
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Регистрация...';
         submitBtn.disabled = true;
         
-        const formData = new FormData(this);
+        // Собираем данные формы
+        const formData = new FormData(form);
+        registrationData = Object.fromEntries(formData.entries());
         
-        // Сохраняем данные для отправки с результатами теста
-        registrationData = {
-            lastName: formData.get('lastName'),
-            firstName: formData.get('firstName'),
-            age: formData.get('age'),
-            phone: formData.get('phone'),
-            telegram: formData.get('telegram')
-        };
+        // Проверяем наличие фото
+        if (!userPhoto) {
+            throw new Error('Пожалуйста, загрузите фотографию');
+        }
         
-        // Отправляем регистрацию в Telegram
+        // Отправляем в Telegram
         await sendRegistrationToTelegram(registrationData, userPhoto);
         
-        showSuccessMessage('✅ Регистрация прошла успешно! Теперь вы можете пройти тест.');
+        showSuccessMessage('✅ Регистрация прошла успешно! Переходим к тесту.');
         
-        // Сохраняем статус регистрации
+        // Сохраняем статус и показываем тест
         localStorage.setItem('registrationCompleted', 'true');
-        
-        // Показываем тест
-        setTimeout(() => {
-            showTestSection();
-        }, 1500);
+        setTimeout(() => showTestSection(), 1500);
         
     } catch (error) {
-        console.error('Ошибка отправки формы:', error);
-        showErrorMessage('❌ Ошибка регистрации. Пожалуйста, попробуйте еще раз.');
+        console.error('Ошибка регистрации:', error);
+        showErrorMessage('❌ Ошибка регистрации: ' + error.message);
     } finally {
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
     }
 }
 
-// ===== SEND REGISTRATION TO TELEGRAM =====
-async function sendRegistrationToTelegram(data, photo) {
+async function handleTestSubmit(e) {
+    e.preventDefault();
+    
+    // Проверяем валидность последнего шага
+    if (!validateStep(6)) {
+        showErrorMessage('Пожалуйста, ответьте на все обязательные вопросы этого шага');
+        return;
+    }
+    
+    const form = e.target;
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    
+    try {
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Обработка...';
+        submitBtn.disabled = true;
+        
+        // Собираем данные теста
+        const formData = new FormData(form);
+        testData = Object.fromEntries(formData.entries());
+        
+        // Рассчитываем результат
+        const result = calculateTestResult(testData);
+        
+        // Показываем результат
+        showTestResult(result);
+        
+        // Отправляем результаты в Telegram
+        await sendTestResultsToTelegram(testData, result);
+        
+        // Разблокируем все разделы
+        localStorage.setItem('diagnosticCompleted', 'true');
+        unlockAllSections();
+        
+        showSuccessMessage('✅ Диагностика завершена! Теперь вам доступны все разделы сайта.');
+        
+    } catch (error) {
+        console.error('Ошибка обработки теста:', error);
+        showErrorMessage('❌ Ошибка обработки теста. Пожалуйста, попробуйте еще раз.');
+    } finally {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }
+}
+
+async function handleConsultationSubmit(e) {
+    e.preventDefault();
+    
+    const form = e.target;
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    
+    try {
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+        submitBtn.disabled = true;
+        
+        const formData = new FormData(form);
+        const consultationData = Object.fromEntries(formData.entries());
+        
+        await sendConsultationToTelegram(consultationData);
+        
+        showSuccessMessage('✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.');
+        form.reset();
+        
+    } catch (error) {
+        console.error('Ошибка отправки заявки:', error);
+        showErrorMessage('❌ Ошибка отправки заявки. Пожалуйста, попробуйте еще раз.');
+    } finally {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }
+}
+
+// Функции для отправки в Telegram
+async function sendRegistrationToTelegram(data, photoFile) {
     try {
         // Сначала отправляем текстовое сообщение
-        let message = `🌟 *НОВАЯ РЕГИСТРАЦИЯ* 🌟\\n\\n`;
-        message += `👤 *Контактная информация:*\\n`;
-        message += `   └ *Фамилия:* ${data.lastName}\\n`;
-        message += `   └ *Имя:* ${data.firstName}\\n`;
-        message += `   └ *Возраст:* ${data.age}\\n`;
-        message += `   └ *Телефон:* ${data.phone}\\n`;
-        message += `   └ *Telegram:* ${data.telegram}\\n`;
-        message += `\\n⏰ *Дата регистрации:* ${new Date().toLocaleString('ru-RU')}`;
+        let message = `🌟 *НОВАЯ РЕГИСТРАЦИЯ* 🌟\n\n`;
+        message += `👤 *Контактная информация:*\n`;
+        message += `   └ *Фамилия:* ${data.lastName}\n`;
+        message += `   └ *Имя:* ${data.firstName}\n`;
+        message += `   └ *Возраст:* ${data.age}\n`;
+        message += `   └ *Телефон:* ${data.phone}\n`;
+        message += `   └ *Telegram:* ${data.telegram}\n`;
+        message += `   └ *Фото:* ${photoFile ? 'Да' : 'Нет'}\n`;
+        message += `\n⏰ *Дата регистрации:* ${new Date().toLocaleString('ru-RU')}`;
 
-        const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        const textResponse = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -459,15 +828,15 @@ async function sendRegistrationToTelegram(data, photo) {
             })
         });
 
-        const result = await response.json();
+        const textResult = await textResponse.json();
         
-        if (!response.ok || !result.ok) {
-            throw new Error(result.description || 'Ошибка отправки в Telegram');
+        if (!textResponse.ok || !textResult.ok) {
+            throw new Error(textResult.description || 'Ошибка отправки текста в Telegram');
         }
 
-        // Затем отправляем фото
-        if (photo) {
-            await sendPhotoToTelegram(photo, `Фото: ${data.firstName} ${data.lastName}`);
+        // Затем отправляем фото, если есть
+        if (photoFile) {
+            await sendPhotoToTelegram(photoFile, `Фото: ${data.firstName} ${data.lastName}`);
         }
 
         console.log('✅ Регистрация успешно отправлена в Telegram');
@@ -478,7 +847,6 @@ async function sendRegistrationToTelegram(data, photo) {
     }
 }
 
-// ===== SEND PHOTO TO TELEGRAM =====
 async function sendPhotoToTelegram(photoFile, caption) {
     try {
         const formData = new FormData();
@@ -505,250 +873,56 @@ async function sendPhotoToTelegram(photoFile, caption) {
     }
 }
 
-// ===== TEST FORM SUBMIT =====
-async function handleTestSubmit(e) {
-    e.preventDefault();
-    
-    if (!validateTestForm()) {
-        return;
-    }
-    
-    const submitBtn = this.querySelector('button[type="submit"]');
-    const originalText = submitBtn.innerHTML;
-    
+async function sendTestResultsToTelegram(data, result) {
     try {
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Обработка...';
-        submitBtn.disabled = true;
+        let message = `📊 *НОВЫЙ РЕЗУЛЬТАТ ТЕСТА* 📊\n\n`;
+        message += `👤 *Пользователь:* ${registrationData.firstName} ${registrationData.lastName}\n`;
+        message += `📱 *Telegram:* ${registrationData.telegram}\n\n`;
+        message += `🔍 *Тип теста:* ${data.test_type === 'regular' ? 'Обычный' : 'Менопауза'}\n`;
+        message += `📈 *Результат:* ${result.level}\n`;
+        message += `⭐ *Баллы:* ${result.score}\n\n`;
         
-        // Собираем данные теста
-        const testData = collectTestData();
-        
-        // Подсчитываем результат
-        const result = calculateTestResult(testData);
-        
-        // Показываем результат
-        displayTestResult(result);
-        
-        // Отправляем результаты в Telegram
-        await sendTestResultsToTelegram(testData, result);
-        
-        // Показываем секцию с результатами
-        showResultSection();
-        
-    } catch (error) {
-        console.error('Ошибка обработки теста:', error);
-        showErrorMessage('❌ Ошибка обработки результатов. Пожалуйста, попробуйте еще раз.');
-    } finally {
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-    }
-}
-
-// ===== COLLECT TEST DATA =====
-function collectTestData() {
-    const testType = document.querySelector('input[name="test_type"]:checked').value;
-    const data = {
-        testType: testType,
-        answers: {}
-    };
-    
-    if (testType === 'regular') {
-        // Собираем ответы для обычного теста
-        for (let p = 1; p <= 4; p++) {
-            const questions = ['frequency', 'strength', 'erect_yes', 'erect_no', 'soft_yes', 'soft_no'];
-            for (let q of questions) {
-                const name = `p${p}_${q}`;
-                const checked = document.querySelector(`input[name="${name}"]:checked`);
-                if (checked) {
-                    data.answers[name] = parseInt(checked.value);
-                }
-            }
-        }
-        
-        // Сезонный вопрос
-        const seasonal = document.querySelector('input[name="seasonal"]:checked');
-        data.answers.seasonal = seasonal ? seasonal.value : 'no';
-        
-        if (seasonal && seasonal.value === 'yes') {
-            const seasonalText = document.getElementById('seasonalText');
-            data.answers.seasonalDescription = seasonalText ? seasonalText.value : '';
-        }
-    } else {
-        // Собираем ответы для теста менопаузы
-        const questions = ['frequency', 'strength', 'erect_yes', 'erect_no', 'soft_yes', 'soft_no'];
-        for (let q of questions) {
-            const name = `m_${q}`;
-            const checked = document.querySelector(`input[name="${name}"]:checked`);
-            if (checked) {
-                data.answers[name] = parseInt(checked.value);
-            }
-        }
-        
-        // Сезонный вопрос
-        const seasonal = document.querySelector('input[name="m_seasonal"]:checked');
-        data.answers.seasonal = seasonal ? seasonal.value : 'no';
-        
-        if (seasonal && seasonal.value === 'yes') {
-            const seasonalText = document.getElementById('menopauseSeasonalText');
-            data.answers.seasonalDescription = seasonalText ? seasonalText.value : '';
-        }
-    }
-    
-    return data;
-}
-
-// ===== CALCULATE TEST RESULT =====
-function calculateTestResult(testData) {
-    let totalScore = 0;
-    let maxScore = 0;
-    
-    if (testData.testType === 'regular') {
-        // Подсчитываем баллы для обычного теста
-        // 4 периода × (частота + сила + 4 вопроса возбуждения)
-        for (let p = 1; p <= 4; p++) {
-            const freq = testData.answers[`p${p}_frequency`] || 0;
-            const strength = testData.answers[`p${p}_strength`] || 0;
-            const erectYes = testData.answers[`p${p}_erect_yes`] || 0;
-            const erectNo = testData.answers[`p${p}_erect_no`] || 0;
-            const softYes = testData.answers[`p${p}_soft_yes`] || 0;
-            const softNo = testData.answers[`p${p}_soft_no`] || 0;
+        if (data.test_type === 'regular') {
+            message += `📅 *Ответы по периодам:*\n`;
             
-            totalScore += freq + strength + erectYes + erectNo + softYes + softNo;
-        }
-        
-        // Максимальный балл: 4 периода × (5 + 5 + 4 + 4 + 4 + 4) = 104
-        maxScore = 104;
-    } else {
-        // Подсчитываем баллы для теста менопаузы
-        const freq = testData.answers.m_frequency || 0;
-        const strength = testData.answers.m_strength || 0;
-        const erectYes = testData.answers.m_erect_yes || 0;
-        const erectNo = testData.answers.m_erect_no || 0;
-        const softYes = testData.answers.m_soft_yes || 0;
-        const softNo = testData.answers.m_soft_no || 0;
-        
-        totalScore = freq + strength + erectYes + erectNo + softYes + softNo;
-        
-        // Максимальный балл: 5 + 5 + 4 + 4 + 4 + 4 = 26
-        maxScore = 26;
-    }
-    
-    // Вычисляем процент
-    const percentage = (totalScore / maxScore) * 100;
-    
-    // Определяем уровень либидо
-    let level, description, className;
-    
-    if (testData.testType === 'regular') {
-        if (percentage < 25) {
-            level = 'Слабое либидо';
-            description = 'Ваше либидо находится на низком уровне. Это может быть связано с физиологическими или психологическими факторами. Рекомендуется консультация для выявления причин и подбора индивидуальной программы восстановления.';
-            className = 'level-low';
-        } else if (percentage < 50) {
-            level = 'Среднее либидо';
-            description = 'У вас средний уровень либидо. Есть хороший потенциал для усиления сексуальной энергии и достижения более гармоничного состояния. Работа с психологом-сексологом поможет раскрыть вашу женскую силу.';
-            className = 'level-medium';
-        } else if (percentage < 75) {
-            level = 'Высокое либидо';
-            description = 'Поздравляем! У вас высокий уровень либидо. Ваша сексуальная энергия находится в хорошем состоянии. Консультация поможет поддерживать этот уровень и гармонизировать отношения с партнером.';
-            className = 'level-high';
+            const periods = [
+                {name: 'От конца месячных до овуляции', prefix: 'period1'},
+                {name: 'В период овуляции', prefix: 'period2'},
+                {name: 'От конца овуляции до начала месячных', prefix: 'period3'},
+                {name: 'В период месячных', prefix: 'period4'}
+            ];
+            
+            periods.forEach(period => {
+                message += `\n*${period.name}:*\n`;
+                message += `   └ *Частота:* ${data[`${period.prefix}_frequency`] || 'Не указано'}\n`;
+                message += `   └ *Сила желания:* ${data[`${period.prefix}_strength`] || 'Не указано'}\n`;
+                message += `   └ *Эрегир. (да):* ${data[`${period.prefix}_erected_want`] || 'Не указано'}\n`;
+                message += `   └ *Эрегир. (нет):* ${data[`${period.prefix}_erected_not_want`] || 'Не указано'}\n`;
+                message += `   └ *Не эрегир. (да):* ${data[`${period.prefix}_non_erected_want`] || 'Не указано'}\n`;
+                message += `   └ *Не эрегир. (нет):* ${data[`${period.prefix}_non_erected_not_want`] || 'Не указано'}\n`;
+            });
         } else {
-            level = 'Очень высокое либидо';
-            description = 'У вас очень высокий уровень сексуальной энергии! Это прекрасное состояние, которое можно направить на творчество, самореализацию и гармоничные отношения. Я помогу вам управлять этой силой для достижения максимального благополучия.';
-            className = 'level-very-high';
-        }
-    } else {
-        if (percentage < 25) {
-            level = 'Слабое либидо в менопаузе';
-            description = 'В период менопаузы снижение либидо является распространенным явлением, связанным с гормональными изменениями. Существуют эффективные методы восстановления сексуальной энергии даже в этот период жизни.';
-            className = 'level-low';
-        } else if (percentage < 50) {
-            level = 'Среднее либидо в менопаузе';
-            description = 'У вас сохраняется умеренный уровень либидо несмотря на менопаузу. Это хороший показатель! Есть возможности для дальнейшего усиления сексуальной энергии и повышения качества жизни.';
-            className = 'level-medium';
-        } else if (percentage < 75) {
-            level = 'Высокое либидо в менопаузе';
-            description = 'Поздравляем! Несмотря на менопаузу, у вас сохраняется высокий уровень либидо. Это говорит о вашей гормональной стабильности и эмоциональном благополучии.';
-            className = 'level-high';
-        } else {
-            level = 'Очень высокое либидо в менопаузе';
-            description = 'Удивительный результат! У вас очень высокий уровень сексуальной энергии в период менопаузы. Это редкий и ценный дар, который можно использовать для полноценной и счастливой жизни.';
-            className = 'level-very-high';
-        }
-    }
-    
-    return {
-        score: totalScore,
-        maxScore: maxScore,
-        percentage: percentage.toFixed(1),
-        level: level,
-        description: description,
-        className: className
-    };
-}
-
-// ===== DISPLAY TEST RESULT =====
-function displayTestResult(result) {
-    const resultLevel = document.getElementById('resultLevel');
-    const resultDescription = document.getElementById('resultDescription');
-    
-    resultLevel.className = `result-level ${result.className}`;
-    resultLevel.innerHTML = `
-        <div style="font-size: 2rem; margin-bottom: 0.5rem;">${result.level}</div>
-        <div style="font-size: 1.2rem; opacity: 0.9;">Баллы: ${result.score} из ${result.maxScore} (${result.percentage}%)</div>
-    `;
-    
-    resultDescription.textContent = result.description;
-}
-
-// ===== SEND TEST RESULTS TO TELEGRAM =====
-async function sendTestResultsToTelegram(testData, result) {
-    try {
-        let message = `📊 *НОВЫЙ РЕЗУЛЬТАТ ТЕСТА ЛИБИДО* 📊\\n\\n`;
-        
-        if (registrationData.firstName) {
-            message += `👤 *Пользователь:* ${registrationData.firstName} ${registrationData.lastName}\\n`;
-            message += `📱 *Telegram:* ${registrationData.telegram}\\n\\n`;
+            message += `🔸 *Ответы для менопаузы:*\n`;
+            message += `   └ *Частота:* ${data.menopause_frequency || 'Не указано'}\n`;
+            message += `   └ *Сила желания:* ${data.menopause_strength || 'Не указано'}\n`;
+            message += `   └ *Эрегир. (да):* ${data.menopause_erected_want || 'Не указано'}\n`;
+            message += `   └ *Эрегир. (нет):* ${data.menopause_erected_not_want || 'Не указано'}\n`;
+            message += `   └ *Не эрегир. (да):* ${data.menopause_non_erected_want || 'Не указано'}\n`;
+            message += `   └ *Не эрегир. (нет):* ${data.menopause_non_erected_not_want || 'Не указано'}\n`;
         }
         
-        message += `🔍 *Тип теста:* ${testData.testType === 'regular' ? 'Обычный' : 'Менопауза'}\\n`;
-        message += `📈 *Уровень либидо:* ${result.level}\\n`;
-        message += `⭐ *Баллы:* ${result.score} из ${result.maxScore} (${result.percentage}%)\\n\\n`;
-        
-        message += `📝 *Детали ответов:*\\n`;
-        
-        if (testData.testType === 'regular') {
-            for (let p = 1; p <= 4; p++) {
-                message += `\\n*Период ${p}:*\\n`;
-                message += `   └ Частота: ${testData.answers[`p${p}_frequency`]}\\n`;
-                message += `   └ Сила: ${testData.answers[`p${p}_strength`]}\\n`;
-                message += `   └ Эрегир. (да): ${testData.answers[`p${p}_erect_yes`]}\\n`;
-                message += `   └ Эрегир. (нет): ${testData.answers[`p${p}_erect_no`]}\\n`;
-                message += `   └ Не эрегир. (да): ${testData.answers[`p${p}_soft_yes`]}\\n`;
-                message += `   └ Не эрегир. (нет): ${testData.answers[`p${p}_soft_no`]}\\n`;
-            }
-        } else {
-            message += `   └ Частота: ${testData.answers.m_frequency}\\n`;
-            message += `   └ Сила: ${testData.answers.m_strength}\\n`;
-            message += `   └ Эрегир. (да): ${testData.answers.m_erect_yes}\\n`;
-            message += `   └ Эрегир. (нет): ${testData.answers.m_erect_no}\\n`;
-            message += `   └ Не эрегир. (да): ${testData.answers.m_soft_yes}\\n`;
-            message += `   └ Не эрегир. (нет): ${testData.answers.m_soft_no}\\n`;
+        message += `\n🍂 *Сезонная зависимость:* ${data.season_dependency || 'Не указано'}\n`;
+        if (data.season_description) {
+            message += `   └ *Описание:* ${data.season_description}\n`;
         }
         
-        message += `\\n🌦️ *Сезонная зависимость:* ${testData.answers.seasonal === 'yes' ? 'Да' : 'Нет'}\\n`;
-        
-        if (testData.answers.seasonal === 'yes' && testData.answers.seasonalDescription) {
-            message += `   └ Описание: ${testData.answers.seasonalDescription}\\n`;
-        }
-        
-        message += `\\n⏰ *Дата заполнения:* ${new Date().toLocaleString('ru-RU')}`;
+        message += `\n⏰ *Дата заполнения:* ${new Date().toLocaleString('ru-RU')}`;
 
         const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-            },
+                },
             body: JSON.stringify({
                 chat_id: TELEGRAM_CHAT_ID,
                 text: message,
@@ -769,57 +943,22 @@ async function sendTestResultsToTelegram(testData, result) {
     }
 }
 
-// ===== CONSULTATION FORM SUBMIT =====
-async function handleConsultationSubmit(e) {
-    e.preventDefault();
-    
-    const submitBtn = this.querySelector('button[type="submit"]');
-    const originalText = submitBtn.innerHTML;
-    
-    try {
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
-        submitBtn.disabled = true;
-        
-        const formData = new FormData(this);
-        const data = {
-            name: formData.get('consultName'),
-            email: formData.get('consultEmail'),
-            format: formData.get('consultFormat'),
-            request: formData.get('consultRequest')
-        };
-        
-        await sendConsultationToTelegram(data);
-        
-        showSuccessMessage('✅ Ваша заявка успешно отправлена! Я свяжусь с вами в ближайшее время.');
-        
-        this.reset();
-        document.getElementById('consultationFormSection').style.display = 'none';
-        document.getElementById('showConsultationForm').innerHTML = '<i class="fas fa-calendar-check"></i> Записаться на консультацию';
-        
-    } catch (error) {
-        console.error('Ошибка отправки заявки:', error);
-        showErrorMessage('❌ Ошибка отправки заявки. Пожалуйста, попробуйте еще раз.');
-    } finally {
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-    }
-}
-
-// ===== SEND CONSULTATION TO TELEGRAM =====
 async function sendConsultationToTelegram(data) {
     try {
-        let message = `📋 *НОВАЯ ЗАЯВКА НА КОНСУЛЬТАЦИЮ* 📋\\n\\n`;
-        message += `👤 *Имя:* ${data.name}\\n`;
-        message += `📧 *Email:* ${data.email}\\n`;
-        message += `💼 *Формат работы:* ${data.format}\\n\\n`;
-        message += `📝 *Запрос клиента:*\\n${data.request}\\n\\n`;
-        message += `⏰ *Дата заявки:* ${new Date().toLocaleString('ru-RU')}`;
+        let message = `📅 *НОВАЯ ЗАЯВКА НА КОНСУЛЬТАЦИЮ* 📅\n\n`;
+        message += `👤 *Имя:* ${data.name}\n`;
+        message += `📧 *Email:* ${data.email}\n`;
+        message += `💼 *Формат:* ${data.format}\n`;
+        if (data.message) {
+            message += `📝 *Запрос:* ${data.message}\n`;
+        }
+        message += `\n⏰ *Дата заявки:* ${new Date().toLocaleString('ru-RU')}`;
 
         const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-            },
+                },
             body: JSON.stringify({
                 chat_id: TELEGRAM_CHAT_ID,
                 text: message,
@@ -841,29 +980,252 @@ async function sendConsultationToTelegram(data) {
     }
 }
 
-// ===== NOTIFICATION HELPERS =====
-function showSuccessMessage(message) {
+function calculateTestResult(data) {
+    let totalScore = 0;
+    const testType = data.test_type;
+    
+    // Система баллов для каждого ответа
+    const scoreMap = {
+        'frequency': {
+            'Вообще не хочется': 0,
+            'Хочется 1 раза в неделю': 1,
+            'Хочется 1 раз в 3 дня': 2,
+            'Хочется через день': 3,
+            'Хочется каждый день': 4,
+            'Хочется каждый день по много раз': 5
+        },
+        'strength': {
+            'Легкое желание': 1,
+            'Среднее желание': 2,
+            'Сильное желание': 3,
+            'Очень сильное желание': 4,
+            'Максимально сильное желание(на столько,что почти невозможно терпеть)': 5
+        },
+        'arousal': {
+            'Вообще не возбуждает': 0,
+            'Немного возбуждает': 1,
+            'Средне возбуждает': 2,
+            'Сильно возбуждает': 3,
+            'Очень сильно возбуждает': 4
+        }
+    };
+    
+    if (testType === 'regular') {
+        // Подсчет для обычного теста (4 периода)
+        for (let i = 1; i <= 4; i++) {
+            const prefix = `period${i}_`;
+            
+            if (data[prefix + 'frequency']) {
+                totalScore += scoreMap.frequency[data[prefix + 'frequency']] || 0;
+            }
+            if (data[prefix + 'strength']) {
+                totalScore += scoreMap.strength[data[prefix + 'strength']] || 0;
+            }
+            if (data[prefix + 'erected_want']) {
+                totalScore += scoreMap.arousal[data[prefix + 'erected_want']] || 0;
+            }
+            if (data[prefix + 'erected_not_want']) {
+                totalScore += scoreMap.arousal[data[prefix + 'erected_not_want']] || 0;
+            }
+            if (data[prefix + 'non_erected_want']) {
+                totalScore += scoreMap.arousal[data[prefix + 'non_erected_want']] || 0;
+            }
+            if (data[prefix + 'non_erected_not_want']) {
+                totalScore += scoreMap.arousal[data[prefix + 'non_erected_not_want']] || 0;
+            }
+        }
+        
+        // Усредняем баллы
+        totalScore = Math.round(totalScore / 4);
+    } else {
+        // Подсчет для теста менопаузы
+        if (data.menopause_frequency) {
+            totalScore += scoreMap.frequency[data.menopause_frequency] || 0;
+        }
+        if (data.menopause_strength) {
+            totalScore += scoreMap.strength[data.menopause_strength] || 0;
+        }
+        if (data.menopause_erected_want) {
+            totalScore += scoreMap.arousal[data.menopause_erected_want] || 0;
+        }
+        if (data.menopause_erected_not_want) {
+            totalScore += scoreMap.arousal[data.menopause_erected_not_want] || 0;
+        }
+        if (data.menopause_non_erected_want) {
+            totalScore += scoreMap.arousal[data.menopause_non_erected_want] || 0;
+        }
+        if (data.menopause_non_erected_not_want) {
+            totalScore += scoreMap.arousal[data.menopause_non_erected_not_want] || 0;
+        }
+    }
+    
+    // Определяем уровень либидо
+    let level, description;
+    
+    if (testType === 'regular') {
+        if (totalScore <= 8) {
+            level = 'Низкое либидо';
+            description = 'Ваше либидо находится на низком уровне. Это может быть связано с гормональными изменениями, стрессом или другими факторами. Рекомендуется консультация для выявления причин и разработки индивидуального плана восстановления.';
+        } else if (totalScore <= 16) {
+            level = 'Среднее либидо';
+            description = 'У вас средний уровень либидо. Есть потенциал для усиления сексуальной энергии через работу с гормональным балансом и психологическими аспектами.';
+        } else if (totalScore <= 24) {
+            level = 'Высокое либидо';
+            description = 'Поздравляем! У вас высокий уровень либидо. Ваша сексуальная энергия находится в хорошем состоянии, но есть возможности для дальнейшего развития и гармонизации.';
+        } else {
+            level = 'Очень высокое либидо';
+            description = 'У вас очень высокий уровень либидо! Это прекрасный показатель вашей сексуальной энергии. Важно научиться правильно направлять эту энергию для достижения гармонии во всех сферах жизни.';
+        }
+    } else {
+        if (totalScore <= 6) {
+            level = 'Низкое либидо в менопаузе';
+            description = 'В период менопаузы снижение либидо является распространенным явлением из-за гормональных изменений. Существуют эффективные методы восстановления, включая гормональную терапию и натуральные подходы.';
+        } else if (totalScore <= 12) {
+            level = 'Среднее либидо в менопаузе';
+            description = 'У вас сохраняется умеренный уровень либидо, что является хорошим показателем для периода менопаузы. Есть возможности для усиления сексуальной энергии через специальные методики.';
+        } else if (totalScore <= 18) {
+            level = 'Высокое либидо в менопаузе';
+            description = 'Поздравляем! Несмотря на менопаузу, у вас сохраняется высокий уровень либидо. Это прекрасная основа для дальнейшего развития вашей сексуальности.';
+        } else {
+            level = 'Очень высокое либидо в менопаузе';
+            description = 'У вас исключительно высокий уровень либидо для периода менопаузы! Это редкий и ценный показатель. Важно научиться управлять этой энергией для максимальной реализации.';
+        }
+    }
+    
+    return { level, description, score: totalScore, testType };
+}
+
+function showTestResult(result) {
+    const resultLevel = document.getElementById('resultLevel');
+    const resultDescription = document.getElementById('resultDescription');
+    
+    // Устанавливаем класс и текст
+    if (result.level.includes('Низкое')) {
+        resultLevel.className = 'result-level level-low';
+    } else if (result.level.includes('Среднее')) {
+        resultLevel.className = 'result-level level-medium';
+    } else if (result.level.includes('Высокое')) {
+        resultLevel.className = 'result-level level-high';
+    } else {
+        resultLevel.className = 'result-level level-very-high';
+    }
+    
+    resultLevel.textContent = result.level;
+    resultDescription.textContent = result.description;
+    
+    // Показываем секцию с результатом
+    showResultSection();
+    
+    // Прокрутка к верху
+    scrollToTop();
+}
+
+// Навигация по секциям
+function showRegistrationSection() {
+    hideAllSections();
+    document.getElementById('registration').classList.remove('section-hidden');
+    scrollToTop();
+}
+
+function showTestSection() {
+    hideAllSections();
+    document.getElementById('test').classList.remove('section-hidden');
+    
+    // Сбрасываем прогресс
+    currentStep = 1;
+    updateProgress();
+    
+    scrollToTop();
+}
+
+function showResultSection() {
+    hideAllSections();
+    document.getElementById('result').classList.remove('section-hidden');
+    scrollToTop();
+}
+
+function showAboutSection() {
+    hideAllSections();
+    document.getElementById('about').classList.remove('section-hidden');
+    scrollToTop();
+}
+
+function showPowerSection() {
+    hideAllSections();
+    document.getElementById('power').classList.remove('section-hidden');
+    scrollToTop();
+}
+
+function showServicesSection() {
+    hideAllSections();
+    document.getElementById('services').classList.remove('section-hidden');
+    scrollToTop();
+}
+
+function showProcessSection() {
+    hideAllSections();
+    document.getElementById('process').classList.remove('section-hidden');
+    scrollToTop();
+}
+
+function showAwakeningSection() {
+    hideAllSections();
+    document.getElementById('awakening').classList.remove('section-hidden');
+    scrollToTop();
+}
+
+function showContactsSection() {
+    hideAllSections();
+    document.getElementById('contacts').classList.remove('section-hidden');
+    scrollToTop();
+}
+
+function hideAllSections() {
+    document.querySelectorAll('section').forEach(section => {
+        section.classList.add('section-hidden');
+    });
+}
+
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+// Уведомления
+function showSuccessMessage(text) {
+    showNotification(text, 'success');
+}
+
+function showErrorMessage(text) {
+    showNotification(text, 'error');
+}
+
+function showInfoMessage(text) {
+    showNotification(text, 'info');
+}
+
+function showNotification(text, type) {
+    // Удаляем существующие уведомления
+    const existingNotifications = document.querySelectorAll('.notification');
+    existingNotifications.forEach(notification => notification.remove());
+    
     const notification = document.createElement('div');
-    notification.className = 'notification success';
-    notification.innerHTML = `<i class="fas fa-check-circle" style="margin-right: 8px;"></i> ${message}`;
+    notification.className = `notification ${type}`;
+    notification.innerHTML = `
+        <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-triangle' : 'info-circle'}" 
+           style="margin-right: 8px;"></i> 
+        ${text}
+    `;
+    
     document.body.appendChild(notification);
+    
+    // Автоматическое скрытие
     setTimeout(() => {
         if (notification.parentNode) {
             notification.parentNode.removeChild(notification);
         }
     }, 5000);
 }
-
-function showErrorMessage(message) {
-    const notification = document.createElement('div');
-    notification.className = 'notification error';
-    notification.innerHTML = `<i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i> ${message}`;
-    document.body.appendChild(notification);
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.parentNode.removeChild(notification);
-        }
-    }, 8000);
-}
-```
 
