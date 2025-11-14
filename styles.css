@@ -1308,3 +1308,23 @@ section {
         padding: 0.5rem 0;
     }
 }
+/* Добавьте в CSS */
+.form-control[type="file"] {
+    padding: 12px;
+    background: white;
+}
+
+.form-control[type="file"]::file-selector-button {
+    background: var(--lavender);
+    border: 1px solid var(--purple-mystic);
+    padding: 8px 16px;
+    border-radius: 5px;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.form-control[type="file"]::file-selector-button:hover {
+    background: var(--purple-mystic);
+    color: white;
+}
