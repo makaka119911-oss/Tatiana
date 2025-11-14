@@ -1295,6 +1295,15 @@
                         <input type="text" id="telegram" name="telegram" class="form-control" placeholder="@username" required>
                         <div class="error-message" id="telegramError">Пожалуйста, введите ваш Telegram</div>
                     </div>
+                    <!-- Добавьте этот код прямо здесь -->
+<div class="form-group">
+    <label for="photo">Фото профиля (необязательно)</label>
+    <input type="file" id="photo" name="photo" accept="image/*" class="form-control">
+    <div class="error-message" id="photoError">Пожалуйста, выберите изображение в формате JPG, PNG или GIF</div>
+    <small style="color: #666; font-size: 0.8rem; display: block; margin-top: 0.5rem;">
+        Рекомендуемый размер: 500x600px. Максимальный размер: 5MB
+    </small>
+</div>
                     
                     <div class="form-group" style="text-align: center; margin-top: 2rem;">
                         <button type="submit" class="btn btn-large">
@@ -2769,6 +2778,7 @@
     </script>
 </body>
 </html>
+
 
 
 
