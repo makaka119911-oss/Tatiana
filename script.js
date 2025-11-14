@@ -783,7 +783,7 @@ function updateProgress() {
 }
 
 // Добавьте эти функции после функции updateProgress()
-
+// Замените существующую функцию generateTestSteps на эту:
 function generateTestSteps(testType) {
     const stepsContainer = document.getElementById('libidoTestForm');
     
@@ -860,6 +860,7 @@ function generateTestSteps(testType) {
     initTestSteps();
 }
 
+// Добавьте эти вспомогательные функции:
 function generatePeriodQuestions(periodId, periodName) {
     return `
         <div class="question-block">
