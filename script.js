@@ -174,16 +174,11 @@ function saveToArchive(userData, testResult) {
         completed: true
     };
     
-    // Получаем существующие данные
     let existingData = JSON.parse(localStorage.getItem('libidoTestArchive') || '[]');
-    
-    // Добавляем новые данные
     existingData.push(archiveEntry);
-    
-    // Сохраняем обратно
     localStorage.setItem('libidoTestArchive', JSON.stringify(existingData));
     
-    console.log('✅ Данные сохранены в архив');
+    console.log('✅ Данные сохранены в архив, включая фото');
 }
 
 // Функция для загрузки данных из архива
@@ -242,32 +237,40 @@ function displayArchiveData(data, page = 1) {
     const totalPages = Math.ceil(data.length / itemsPerPage);
     
     // Заполняем таблицу
-    pageData.forEach(item => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${item.userData.lastName} ${item.userData.firstName}</td>
-            <td>${item.userData.age}</td>
-            <td>${item.userData.phone}</td>
-            <td>${item.userData.telegram}</td>
-            <td>${item.testResult.testType === 'regular' ? 'Обычный' : 'Менопауза'}</td>
-            <td>
-                <span class="level-badge ${getLevelClass(item.testResult.level)}">
-                    ${item.testResult.level}
-                </span>
-            </td>
-            <td>${item.testResult.score}</td>
-            <td>${new Date(item.timestamp).toLocaleDateString('ru-RU')}</td>
-            <td>
-                <button class="btn-view-details" onclick="viewUserDetails('${item.id}')">
-                    <i class="fas fa-eye"></i>
-                </button>
-                <button class="btn-delete" onclick="deleteUserData('${item.id}')">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </td>
-        `;
-        tableBody.appendChild(row);
-    });
+   pageData.forEach(item => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+        <td>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                ${item.userData.photo ? 
+                    `<img src="${item.userData.photo}" alt="Фото" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">` : 
+                    '<div style="width: 40px; height: 40px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center;"><i class="fas fa-user" style="color: #ccc;"></i></div>'
+                }
+                <span>${item.userData.lastName} ${item.userData.firstName}</span>
+            </div>
+        </td>
+        <td>${item.userData.age}</td>
+        <td>${item.userData.phone}</td>
+        <td>${item.userData.telegram}</td>
+        <td>${item.testResult.testType === 'regular' ? 'Обычный' : 'Менопауза'}</td>
+        <td>
+            <span class="level-badge ${getLevelClass(item.testResult.level)}">
+                ${item.testResult.level}
+            </span>
+        </td>
+        <td>${item.testResult.score}</td>
+        <td>${new Date(item.timestamp).toLocaleDateString('ru-RU')}</td>
+        <td>
+            <button class="btn-view-details" onclick="viewUserDetails('${item.id}')">
+                <i class="fas fa-eye"></i>
+            </button>
+            <button class="btn-delete" onclick="deleteUserData('${item.id}')">
+                <i class="fas fa-trash"></i>
+            </button>
+        </td>
+    `;
+    tableBody.appendChild(row);
+});
     
     // Если данных нет
     if (pageData.length === 0) {
@@ -367,7 +370,6 @@ function viewUserDetails(userId) {
     const userData = archiveData.find(item => item.id === userId);
     if (!userData) return;
     
-    // Создаем модальное окно с деталями
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
     modal.innerHTML = `
@@ -380,10 +382,17 @@ function viewUserDetails(userId) {
             </div>
             <div class="modal-body">
                 <div class="user-details">
+                    <div class="detail-section" style="text-align: center;">
+                        ${userData.userData.photo ? 
+                            `<img src="${userData.userData.photo}" alt="Фото профиля" style="max-width: 200px; border-radius: 10px; margin-bottom: 1rem;">` : 
+                            '<div style="width: 200px; height: 200px; background: #f0f0f0; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;"><i class="fas fa-user" style="font-size: 3rem; color: #ccc;"></i></div>'
+                        }
+                        <h4>${userData.userData.lastName} ${userData.userData.firstName}</h4>
+                        <p>Возраст: ${userData.userData.age} лет</p>
+                    </div>
+                    
                     <div class="detail-section">
                         <h4>Контактная информация</h4>
-                        <p><strong>ФИО:</strong> ${userData.userData.lastName} ${userData.userData.firstName}</p>
-                        <p><strong>Возраст:</strong> ${userData.userData.age}</p>
                         <p><strong>Телефон:</strong> ${userData.userData.phone}</p>
                         <p><strong>Telegram:</strong> ${userData.userData.telegram}</p>
                     </div>
@@ -1043,7 +1052,27 @@ function validateRegistrationForm(form) {
         }
     });
     
-    // Дополнительные проверки
+    // Проверка фото (если загружено)
+    const photoInput = document.getElementById('photo');
+    if (photoInput.files[0]) {
+        const file = photoInput.files[0];
+        const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+        
+        if (!validTypes.includes(file.type)) {
+            isValid = false;
+            photoInput.classList.add('error');
+            document.getElementById('photoError').style.display = 'block';
+        }
+        
+        if (file.size > 5 * 1024 * 1024) {
+            isValid = false;
+            photoInput.classList.add('error');
+            document.getElementById('photoError').textContent = 'Размер файла не должен превышать 5MB';
+            document.getElementById('photoError').style.display = 'block';
+        }
+    }
+    
+    // Остальные проверки (возраст, телефон)...
     const age = document.getElementById('age');
     if (age.value) {
         const ageNum = parseInt(age.value);
@@ -1077,7 +1106,7 @@ async function handleRegistrationSubmit(e) {
     e.preventDefault();
     
     if (!validateRegistrationForm(e.target)) {
-        showErrorMessage('Пожалуйста, заполните все обязательные поля корректно');
+        showNotification('Пожалуйста, заполните все обязательные поля корректно', 'error');
         return;
     }
     
@@ -1089,26 +1118,50 @@ async function handleRegistrationSubmit(e) {
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Регистрация...';
         submitBtn.disabled = true;
         
-        // Собираем данные формы
         const formData = new FormData(form);
         registrationData = Object.fromEntries(formData.entries());
+        
+        // Обработка загрузки фото
+        const photoInput = document.getElementById('photo');
+        if (photoInput.files[0]) {
+            const file = photoInput.files[0];
+            
+            // Проверка размера файла (5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                throw new Error('Размер файла не должен превышать 5MB');
+            }
+            
+            // Конвертация в base64
+            registrationData.photo = await fileToBase64(file);
+        } else {
+            registrationData.photo = null;
+        }
         
         // Отправляем в Telegram
         await sendRegistrationToTelegram(registrationData);
         
-        showSuccessMessage('✅ Регистрация прошла успешно! Переходим к тесту.');
+        showNotification('✅ Регистрация прошла успешно! Переходим к тесту.', 'success');
         
-        // Сохраняем статус и показываем тест
         localStorage.setItem('registrationCompleted', 'true');
-        setTimeout(() => showTestSection(), 1500);
+        setTimeout(() => showSection('test'), 1500);
         
     } catch (error) {
         console.error('Ошибка регистрации:', error);
-        showErrorMessage('❌ Ошибка регистрации: ' + error.message);
+        showNotification('❌ Ошибка регистрации: ' + error.message, 'error');
     } finally {
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
     }
+}
+
+// Функция для конвертации файла в base64
+function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
 }
 
 async function handleTestSubmit(e) {
