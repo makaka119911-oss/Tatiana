@@ -860,7 +860,6 @@ function generateTestSteps(testType) {
     initTestSteps();
 }
 
-// Добавьте эти вспомогательные функции:
 function generatePeriodQuestions(periodId, periodName) {
     return `
         <div class="question-block">
