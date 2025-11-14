@@ -71,7 +71,15 @@ function initEventListeners() {
             showTestSection();
         });
     }
-
+// В функции initEventListeners добавьте:
+document.querySelectorAll('input[name="season_dependency"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        const description = document.getElementById('seasonDescription');
+        if (description) {
+            description.style.display = this.value === 'Да' ? 'block' : 'none';
+        }
+    });
+});
     // Сезонная зависимость
     document.querySelectorAll('input[name="season_dependency"]').forEach(radio => {
         radio.addEventListener('change', function() {
@@ -723,16 +731,15 @@ function validateStep(step) {
 }
 
 function nextStep(step) {
-    // Проверяем валидность текущего шага перед переходом
     if (!validateStep(currentStep)) {
-        showErrorMessage('Пожалуйста, ответьте на все обязательные вопросы этого шага');
+        showNotification('Пожалуйста, ответьте на все обязательные вопросы этого шага', 'error');
         return;
     }
 
     if (step === 2) {
         const testType = document.querySelector('input[name="test_type"]:checked');
         if (!testType) {
-            showErrorMessage('Пожалуйста, выберите тип теста');
+            showNotification('Пожалуйста, выберите тип теста', 'error');
             return;
         }
         
@@ -774,6 +781,8 @@ function updateProgress() {
     document.getElementById('testProgress').style.width = progress + '%';
     document.getElementById('progressText').textContent = `Шаг ${currentStep} из ${totalSteps}`;
 }
+
+// Добавьте эти функции после функции updateProgress()
 
 function generateTestSteps(testType) {
     const stepsContainer = document.getElementById('libidoTestForm');
