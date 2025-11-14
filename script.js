@@ -362,7 +362,7 @@ function initArchiveLogin() {
     const loginForm = document.getElementById('archiveLoginForm');
     if (loginForm) {
         loginForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+            e.preventDefault(); // Добавляем эту строку!
             
             const password = document.getElementById('archivePassword').value;
             
@@ -505,6 +505,15 @@ document.querySelectorAll('.archive-link').forEach(link => {
 function showArchiveSection() {
     hideAllSections();
     document.getElementById('archive').classList.remove('section-hidden');
+    
+    // Сбрасываем форму при каждом входе в архив
+    const loginForm = document.getElementById('archiveLoginForm');
+    if (loginForm) {
+        loginForm.reset();
+    }
+    document.getElementById('archiveContent').style.display = 'none';
+    document.getElementById('archivePasswordError').style.display = 'none';
+    
     scrollToTop();
 }
     // Кнопка "Назад к тесту"
