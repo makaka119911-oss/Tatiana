@@ -44,6 +44,13 @@ function unlockAllSections() {
 
 function initEventListeners() {
     // Форма регистрации
+    // Добавьте этот код в функцию initEventListeners()
+document.querySelectorAll('.archive-link').forEach(link => {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+        showArchiveSection();
+    });
+});
     const registrationForm = document.getElementById('registrationForm');
     if (registrationForm) {
         registrationForm.addEventListener('submit', handleRegistrationSubmit);
