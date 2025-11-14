@@ -6,6 +6,7 @@
     <title>Татьяна Солнечная - Раскрытие женской силы</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        /* Все ваши стили остаются без изменений */
         :root {
             --deep-burgundy: #8B4352;
             --vibrant-pink: #D46A6A;
@@ -1295,15 +1296,15 @@
                         <input type="text" id="telegram" name="telegram" class="form-control" placeholder="@username" required>
                         <div class="error-message" id="telegramError">Пожалуйста, введите ваш Telegram</div>
                     </div>
-                    <!-- Добавьте этот код прямо здесь -->
-<div class="form-group">
-    <label for="photo">Фото профиля</label>
-    <input type="file" id="photo" name="photo" accept="image/*" class="form-control">
-    <div class="error-message" id="photoError">Пожалуйста, выберите изображение в формате JPG, PNG или GIF</div>
-    <small style="color: #666; font-size: 0.8rem; display: block; margin-top: 0.5rem;">
-        Рекомендуемый размер: 500x600px. Максимальный размер: 5MB
-    </small>
-</div>
+                    
+                    <div class="form-group">
+                        <label for="photo">Фото профиля</label>
+                        <input type="file" id="photo" name="photo" accept="image/*" class="form-control">
+                        <div class="error-message" id="photoError">Пожалуйста, выберите изображение в формате JPG, PNG или GIF</div>
+                        <small style="color: #666; font-size: 0.8rem; display: block; margin-top: 0.5rem;">
+                            Рекомендуемый размер: 500x600px. Максимальный размер: 5MB
+                        </small>
+                    </div>
                     
                     <div class="form-group" style="text-align: center; margin-top: 2rem;">
                         <button type="submit" class="btn btn-large">
@@ -1418,7 +1419,7 @@
         </div>
     </section>
 
-       <!-- Test Section -->
+    <!-- Test Section -->
     <section id="test" class="section-hidden">
         <div class="container">
             <div class="section-title">
@@ -2019,781 +2020,796 @@
         </div>
     </section>
 
-<script>
-    // Конфигурация
-    const TELEGRAM_BOT_TOKEN = '8402206062:AAEJim1GkriKqY_o1mOo0YWSWQDdw5Qy2h0';
-    const TELEGRAM_CHAT_ID = '-1002313355102';
-    const ARCHIVE_PASSWORD = 'admin123';
+    <script>
+        // Конфигурация
+        const TELEGRAM_BOT_TOKEN = '8402206062:AAEJim1GkriKqY_o1mOo0YWSWQDdw5Qy2h0';
+        const TELEGRAM_CHAT_ID = '-1002313355102';
+        const ARCHIVE_PASSWORD = 'admin123';
 
-    // Глобальные переменные
-    let currentStep = 1;
-    let totalSteps = 6;
-    let testData = {};
-    let registrationData = {};
-    let archiveData = [];
-    let currentPage = 1;
-    const itemsPerPage = 10;
-    let testType = '';
+        // Глобальные переменные
+        let currentStep = 1;
+        let totalSteps = 6;
+        let testData = {};
+        let registrationData = {};
+        let archiveData = [];
+        let currentPage = 1;
+        const itemsPerPage = 10;
+        let testType = '';
 
-    // Функция для перехода между шагами теста
-    function showStep(stepNumber) {
-        console.log('Переход к шагу:', stepNumber);
-        
-        // Скрываем все шаги
-        document.querySelectorAll('.test-step').forEach(step => {
-            step.classList.remove('active');
-        });
-        
-        // Показываем нужный шаг
-        const stepElement = document.getElementById('step' + stepNumber);
-        if (stepElement) {
-            stepElement.classList.add('active');
-            currentStep = stepNumber;
+        // Функция для перехода между шагами теста
+        function showStep(stepNumber) {
+            console.log('Переход к шагу:', stepNumber);
             
-            // Обновляем прогресс
-            updateProgress();
+            // Скрываем все шаги
+            document.querySelectorAll('.test-step').forEach(step => {
+                step.classList.remove('active');
+            });
+            
+            // Показываем нужный шаг
+            const stepElement = document.getElementById('step' + stepNumber);
+            if (stepElement) {
+                stepElement.classList.add('active');
+                currentStep = stepNumber;
+                
+                // Обновляем прогресс
+                updateProgress();
+                
+                // Прокрутка к верху
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            } else {
+                console.error('Шаг не найден: step' + stepNumber);
+            }
+        }
+
+        // Функция обновления прогресса
+        function updateProgress() {
+            const progress = (currentStep / totalSteps) * 100;
+            const progressBar = document.getElementById('testProgress');
+            const progressText = document.getElementById('progressText');
+            
+            if (progressBar) progressBar.style.width = progress + '%';
+            if (progressText) progressText.textContent = `Шаг ${currentStep} из ${totalSteps}`;
+        }
+
+        // Основная инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Сайт загружен');
+            checkDiagnosticStatus();
+            initEventListeners();
+            initTestSteps();
+            initArchiveLogin();
+            initArchiveSearch();
+            
+            // Инициализация теста
+            initTest();
+        });
+
+        function initTest() {
+            // Обработчик для кнопки "Далее" на первом шаге
+            const nextFromStep1 = document.getElementById('nextFromStep1');
+            if (nextFromStep1) {
+                nextFromStep1.addEventListener('click', function() {
+                    const selectedTestType = document.querySelector('input[name="test_type"]:checked');
+                    if (!selectedTestType) {
+                        showNotification('Пожалуйста, выберите тип теста', 'error');
+                        return;
+                    }
+                    
+                    testType = selectedTestType.value;
+                    console.log('Выбран тип теста:', testType);
+                    
+                    // Для менопаузы пропускаем промежуточные шаги
+                    if (testType === 'menopause') {
+                        showStep(6);
+                    } else {
+                        showStep(2);
+                    }
+                });
+            }
+            
+            // Обработчик для сезонной зависимости
+            document.querySelectorAll('input[name="season_dependency"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const description = document.getElementById('seasonDescription');
+                    if (description) {
+                        description.style.display = this.value === 'Да' ? 'block' : 'none';
+                    }
+                });
+            });
+            
+            // Обработчик отправки формы теста
+            const testForm = document.getElementById('libidoTestForm');
+            if (testForm) {
+                testForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    console.log('Форма теста отправлена');
+                    
+                    // Собираем данные формы
+                    const formData = new FormData(this);
+                    const testData = Object.fromEntries(formData.entries());
+                    
+                    // Добавляем тип теста
+                    testData.test_type = testType;
+                    
+                    // Рассчитываем результат
+                    const result = calculateTestResult(testData);
+                    
+                    // Показываем результат
+                    showTestResult(result);
+                    
+                    // Сохраняем в архив
+                    saveToArchive(registrationData, result);
+                    
+                    // Разблокируем все разделы
+                    localStorage.setItem('diagnosticCompleted', 'true');
+                    unlockAllSections();
+                    
+                    showNotification('✅ Диагностика завершена! Теперь вам доступны все разделы сайта.', 'success');
+                });
+            }
+        }
+
+        function calculateTestResult(data) {
+            // Упрощенная логика расчета результата
+            let totalScore = Math.floor(Math.random() * 100);
+            let level, description;
+            
+            if (data.test_type === 'regular') {
+                if (totalScore <= 25) {
+                    level = 'Низкое либидо';
+                    description = 'Ваше либидо находится на низком уровне. Это может быть связано с гормональными изменениями, стрессом или другими факторами.';
+                } else if (totalScore <= 50) {
+                    level = 'Среднее либидо';
+                    description = 'У вас средний уровень либидо. Есть потенциал для усиления сексуальной энергии через работу с гормональным балансом.';
+                } else if (totalScore <= 75) {
+                    level = 'Высокое либидо';
+                    description = 'Поздравляем! У вас высокий уровень либидо. Ваша сексуальная энергия находится в хорошем состоянии.';
+                } else {
+                    level = 'Очень высокое либидо';
+                    description = 'У вас очень высокий уровень либидо! Это прекрасный показатель вашей сексуальной энергии.';
+                }
+            } else {
+                if (totalScore <= 25) {
+                    level = 'Низкое либидо в менопаузе';
+                    description = 'В период менопаузы снижение либидо является распространенным явлением из-за гормональных изменений.';
+                } else if (totalScore <= 50) {
+                    level = 'Среднее либидо в менопаузе';
+                    description = 'У вас сохраняется умеренный уровень либидо, что является хорошим показателем для периода менопаузы.';
+                } else if (totalScore <= 75) {
+                    level = 'Высокое либидо в менопаузе';
+                    description = 'Поздравляем! Несмотря на менопаузу, у вас сохраняется высокий уровень либидо.';
+                } else {
+                    level = 'Очень высокое либидо в менопаузе';
+                    description = 'У вас исключительно высокий уровень либидо для периода менопаузы! Это редкий и ценный показатель.';
+                }
+            }
+            
+            return { level, description, score: totalScore, testType: data.test_type };
+        }
+
+        function showTestResult(result) {
+            const resultLevel = document.getElementById('resultLevel');
+            const resultDescription = document.getElementById('resultDescription');
+            
+            if (!resultLevel || !resultDescription) {
+                console.error('Элементы результата не найдены');
+                return;
+            }
+            
+            // Устанавливаем класс и текст
+            if (result.level.includes('Низкое')) {
+                resultLevel.className = 'result-level level-low';
+            } else if (result.level.includes('Среднее')) {
+                resultLevel.className = 'result-level level-medium';
+            } else if (result.level.includes('Высокое')) {
+                resultLevel.className = 'result-level level-high';
+            } else {
+                resultLevel.className = 'result-level level-very-high';
+            }
+            
+            resultLevel.textContent = result.level;
+            resultDescription.textContent = result.description;
+            
+            // Показываем секцию с результатом
+            showSection('result');
+        }
+
+        function checkDiagnosticStatus() {
+            const diagnosticCompleted = localStorage.getItem('diagnosticCompleted') === 'true';
+            if (diagnosticCompleted) {
+                unlockAllSections();
+            }
+        }
+
+        function unlockAllSections() {
+            const sections = ['about', 'power', 'services', 'process', 'awakening', 'contacts'];
+            sections.forEach(section => {
+                const lock = document.getElementById(section + 'Lock');
+                const content = document.getElementById(section + 'Content');
+                if (lock) lock.style.display = 'none';
+                if (content) content.style.display = 'block';
+            });
+        }
+
+        function initEventListeners() {
+            // Навигационные ссылки
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const section = this.getAttribute('data-section');
+                    showSection(section);
+                });
+            });
+
+            // Формы
+            const registrationForm = document.getElementById('registrationForm');
+            if (registrationForm) {
+                registrationForm.addEventListener('submit', handleRegistrationSubmit);
+            }
+
+            const consultationForm = document.getElementById('consultationForm');
+            if (consultationForm) {
+                consultationForm.addEventListener('submit', handleConsultationSubmit);
+            }
+
+            // Кнопка "Назад к тесту"
+            const backToTestBtn = document.getElementById('backToTest');
+            if (backToTestBtn) {
+                backToTestBtn.addEventListener('click', function() {
+                    showSection('test');
+                });
+            }
+
+            // Мобильное меню
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const navLinks = document.getElementById('navLinks');
+            if (mobileMenuBtn && navLinks) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    navLinks.classList.toggle('active');
+                });
+            }
+
+            // Закрытие меню при клике на ссылку
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (navLinks) {
+                        navLinks.classList.remove('active');
+                    }
+                });
+            });
+        }
+
+        function showSection(sectionId) {
+            console.log('Показ секции:', sectionId);
+            
+            // Скрываем все секции
+            document.querySelectorAll('section').forEach(section => {
+                section.classList.add('section-hidden');
+            });
+            
+            // Показываем нужную секцию
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.remove('section-hidden');
+            }
             
             // Прокрутка к верху
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
             });
-        } else {
-            console.error('Шаг не найден: step' + stepNumber);
-        }
-    }
-
-    // Функция обновления прогресса
-    function updateProgress() {
-        const progress = (currentStep / totalSteps) * 100;
-        const progressBar = document.getElementById('testProgress');
-        const progressText = document.getElementById('progressText');
-        
-        if (progressBar) progressBar.style.width = progress + '%';
-        if (progressText) progressText.textContent = `Шаг ${currentStep} из ${totalSteps}`;
-    }
-
-    // Упрощенная функция расчета результата
-    function calculateSimpleTestResult(data) {
-        // Простая логика для демонстрации
-        let score = Math.floor(Math.random() * 100);
-        let level, description;
-        
-        if (score < 25) {
-            level = 'Низкое либидо';
-            description = 'Ваше либидо находится на низком уровне. Рекомендуется консультация специалиста.';
-        } else if (score < 50) {
-            level = 'Среднее либидо';
-            description = 'У вас средний уровень либидо. Есть потенциал для улучшения.';
-        } else if (score < 75) {
-            level = 'Высокое либидо';
-            description = 'Поздравляем! У вас высокий уровень либидо.';
-        } else {
-            level = 'Очень высокое либидо';
-            description = 'У вас очень высокий уровень либидо!';
-        }
-        
-        return { level, description, score };
-    }
-
-    // Функция показа результата
-    function showTestResult(result) {
-        const resultLevel = document.getElementById('resultLevel');
-        const resultDescription = document.getElementById('resultDescription');
-        
-        if (!resultLevel || !resultDescription) {
-            console.error('Элементы результата не найдены');
-            return;
-        }
-        
-        // Устанавливаем класс и текст
-        if (result.level.includes('Низкое')) {
-            resultLevel.className = 'result-level level-low';
-        } else if (result.level.includes('Среднее')) {
-            resultLevel.className = 'result-level level-medium';
-        } else if (result.level.includes('Высокое')) {
-            resultLevel.className = 'result-level level-high';
-        } else {
-            resultLevel.className = 'result-level level-very-high';
-        }
-        
-        resultLevel.textContent = result.level;
-        resultDescription.textContent = result.description;
-        
-        // Показываем секцию с результатом
-        showSection('result');
-    }
-
-    // Основная инициализация
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('Сайт загружен');
-        checkDiagnosticStatus();
-        initEventListeners();
-        initTestSteps();
-        initArchiveLogin();
-        initArchiveSearch();
-        
-        // Инициализация теста
-        initTest();
-    });
-
-    function initTest() {
-        // Обработчик для кнопки "Далее" на первом шаге
-        const nextFromStep1 = document.getElementById('nextFromStep1');
-        if (nextFromStep1) {
-            nextFromStep1.addEventListener('click', function() {
-                const selectedTestType = document.querySelector('input[name="test_type"]:checked');
-                if (!selectedTestType) {
-                    showNotification('Пожалуйста, выберите тип теста', 'error');
-                    return;
-                }
-                
-                testType = selectedTestType.value;
-                console.log('Выбран тип теста:', testType);
-                
-                // Для менопаузы пропускаем промежуточные шаги
-                if (testType === 'menopause') {
-                    showStep(6);
-                } else {
-                    showStep(2);
-                }
-            });
-        }
-        
-        // Обработчик для сезонной зависимости
-        document.querySelectorAll('input[name="season_dependency"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                const description = document.getElementById('seasonDescription');
-                if (description) {
-                    description.style.display = this.value === 'Да' ? 'block' : 'none';
-                }
-            });
-        });
-        
-        // Обработчик отправки формы теста
-        const testForm = document.getElementById('libidoTestForm');
-        if (testForm) {
-            testForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                console.log('Форма теста отправлена');
-                
-                // Собираем данные формы
-                const formData = new FormData(this);
-                const testData = Object.fromEntries(formData.entries());
-                
-                // Добавляем тип теста
-                testData.test_type = testType;
-                
-                // Рассчитываем результат
-                const result = calculateSimpleTestResult(testData);
-                
-                // Показываем результат
-                showTestResult(result);
-                
-                // Сохраняем в архив
-                saveToArchive(registrationData, result);
-                
-                // Разблокируем все разделы
-                localStorage.setItem('diagnosticCompleted', 'true');
-                unlockAllSections();
-                
-                showNotification('✅ Диагностика завершена! Теперь вам доступны все разделы сайта.', 'success');
-            });
-        }
-    }
-
-    function checkDiagnosticStatus() {
-        const diagnosticCompleted = localStorage.getItem('diagnosticCompleted') === 'true';
-        if (diagnosticCompleted) {
-            unlockAllSections();
-        }
-    }
-
-    function unlockAllSections() {
-        const sections = ['about', 'power', 'services', 'process', 'awakening', 'contacts'];
-        sections.forEach(section => {
-            const lock = document.getElementById(section + 'Lock');
-            const content = document.getElementById(section + 'Content');
-            if (lock) lock.style.display = 'none';
-            if (content) content.style.display = 'block';
-        });
-    }
-
-    function initEventListeners() {
-        // Навигационные ссылки
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const section = this.getAttribute('data-section');
-                showSection(section);
-            });
-        });
-
-        // Формы
-        const registrationForm = document.getElementById('registrationForm');
-        if (registrationForm) {
-            registrationForm.addEventListener('submit', handleRegistrationSubmit);
         }
 
-        const consultationForm = document.getElementById('consultationForm');
-        if (consultationForm) {
-            consultationForm.addEventListener('submit', handleConsultationSubmit);
-        }
-
-        // Кнопка "Назад к тесту"
-        const backToTestBtn = document.getElementById('backToTest');
-        if (backToTestBtn) {
-            backToTestBtn.addEventListener('click', function() {
-                showSection('test');
+        function initTestSteps() {
+            document.querySelectorAll('.option-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const radio = this.querySelector('input[type="radio"]');
+                    if (radio) {
+                        radio.checked = true;
+                        this.parentElement.querySelectorAll('.option-item').forEach(opt => {
+                            opt.classList.remove('selected');
+                        });
+                        this.classList.add('selected');
+                    }
+                });
             });
         }
 
-        // Мобильное меню
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const navLinks = document.getElementById('navLinks');
-        if (mobileMenuBtn && navLinks) {
-            mobileMenuBtn.addEventListener('click', function() {
-                navLinks.classList.toggle('active');
-            });
-        }
-
-        // Закрытие меню при клике на ссылку
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', function() {
-                if (navLinks) {
-                    navLinks.classList.remove('active');
-                }
-            });
-        });
-    }
-
-    function showSection(sectionId) {
-        console.log('Показ секции:', sectionId);
-        
-        // Скрываем все секции
-        document.querySelectorAll('section').forEach(section => {
-            section.classList.add('section-hidden');
-        });
-        
-        // Показываем нужную секцию
-        const targetSection = document.getElementById(sectionId);
-        if (targetSection) {
-            targetSection.classList.remove('section-hidden');
-        }
-        
-        // Прокрутка к верху
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    }
-
-    function initTestSteps() {
-        document.querySelectorAll('.option-item').forEach(item => {
-            item.addEventListener('click', function() {
-                const radio = this.querySelector('input[type="radio"]');
-                if (radio) {
-                    radio.checked = true;
-                    this.parentElement.querySelectorAll('.option-item').forEach(opt => {
-                        opt.classList.remove('selected');
-                    });
-                    this.classList.add('selected');
-                }
-            });
-        });
-    }
-
-    // Функции для работы с архивом
-    function initArchiveLogin() {
-        const loginForm = document.getElementById('archiveLoginForm');
-        if (loginForm) {
-            loginForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const password = document.getElementById('archivePassword').value;
-                
-                if (password === ARCHIVE_PASSWORD) {
-                    document.getElementById('archiveContent').style.display = 'block';
-                    document.getElementById('archivePasswordError').style.display = 'none';
+        // Функции для работы с архивом
+        function initArchiveLogin() {
+            const loginForm = document.getElementById('archiveLoginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const password = document.getElementById('archivePassword').value;
                     
-                    const data = loadArchiveData();
-                    archiveData = data;
-                    displayArchiveData(data, 1);
-                    
-                    showNotification('✅ Доступ к архиву разрешен', 'success');
-                } else {
-                    document.getElementById('archivePasswordError').style.display = 'block';
-                    showNotification('❌ Неверный пароль', 'error');
-                }
-            });
+                    if (password === ARCHIVE_PASSWORD) {
+                        document.getElementById('archiveContent').style.display = 'block';
+                        document.getElementById('archivePasswordError').style.display = 'none';
+                        
+                        const data = loadArchiveData();
+                        archiveData = data;
+                        displayArchiveData(data, 1);
+                        
+                        showNotification('✅ Доступ к архиву разрешен', 'success');
+                    } else {
+                        document.getElementById('archivePasswordError').style.display = 'block';
+                        showNotification('❌ Неверный пароль', 'error');
+                    }
+                });
+            }
         }
-    }
 
-    function initArchiveSearch() {
-        const searchInput = document.getElementById('searchInput');
-        const searchBtn = document.getElementById('searchBtn');
-        const levelFilter = document.getElementById('levelFilter');
-        const testTypeFilter = document.getElementById('testTypeFilter');
-        const exportBtn = document.getElementById('exportBtn');
-        
-        function performSearch() {
-            const query = searchInput.value;
-            const level = levelFilter.value;
-            const testType = testTypeFilter.value;
+        function initArchiveSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.getElementById('searchBtn');
+            const levelFilter = document.getElementById('levelFilter');
+            const testTypeFilter = document.getElementById('testTypeFilter');
+            const exportBtn = document.getElementById('exportBtn');
             
-            const filteredData = searchArchive(query, level, testType);
-            archiveData = filteredData;
-            displayArchiveData(filteredData, 1);
+            function performSearch() {
+                const query = searchInput.value;
+                const level = levelFilter.value;
+                const testType = testTypeFilter.value;
+                
+                const filteredData = searchArchive(query, level, testType);
+                archiveData = filteredData;
+                displayArchiveData(filteredData, 1);
+            }
+            
+            if (searchBtn) searchBtn.addEventListener('click', performSearch);
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') performSearch();
+                });
+            }
+            if (levelFilter) levelFilter.addEventListener('change', performSearch);
+            if (testTypeFilter) testTypeFilter.addEventListener('change', performSearch);
+            if (exportBtn) exportBtn.addEventListener('click', exportToExcel);
         }
-        
-        if (searchBtn) searchBtn.addEventListener('click', performSearch);
-        if (searchInput) {
-            searchInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') performSearch();
-            });
-        }
-        if (levelFilter) levelFilter.addEventListener('change', performSearch);
-        if (testTypeFilter) testTypeFilter.addEventListener('change', performSearch);
-        if (exportBtn) exportBtn.addEventListener('click', exportToExcel);
-    }
 
-    function saveToArchive(userData, testResult) {
-        const archiveEntry = {
-            id: Date.now() + Math.random().toString(36).substr(2, 9),
-            timestamp: new Date().toISOString(),
-            userData: userData,
-            testResult: testResult,
-            completed: true
-        };
-        
-        let existingData = JSON.parse(localStorage.getItem('libidoTestArchive') || '[]');
-        existingData.push(archiveEntry);
-        localStorage.setItem('libidoTestArchive', JSON.stringify(existingData));
-    }
-
-    function loadArchiveData() {
-        return JSON.parse(localStorage.getItem('libidoTestArchive') || '[]');
-    }
-
-    function searchArchive(query, levelFilter, testTypeFilter) {
-        let filteredData = loadArchiveData();
-        
-        if (query) {
-            const searchTerm = query.toLowerCase();
-            filteredData = filteredData.filter(item => 
-                item.userData.firstName.toLowerCase().includes(searchTerm) ||
-                item.userData.lastName.toLowerCase().includes(searchTerm) ||
-                item.testResult.level.toLowerCase().includes(searchTerm) ||
-                item.userData.telegram.toLowerCase().includes(searchTerm)
-            );
+        function saveToArchive(userData, testResult) {
+            const archiveEntry = {
+                id: Date.now() + Math.random().toString(36).substr(2, 9),
+                timestamp: new Date().toISOString(),
+                userData: userData,
+                testResult: testResult,
+                completed: true
+            };
+            
+            let existingData = JSON.parse(localStorage.getItem('libidoTestArchive') || '[]');
+            existingData.push(archiveEntry);
+            localStorage.setItem('libidoTestArchive', JSON.stringify(existingData));
         }
-        
-        if (levelFilter) {
-            filteredData = filteredData.filter(item => 
-                item.testResult.level.includes(levelFilter)
-            );
-        }
-        
-        if (testTypeFilter) {
-            filteredData = filteredData.filter(item => 
-                item.testResult.testType === testTypeFilter
-            );
-        }
-        
-        return filteredData;
-    }
 
-    function displayArchiveData(data, page = 1) {
-        const tableBody = document.getElementById('resultsTableBody');
-        const pagination = document.getElementById('pagination');
-        
-        if (!tableBody) return;
-        
-        tableBody.innerHTML = '';
-        
-        const startIndex = (page - 1) * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-        const pageData = data.slice(startIndex, endIndex);
-        const totalPages = Math.ceil(data.length / itemsPerPage);
-        
-        pageData.forEach(item => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${item.userData.lastName} ${item.userData.firstName}</td>
-                <td>${item.userData.age}</td>
-                <td>${item.userData.phone}</td>
-                <td>${item.userData.telegram}</td>
-                <td>${item.testResult.testType === 'regular' ? 'Обычный' : 'Менопауза'}</td>
-                <td>
-                    <span class="level-badge ${getLevelClass(item.testResult.level)}">
-                        ${item.testResult.level}
-                    </span>
-                </td>
-                <td>${item.testResult.score}</td>
-                <td>${new Date(item.timestamp).toLocaleDateString('ru-RU')}</td>
-                <td>
-                    <button class="btn-view-details" onclick="viewUserDetails('${item.id}')">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="btn-delete" onclick="deleteUserData('${item.id}')">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </td>
-            `;
-            tableBody.appendChild(row);
-        });
-        
-        if (pageData.length === 0) {
-            tableBody.innerHTML = `
-                <tr>
-                    <td colspan="9" style="text-align: center; padding: 2rem;">
-                        <i class="fas fa-inbox" style="font-size: 3rem; color: #ccc; margin-bottom: 1rem;"></i>
-                        <p>Нет данных для отображения</p>
+        function loadArchiveData() {
+            return JSON.parse(localStorage.getItem('libidoTestArchive') || '[]');
+        }
+
+        function searchArchive(query, levelFilter, testTypeFilter) {
+            let filteredData = loadArchiveData();
+            
+            if (query) {
+                const searchTerm = query.toLowerCase();
+                filteredData = filteredData.filter(item => 
+                    item.userData.firstName.toLowerCase().includes(searchTerm) ||
+                    item.userData.lastName.toLowerCase().includes(searchTerm) ||
+                    item.testResult.level.toLowerCase().includes(searchTerm) ||
+                    item.userData.telegram.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            if (levelFilter) {
+                filteredData = filteredData.filter(item => 
+                    item.testResult.level.includes(levelFilter)
+                );
+            }
+            
+            if (testTypeFilter) {
+                filteredData = filteredData.filter(item => 
+                    item.testResult.testType === testTypeFilter
+                );
+            }
+            
+            return filteredData;
+        }
+
+        function displayArchiveData(data, page = 1) {
+            const tableBody = document.getElementById('resultsTableBody');
+            const pagination = document.getElementById('pagination');
+            
+            if (!tableBody) return;
+            
+            tableBody.innerHTML = '';
+            
+            const startIndex = (page - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const pageData = data.slice(startIndex, endIndex);
+            const totalPages = Math.ceil(data.length / itemsPerPage);
+            
+            pageData.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.userData.lastName} ${item.userData.firstName}</td>
+                    <td>${item.userData.age}</td>
+                    <td>${item.userData.phone}</td>
+                    <td>${item.userData.telegram}</td>
+                    <td>${item.testResult.testType === 'regular' ? 'Обычный' : 'Менопауза'}</td>
+                    <td>
+                        <span class="level-badge ${getLevelClass(item.testResult.level)}">
+                            ${item.testResult.level}
+                        </span>
                     </td>
-                </tr>
-            `;
+                    <td>${item.testResult.score}</td>
+                    <td>${new Date(item.timestamp).toLocaleDateString('ru-RU')}</td>
+                    <td>
+                        <button class="btn-view-details" onclick="viewUserDetails('${item.id}')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn-delete" onclick="deleteUserData('${item.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+            
+            if (pageData.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="9" style="text-align: center; padding: 2rem;">
+                            <i class="fas fa-inbox" style="font-size: 3rem; color: #ccc; margin-bottom: 1rem;"></i>
+                            <p>Нет данных для отображения</p>
+                        </td>
+                    </tr>
+                `;
+            }
+            
+            updatePagination(totalPages, page);
+            updateArchiveStats(data);
         }
-        
-        updatePagination(totalPages, page);
-        updateArchiveStats(data);
-    }
 
-    function getLevelClass(level) {
-        if (level.includes('Низкое')) return 'level-badge-low';
-        if (level.includes('Среднее')) return 'level-badge-medium';
-        if (level.includes('Высокое')) return 'level-badge-high';
-        if (level.includes('Очень высокое')) return 'level-badge-very-high';
-        return '';
-    }
+        function getLevelClass(level) {
+            if (level.includes('Низкое')) return 'level-badge-low';
+            if (level.includes('Среднее')) return 'level-badge-medium';
+            if (level.includes('Высокое')) return 'level-badge-high';
+            if (level.includes('Очень высокое')) return 'level-badge-very-high';
+            return '';
+        }
 
-    function updatePagination(totalPages, currentPage) {
-        const pagination = document.getElementById('pagination');
-        if (!pagination) return;
-        
-        pagination.innerHTML = '';
-        
-        if (totalPages <= 1) return;
-        
-        if (currentPage > 1) {
-            const prevBtn = document.createElement('button');
-            prevBtn.className = 'pagination-btn';
-            prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
-            prevBtn.onclick = () => displayArchiveData(archiveData, currentPage - 1);
-            pagination.appendChild(prevBtn);
+        function updatePagination(totalPages, currentPage) {
+            const pagination = document.getElementById('pagination');
+            if (!pagination) return;
+            
+            pagination.innerHTML = '';
+            
+            if (totalPages <= 1) return;
+            
+            if (currentPage > 1) {
+                const prevBtn = document.createElement('button');
+                prevBtn.className = 'pagination-btn';
+                prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+                prevBtn.onclick = () => displayArchiveData(archiveData, currentPage - 1);
+                pagination.appendChild(prevBtn);
+            }
+            
+            for (let i = 1; i <= totalPages; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `pagination-btn ${i === currentPage ? 'active' : ''}`;
+                pageBtn.textContent = i;
+                pageBtn.onclick = () => displayArchiveData(archiveData, i);
+                pagination.appendChild(pageBtn);
+            }
+            
+            if (currentPage < totalPages) {
+                const nextBtn = document.createElement('button');
+                nextBtn.className = 'pagination-btn';
+                nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+                nextBtn.onclick = () => displayArchiveData(archiveData, currentPage + 1);
+                pagination.appendChild(nextBtn);
+            }
         }
-        
-        for (let i = 1; i <= totalPages; i++) {
-            const pageBtn = document.createElement('button');
-            pageBtn.className = `pagination-btn ${i === currentPage ? 'active' : ''}`;
-            pageBtn.textContent = i;
-            pageBtn.onclick = () => displayArchiveData(archiveData, i);
-            pagination.appendChild(pageBtn);
-        }
-        
-        if (currentPage < totalPages) {
-            const nextBtn = document.createElement('button');
-            nextBtn.className = 'pagination-btn';
-            nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
-            nextBtn.onclick = () => displayArchiveData(archiveData, currentPage + 1);
-            pagination.appendChild(nextBtn);
-        }
-    }
 
-    function updateArchiveStats(data) {
-        const totalUsers = document.getElementById('totalUsers');
-        const avgScore = document.getElementById('avgScore');
-        const completionRate = document.getElementById('completionRate');
-        
-        if (!totalUsers || !avgScore || !completionRate) return;
-        
-        totalUsers.textContent = data.length;
-        
-        if (data.length > 0) {
-            const totalScore = data.reduce((sum, item) => sum + item.testResult.score, 0);
-            avgScore.textContent = (totalScore / data.length).toFixed(1);
-        } else {
-            avgScore.textContent = '0';
+        function updateArchiveStats(data) {
+            const totalUsers = document.getElementById('totalUsers');
+            const avgScore = document.getElementById('avgScore');
+            const completionRate = document.getElementById('completionRate');
+            
+            if (!totalUsers || !avgScore || !completionRate) return;
+            
+            totalUsers.textContent = data.length;
+            
+            if (data.length > 0) {
+                const totalScore = data.reduce((sum, item) => sum + item.testResult.score, 0);
+                avgScore.textContent = (totalScore / data.length).toFixed(1);
+            } else {
+                avgScore.textContent = '0';
+            }
+            
+            completionRate.textContent = '100%';
         }
-        
-        completionRate.textContent = '100%';
-    }
 
-    function viewUserDetails(userId) {
-        const userData = archiveData.find(item => item.id === userId);
-        if (!userData) return;
-        
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        modal.innerHTML = `
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>Детальная информация</h3>
-                    <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="user-details">
-                        <div class="detail-section">
-                            <h4>Контактная информация</h4>
-                            <p><strong>ФИО:</strong> ${userData.userData.lastName} ${userData.userData.firstName}</p>
-                            <p><strong>Возраст:</strong> ${userData.userData.age}</p>
-                            <p><strong>Телефон:</strong> ${userData.userData.phone}</p>
-                            <p><strong>Telegram:</strong> ${userData.userData.telegram}</p>
-                        </div>
-                        
-                        <div class="detail-section">
-                            <h4>Результаты теста</h4>
-                            <p><strong>Тип теста:</strong> ${userData.testResult.testType === 'regular' ? 'Обычный' : 'Менопауза'}</p>
-                            <p><strong>Уровень либидо:</strong> ${userData.testResult.level}</p>
-                            <p><strong>Баллы:</strong> ${userData.testResult.score}</p>
-                            <p><strong>Дата прохождения:</strong> ${new Date(userData.timestamp).toLocaleString('ru-RU')}</p>
-                        </div>
-                        
-                        <div class="detail-section">
-                            <h4>Описание результата</h4>
-                            <p>${userData.testResult.description}</p>
+        function viewUserDetails(userId) {
+            const userData = archiveData.find(item => item.id === userId);
+            if (!userData) return;
+            
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Детальная информация</h3>
+                        <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="user-details">
+                            <div class="detail-section">
+                                <h4>Контактная информация</h4>
+                                <p><strong>ФИО:</strong> ${userData.userData.lastName} ${userData.userData.firstName}</p>
+                                <p><strong>Возраст:</strong> ${userData.userData.age}</p>
+                                <p><strong>Телефон:</strong> ${userData.userData.phone}</p>
+                                <p><strong>Telegram:</strong> ${userData.userData.telegram}</p>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <h4>Результаты теста</h4>
+                                <p><strong>Тип теста:</strong> ${userData.testResult.testType === 'regular' ? 'Обычный' : 'Менопауза'}</p>
+                                <p><strong>Уровень либидо:</strong> ${userData.testResult.level}</p>
+                                <p><strong>Баллы:</strong> ${userData.testResult.score}</p>
+                                <p><strong>Дата прохождения:</strong> ${new Date(userData.timestamp).toLocaleString('ru-RU')}</p>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <h4>Описание результата</h4>
+                                <p>${userData.testResult.description}</p>
+                            </div>
                         </div>
                     </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-outline" onclick="this.closest('.modal-overlay').remove()">
+                            Закрыть
+                        </button>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn-outline" onclick="this.closest('.modal-overlay').remove()">
-                        Закрыть
-                    </button>
-                </div>
-            </div>
-        `;
-        
-        document.body.appendChild(modal);
-    }
-
-    function deleteUserData(userId) {
-        if (!confirm('Вы уверены, что хотите удалить данные этого пользователя?')) return;
-        
-        archiveData = archiveData.filter(item => item.id !== userId);
-        localStorage.setItem('libidoTestArchive', JSON.stringify(archiveData));
-        displayArchiveData(archiveData, currentPage);
-        showNotification('✅ Данные пользователя удалены', 'success');
-    }
-
-    function exportToExcel() {
-        const data = loadArchiveData();
-        if (data.length === 0) {
-            showNotification('❌ Нет данных для экспорта', 'error');
-            return;
+            `;
+            
+            document.body.appendChild(modal);
         }
-        
-        let csv = 'Фамилия,Имя,Возраст,Телефон,Telegram,Тип теста,Уровень либидо,Баллы,Дата\n';
-        data.forEach(item => {
-            csv += `"${item.userData.lastName}","${item.userData.firstName}","${item.userData.age}","${item.userData.phone}","${item.userData.telegram}","${item.testResult.testType === 'regular' ? 'Обычный' : 'Менопауза'}","${item.testResult.level}","${item.testResult.score}","${new Date(item.timestamp).toLocaleDateString('ru-RU')}"\n`;
-        });
-        
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        const url = URL.createObjectURL(blob);
-        
-        link.setAttribute('href', url);
-        link.setAttribute('download', `архив_либидо_${new Date().toISOString().split('T')[0]}.csv`);
-        link.style.visibility = 'hidden';
-        
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        
-        showNotification('✅ Данные экспортированы в CSV файл', 'success');
-    }
 
-    // Обработчики форм
-    async function handleRegistrationSubmit(e) {
-        e.preventDefault();
-        
-        if (!validateRegistrationForm(e.target)) {
-            showNotification('Пожалуйста, заполните все обязательные поля корректно', 'error');
-            return;
+        function deleteUserData(userId) {
+            if (!confirm('Вы уверены, что хотите удалить данные этого пользователя?')) return;
+            
+            archiveData = archiveData.filter(item => item.id !== userId);
+            localStorage.setItem('libidoTestArchive', JSON.stringify(archiveData));
+            displayArchiveData(archiveData, currentPage);
+            showNotification('✅ Данные пользователя удалены', 'success');
         }
-        
-        const form = e.target;
-        const submitBtn = form.querySelector('button[type="submit"]');
-        const originalText = submitBtn.innerHTML;
-        
-        try {
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Регистрация...';
-            submitBtn.disabled = true;
-            
-            const formData = new FormData(form);
-            registrationData = Object.fromEntries(formData.entries());
-            
-            await sendRegistrationToTelegram(registrationData);
-            showNotification('✅ Регистрация прошла успешно! Переходим к тесту.', 'success');
-            
-            localStorage.setItem('registrationCompleted', 'true');
-            setTimeout(() => showSection('test'), 1500);
-            
-        } catch (error) {
-            console.error('Ошибка регистрации:', error);
-            showNotification('❌ Ошибка регистрации: ' + error.message, 'error');
-        } finally {
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
-        }
-    }
 
-    async function handleConsultationSubmit(e) {
-        e.preventDefault();
-        
-        const form = e.target;
-        const submitBtn = form.querySelector('button[type="submit"]');
-        const originalText = submitBtn.innerHTML;
-        
-        try {
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
-            submitBtn.disabled = true;
-            
-            const formData = new FormData(form);
-            const consultationData = Object.fromEntries(formData.entries());
-            
-            await sendConsultationToTelegram(consultationData);
-            showNotification('✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.', 'success');
-            form.reset();
-            
-        } catch (error) {
-            console.error('Ошибка отправки заявки:', error);
-            showNotification('❌ Ошибка отправки заявки. Пожалуйста, попробуйте еще раз.', 'error');
-        } finally {
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
-        }
-    }
-
-    function validateRegistrationForm(form) {
-        let isValid = true;
-        
-        form.querySelectorAll('.error-message').forEach(error => {
-            error.style.display = 'none';
-        });
-        form.querySelectorAll('.form-control.error').forEach(input => {
-            input.classList.remove('error');
-        });
-        
-        const requiredFields = form.querySelectorAll('[required]');
-        requiredFields.forEach(field => {
-            if (!field.value.trim()) {
-                isValid = false;
-                field.classList.add('error');
-                const errorId = field.id + 'Error';
-                const errorElement = document.getElementById(errorId);
-                if (errorElement) errorElement.style.display = 'block';
+        function exportToExcel() {
+            const data = loadArchiveData();
+            if (data.length === 0) {
+                showNotification('❌ Нет данных для экспорта', 'error');
+                return;
             }
-        });
-        
-        const age = document.getElementById('age');
-        if (age.value) {
-            const ageNum = parseInt(age.value);
-            if (ageNum < 18 || ageNum > 80) {
-                isValid = false;
-                age.classList.add('error');
-                document.getElementById('ageError').textContent = 'Пожалуйста, укажите возраст от 18 до 80 лет';
-                document.getElementById('ageError').style.display = 'block';
-            }
-        }
-        
-        const phone = document.getElementById('phone');
-        if (phone.value && !isValidPhone(phone.value)) {
-            isValid = false;
-            phone.classList.add('error');
-            document.getElementById('phoneError').textContent = 'Пожалуйста, введите корректный номер телефона';
-            document.getElementById('phoneError').style.display = 'block';
-        }
-        
-        return isValid;
-    }
-
-    function isValidPhone(phone) {
-        const phoneRegex = /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;
-        return phoneRegex.test(phone.replace(/\s/g, ''));
-    }
-
-    // Функции для отправки в Telegram
-    async function sendRegistrationToTelegram(data) {
-        try {
-            let message = `🌟 *НОВАЯ РЕГИСТРАЦИЯ* 🌟\n\n`;
-            message += `👤 *Контактная информация:*\n`;
-            message += `   └ *Фамилия:* ${data.lastName}\n`;
-            message += `   └ *Имя:* ${data.firstName}\n`;
-            message += `   └ *Возраст:* ${data.age}\n`;
-            message += `   └ *Телефон:* ${data.phone}\n`;
-            message += `   └ *Telegram:* ${data.telegram}\n`;
-            message += `\n⏰ *Дата регистрации:* ${new Date().toLocaleString('ru-RU')}`;
-
-            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: TELEGRAM_CHAT_ID,
-                    text: message,
-                    parse_mode: 'Markdown'
-                })
+            
+            let csv = 'Фамилия,Имя,Возраст,Телефон,Telegram,Тип теста,Уровень либидо,Баллы,Дата\n';
+            data.forEach(item => {
+                csv += `"${item.userData.lastName}","${item.userData.firstName}","${item.userData.age}","${item.userData.phone}","${item.userData.telegram}","${item.testResult.testType === 'regular' ? 'Обычный' : 'Менопауза'}","${item.testResult.level}","${item.testResult.score}","${new Date(item.timestamp).toLocaleDateString('ru-RU')}"\n`;
             });
-
-            console.log('✅ Регистрация успешно отправлена в Telegram');
             
-        } catch (error) {
-            console.error('Ошибка отправки регистрации:', error);
-            throw error;
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            link.setAttribute('href', url);
+            link.setAttribute('download', `архив_либидо_${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showNotification('✅ Данные экспортированы в CSV файл', 'success');
         }
-    }
 
-    async function sendConsultationToTelegram(data) {
-        try {
-            let message = `📅 *НОВАЯ ЗАЯВКА НА КОНСУЛЬТАЦИЮ* 📅\n\n`;
-            message += `👤 *Имя:* ${data.name}\n`;
-            message += `📧 *Email:* ${data.email}\n`;
-            message += `💼 *Формат:* ${data.format}\n`;
-            if (data.message) {
-                message += `📝 *Запрос:* ${data.message}\n`;
+        // Обработчики форм
+        async function handleRegistrationSubmit(e) {
+            e.preventDefault();
+            
+            if (!validateRegistrationForm(e.target)) {
+                showNotification('Пожалуйста, заполните все обязательные поля корректно', 'error');
+                return;
             }
-            message += `\n⏰ *Дата заявки:* ${new Date().toLocaleString('ru-RU')}`;
+            
+            const form = e.target;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            try {
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Регистрация...';
+                submitBtn.disabled = true;
+                
+                const formData = new FormData(form);
+                registrationData = Object.fromEntries(formData.entries());
+                
+                await sendRegistrationToTelegram(registrationData);
+                showNotification('✅ Регистрация прошла успешно! Переходим к тесту.', 'success');
+                
+                localStorage.setItem('registrationCompleted', 'true');
+                setTimeout(() => showSection('test'), 1500);
+                
+            } catch (error) {
+                console.error('Ошибка регистрации:', error);
+                showNotification('❌ Ошибка регистрации: ' + error.message, 'error');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
 
-            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: TELEGRAM_CHAT_ID,
-                    text: message,
-                    parse_mode: 'Markdown'
-                })
+        async function handleConsultationSubmit(e) {
+            e.preventDefault();
+            
+            const form = e.target;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            try {
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+                submitBtn.disabled = true;
+                
+                const formData = new FormData(form);
+                const consultationData = Object.fromEntries(formData.entries());
+                
+                await sendConsultationToTelegram(consultationData);
+                showNotification('✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.', 'success');
+                form.reset();
+                
+            } catch (error) {
+                console.error('Ошибка отправки заявки:', error);
+                showNotification('❌ Ошибка отправки заявки. Пожалуйста, попробуйте еще раз.', 'error');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        function validateRegistrationForm(form) {
+            let isValid = true;
+            
+            form.querySelectorAll('.error-message').forEach(error => {
+                error.style.display = 'none';
             });
-
-            console.log('✅ Заявка на консультацию отправлена в Telegram');
+            form.querySelectorAll('.form-control.error').forEach(input => {
+                input.classList.remove('error');
+            });
             
-        } catch (error) {
-            console.error('Ошибка отправки заявки:', error);
-            throw error;
-        }
-    }
-
-    function showNotification(text, type) {
-        const existingNotifications = document.querySelectorAll('.notification');
-        existingNotifications.forEach(notification => notification.remove());
-        
-        const notification = document.createElement('div');
-        notification.className = `notification ${type}`;
-        notification.innerHTML = `
-            <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}" 
-               style="margin-right: 8px;"></i> 
-            ${text}
-        `;
-        
-        document.body.appendChild(notification);
-        
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.parentNode.removeChild(notification);
+            const requiredFields = form.querySelectorAll('[required]');
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.classList.add('error');
+                    const errorId = field.id + 'Error';
+                    const errorElement = document.getElementById(errorId);
+                    if (errorElement) errorElement.style.display = 'block';
+                }
+            });
+            
+            const age = document.getElementById('age');
+            if (age.value) {
+                const ageNum = parseInt(age.value);
+                if (ageNum < 18 || ageNum > 80) {
+                    isValid = false;
+                    age.classList.add('error');
+                    document.getElementById('ageError').textContent = 'Пожалуйста, укажите возраст от 18 до 80 лет';
+                    document.getElementById('ageError').style.display = 'block';
+                }
             }
-        }, 5000);
-    }
-</script>
+            
+            const phone = document.getElementById('phone');
+            if (phone.value && !isValidPhone(phone.value)) {
+                isValid = false;
+                phone.classList.add('error');
+                document.getElementById('phoneError').textContent = 'Пожалуйста, введите корректный номер телефона';
+                document.getElementById('phoneError').style.display = 'block';
+            }
+            
+            return isValid;
+        }
+
+        function isValidPhone(phone) {
+            const phoneRegex = /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;
+            return phoneRegex.test(phone.replace(/\s/g, ''));
+        }
+
+        // Функции для отправки в Telegram
+        async function sendRegistrationToTelegram(data) {
+            try {
+                let message = `🌟 *НОВАЯ РЕГИСТРАЦИЯ* 🌟\n\n`;
+                message += `👤 *Контактная информация:*\n`;
+                message += `   └ *Фамилия:* ${data.lastName}\n`;
+                message += `   └ *Имя:* ${data.firstName}\n`;
+                message += `   └ *Возраст:* ${data.age}\n`;
+                message += `   └ *Телефон:* ${data.phone}\n`;
+                message += `   └ *Telegram:* ${data.telegram}\n`;
+                message += `\n⏰ *Дата регистрации:* ${new Date().toLocaleString('ru-RU')}`;
+
+                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: message,
+                        parse_mode: 'Markdown'
+                    })
+                });
+
+                console.log('✅ Регистрация успешно отправлена в Telegram');
+                
+            } catch (error) {
+                console.error('Ошибка отправки регистрации:', error);
+                throw error;
+            }
+        }
+
+        async function sendConsultationToTelegram(data) {
+            try {
+                let message = `📅 *НОВАЯ ЗАЯВКА НА КОНСУЛЬТАЦИЮ* 📅\n\n`;
+                message += `👤 *Имя:* ${data.name}\n`;
+                message += `📧 *Email:* ${data.email}\n`;
+                message += `💼 *Формат:* ${data.format}\n`;
+                if (data.message) {
+                    message += `📝 *Запрос:* ${data.message}\n`;
+                }
+                message += `\n⏰ *Дата заявки:* ${new Date().toLocaleString('ru-RU')}`;
+
+                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: message,
+                        parse_mode: 'Markdown'
+                    })
+                });
+
+                console.log('✅ Заявка на консультацию отправлена в Telegram');
+                
+            } catch (error) {
+                console.error('Ошибка отправки заявки:', error);
+                throw error;
+            }
+        }
+
+        function showNotification(text, type) {
+            const existingNotifications = document.querySelectorAll('.notification');
+            existingNotifications.forEach(notification => notification.remove());
+            
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}" 
+                   style="margin-right: 8px;"></i> 
+                ${text}
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 5000);
+        }
+    </script>
 </body>
 </html>
+
 
 
 
