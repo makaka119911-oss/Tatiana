@@ -5,27 +5,1239 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Татьяна Солнечная - Раскрытие женской силы</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --deep-burgundy: #8B4352;
+            --vibrant-pink: #D46A6A;
+            --soft-pink: #F8C8C8;
+            --cream: #FFF8F0;
+            --light-gold: #F5E6C8;
+            --dark-text: #4A4A4A;
+            --purple-mystic: #8B6B9E;
+            --peach-blossom: #FFB7B2;
+            --lavender: #E6E6FA;
+            --moonlight: #F0E6FF;
+            --success-green: #4CAF50;
+            --warning-orange: #FF9800;
+            --info-blue: #2196F3;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-text);
+            background-color: var(--cream);
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--deep-burgundy) 0%, var(--purple-mystic) 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--light-gold);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: var(--light-gold);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(139, 67, 82, 0.7), rgba(139, 107, 158, 0.7));
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding-top: 80px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-content p {
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Кнопки */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--vibrant-pink) 0%, var(--purple-mystic) 100%);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            gap: 10px;
+            font-size: 1.05rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--purple-mystic) 0%, var(--deep-burgundy) 100%);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--purple-mystic);
+            color: var(--purple-mystic);
+        }
+
+        .btn-outline:hover {
+            background: var(--purple-mystic);
+            color: white;
+        }
+
+        .btn-large {
+            padding: 16px 40px;
+            font-size: 1.1rem;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Section Styles */
+        section {
+            padding: 5rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--vibrant-pink), var(--purple-mystic));
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 3px;
+        }
+
+        .section-title p {
+            font-size: 1.2rem;
+            color: var(--dark-text);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Form Styles */
+        .form-container {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .form-header h3 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--dark-text);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--purple-mystic);
+            box-shadow: 0 0 0 3px rgba(139, 107, 158, 0.15);
+            background: white;
+        }
+
+        .required-field::after {
+            content: " *";
+            color: #e74c3c;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .form-control.error {
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.15);
+        }
+
+        /* Test Progress */
+        .test-progress-container {
+            margin-bottom: 2rem;
+            background: #f0f0f0;
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .test-progress-bar {
+            height: 100%;
+            background: linear-gradient(135deg, var(--vibrant-pink) 0%, var(--purple-mystic) 100%);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .test-progress-text {
+            text-align: center;
+            margin-top: 0.5rem;
+            color: var(--dark-text);
+            font-weight: 500;
+        }
+
+        /* Test Steps */
+        .test-step {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .test-step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .step-header h4 {
+            color: var(--deep-burgundy);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .question-block {
+            background: #f9f9f9;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--purple-mystic);
+            transition: all 0.3s ease;
+        }
+
+        .question-block.error-highlight {
+            border-left-color: #e74c3c !important;
+            background: #fdf2f2 !important;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--dark-text);
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.2rem;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .option-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-color: var(--soft-pink);
+        }
+
+        .option-item.selected {
+            border-color: var(--purple-mystic);
+            background: var(--moonlight);
+        }
+
+        .option-item input {
+            margin-right: 12px;
+            transform: scale(1.2);
+        }
+
+        .test-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            gap: 1rem;
+        }
+
+        .test-navigation .btn {
+            flex: 1;
+            max-width: 200px;
+        }
+
+        /* Result Section */
+        .result-container {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .result-header {
+            margin-bottom: 2rem;
+        }
+
+        .result-level {
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 15px;
+            line-height: 1.2;
+        }
+
+        .level-low {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            color: #c62828;
+            border: 3px solid #ffcdd2;
+        }
+
+        .level-medium {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            color: #ef6c00;
+            border: 3px solid #ffe0b2;
+        }
+
+        .level-high {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            color: #2e7d32;
+            border: 3px solid #c8e6c9;
+        }
+
+        .level-very-high {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            color: #7b1fa2;
+            border: 3px solid #e1bee7;
+        }
+
+        .result-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            text-align: left;
+            background: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: 10px;
+        }
+
+        .result-actions {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* About Section */
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .profile-img-container {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+            object-fit: cover;
+            aspect-ratio: 3/4;
+        }
+
+        .profile-img-container:hover .profile-img {
+            transform: scale(1.05);
+        }
+
+        .profile-img-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(139, 67, 82, 0.8));
+            color: white;
+            padding: 2rem;
+            transform: translateY(100%);
+            transition: transform 0.5s ease;
+        }
+
+        .profile-img-container:hover .profile-img-overlay {
+            transform: translateY(0);
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Education Block */
+        .education-block {
+            background: var(--lavender);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            border: 2px solid var(--soft-pink);
+        }
+
+        .education-block h4 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .education-block ul {
+            list-style: none;
+        }
+
+        .education-block li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .education-block i {
+            color: var(--vibrant-pink);
+        }
+
+        /* Contacts Section */
+        .contacts-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .contact-info {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .contact-info h3 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .contact-details {
+            margin-bottom: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .contact-item i {
+            width: 30px;
+            color: var(--purple-mystic);
+            font-size: 1.2rem;
+        }
+
+        /* Consultation Form in Contacts */
+        .consultation-form {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Female Power Section */
+        .female-power {
+            background: linear-gradient(135deg, var(--moonlight) 0%, var(--lavender) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .power-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .power-item {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .power-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .power-icon {
+            font-size: 2.5rem;
+            color: var(--purple-mystic);
+            margin-bottom: 1rem;
+        }
+
+        .power-item h3 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+        }
+
+        /* Services Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border-top: 5px solid var(--vibrant-pink);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            color: var(--vibrant-pink);
+            margin-bottom: 1.5rem;
+        }
+
+        .service-card h3 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        /* Process Section */
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .step {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--vibrant-pink) 0%, var(--purple-mystic) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto 1.5rem;
+        }
+
+        .step h3 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+        }
+
+        /* Awakening Section */
+        .awakening-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .awakening-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+        }
+
+        .awakening-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .awakening-card h3 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .awakening-card p {
+            color: var(--dark-text);
+            line-height: 1.6;
+        }
+
+        /* Awakening Signs */
+        .awakening-signs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .awakening-sign {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .awakening-sign:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .awakening-sign i {
+            font-size: 2rem;
+            color: var(--purple-mystic);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Archive Styles */
+        .archive-controls {
+            margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-box input {
+            flex: 1;
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .archive-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--deep-burgundy);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--dark-text);
+            font-size: 0.9rem;
+        }
+
+        .results-table-container {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            overflow-x: auto;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        .results-table th,
+        .results-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .results-table th {
+            background: var(--lavender);
+            font-weight: 600;
+            color: var(--deep-burgundy);
+        }
+
+        .results-table tr:hover {
+            background: #f9f9f9;
+        }
+
+        .level-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .level-badge-low {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .level-badge-medium {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .level-badge-high {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .level-badge-very-high {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .btn-view-details,
+        .btn-delete {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-view-details {
+            color: var(--info-blue);
+            margin-right: 0.5rem;
+        }
+
+        .btn-view-details:hover {
+            background: rgba(33, 150, 243, 0.1);
+        }
+
+        .btn-delete {
+            color: #e74c3c;
+        }
+
+        .btn-delete:hover {
+            background: rgba(231, 76, 60, 0.1);
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .pagination-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pagination-btn:hover {
+            background: var(--lavender);
+            border-color: var(--purple-mystic);
+        }
+
+        .pagination-btn.active {
+            background: var(--purple-mystic);
+            color: white;
+            border-color: var(--purple-mystic);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            padding: 1rem;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            color: var(--deep-burgundy);
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            padding: 0.5rem;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid #eee;
+            text-align: right;
+        }
+
+        .user-details .detail-section {
+            margin-bottom: 2rem;
+        }
+
+        .user-details .detail-section h4 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .user-details p {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 12px;
+            z-index: 10000;
+            animation: slideInRight 0.5s ease-out;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            max-width: 350px;
+            color: white;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .notification.success {
+            background: linear-gradient(135deg, var(--success-green), #45a049);
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, #dc3545, #e83e8c);
+        }
+
+        .notification.info {
+            background: linear-gradient(135deg, var(--info-blue), #1976D2);
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Section Hidden */
+        .section-hidden {
+            display: none;
+        }
+
+        /* Access Lock Message */
+        .access-lock {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .lock-icon {
+            font-size: 4rem;
+            color: var(--purple-mystic);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: linear-gradient(135deg, var(--deep-burgundy) 0%, var(--purple-mystic) 100%);
+                padding: 1rem 0;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                margin: 0;
+                text-align: center;
+                padding: 0.5rem 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .test-navigation {
+                flex-direction: column;
+            }
+
+            .test-navigation .btn {
+                max-width: none;
+            }
+
+            .result-level {
+                font-size: 1.8rem;
+                padding: 1rem;
+            }
+
+            .about-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .contacts-content {
+                grid-template-columns: 1fr;
+            }
+
+            .awakening-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .power-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .process-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .awakening-signs {
+                grid-template-columns: 1fr;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .filter-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .archive-stats {
+                grid-template-columns: 1fr;
+            }
+
+            /* Центрирование кнопки в мобильной версии */
+            .form-group[style*="text-align: center"] .btn {
+                width: 100%;
+                max-width: 300px;
+                margin: 0 auto;
+                display: block;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Header -->
     <header>
         <div class="container nav-container">
             <div class="logo">Татьяна Солнечная</div>
-           <nav>
-    <ul class="nav-links" id="navLinks">
-        <li><a href="#about" class="about-link">Обо мне</a></li>
-        <li><a href="#power" class="power-link">Женская сила</a></li>
-        <li><a href="#services" class="services-link">Направления</a></li>
-        <li><a href="#process" class="process-link">Процесс</a></li>
-        <li><a href="#awakening" class="awakening-link">Пробуждение</a></li>
-        <li><a href="#contacts" class="contacts-link">Контакты</a></li>
-        <li><a href="#archive" class="archive-link">Архив</a></li>
-    </ul>
-    <button class="mobile-menu-btn" id="mobileMenuBtn">
-        <i class="fas fa-bars"></i>
-    </button>
-</nav>
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#" class="nav-link" data-section="about">Обо мне</a></li>
+                    <li><a href="#" class="nav-link" data-section="power">Женская сила</a></li>
+                    <li><a href="#" class="nav-link" data-section="services">Направления</a></li>
+                    <li><a href="#" class="nav-link" data-section="process">Процесс</a></li>
+                    <li><a href="#" class="nav-link" data-section="awakening">Пробуждение</a></li>
+                    <li><a href="#" class="nav-link" data-section="contacts">Контакты</a></li>
+                    <li><a href="#" class="nav-link" data-section="archive">Архив</a></li>
+                </ul>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
         </div>
     </header>
 
@@ -34,167 +1246,169 @@
         <div class="container hero-content">
             <h1>Пробудите свою женскую силу.</h1>
             <p>Трансформируйте сексуальную энергию в источник творчества, магнетизма и внутренней гармонии.</p>
-            <a href="#registration" class="btn pulse registration-link">
+            <a href="#" class="btn pulse nav-link" data-section="registration">
                 <i class="fas fa-user-plus"></i> Регистрация
             </a>
         </div>
     </section>
 
-   <!-- Registration Section -->
-<section id="registration" class="section-hidden">
-    <div class="container">
-        <div class="section-title">
-            <h2>Регистрация</h2>
-            <p>Заполните данные для получения результата теста</p>
-        </div>
-        <div class="form-container">
-            <div class="form-header">
-                <h3>Форма регистрации</h3>
-                <p>Все данные строго конфиденциальны</p>
+    <!-- Registration Section -->
+    <section id="registration" class="section-hidden">
+        <div class="container">
+            <div class="section-title">
+                <h2>Регистрация</h2>
+                <p>Заполните данные для получения результата теста</p>
             </div>
-            
-            <form id="registrationForm">
-                <div class="form-group">
-                    <label for="lastName" class="required-field">Фамилия</label>
-                    <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Введите вашу фамилию" required>
-                    <div class="error-message" id="lastNameError">Пожалуйста, введите вашу фамилию</div>
+            <div class="form-container">
+                <div class="form-header">
+                    <h3>Форма регистрации</h3>
+                    <p>Все данные строго конфиденциальны</p>
                 </div>
                 
-                <div class="form-group">
-                    <label for="firstName" class="required-field">Имя</label>
-                    <input type="text" id="firstName" name="firstName" class="form-control" placeholder="Введите ваше имя" required>
-                    <div class="error-message" id="firstNameError">Пожалуйста, введите ваше имя</div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="age" class="required-field">Возраст</label>
-                    <input type="number" id="age" name="age" class="form-control" placeholder="Укажите ваш возраст" min="18" max="80" required>
-                    <div class="error-message" id="ageError">Пожалуйста, укажите ваш возраст (от 18 до 80 лет)</div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="phone" class="required-field">Телефон</label>
-                    <input type="tel" id="phone" name="phone" class="form-control" placeholder="+7 (XXX) XXX-XX-XX" required>
-                    <div class="error-message" id="phoneError">Пожалуйста, введите ваш номер телефона</div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="telegram" class="required-field">Telegram</label>
-                    <input type="text" id="telegram" name="telegram" class="form-control" placeholder="@username" required>
-                    <div class="error-message" id="telegramError">Пожалуйста, введите ваш Telegram</div>
-                </div>
-                
-                <div class="form-group" style="text-align: center; margin-top: 2rem;">
-                    <button type="submit" class="btn btn-large">
-                        <i class="fas fa-paper-plane"></i> Зарегистрироваться и перейти к тесту
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</section>
-<!-- Admin Archive Section -->
-<section id="archive" class="section-hidden">
-    <div class="container">
-        <div class="section-title">
-            <h2>Архив результатов</h2>
-            <p>Поиск и анализ данных тестирования</p>
-        </div>
-        
-        <div class="form-container">
-            <div class="form-header">
-                <h3>Доступ к архиву</h3>
-                <p>Введите пароль для просмотра данных</p>
-            </div>
-            
-            <form id="archiveLoginForm">
-                <div class="form-group">
-                    <label for="archivePassword" class="required-field">Пароль</label>
-                    <input type="password" id="archivePassword" name="password" class="form-control" placeholder="Введите пароль" required>
-                    <div class="error-message" id="archivePasswordError">Неверный пароль</div>
-                </div>
-                
-                <div class="form-group" style="text-align: center; margin-top: 2rem;">
-                    <button type="submit" class="btn btn-large">
-                        <i class="fas fa-lock-open"></i> Войти в архив
-                    </button>
-                </div>
-            </form>
-            
-            <!-- Archive Content (hidden by default) -->
-            <div id="archiveContent" style="display: none; margin-top: 3rem;">
-                <div class="archive-controls">
-                    <div class="search-box">
-                        <input type="text" id="searchInput" placeholder="Поиск по имени, фамилии, уровню либидо..." class="form-control">
-                        <button id="searchBtn" class="btn">
-                            <i class="fas fa-search"></i> Поиск
-                        </button>
+                <form id="registrationForm">
+                    <div class="form-group">
+                        <label for="lastName" class="required-field">Фамилия</label>
+                        <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Введите вашу фамилию" required>
+                        <div class="error-message" id="lastNameError">Пожалуйста, введите вашу фамилию</div>
                     </div>
                     
-                    <div class="filter-controls">
-                        <select id="levelFilter" class="form-control">
-                            <option value="">Все уровни либидо</option>
-                            <option value="Низкое">Низкое либидо</option>
-                            <option value="Среднее">Среднее либидо</option>
-                            <option value="Высокое">Высокое либидо</option>
-                            <option value="Очень высокое">Очень высокое либидо</option>
-                        </select>
-                        
-                        <select id="testTypeFilter" class="form-control">
-                            <option value="">Все типы теста</option>
-                            <option value="regular">Обычный тест</option>
-                            <option value="menopause">Менопауза</option>
-                        </select>
-                        
-                        <button id="exportBtn" class="btn btn-outline">
-                            <i class="fas fa-download"></i> Экспорт в Excel
+                    <div class="form-group">
+                        <label for="firstName" class="required-field">Имя</label>
+                        <input type="text" id="firstName" name="firstName" class="form-control" placeholder="Введите ваше имя" required>
+                        <div class="error-message" id="firstNameError">Пожалуйста, введите ваше имя</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="age" class="required-field">Возраст</label>
+                        <input type="number" id="age" name="age" class="form-control" placeholder="Укажите ваш возраст" min="18" max="80" required>
+                        <div class="error-message" id="ageError">Пожалуйста, укажите ваш возраст (от 18 до 80 лет)</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone" class="required-field">Телефон</label>
+                        <input type="tel" id="phone" name="phone" class="form-control" placeholder="+7 (XXX) XXX-XX-XX" required>
+                        <div class="error-message" id="phoneError">Пожалуйста, введите ваш номер телефона</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="telegram" class="required-field">Telegram</label>
+                        <input type="text" id="telegram" name="telegram" class="form-control" placeholder="@username" required>
+                        <div class="error-message" id="telegramError">Пожалуйста, введите ваш Telegram</div>
+                    </div>
+                    
+                    <div class="form-group" style="text-align: center; margin-top: 2rem;">
+                        <button type="submit" class="btn btn-large">
+                            <i class="fas fa-paper-plane"></i> Зарегистрироваться и перейти к тесту
                         </button>
                     </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admin Archive Section -->
+    <section id="archive" class="section-hidden">
+        <div class="container">
+            <div class="section-title">
+                <h2>Архив результатов</h2>
+                <p>Поиск и анализ данных тестирования</p>
+            </div>
+            
+            <div class="form-container">
+                <div class="form-header">
+                    <h3>Доступ к архиву</h3>
+                    <p>Введите пароль для просмотра данных</p>
                 </div>
                 
-                <div class="archive-stats">
-                    <div class="stat-card">
-                        <div class="stat-number" id="totalUsers">0</div>
-                        <div class="stat-label">Всего участников</div>
+                <form id="archiveLoginForm">
+                    <div class="form-group">
+                        <label for="archivePassword" class="required-field">Пароль</label>
+                        <input type="password" id="archivePassword" name="password" class="form-control" placeholder="Введите пароль" required>
+                        <div class="error-message" id="archivePasswordError">Неверный пароль</div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="avgScore">0</div>
-                        <div class="stat-label">Средний балл</div>
+                    
+                    <div class="form-group" style="text-align: center; margin-top: 2rem;">
+                        <button type="submit" class="btn btn-large">
+                            <i class="fas fa-lock-open"></i> Войти в архив
+                        </button>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="completionRate">0%</div>
-                        <div class="stat-label">Завершили тест</div>
-                    </div>
-                </div>
+                </form>
                 
-                <div class="results-table-container">
-                    <table class="results-table" id="resultsTable">
-                        <thead>
-                            <tr>
-                                <th>ФИО</th>
-                                <th>Возраст</th>
-                                <th>Телефон</th>
-                                <th>Telegram</th>
-                                <th>Тип теста</th>
-                                <th>Уровень либидо</th>
-                                <th>Баллы</th>
-                                <th>Дата</th>
-                                <th>Действия</th>
-                            </tr>
-                        </thead>
-                        <tbody id="resultsTableBody">
-                            <!-- Данные будут загружаться здесь -->
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div class="pagination" id="pagination">
-                    <!-- Пагинация будет здесь -->
+                <!-- Archive Content (hidden by default) -->
+                <div id="archiveContent" style="display: none; margin-top: 3rem;">
+                    <div class="archive-controls">
+                        <div class="search-box">
+                            <input type="text" id="searchInput" placeholder="Поиск по имени, фамилии, уровню либидо..." class="form-control">
+                            <button id="searchBtn" class="btn">
+                                <i class="fas fa-search"></i> Поиск
+                            </button>
+                        </div>
+                        
+                        <div class="filter-controls">
+                            <select id="levelFilter" class="form-control">
+                                <option value="">Все уровни либидо</option>
+                                <option value="Низкое">Низкое либидо</option>
+                                <option value="Среднее">Среднее либидо</option>
+                                <option value="Высокое">Высокое либидо</option>
+                                <option value="Очень высокое">Очень высокое либидо</option>
+                            </select>
+                            
+                            <select id="testTypeFilter" class="form-control">
+                                <option value="">Все типы теста</option>
+                                <option value="regular">Обычный тест</option>
+                                <option value="menopause">Менопауза</option>
+                            </select>
+                            
+                            <button id="exportBtn" class="btn btn-outline">
+                                <i class="fas fa-download"></i> Экспорт в Excel
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="archive-stats">
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalUsers">0</div>
+                            <div class="stat-label">Всего участников</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="avgScore">0</div>
+                            <div class="stat-label">Средний балл</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="completionRate">0%</div>
+                            <div class="stat-label">Завершили тест</div>
+                        </div>
+                    </div>
+                    
+                    <div class="results-table-container">
+                        <table class="results-table" id="resultsTable">
+                            <thead>
+                                <tr>
+                                    <th>ФИО</th>
+                                    <th>Возраст</th>
+                                    <th>Телефон</th>
+                                    <th>Telegram</th>
+                                    <th>Тип теста</th>
+                                    <th>Уровень либидо</th>
+                                    <th>Баллы</th>
+                                    <th>Дата</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultsTableBody">
+                                <!-- Данные будут загружаться здесь -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="pagination" id="pagination">
+                        <!-- Пагинация будет здесь -->
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+
     <!-- Test Section -->
     <section id="test" class="section-hidden">
         <div class="container">
@@ -314,7 +1528,7 @@
                     <button id="backToTest" class="btn btn-outline">
                         <i class="fas fa-arrow-left"></i> Пройти тест заново
                     </button>
-                    <button class="btn consultation-link">
+                    <button class="btn nav-link" data-section="contacts">
                         <i class="fas fa-calendar-check"></i> Записаться на консультацию
                     </button>
                 </div>
@@ -331,7 +1545,7 @@
                 </div>
                 <h3>Доступ закрыт</h3>
                 <p>Для просмотра этой страницы необходимо пройти регистрацию</p>
-                <a href="#registration" class="btn registration-link" style="margin-top: 1.5rem;">
+                <a href="#" class="btn nav-link" data-section="registration" style="margin-top: 1.5rem;">
                     <i class="fas fa-user-plus"></i> Начать регистрацию
                 </a>
             </div>
@@ -344,7 +1558,9 @@
                 
                 <div class="about-content">
                     <div class="profile-img-container floating">
-                        <img src="photo_2025-09-16_19-36-01.jpg" alt="Татьяна Солнечная - проводник женской силы" class="profile-img">
+                        <div class="profile-img" style="background: var(--lavender); display: flex; align-items: center; justify-content: center; color: var(--purple-mystic); font-size: 1.2rem;">
+                            Изображение профиля
+                        </div>
                         <div class="profile-img-overlay">
                             <p>"Ваше доверие - моя главная ценность. Вместе мы раскроем вашу божественную сущность."</p>
                         </div>
@@ -378,7 +1594,7 @@
                 </div>
                 <h3>Доступ закрыт</h3>
                 <p>Для просмотра этой страницы необходимо пройти регистрацию</p>
-                <a href="#registration" class="btn registration-link" style="margin-top: 1.5rem;">
+                <a href="#" class="btn nav-link" data-section="registration" style="margin-top: 1.5rem;">
                     <i class="fas fa-user-plus"></i> Начать регистрацию
                 </a>
             </div>
@@ -448,7 +1664,7 @@
                 </div>
                 <h3>Доступ закрыт</h3>
                 <p>Для просмотра этой страницы необходимо пройти регистрацию</p>
-                <a href="#registration" class="btn registration-link" style="margin-top: 1.5rem;">
+                <a href="#" class="btn nav-link" data-section="registration" style="margin-top: 1.5rem;">
                     <i class="fas fa-user-plus"></i> Начать регистрацию
                 </a>
             </div>
@@ -495,7 +1711,7 @@
                 </div>
                 <h3>Доступ закрыт</h3>
                 <p>Для просмотра этой страницы необходимо пройти регистрацию</p>
-                <a href="#registration" class="btn registration-link" style="margin-top: 1.5rem;">
+                <a href="#" class="btn nav-link" data-section="registration" style="margin-top: 1.5rem;">
                     <i class="fas fa-user-plus"></i> Начать регистрацию
                 </a>
             </div>
@@ -541,7 +1757,7 @@
                 </div>
                 <h3>Доступ закрыт</h3>
                 <p>Для просмотра этой страницы необходимо пройти регистрацию</p>
-                <a href="#registration" class="btn registration-link" style="margin-top: 1.5rem;">
+                <a href="#" class="btn nav-link" data-section="registration" style="margin-top: 1.5rem;">
                     <i class="fas fa-user-plus"></i> Начать регистрацию
                 </a>
             </div>
@@ -598,7 +1814,7 @@
                 </div>
                 <h3>Доступ закрыт</h3>
                 <p>Для просмотра этой страницы необходимо пройти регистрацию</p>
-                <a href="#registration" class="btn registration-link" style="margin-top: 1.5rem;">
+                <a href="#" class="btn nav-link" data-section="registration" style="margin-top: 1.5rem;">
                     <i class="fas fa-user-plus"></i> Начать регистрацию
                 </a>
             </div>
@@ -685,9 +1901,877 @@
         </div>
     </section>
 
-    
+    <script>
+        // Конфигурация
+        const TELEGRAM_BOT_TOKEN = '8402206062:AAEJim1GkriKqY_o1mOo0YWSWQDdw5Qy2h0';
+        const TELEGRAM_CHAT_ID = '-1002313355102';
+        const ARCHIVE_PASSWORD = 'admin123';
+
+        // Глобальные переменные
+        let currentStep = 1;
+        let totalSteps = 6;
+        let testData = {};
+        let registrationData = {};
+        let archiveData = [];
+        let currentPage = 1;
+        const itemsPerPage = 10;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Сайт загружен');
+            checkDiagnosticStatus();
+            initEventListeners();
+            initTestSteps();
+            initArchiveLogin();
+            initArchiveSearch();
+        });
+
+        function checkDiagnosticStatus() {
+            const diagnosticCompleted = localStorage.getItem('diagnosticCompleted') === 'true';
+            if (diagnosticCompleted) {
+                unlockAllSections();
+            }
+        }
+
+        function unlockAllSections() {
+            const sections = ['about', 'power', 'services', 'process', 'awakening', 'contacts'];
+            sections.forEach(section => {
+                const lock = document.getElementById(section + 'Lock');
+                const content = document.getElementById(section + 'Content');
+                if (lock) lock.style.display = 'none';
+                if (content) content.style.display = 'block';
+            });
+        }
+
+        function initEventListeners() {
+            // Навигационные ссылки
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const section = this.getAttribute('data-section');
+                    showSection(section);
+                });
+            });
+
+            // Формы
+            const registrationForm = document.getElementById('registrationForm');
+            if (registrationForm) {
+                registrationForm.addEventListener('submit', handleRegistrationSubmit);
+            }
+
+            const testForm = document.getElementById('libidoTestForm');
+            if (testForm) {
+                testForm.addEventListener('submit', handleTestSubmit);
+            }
+
+            const consultationForm = document.getElementById('consultationForm');
+            if (consultationForm) {
+                consultationForm.addEventListener('submit', handleConsultationSubmit);
+            }
+
+            // Кнопка "Назад к тесту"
+            const backToTestBtn = document.getElementById('backToTest');
+            if (backToTestBtn) {
+                backToTestBtn.addEventListener('click', function() {
+                    showSection('test');
+                });
+            }
+
+            // Сезонная зависимость
+            document.querySelectorAll('input[name="season_dependency"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const description = document.getElementById('seasonDescription');
+                    if (description) {
+                        description.style.display = this.value === 'Да' ? 'block' : 'none';
+                    }
+                });
+            });
+
+            // Мобильное меню
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const navLinks = document.getElementById('navLinks');
+            if (mobileMenuBtn && navLinks) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    navLinks.classList.toggle('active');
+                });
+            }
+
+            // Закрытие меню при клике на ссылку
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (navLinks) {
+                        navLinks.classList.remove('active');
+                    }
+                });
+            });
+        }
+
+        function showSection(sectionId) {
+            // Скрываем все секции
+            document.querySelectorAll('section').forEach(section => {
+                section.classList.add('section-hidden');
+            });
+            
+            // Показываем нужную секцию
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.remove('section-hidden');
+            }
+            
+            // Прокрутка к верху
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        function initTestSteps() {
+            document.querySelectorAll('.option-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const radio = this.querySelector('input[type="radio"]');
+                    if (radio) {
+                        radio.checked = true;
+                        this.parentElement.querySelectorAll('.option-item').forEach(opt => {
+                            opt.classList.remove('selected');
+                        });
+                        this.classList.add('selected');
+                    }
+                });
+            });
+        }
+
+        function validateStep(step) {
+            const stepElement = document.getElementById('step' + step);
+            if (!stepElement) return true;
+
+            const requiredInputs = stepElement.querySelectorAll('[required]');
+            let isValid = true;
+
+            // Сбрасываем ошибки
+            stepElement.querySelectorAll('.error-message').forEach(error => {
+                error.style.display = 'none';
+            });
+            stepElement.querySelectorAll('.form-control.error').forEach(input => {
+                input.classList.remove('error');
+            });
+            stepElement.querySelectorAll('.question-block').forEach(block => {
+                block.classList.remove('error-highlight');
+            });
+
+            // Проверяем поля
+            requiredInputs.forEach(input => {
+                if (input.type === 'radio') {
+                    const radioGroup = stepElement.querySelectorAll(`input[name="${input.name}"]`);
+                    const isChecked = Array.from(radioGroup).some(radio => radio.checked);
+                    
+                    if (!isChecked) {
+                        isValid = false;
+                        const questionBlock = input.closest('.question-block');
+                        if (questionBlock) {
+                            questionBlock.classList.add('error-highlight');
+                        }
+                    }
+                } else {
+                    if (!input.value.trim()) {
+                        isValid = false;
+                        input.classList.add('error');
+                        const errorElement = document.getElementById(input.name + 'Error');
+                        if (errorElement) {
+                            errorElement.style.display = 'block';
+                        }
+                    }
+                }
+            });
+
+            return isValid;
+        }
+
+        function nextStep(step) {
+            if (!validateStep(currentStep)) {
+                showNotification('Пожалуйста, ответьте на все обязательные вопросы этого шага', 'error');
+                return;
+            }
+
+            if (step === 2) {
+                const testType = document.querySelector('input[name="test_type"]:checked');
+                if (!testType) {
+                    showNotification('Пожалуйста, выберите тип теста', 'error');
+                    return;
+                }
+                
+                generateTestSteps(testType.value);
+                totalSteps = testType.value === 'regular' ? 6 : 2;
+            }
+            
+            document.querySelector('.test-step.active').classList.remove('active');
+            document.getElementById('step' + step).classList.add('active');
+            currentStep = step;
+            updateProgress();
+            scrollToTop();
+        }
+
+        function prevStep(step) {
+            document.querySelector('.test-step.active').classList.remove('active');
+            document.getElementById('step' + step).classList.add('active');
+            currentStep = step;
+            updateProgress();
+            scrollToTop();
+        }
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        function updateProgress() {
+            const progress = (currentStep / totalSteps) * 100;
+            const progressBar = document.getElementById('testProgress');
+            const progressText = document.getElementById('progressText');
+            
+            if (progressBar) progressBar.style.width = progress + '%';
+            if (progressText) progressText.textContent = `Шаг ${currentStep} из ${totalSteps}`;
+        }
+
+        // Функции для работы с архивом
+        function initArchiveLogin() {
+            const loginForm = document.getElementById('archiveLoginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const password = document.getElementById('archivePassword').value;
+                    
+                    if (password === ARCHIVE_PASSWORD) {
+                        document.getElementById('archiveContent').style.display = 'block';
+                        document.getElementById('archivePasswordError').style.display = 'none';
+                        
+                        const data = loadArchiveData();
+                        archiveData = data;
+                        displayArchiveData(data, 1);
+                        
+                        showNotification('✅ Доступ к архиву разрешен', 'success');
+                    } else {
+                        document.getElementById('archivePasswordError').style.display = 'block';
+                        showNotification('❌ Неверный пароль', 'error');
+                    }
+                });
+            }
+        }
+
+        function initArchiveSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.getElementById('searchBtn');
+            const levelFilter = document.getElementById('levelFilter');
+            const testTypeFilter = document.getElementById('testTypeFilter');
+            const exportBtn = document.getElementById('exportBtn');
+            
+            function performSearch() {
+                const query = searchInput.value;
+                const level = levelFilter.value;
+                const testType = testTypeFilter.value;
+                
+                const filteredData = searchArchive(query, level, testType);
+                archiveData = filteredData;
+                displayArchiveData(filteredData, 1);
+            }
+            
+            if (searchBtn) searchBtn.addEventListener('click', performSearch);
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') performSearch();
+                });
+            }
+            if (levelFilter) levelFilter.addEventListener('change', performSearch);
+            if (testTypeFilter) testTypeFilter.addEventListener('change', performSearch);
+            if (exportBtn) exportBtn.addEventListener('click', exportToExcel);
+        }
+
+        function saveToArchive(userData, testResult) {
+            const archiveEntry = {
+                id: Date.now() + Math.random().toString(36).substr(2, 9),
+                timestamp: new Date().toISOString(),
+                userData: userData,
+                testResult: testResult,
+                completed: true
+            };
+            
+            let existingData = JSON.parse(localStorage.getItem('libidoTestArchive') || '[]');
+            existingData.push(archiveEntry);
+            localStorage.setItem('libidoTestArchive', JSON.stringify(existingData));
+        }
+
+        function loadArchiveData() {
+            return JSON.parse(localStorage.getItem('libidoTestArchive') || '[]');
+        }
+
+        function searchArchive(query, levelFilter, testTypeFilter) {
+            let filteredData = loadArchiveData();
+            
+            if (query) {
+                const searchTerm = query.toLowerCase();
+                filteredData = filteredData.filter(item => 
+                    item.userData.firstName.toLowerCase().includes(searchTerm) ||
+                    item.userData.lastName.toLowerCase().includes(searchTerm) ||
+                    item.testResult.level.toLowerCase().includes(searchTerm) ||
+                    item.userData.telegram.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            if (levelFilter) {
+                filteredData = filteredData.filter(item => 
+                    item.testResult.level.includes(levelFilter)
+                );
+            }
+            
+            if (testTypeFilter) {
+                filteredData = filteredData.filter(item => 
+                    item.testResult.testType === testTypeFilter
+                );
+            }
+            
+            return filteredData;
+        }
+
+        function displayArchiveData(data, page = 1) {
+            const tableBody = document.getElementById('resultsTableBody');
+            const pagination = document.getElementById('pagination');
+            
+            if (!tableBody) return;
+            
+            tableBody.innerHTML = '';
+            
+            const startIndex = (page - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const pageData = data.slice(startIndex, endIndex);
+            const totalPages = Math.ceil(data.length / itemsPerPage);
+            
+            pageData.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.userData.lastName} ${item.userData.firstName}</td>
+                    <td>${item.userData.age}</td>
+                    <td>${item.userData.phone}</td>
+                    <td>${item.userData.telegram}</td>
+                    <td>${item.testResult.testType === 'regular' ? 'Обычный' : 'Менопауза'}</td>
+                    <td>
+                        <span class="level-badge ${getLevelClass(item.testResult.level)}">
+                            ${item.testResult.level}
+                        </span>
+                    </td>
+                    <td>${item.testResult.score}</td>
+                    <td>${new Date(item.timestamp).toLocaleDateString('ru-RU')}</td>
+                    <td>
+                        <button class="btn-view-details" onclick="viewUserDetails('${item.id}')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn-delete" onclick="deleteUserData('${item.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+            
+            if (pageData.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="9" style="text-align: center; padding: 2rem;">
+                            <i class="fas fa-inbox" style="font-size: 3rem; color: #ccc; margin-bottom: 1rem;"></i>
+                            <p>Нет данных для отображения</p>
+                        </td>
+                    </tr>
+                `;
+            }
+            
+            updatePagination(totalPages, page);
+            updateArchiveStats(data);
+        }
+
+        function getLevelClass(level) {
+            if (level.includes('Низкое')) return 'level-badge-low';
+            if (level.includes('Среднее')) return 'level-badge-medium';
+            if (level.includes('Высокое')) return 'level-badge-high';
+            if (level.includes('Очень высокое')) return 'level-badge-very-high';
+            return '';
+        }
+
+        function updatePagination(totalPages, currentPage) {
+            const pagination = document.getElementById('pagination');
+            if (!pagination) return;
+            
+            pagination.innerHTML = '';
+            
+            if (totalPages <= 1) return;
+            
+            if (currentPage > 1) {
+                const prevBtn = document.createElement('button');
+                prevBtn.className = 'pagination-btn';
+                prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+                prevBtn.onclick = () => displayArchiveData(archiveData, currentPage - 1);
+                pagination.appendChild(prevBtn);
+            }
+            
+            for (let i = 1; i <= totalPages; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `pagination-btn ${i === currentPage ? 'active' : ''}`;
+                pageBtn.textContent = i;
+                pageBtn.onclick = () => displayArchiveData(archiveData, i);
+                pagination.appendChild(pageBtn);
+            }
+            
+            if (currentPage < totalPages) {
+                const nextBtn = document.createElement('button');
+                nextBtn.className = 'pagination-btn';
+                nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+                nextBtn.onclick = () => displayArchiveData(archiveData, currentPage + 1);
+                pagination.appendChild(nextBtn);
+            }
+        }
+
+        function updateArchiveStats(data) {
+            const totalUsers = document.getElementById('totalUsers');
+            const avgScore = document.getElementById('avgScore');
+            const completionRate = document.getElementById('completionRate');
+            
+            if (!totalUsers || !avgScore || !completionRate) return;
+            
+            totalUsers.textContent = data.length;
+            
+            if (data.length > 0) {
+                const totalScore = data.reduce((sum, item) => sum + item.testResult.score, 0);
+                avgScore.textContent = (totalScore / data.length).toFixed(1);
+            } else {
+                avgScore.textContent = '0';
+            }
+            
+            completionRate.textContent = '100%';
+        }
+
+        function viewUserDetails(userId) {
+            const userData = archiveData.find(item => item.id === userId);
+            if (!userData) return;
+            
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Детальная информация</h3>
+                        <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="user-details">
+                            <div class="detail-section">
+                                <h4>Контактная информация</h4>
+                                <p><strong>ФИО:</strong> ${userData.userData.lastName} ${userData.userData.firstName}</p>
+                                <p><strong>Возраст:</strong> ${userData.userData.age}</p>
+                                <p><strong>Телефон:</strong> ${userData.userData.phone}</p>
+                                <p><strong>Telegram:</strong> ${userData.userData.telegram}</p>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <h4>Результаты теста</h4>
+                                <p><strong>Тип теста:</strong> ${userData.testResult.testType === 'regular' ? 'Обычный' : 'Менопауза'}</p>
+                                <p><strong>Уровень либидо:</strong> ${userData.testResult.level}</p>
+                                <p><strong>Баллы:</strong> ${userData.testResult.score}</p>
+                                <p><strong>Дата прохождения:</strong> ${new Date(userData.timestamp).toLocaleString('ru-RU')}</p>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <h4>Описание результата</h4>
+                                <p>${userData.testResult.description}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-outline" onclick="this.closest('.modal-overlay').remove()">
+                            Закрыть
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+
+        function deleteUserData(userId) {
+            if (!confirm('Вы уверены, что хотите удалить данные этого пользователя?')) return;
+            
+            archiveData = archiveData.filter(item => item.id !== userId);
+            localStorage.setItem('libidoTestArchive', JSON.stringify(archiveData));
+            displayArchiveData(archiveData, currentPage);
+            showNotification('✅ Данные пользователя удалены', 'success');
+        }
+
+        function exportToExcel() {
+            const data = loadArchiveData();
+            if (data.length === 0) {
+                showNotification('❌ Нет данных для экспорта', 'error');
+                return;
+            }
+            
+            let csv = 'Фамилия,Имя,Возраст,Телефон,Telegram,Тип теста,Уровень либидо,Баллы,Дата\n';
+            data.forEach(item => {
+                csv += `"${item.userData.lastName}","${item.userData.firstName}","${item.userData.age}","${item.userData.phone}","${item.userData.telegram}","${item.testResult.testType === 'regular' ? 'Обычный' : 'Менопауза'}","${item.testResult.level}","${item.testResult.score}","${new Date(item.timestamp).toLocaleDateString('ru-RU')}"\n`;
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            link.setAttribute('href', url);
+            link.setAttribute('download', `архив_либидо_${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showNotification('✅ Данные экспортированы в CSV файл', 'success');
+        }
+
+        // Обработчики форм
+        async function handleRegistrationSubmit(e) {
+            e.preventDefault();
+            
+            if (!validateRegistrationForm(e.target)) {
+                showNotification('Пожалуйста, заполните все обязательные поля корректно', 'error');
+                return;
+            }
+            
+            const form = e.target;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            try {
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Регистрация...';
+                submitBtn.disabled = true;
+                
+                const formData = new FormData(form);
+                registrationData = Object.fromEntries(formData.entries());
+                
+                await sendRegistrationToTelegram(registrationData);
+                showNotification('✅ Регистрация прошла успешно! Переходим к тесту.', 'success');
+                
+                localStorage.setItem('registrationCompleted', 'true');
+                setTimeout(() => showSection('test'), 1500);
+                
+            } catch (error) {
+                console.error('Ошибка регистрации:', error);
+                showNotification('❌ Ошибка регистрации: ' + error.message, 'error');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        async function handleTestSubmit(e) {
+            e.preventDefault();
+            
+            if (!validateStep(6)) {
+                showNotification('Пожалуйста, ответьте на все обязательные вопросы этого шага', 'error');
+                return;
+            }
+            
+            const form = e.target;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            try {
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Обработка...';
+                submitBtn.disabled = true;
+                
+                const formData = new FormData(form);
+                testData = Object.fromEntries(formData.entries());
+                
+                const result = calculateTestResult(testData);
+                showTestResult(result);
+                
+                await sendTestResultsToTelegram(testData, result);
+                saveToArchive(registrationData, result);
+                
+                localStorage.setItem('diagnosticCompleted', 'true');
+                unlockAllSections();
+                
+                showNotification('✅ Диагностика завершена! Теперь вам доступны все разделы сайта.', 'success');
+                
+            } catch (error) {
+                console.error('Ошибка обработки теста:', error);
+                showNotification('❌ Ошибка обработки теста. Пожалуйста, попробуйте еще раз.', 'error');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        async function handleConsultationSubmit(e) {
+            e.preventDefault();
+            
+            const form = e.target;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            try {
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+                submitBtn.disabled = true;
+                
+                const formData = new FormData(form);
+                const consultationData = Object.fromEntries(formData.entries());
+                
+                await sendConsultationToTelegram(consultationData);
+                showNotification('✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.', 'success');
+                form.reset();
+                
+            } catch (error) {
+                console.error('Ошибка отправки заявки:', error);
+                showNotification('❌ Ошибка отправки заявки. Пожалуйста, попробуйте еще раз.', 'error');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        function validateRegistrationForm(form) {
+            let isValid = true;
+            
+            form.querySelectorAll('.error-message').forEach(error => {
+                error.style.display = 'none';
+            });
+            form.querySelectorAll('.form-control.error').forEach(input => {
+                input.classList.remove('error');
+            });
+            
+            const requiredFields = form.querySelectorAll('[required]');
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.classList.add('error');
+                    const errorId = field.id + 'Error';
+                    const errorElement = document.getElementById(errorId);
+                    if (errorElement) errorElement.style.display = 'block';
+                }
+            });
+            
+            const age = document.getElementById('age');
+            if (age.value) {
+                const ageNum = parseInt(age.value);
+                if (ageNum < 18 || ageNum > 80) {
+                    isValid = false;
+                    age.classList.add('error');
+                    document.getElementById('ageError').textContent = 'Пожалуйста, укажите возраст от 18 до 80 лет';
+                    document.getElementById('ageError').style.display = 'block';
+                }
+            }
+            
+            const phone = document.getElementById('phone');
+            if (phone.value && !isValidPhone(phone.value)) {
+                isValid = false;
+                phone.classList.add('error');
+                document.getElementById('phoneError').textContent = 'Пожалуйста, введите корректный номер телефона';
+                document.getElementById('phoneError').style.display = 'block';
+            }
+            
+            return isValid;
+        }
+
+        function isValidPhone(phone) {
+            const phoneRegex = /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;
+            return phoneRegex.test(phone.replace(/\s/g, ''));
+        }
+
+        // Функции для отправки в Telegram
+        async function sendRegistrationToTelegram(data) {
+            try {
+                let message = `🌟 *НОВАЯ РЕГИСТРАЦИЯ* 🌟\n\n`;
+                message += `👤 *Контактная информация:*\n`;
+                message += `   └ *Фамилия:* ${data.lastName}\n`;
+                message += `   └ *Имя:* ${data.firstName}\n`;
+                message += `   └ *Возраст:* ${data.age}\n`;
+                message += `   └ *Телефон:* ${data.phone}\n`;
+                message += `   └ *Telegram:* ${data.telegram}\n`;
+                message += `\n⏰ *Дата регистрации:* ${new Date().toLocaleString('ru-RU')}`;
+
+                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: message,
+                        parse_mode: 'Markdown'
+                    })
+                });
+
+                console.log('✅ Регистрация успешно отправлена в Telegram');
+                
+            } catch (error) {
+                console.error('Ошибка отправки регистрации:', error);
+                throw error;
+            }
+        }
+
+        async function sendTestResultsToTelegram(data, result) {
+            try {
+                let message = `📊 *НОВЫЙ РЕЗУЛЬТАТ ТЕСТА* 📊\n\n`;
+                message += `👤 *Пользователь:* ${registrationData.firstName} ${registrationData.lastName}\n`;
+                message += `📱 *Telegram:* ${registrationData.telegram}\n\n`;
+                message += `🔍 *Тип теста:* ${data.test_type === 'regular' ? 'Обычный' : 'Менопауза'}\n`;
+                message += `📈 *Результат:* ${result.level}\n`;
+                message += `⭐ *Баллы:* ${result.score}\n\n`;
+                
+                // Здесь можно добавить детали теста
+                
+                message += `\n⏰ *Дата заполнения:* ${new Date().toLocaleString('ru-RU')}`;
+
+                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: message,
+                        parse_mode: 'Markdown'
+                    })
+                });
+
+                console.log('✅ Результаты теста успешно отправлены в Telegram');
+
+            } catch (error) {
+                console.error('Ошибка отправки результатов теста:', error);
+            }
+        }
+
+        async function sendConsultationToTelegram(data) {
+            try {
+                let message = `📅 *НОВАЯ ЗАЯВКА НА КОНСУЛЬТАЦИЮ* 📅\n\n`;
+                message += `👤 *Имя:* ${data.name}\n`;
+                message += `📧 *Email:* ${data.email}\n`;
+                message += `💼 *Формат:* ${data.format}\n`;
+                if (data.message) {
+                    message += `📝 *Запрос:* ${data.message}\n`;
+                }
+                message += `\n⏰ *Дата заявки:* ${new Date().toLocaleString('ru-RU')}`;
+
+                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: message,
+                        parse_mode: 'Markdown'
+                    })
+                });
+
+                console.log('✅ Заявка на консультацию отправлена в Telegram');
+                
+            } catch (error) {
+                console.error('Ошибка отправки заявки:', error);
+                throw error;
+            }
+        }
+
+        function calculateTestResult(data) {
+            // Упрощенная логика расчета результата
+            let totalScore = Math.floor(Math.random() * 30) + 1; // Для демонстрации
+            
+            let level, description;
+            
+            if (data.test_type === 'regular') {
+                if (totalScore <= 8) {
+                    level = 'Низкое либидо';
+                    description = 'Ваше либидо находится на низком уровне. Это может быть связано с гормональными изменениями, стрессом или другими факторами.';
+                } else if (totalScore <= 16) {
+                    level = 'Среднее либидо';
+                    description = 'У вас средний уровень либидо. Есть потенциал для усиления сексуальной энергии через работу с гормональным балансом.';
+                } else if (totalScore <= 24) {
+                    level = 'Высокое либидо';
+                    description = 'Поздравляем! У вас высокий уровень либидо. Ваша сексуальная энергия находится в хорошем состоянии.';
+                } else {
+                    level = 'Очень высокое либидо';
+                    description = 'У вас очень высокий уровень либидо! Это прекрасный показатель вашей сексуальной энергии.';
+                }
+            } else {
+                if (totalScore <= 6) {
+                    level = 'Низкое либидо в менопаузе';
+                    description = 'В период менопаузы снижение либидо является распространенным явлением из-за гормональных изменений.';
+                } else if (totalScore <= 12) {
+                    level = 'Среднее либидо в менопаузе';
+                    description = 'У вас сохраняется умеренный уровень либидо, что является хорошим показателем для периода менопаузы.';
+                } else if (totalScore <= 18) {
+                    level = 'Высокое либидо в менопаузе';
+                    description = 'Поздравляем! Несмотря на менопаузу, у вас сохраняется высокий уровень либидо.';
+                } else {
+                    level = 'Очень высокое либидо в менопаузе';
+                    description = 'У вас исключительно высокий уровень либидо для периода менопаузы! Это редкий и ценный показатель.';
+                }
+            }
+            
+            return { level, description, score: totalScore, testType: data.test_type };
+        }
+
+        function showTestResult(result) {
+            const resultLevel = document.getElementById('resultLevel');
+            const resultDescription = document.getElementById('resultDescription');
+            
+            if (result.level.includes('Низкое')) {
+                resultLevel.className = 'result-level level-low';
+            } else if (result.level.includes('Среднее')) {
+                resultLevel.className = 'result-level level-medium';
+            } else if (result.level.includes('Высокое')) {
+                resultLevel.className = 'result-level level-high';
+            } else {
+                resultLevel.className = 'result-level level-very-high';
+            }
+            
+            resultLevel.textContent = result.level;
+            resultDescription.textContent = result.description;
+            
+            showSection('result');
+            scrollToTop();
+        }
+
+        function showNotification(text, type) {
+            const existingNotifications = document.querySelectorAll('.notification');
+            existingNotifications.forEach(notification => notification.remove());
+            
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}" 
+                   style="margin-right: 8px;"></i> 
+                ${text}
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 5000);
+        }
+
+        // Заглушки для отсутствующих функций
+        function generateTestSteps(testType) {
+            // Заглушка для генерации шагов теста
+            console.log('Генерация шагов для типа теста:', testType);
+        }
+
+        function generatePeriodQuestions(periodId, periodName) {
+            return ''; // Заглушка
+        }
+
+        function generateMenopauseQuestions() {
+            return ''; // Заглушка
+        }
+
+        function generateOptions(name, options) {
+            return ''; // Заглушка
+        }
+    </script>
 </body>
 </html>
+
 
 
 
