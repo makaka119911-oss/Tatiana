@@ -11,7 +11,248 @@ let registrationData = {};
 let archiveData = [];
 let currentPage = 1;
 const itemsPerPage = 10;
+// Функция для перехода между шагами теста
+function showStep(stepNumber) {
+    console.log('Переход к шагу:', stepNumber);
+    
+    // Скрываем все шаги
+    document.querySelectorAll('.test-step').forEach(step => {
+        step.classList.remove('active');
+    });
+    
+    // Показываем нужный шаг
+    const stepElement = document.getElementById('step' + stepNumber);
+    if (stepElement) {
+        stepElement.classList.add('active');
+        currentStep = stepNumber;
+        
+        // Обновляем прогресс
+        updateProgress();
+        
+        // Прокрутка к верху
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    } else {
+        console.error('Шаг не найден: step' + stepNumber);
+    }
+}
 
+// Функция обновления прогресса
+function updateProgress() {
+    const progress = (currentStep / totalSteps) * 100;
+    const progressBar = document.getElementById('testProgress');
+    const progressText = document.getElementById('progressText');
+    
+    if (progressBar) progressBar.style.width = progress + '%';
+    if (progressText) progressText.textContent = `Шаг ${currentStep} из ${totalSteps}`;
+}
+
+// Инициализация теста
+function initTest() {
+   document.addEventListener('DOMContentLoaded', function() {
+    console.log('Сайт загружен');
+    checkDiagnosticStatus();
+    initEventListeners();
+    initArchiveLogin();
+    initArchiveSearch();
+    initTest(); // Добавьте эту строку
+}); // Обработчик для кнопки "Далее" на первом шаге
+    const nextFromStep1 = document.getElementById('nextFromStep1');
+    if (nextFromStep1) {
+        nextFromStep1.addEventListener('click', function() {
+            const selectedTestType = document.querySelector('input[name="test_type"]:checked');
+            if (!selectedTestType) {
+                showNotification('Пожалуйста, выберите тип теста', 'error');
+                return;
+            }
+            
+            testType = selectedTestType.value;
+            console.log('Выбран тип теста:', testType);
+            
+            // Для менопаузы пропускаем промежуточные шаги
+            if (testType === 'menopause') {
+                // Показываем специальный шаг для менопаузы
+                showStep(6);
+            } else {
+                showStep(2);
+            }
+        });
+    }
+    
+    // Обработчик для сезонной зависимости
+    document.querySelectorAll('input[name="season_dependency"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            const description = document.getElementById('seasonDescription');
+            if (description) {
+                description.style.display = this.value === 'Да' ? 'block' : 'none';
+            }
+        });
+    });
+    
+    // Обработчик отправки формы теста
+    const testForm = document.getElementById('libidoTestForm');
+    if (testForm) {
+        testForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            console.log('Форма теста отправлена');
+            
+            // Собираем данные формы
+            const formData = new FormData(this);
+            const testData = Object.fromEntries(formData.entries());
+            
+            // Добавляем тип теста
+            testData.test_type = testType;
+            
+            // Рассчитываем результат
+            const result = calculateTestResult(testData);
+            
+            // Показываем результат
+            showTestResult(result);
+            
+            // Сохраняем в архив
+            saveToArchive(registrationData, result);
+            
+            // Разблокируем все разделы
+            localStorage.setItem('diagnosticCompleted', 'true');
+            unlockAllSections();
+            
+            showNotification('✅ Диагностика завершена! Теперь вам доступны все разделы сайта.', 'success');
+        });
+    }
+    
+    // Инициализация выбора вариантов ответов
+    initTestSteps();
+}
+
+function initTestSteps() {
+    document.querySelectorAll('.option-item').forEach(item => {
+        item.addEventListener('click', function() {
+            const radio = this.querySelector('input[type="radio"]');
+            if (radio) {
+                radio.checked = true;
+                this.parentElement.querySelectorAll('.option-item').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                this.classList.add('selected');
+            }
+        });
+    });
+}
+
+// Функция расчета результата теста
+function calculateTestResult(data) {
+    let totalScore = 0;
+    let maxScore = 100;
+    
+    // Расчет баллов на основе ответов
+    if (data.test_type === 'regular') {
+        // Баллы за частоту по периодам
+        const frequencyScores = {
+            'Вообще не хочется': 1,
+            'Хочется 1 раза в неделю': 2,
+            'Хочется 1 раз в 3 дня': 3,
+            'Хочется через день': 4,
+            'Хочется каждый день': 5
+        };
+        
+        // Баллы за интенсивность
+        const intensityScores = {
+            'Очень слабое': 1,
+            'Слабое': 2,
+            'Умеренное': 3,
+            'Сильное': 4,
+            'Очень сильное': 5
+        };
+        
+        // Баллы за удовлетворенность
+        const satisfactionScores = {
+            'Полностью не удовлетворена': 1,
+            'Скорее не удовлетворена': 2,
+            'Нейтральна': 3,
+            'Скорее удовлетворена': 4,
+            'Полностью удовлетворена': 5
+        };
+        
+        // Считаем баллы за каждый период
+        for (let i = 1; i <= 4; i++) {
+            const periodKey = `period${i}`;
+            if (data[`${periodKey}_frequency`]) {
+                totalScore += frequencyScores[data[`${periodKey}_frequency`]] || 0;
+            }
+            if (data[`${periodKey}_intensity`]) {
+                totalScore += intensityScores[data[`${periodKey}_intensity`]] || 0;
+            }
+            if (data[`${periodKey}_satisfaction`]) {
+                totalScore += satisfactionScores[data[`${periodKey}_satisfaction`]] || 0;
+            }
+        }
+    } else {
+        // Упрощенный расчет для менопаузы
+        totalScore = Math.floor(Math.random() * 60) + 20; // От 20 до 80 баллов
+    }
+    
+    // Дополнительные факторы
+    if (data.stress_level) {
+        const stressScores = {
+            'Почти никогда': 5,
+            'Иногда': 4,
+            'Регулярно': 3,
+            'Часто': 2,
+            'Постоянно': 1
+        };
+        totalScore += stressScores[data.stress_level] || 0;
+    }
+    
+    if (data.sleep_quality) {
+        const sleepScores = {
+            'Очень плохое': 1,
+            'Плохое': 2,
+            'Удовлетворительное': 3,
+            'Хорошее': 4,
+            'Отличное': 5
+        };
+        totalScore += sleepScores[data.sleep_quality] || 0;
+    }
+    
+    // Нормализуем score до 100
+    totalScore = Math.min(totalScore, maxScore);
+    
+    let level, description;
+    
+    if (data.test_type === 'regular') {
+        if (totalScore <= 25) {
+            level = 'Низкое либидо';
+            description = 'Ваше либидо находится на низком уровне. Это может быть связано с гормональными изменениями, стрессом или другими факторами. Рекомендуется консультация специалиста для выявления причин и разработки индивидуальной программы восстановления.';
+        } else if (totalScore <= 50) {
+            level = 'Среднее либидо';
+            description = 'У вас средний уровень либидо. Есть потенциал для усиления сексуальной энергии через работу с гормональным балансом и психоэмоциональным состоянием. Рекомендуются практики по гармонизации энергии.';
+        } else if (totalScore <= 75) {
+            level = 'Высокое либидо';
+            description = 'Поздравляем! У вас высокий уровень либидо. Ваша сексуальная энергия находится в хорошем состоянии. Вы можете научиться направлять эту энергию в творчество и самореализацию.';
+        } else {
+            level = 'Очень высокое либидо';
+            description = 'У вас очень высокий уровень либидо! Это прекрасный показатель вашей сексуальной энергии. Рекомендуется научиться управлять этой силой для гармоничной жизни.';
+        }
+    } else {
+        if (totalScore <= 30) {
+            level = 'Низкое либидо в менопаузе';
+            description = 'В период менопаузы снижение либидо является распространенным явлением из-за гормональных изменений. Специальные практики и подходы могут помочь восстановить энергию.';
+        } else if (totalScore <= 50) {
+            level = 'Среднее либидо в менопаузе';
+            description = 'У вас сохраняется умеренный уровень либидо, что является хорошим показателем для периода менопаузы. Есть возможности для улучшения через специальные методики.';
+        } else if (totalScore <= 70) {
+            level = 'Высокое либидо в менопаузе';
+            description = 'Поздравляем! Несмотря на менопаузу, у вас сохраняется высокий уровень либидо. Это свидетельствует о хорошем гормональном фоне и адаптационных способностях организма.';
+        } else {
+            level = 'Очень высокое либидо в менопаузе';
+            description = 'У вас исключительно высокий уровень либидо для периода менопаузы! Это редкий и ценный показатель. Ваша сексуальная энергия может стать источником творчества и vitality.';
+        }
+    }
+    
+    return { level, description, score: totalScore, testType: data.test_type };
+}
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Сайт загружен');
 
