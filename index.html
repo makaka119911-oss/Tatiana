@@ -1419,209 +1419,346 @@
         </div>
     </section>
 
-    <!-- Test Section -->
-    <section id="test" class="section-hidden">
-        <div class="container">
-            <div class="section-title">
-                <h2>Анонимная Тест Анкета на женское либидо</h2>
-                <p>Ответьте на вопросы для точной диагностики вашего состояния</p>
-            </div>
-            
-            <div class="form-container">
-                <!-- Progress Bar -->
-                <div class="test-progress-container">
-                    <div class="test-progress-bar" id="testProgress"></div>
-                </div>
-                <div class="test-progress-text" id="progressText">Шаг 1 из 6</div>
-
-                <!-- Test Steps -->
-                <form id="libidoTestForm">
-                    <!-- Step 1: Test Type Selection -->
-                    <div class="test-step active" id="step1">
-                        <div class="step-header">
-                            <h4>Выберите тип теста</h4>
-                            <p>Это поможет нам адаптировать вопросы под ваш случай</p>
-                        </div>
-                        
-                        <div class="question-block">
-                            <div class="question-text">Какой тип теста вам подходит?</div>
-                            <div class="options-grid">
-                                <label class="option-item">
-                                    <input type="radio" name="test_type" value="regular" required>
-                                    <div>
-                                        <strong>Обычный тест</strong><br>
-                                        <small>Для женщин с регулярными циклами</small>
-                                    </div>
-                                </label>
-                                <label class="option-item">
-                                    <input type="radio" name="test_type" value="menopause">
-                                    <div>
-                                        <strong>Тест для менопаузы</strong><br>
-                                        <small>Для женщин в периоде менопаузы</small>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <div class="test-navigation">
-                            <div></div>
-                            <button type="button" class="btn btn-secondary" id="nextFromStep1">
-                                Далее <i class="fas fa-arrow-right"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Step 2: Regular Test Questions -->
-                    <div class="test-step" id="step2">
-                        <div class="step-header">
-                            <h4>Период: От конца месячных до овуляции</h4>
-                            <p>Ответьте на вопросы для этого периода цикла</p>
-                        </div>
-                        
-                        <div class="question-block">
-                            <div class="question-text">Как часто хочется секса в этот период?</div>
-                            <div class="options-grid">
-                                <label class="option-item"><input type="radio" name="period1_frequency" value="Вообще не хочется" required> Вообще не хочется</label>
-                                <label class="option-item"><input type="radio" name="period1_frequency" value="Хочется 1 раза в неделю"> Хочется 1 раза в неделю</label>
-                                <label class="option-item"><input type="radio" name="period1_frequency" value="Хочется 1 раз в 3 дня"> Хочется 1 раз в 3 дня</label>
-                                <label class="option-item"><input type="radio" name="period1_frequency" value="Хочется через день"> Хочется через день</label>
-                                <label class="option-item"><input type="radio" name="period1_frequency" value="Хочется каждый день"> Хочется каждый день</label>
-                            </div>
-                        </div>
-                        
-                        <div class="test-navigation">
-                            <button type="button" class="btn btn-outline" onclick="showStep(1)">
-                                <i class="fas fa-arrow-left"></i> Назад
-                            </button>
-                            <button type="button" class="btn btn-secondary" onclick="showStep(3)">
-                                Далее <i class="fas fa-arrow-right"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Step 3: Regular Test Questions -->
-                    <div class="test-step" id="step3">
-                        <div class="step-header">
-                            <h4>Период: В период овуляции</h4>
-                            <p>Ответьте на вопросы для этого периода цикла</p>
-                        </div>
-                        
-                        <div class="question-block">
-                            <div class="question-text">Как часто хочется секса в этот период?</div>
-                            <div class="options-grid">
-                                <label class="option-item"><input type="radio" name="period2_frequency" value="Вообще не хочется" required> Вообще не хочется</label>
-                                <label class="option-item"><input type="radio" name="period2_frequency" value="Хочется 1 раза в неделю"> Хочется 1 раза в неделю</label>
-                                <label class="option-item"><input type="radio" name="period2_frequency" value="Хочется 1 раз в 3 дня"> Хочется 1 раз в 3 дня</label>
-                                <label class="option-item"><input type="radio" name="period2_frequency" value="Хочется через день"> Хочется через день</label>
-                                <label class="option-item"><input type="radio" name="period2_frequency" value="Хочется каждый день"> Хочется каждый день</label>
-                            </div>
-                        </div>
-                        
-                        <div class="test-navigation">
-                            <button type="button" class="btn btn-outline" onclick="showStep(2)">
-                                <i class="fas fa-arrow-left"></i> Назад
-                            </button>
-                            <button type="button" class="btn btn-secondary" onclick="showStep(4)">
-                                Далее <i class="fas fa-arrow-right"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Step 4: Regular Test Questions -->
-                    <div class="test-step" id="step4">
-                        <div class="step-header">
-                            <h4>Период: От конца овуляции до начала месячных</h4>
-                            <p>Ответьте на вопросы для этого периода цикла</p>
-                        </div>
-                        
-                        <div class="question-block">
-                            <div class="question-text">Как часто хочется секса в этот период?</div>
-                            <div class="options-grid">
-                                <label class="option-item"><input type="radio" name="period3_frequency" value="Вообще не хочется" required> Вообще не хочется</label>
-                                <label class="option-item"><input type="radio" name="period3_frequency" value="Хочется 1 раза в неделю"> Хочется 1 раза в неделю</label>
-                                <label class="option-item"><input type="radio" name="period3_frequency" value="Хочется 1 раз в 3 дня"> Хочется 1 раз в 3 дня</label>
-                                <label class="option-item"><input type="radio" name="period3_frequency" value="Хочется через день"> Хочется через день</label>
-                                <label class="option-item"><input type="radio" name="period3_frequency" value="Хочется каждый день"> Хочется каждый день</label>
-                            </div>
-                        </div>
-                        
-                        <div class="test-navigation">
-                            <button type="button" class="btn btn-outline" onclick="showStep(3)">
-                                <i class="fas fa-arrow-left"></i> Назад
-                            </button>
-                            <button type="button" class="btn btn-secondary" onclick="showStep(5)">
-                                Далее <i class="fas fa-arrow-right"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Step 5: Regular Test Questions -->
-                    <div class="test-step" id="step5">
-                        <div class="step-header">
-                            <h4>Период: В период месячных</h4>
-                            <p>Ответьте на вопросы для этого периода цикла</p>
-                        </div>
-                        
-                        <div class="question-block">
-                            <div class="question-text">Как часто хочется секса в этот период?</div>
-                            <div class="options-grid">
-                                <label class="option-item"><input type="radio" name="period4_frequency" value="Вообще не хочется" required> Вообще не хочется</label>
-                                <label class="option-item"><input type="radio" name="period4_frequency" value="Хочется 1 раза в неделю"> Хочется 1 раза в неделю</label>
-                                <label class="option-item"><input type="radio" name="period4_frequency" value="Хочется 1 раз в 3 дня"> Хочется 1 раз в 3 дня</label>
-                                <label class="option-item"><input type="radio" name="period4_frequency" value="Хочется через день"> Хочется через день</label>
-                                <label class="option-item"><input type="radio" name="period4_frequency" value="Хочется каждый день"> Хочется каждый день</label>
-                            </div>
-                        </div>
-                        
-                        <div class="test-navigation">
-                            <button type="button" class="btn btn-outline" onclick="showStep(4)">
-                                <i class="fas fa-arrow-left"></i> Назад
-                            </button>
-                            <button type="button" class="btn btn-secondary" onclick="showStep(6)">
-                                Далее <i class="fas fa-arrow-right"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Step 6: Seasonal Question -->
-                    <div class="test-step" id="step6">
-                        <div class="step-header">
-                            <h4>Сезонные изменения</h4>
-                            <p>Завершающий вопрос о влиянии времени года</p>
-                        </div>
-                        
-                        <div class="question-block">
-                            <div class="question-text">Зависит ли Ваше либидо от времени года?</div>
-                            <div class="options-grid">
-                                <label class="option-item">
-                                    <input type="radio" name="season_dependency" value="Нет" required>
-                                    Нет, не зависит
-                                </label>
-                                <label class="option-item">
-                                    <input type="radio" name="season_dependency" value="Да">
-                                    Да, зависит
-                                </label>
-                            </div>
-                            
-                            <div id="seasonDescription" style="display: none; margin-top: 1rem;">
-                                <label class="question-text">Опишите, как меняется ваше либидо в зависимости от времени года:</label>
-                                <textarea name="season_description" class="form-control" placeholder="Опишите изменения..." rows="4"></textarea>
-                            </div>
-                        </div>
-                        
-                        <div class="test-navigation">
-                            <button type="button" class="btn btn-outline" onclick="showStep(5)">
-                                <i class="fas fa-arrow-left"></i> Назад
-                            </button>
-                            <button type="submit" class="btn btn-large">
-                                <i class="fas fa-check-circle"></i> Получить результат
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+   <!-- Test Section -->
+<section id="test" class="section-hidden">
+    <div class="container">
+        <div class="section-title">
+            <h2>Анонимная Тест Анкета на женское либидо</h2>
         </div>
-    </section>
+        
+        <div class="form-container">
+            <!-- Progress Bar -->
+            <div class="test-progress-container">
+                <div class="test-progress-bar" id="testProgress"></div>
+            </div>
+            <div class="test-progress-text" id="progressText">Шаг 1 из 6</div>
+
+            <!-- Test Steps -->
+            <form id="libidoTestForm">
+                <!-- Step 1: Test Type Selection -->
+                <div class="test-step active" id="step1">
+                    <div class="step-header">
+                        <h4>Выберите тип теста</h4>
+                        <p>Это поможет нам адаптировать вопросы под ваш случай</p>
+                    </div>
+                    
+                    <div class="question-block">
+                        <div class="question-text">Какой тип теста вам подходит?</div>
+                        <div class="options-grid">
+                            <label class="option-item">
+                                <input type="radio" name="test_type" value="regular" required>
+                                <div>
+                                    <strong>Обычный тест</strong><br>
+                                    <small>Для женщин с регулярными циклами</small>
+                                </div>
+                            </label>
+                            <label class="option-item">
+                                <input type="radio" name="test_type" value="menopause">
+                                <div>
+                                    <strong>Тест для менопаузы</strong><br>
+                                    <small>Для женщин в периоде менопаузы</small>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="test-navigation">
+                        <div></div>
+                        <button type="button" class="btn btn-secondary" id="nextFromStep1">
+                            Далее <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Period 1 Questions -->
+                <div class="test-step" id="step2">
+                    <div class="step-header">
+                        <h4>Период: От конца месячных до овуляции</h4>
+                        <p>Ответьте на вопросы для этого периода цикла</p>
+                    </div>
+                    
+                    <!-- Frequency Question -->
+                    <div class="question-block">
+                        <div class="question-text">1. Как часто хочется секса в этот период?</div>
+                        <div class="options-grid">
+                            <label class="option-item"><input type="radio" name="period1_frequency" value="Вообще не хочется" required> Вообще не хочется</label>
+                            <label class="option-item"><input type="radio" name="period1_frequency" value="Хочется 1 раза в неделю"> Хочется 1 раза в неделю</label>
+                            <label class="option-item"><input type="radio" name="period1_frequency" value="Хочется 1 раз в 3 дня"> Хочется 1 раз в 3 дня</label>
+                            <label class="option-item"><input type="radio" name="period1_frequency" value="Хочется через день"> Хочется через день</label>
+                            <label class="option-item"><input type="radio" name="period1_frequency" value="Хочется каждый день"> Хочется каждый день</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Intensity Question -->
+                    <div class="question-block">
+                        <div class="question-text">2. Насколько сильное желание секса в этот период?</div>
+                        <div class="options-grid">
+                            <label class="option-item"><input type="radio" name="period1_intensity" value="Очень слабое" required> Очень слабое</label>
+                            <label class="option-item"><input type="radio" name="period1_intensity" value="Слабое"> Слабое</label>
+                            <label class="option-item"><input type="radio" name="period1_intensity" value="Умеренное"> Умеренное</label>
+                            <label class="option-item"><input type="radio" name="period1_intensity" value="Сильное"> Сильное</label>
+                            <label class="option-item"><input type="radio" name="period1_intensity" value="Очень сильное"> Очень сильное</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Satisfaction Question -->
+                    <div class="question-block">
+                        <div class="question-text">3. Насколько вас удовлетворяет ваша сексуальная жизнь в этот период?</div>
+                        <div class="options-grid">
+                            <label class="option-item"><input type="radio" name="period1_satisfaction" value="Полностью не удовлетворена" required> Полностью не удовлетворена</label>
+                            <label class="option-item"><input type="radio" name="period1_satisfaction" value="Скорее не удовлетворена"> Скорее не удовлетворена</label>
+                            <label class="option-item"><input type="radio" name="period1_satisfaction" value="Нейтральна"> Нейтральна</label>
+                            <label class="option-item"><input type="radio" name="period1_satisfaction" value="Скорее удовлетворена"> Скорее удовлетворена</label>
+                            <label class="option-item"><input type="radio" name="period1_satisfaction" value="Полностью удовлетворена"> Полностью удовлетворена</label>
+                        </div>
+                    </div>
+                    
+                    <div class="test-navigation">
+                        <button type="button" class="btn btn-outline" onclick="showStep(1)">
+                            <i class="fas fa-arrow-left"></i> Назад
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="showStep(3)">
+                            Далее <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Period 2 Questions -->
+                <div class="test-step" id="step3">
+                    <div class="step-header">
+                        <h4>Период: В период овуляции</h4>
+                        <p>Ответьте на вопросы для этого периода цикла</p>
+                    </div>
+                    
+                    <!-- Frequency Question -->
+                    <div class="question-block">
+                        <div class="question-text">1. Как часто хочется секса в этот период?</div>
+                        <div class="options-grid">
+                            <label class="option-item"><input type="radio" name="period2_frequency" value="Вообще не хочется" required> Вообще не хочется</label>
+                            <label class="option-item"><input type="radio" name="period2_frequency" value="Хочется 1 раза в неделю"> Хочется 1 раза в неделю</label>
+                            <label class="option-item"><input type="radio" name="period2_frequency" value="Хочется 1 раз в 3 дня"> Хочется 1 раз в 3 дня</label>
+                            <label class="option-item"><input type="radio" name="period2_frequency" value="Хочется через день"> Хочется через день</label>
+                            <label class="option-item"><input type="radio" name="period2_frequency" value="Хочется каждый день"> Хочется каждый день</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Intensity Question -->
+                    <div class="question-block">
+                        <div class="question-text">2. Насколько сильное желание секса в этот период?</div>
+                        <div class="options-grid">
+                            <label class="option-item"><input type="radio" name="period2_intensity" value="Очень слабое" required> Очень слабое</label>
+                            <label class="option-item"><input type="radio" name="period2_intensity" value="Слабое"> Слабое</label>
+                            <label class="option-item"><input type="radio" name="period2_intensity" value="Умеренное"> Умеренное</label>
+                            <label class="option-item"><input type="radio" name="period2_intensity" value="Сильное"> Сильное</label>
+                            <label class="option-item"><input type="radio" name="period2_intensity" value="Очень сильное"> Очень сильное</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Satisfaction Question -->
+                    <div class="question-block">
+                        <div class="question-text">3. Насколько вас удовлетворяет ваша сексуальная жизнь в этот период?</div>
+                        <div class="options-grid">
+                            <label class="option-item"><input type="radio" name="period2_satisfaction" value="Полностью не удовлетворена" required> Полностью не удовлетворена</label>
+                            <label class="option-item"><input type="radio" name="period2_satisfaction" value="Скорее не удовлетворена"> Скорее не удовлетворена</label>
+                            <label class="option-item"><input type="radio" name="period2_satisfaction" value="Нейтральна"> Нейтральна</label>
+                            <label class="option-item"><input type="radio" name="period2_satisfaction" value="Скорее удовлетворена"> Скорее удовлетворена</label>
+                            <label class="option-item"><input type="radio" name="period2_satisfaction" value="Полностью удовлетворена"> Полностью удовлетворена</label>
+                        </div>
+                    </div>
+                    
+                    <div class="test-navigation">
+                        <button type="button" class="btn btn-outline" onclick="showStep(2)">
+                            <i class="fas fa-arrow-left"></i> Назад
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="showStep(4)">
+                            Далее <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Period 3 Questions -->
+                <div class="test-step" id="step4">
+                    <div class="step-header">
+                        <h4>Период: От конца овуляции до начала месячных</h4>
+                        <p>Ответьте на вопросы для этого периода цикла</p>
+                    </div>
+                    
+                    <!-- Frequency Question -->
+                    <div class="question-block">
+                        <div class="question-text">1. Как часто хочется секса в этот период?</div>
+                        <div class="options-grid">
+                            <label class="option-item"><input type="radio" name="period3_frequency" value="Вообще не хочется" required> Вообще не хочется</label>
+                            <label class="option-item"><input type="radio" name="period3_frequency" value="Хочется 1 раза в неделю"> Хочется 1 раза в неделю</label>
+                            <label class="option-item"><input type="radio" name="period3_frequency" value="Хочется 1 раз в 3 дня"> Хочется 1 раз в 3 дня</label>
+                            <label class="option-item"><input type="radio" name="period3_frequency" value="Хочется через день"> Хочется через день</label>
+                            <label class="option-item"><input type="radio" name="period3_frequency" value="Хочется каждый день"> Хочется каждый день</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Intensity Question -->
+                    <div class="question-block">
+                        <div class="question-text">2. Насколько сильное желание секса в этот период?</div>
+                        <div class="options-grid">
+                            <label class="option-item"><input type="radio" name="period3_intensity" value="Очень слабое" required> Очень слабое</label>
+                            <label class="option-item"><input type="radio" name="period3_intensity" value="Слабое"> Слабое</label>
+                            <label class="option-item"><input type="radio" name="period3_intensity" value="Умеренное"> Умеренное</label>
+                            <label class="option-item"><input type="radio" name="period3_intensity" value="Сильное"> Сильное</label>
+                            <label class="option-item"><input type="radio" name="period3_intensity" value="Очень сильное"> Очень сильное</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Satisfaction Question -->
+                    <div class="question-block">
+                        <div class="question-text">3. Насколько вас удовлетворяет ваша сексуальная жизнь в этот период?</div>
+                        <div class="options-grid">
+                            <label class="option-item"><input type="radio" name="period3_satisfaction" value="Полностью не удовлетворена" required> Полностью не удовлетворена</label>
+                            <label class="option-item"><input type="radio" name="period3_satisfaction" value="Скорее не удовлетворена"> Скорее не удовлетворена</label>
+                            <label class="option-item"><input type="radio" name="period3_satisfaction" value="Нейтральна"> Нейтральна</label>
+                            <label class="option-item"><input type="radio" name="period3_satisfaction" value="Скорее удовлетворена"> Скорее удовлетворена</label>
+                            <label class="option-item"><input type="radio" name="period3_satisfaction" value="Полностью удовлетворена"> Полностью удовлетворена</label>
+                        </div>
+                    </div>
+                    
+                    <div class="test-navigation">
+                        <button type="button" class="btn btn-outline" onclick="showStep(3)">
+                            <i class="fas fa-arrow-left"></i> Назад
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="showStep(5)">
+                            Далее <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 5: Period 4 Questions -->
+                <div class="test-step" id="step5">
+                    <div class="step-header">
+                        <h4>Период: В период месячных</h4>
+                        <p>Ответьте на вопросы для этого периода цикла</p>
+                    </div>
+                    
+                    <!-- Frequency Question -->
+                    <div class="question-block">
+                        <div class="question-text">1. Как часто хочется секса в этот период?</div>
+                        <div class="options-grid">
+                            <label class="option-item"><input type="radio" name="period4_frequency" value="Вообще не хочется" required> Вообще не хочется</label>
+                            <label class="option-item"><input type="radio" name="period4_frequency" value="Хочется 1 раза в неделю"> Хочется 1 раза в неделю</label>
+                            <label class="option-item"><input type="radio" name="period4_frequency" value="Хочется 1 раз в 3 дня"> Хочется 1 раз в 3 дня</label>
+                            <label class="option-item"><input type="radio" name="period4_frequency" value="Хочется через день"> Хочется через день</label>
+                            <label class="option-item"><input type="radio" name="period4_frequency" value="Хочется каждый день"> Хочется каждый день</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Intensity Question -->
+                    <div class="question-block">
+                        <div class="question-text">2. Насколько сильное желание секса в этот период?</div>
+                        <div class="options-grid">
+                            <label class="option-item"><input type="radio" name="period4_intensity" value="Очень слабое" required> Очень слабое</label>
+                            <label class="option-item"><input type="radio" name="period4_intensity" value="Слабое"> Слабое</label>
+                            <label class="option-item"><input type="radio" name="period4_intensity" value="Умеренное"> Умеренное</label>
+                            <label class="option-item"><input type="radio" name="period4_intensity" value="Сильное"> Сильное</label>
+                            <label class="option-item"><input type="radio" name="period4_intensity" value="Очень сильное"> Очень сильное</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Satisfaction Question -->
+                    <div class="question-block">
+                        <div class="question-text">3. Насколько вас удовлетворяет ваша сексуальная жизнь в этот период?</div>
+                        <div class="options-grid">
+                            <label class="option-item"><input type="radio" name="period4_satisfaction" value="Полностью не удовлетворена" required> Полностью не удовлетворена</label>
+                            <label class="option-item"><input type="radio" name="period4_satisfaction" value="Скорее не удовлетворена"> Скорее не удовлетворена</label>
+                            <label class="option-item"><input type="radio" name="period4_satisfaction" value="Нейтральна"> Нейтральна</label>
+                            <label class="option-item"><input type="radio" name="period4_satisfaction" value="Скорее удовлетворена"> Скорее удовлетворена</label>
+                            <label class="option-item"><input type="radio" name="period4_satisfaction" value="Полностью удовлетворена"> Полностью удовлетворена</label>
+                        </div>
+                    </div>
+                    
+                    <div class="test-navigation">
+                        <button type="button" class="btn btn-outline" onclick="showStep(4)">
+                            <i class="fas fa-arrow-left"></i> Назад
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="showStep(6)">
+                            Далее <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 6: Additional Questions -->
+                <div class="test-step" id="step6">
+                    <div class="step-header">
+                        <h4>Дополнительные вопросы</h4>
+                        <p>Завершающие вопросы для точной диагностики</p>
+                    </div>
+                    
+                    <!-- Seasonal Dependency -->
+                    <div class="question-block">
+                        <div class="question-text">1. Зависит ли Ваше либидо от времени года?</div>
+                        <div class="options-grid">
+                            <label class="option-item">
+                                <input type="radio" name="season_dependency" value="Нет" required>
+                                Нет, не зависит
+                            </label>
+                            <label class="option-item">
+                                <input type="radio" name="season_dependency" value="Да">
+                                Да, зависит
+                            </label>
+                        </div>
+                        
+                        <div id="seasonDescription" style="display: none; margin-top: 1rem;">
+                            <label class="question-text">Опишите, как меняется ваше либидо в зависимости от времени года:</label>
+                            <textarea name="season_description" class="form-control" placeholder="Опишите изменения..." rows="4"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Stress Level -->
+                    <div class="question-block">
+                        <div class="question-text">2. Как часто вы испытываете стресс в повседневной жизни?</div>
+                        <div class="options-grid">
+                            <label class="option-item"><input type="radio" name="stress_level" value="Почти никогда" required> Почти никогда</label>
+                            <label class="option-item"><input type="radio" name="stress_level" value="Иногда"> Иногда</label>
+                            <label class="option-item"><input type="radio" name="stress_level" value="Регулярно"> Регулярно</label>
+                            <label class="option-item"><input type="radio" name="stress_level" value="Часто"> Часто</label>
+                            <label class="option-item"><input type="radio" name="stress_level" value="Постоянно"> Постоянно</label>
+                        </div>
+                    </div>
+
+                    <!-- Sleep Quality -->
+                    <div class="question-block">
+                        <div class="question-text">3. Как вы оцениваете качество своего сна?</div>
+                        <div class="options-grid">
+                            <label class="option-item"><input type="radio" name="sleep_quality" value="Очень плохое" required> Очень плохое</label>
+                            <label class="option-item"><input type="radio" name="sleep_quality" value="Плохое"> Плохое</label>
+                            <label class="option-item"><input type="radio" name="sleep_quality" value="Удовлетворительное"> Удовлетворительное</label>
+                            <label class="option-item"><input type="radio" name="sleep_quality" value="Хорошее"> Хорошее</label>
+                            <label class="option-item"><input type="radio" name="sleep_quality" value="Отличное"> Отличное</label>
+                        </div>
+                    </div>
+
+                    <!-- Relationship Satisfaction -->
+                    <div class="question-block">
+                        <div class="question-text">4. Насколько вы удовлетворены своими текущими отношениями?</div>
+                        <div class="options-grid">
+                            <label class="option-item"><input type="radio" name="relationship_satisfaction" value="Полностью не удовлетворена" required> Полностью не удовлетворена</label>
+                            <label class="option-item"><input type="radio" name="relationship_satisfaction" value="Скорее не удовлетворена"> Скорее не удовлетворена</label>
+                            <label class="option-item"><input type="radio" name="relationship_satisfaction" value="Нейтральна"> Нейтральна</label>
+                            <label class="option-item"><input type="radio" name="relationship_satisfaction" value="Скорее удовлетворена"> Скорее удовлетворена</label>
+                            <label class="option-item"><input type="radio" name="relationship_satisfaction" value="Полностью удовлетворена"> Полностью удовлетворена</label>
+                            <label class="option-item"><input type="radio" name="relationship_satisfaction" value="Не состою в отношениях"> Не состою в отношениях</label>
+                        </div>
+                    </div>
+                    
+                    <div class="test-navigation">
+                        <button type="button" class="btn btn-outline" onclick="showStep(5)">
+                            <i class="fas fa-arrow-left"></i> Назад
+                        </button>
+                        <button type="submit" class="btn btn-large">
+                            <i class="fas fa-check-circle"></i> Получить результат
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
 
     <!-- Result Section -->
     <section id="result" class="section-hidden">
@@ -2809,6 +2946,7 @@
     </script>
 </body>
 </html>
+
 
 
 
