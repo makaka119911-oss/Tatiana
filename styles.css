@@ -1248,3 +1248,63 @@ section {
         display: block;
     }
 }
+/* Добавьте этот CSS в конец ваших стилей */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 12px;
+    z-index: 10000;
+    animation: slideInRight 0.5s ease-out;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    max-width: 350px;
+    color: white;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+}
+
+.notification.success {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+}
+
+.notification.error {
+    background: linear-gradient(135deg, #dc3545, #e83e8c);
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Мобильное меню */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: linear-gradient(135deg, var(--deep-burgundy) 0%, var(--purple-mystic) 100%);
+        padding: 1rem 0;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links li {
+        margin: 0;
+        text-align: center;
+        padding: 0.5rem 0;
+    }
+}
