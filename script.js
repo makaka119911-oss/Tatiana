@@ -1,6 +1,7 @@
 // Конфигурация Telegram
 const TELEGRAM_BOT_TOKEN = '8402206062:AAEJim1GkriKqY_o1mOo0YWSWQDdw5Qy2h0';
 const TELEGRAM_CHAT_ID = '-1002313355102';
+const ARCHIVE_PASSWORD = 'admin123'; // Пароль для архива
 
 // Глобальные переменные
 let currentStep = 1;
@@ -20,6 +21,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Инициализация
     initEventListeners();
     initTestSteps();
+    initArchiveLogin();
+    initArchiveSearch();
 });
 
 function checkDiagnosticStatus() {
@@ -44,13 +47,6 @@ function unlockAllSections() {
 
 function initEventListeners() {
     // Форма регистрации
-    // Добавьте этот код в функцию initEventListeners()
-document.querySelectorAll('.archive-link').forEach(link => {
-    link.addEventListener('click', function(e) {
-        e.preventDefault();
-        showArchiveSection();
-    });
-});
     const registrationForm = document.getElementById('registrationForm');
     if (registrationForm) {
         registrationForm.addEventListener('submit', handleRegistrationSubmit);
@@ -67,6 +63,105 @@ document.querySelectorAll('.archive-link').forEach(link => {
     if (consultationForm) {
         consultationForm.addEventListener('submit', handleConsultationSubmit);
     }
+
+    // Кнопка "Назад к тесту"
+    const backToTestBtn = document.getElementById('backToTest');
+    if (backToTestBtn) {
+        backToTestBtn.addEventListener('click', function() {
+            showTestSection();
+        });
+    }
+
+    // Сезонная зависимость
+    document.querySelectorAll('input[name="season_dependency"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            const description = document.getElementById('seasonDescription');
+            description.style.display = this.value === 'Да' ? 'block' : 'none';
+        });
+    });
+
+    // Навигационные ссылки
+    document.querySelectorAll('.registration-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            showRegistrationSection();
+        });
+    });
+
+    document.querySelectorAll('.consultation-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            showContactsSection();
+        });
+    });
+
+    document.querySelectorAll('.about-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            showAboutSection();
+        });
+    });
+
+    document.querySelectorAll('.power-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            showPowerSection();
+        });
+    });
+
+    document.querySelectorAll('.services-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            showServicesSection();
+        });
+    });
+
+    document.querySelectorAll('.process-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            showProcessSection();
+        });
+    });
+
+    document.querySelectorAll('.awakening-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            showAwakeningSection();
+        });
+    });
+
+    document.querySelectorAll('.contacts-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            showContactsSection();
+        });
+    });
+
+    // Ссылка на архив
+    document.querySelectorAll('.archive-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            showArchiveSection();
+        });
+    });
+
+    // Мобильное меню
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navLinks = document.getElementById('navLinks');
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+        });
+    }
+
+    // Закрытие меню при клике на ссылку
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', function() {
+            navLinks.classList.remove('active');
+        });
+    });
+}
+
 // ===== ARCHIVE FUNCTIONALITY =====
 
 // Функция для сохранения данных в localStorage
@@ -369,7 +464,7 @@ function initArchiveLogin() {
     const loginForm = document.getElementById('archiveLoginForm');
     if (loginForm) {
         loginForm.addEventListener('submit', function(e) {
-            e.preventDefault(); // Добавляем эту строку!
+            e.preventDefault(); // Важно: предотвращаем перезагрузку страницы
             
             const password = document.getElementById('archivePassword').value;
             
@@ -434,80 +529,6 @@ function initArchiveSearch() {
     }
 }
 
-// Обновляем функцию handleTestSubmit для сохранения в архив
-async function handleTestSubmit(e) {
-    e.preventDefault();
-    
-    // Проверяем валидность последнего шага
-    if (!validateStep(6)) {
-        showErrorMessage('Пожалуйста, ответьте на все обязательные вопросы этого шага');
-        return;
-    }
-    
-    const form = e.target;
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const originalText = submitBtn.innerHTML;
-    
-    try {
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Обработка...';
-        submitBtn.disabled = true;
-        
-        // Собираем данные теста
-        const formData = new FormData(form);
-        testData = Object.fromEntries(formData.entries());
-        
-        // Рассчитываем результат
-        const result = calculateTestResult(testData);
-        
-        // Сохраняем в архив
-        saveToArchive(registrationData, result);
-        
-        // Показываем результат
-        showTestResult(result);
-        
-        // Отправляем результаты в Telegram
-        await sendTestResultsToTelegram(testData, result);
-        
-        // Разблокируем все разделы
-        localStorage.setItem('diagnosticCompleted', 'true');
-        unlockAllSections();
-        
-        showSuccessMessage('✅ Диагностика завершена! Теперь вам доступны все разделы сайта.');
-        
-    } catch (error) {
-        console.error('Ошибка обработки теста:', error);
-        showErrorMessage('❌ Ошибка обработки теста. Пожалуйста, попробуйте еще раз.');
-    } finally {
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-    }
-}
-
-// Обновляем DOMContentLoaded для инициализации архива
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Сайт загружен');
-
-    // Проверяем, пройдена ли диагностика
-    checkDiagnosticStatus();
-
-    // Инициализация
-    initEventListeners();
-    initTestSteps();
-    initArchiveLogin();
-    initArchiveSearch();
-});
-
-// Добавляем ссылку в навигацию (обновите навигацию в HTML)
-// <li><a href="#archive" class="archive-link">Архив</a></li>
-
-// И обработчик в initEventListeners()
-document.querySelectorAll('.archive-link').forEach(link => {
-    link.addEventListener('click', function(e) {
-        e.preventDefault();
-        showArchiveSection();
-    });
-});
-
 // Функция для показа секции архива
 function showArchiveSection() {
     hideAllSections();
@@ -523,6 +544,9 @@ function showArchiveSection() {
     
     scrollToTop();
 }
+
+// Остальные функции (initTestSteps, validateStep, nextStep, prevStep и т.д.) остаются без изменений
+// ... (добавьте сюда все остальные функции из предыдущего кода)
     // Кнопка "Назад к тесту"
     const backToTestBtn = document.getElementById('backToTest');
     if (backToTestBtn) {
