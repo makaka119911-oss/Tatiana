@@ -20,6 +20,7 @@
                     <li><a href="#process" class="process-link">Процесс</a></li>
                     <li><a href="#awakening" class="awakening-link">Пробуждение</a></li>
                     <li><a href="#contacts" class="contacts-link">Контакты</a></li>
+                    <li><a href="#archive" class="archive-link">Архив</a></li>
                 </ul>
                 <button class="mobile-menu-btn" id="mobileMenuBtn">
                     <i class="fas fa-bars"></i>
@@ -89,6 +90,108 @@
                     </button>
                 </div>
             </form>
+        </div>
+    </div>
+</section>
+    <!-- Admin Archive Section -->
+<section id="archive" class="section-hidden">
+    <div class="container">
+        <div class="section-title">
+            <h2>Архив результатов</h2>
+            <p>Поиск и анализ данных тестирования</p>
+        </div>
+        
+        <div class="form-container">
+            <div class="form-header">
+                <h3>Доступ к архиву</h3>
+                <p>Введите пароль для просмотра данных</p>
+            </div>
+            
+            <form id="archiveLoginForm">
+                <div class="form-group">
+                    <label for="archivePassword" class="required-field">Пароль</label>
+                    <input type="password" id="archivePassword" name="password" class="form-control" placeholder="Введите пароль" required>
+                    <div class="error-message" id="archivePasswordError">Неверный пароль</div>
+                </div>
+                
+                <div class="form-group" style="text-align: center; margin-top: 2rem;">
+                    <button type="submit" class="btn btn-large">
+                        <i class="fas fa-lock-open"></i> Войти в архив
+                    </button>
+                </div>
+            </form>
+            
+            <!-- Archive Content (hidden by default) -->
+            <div id="archiveContent" style="display: none; margin-top: 3rem;">
+                <div class="archive-controls">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Поиск по имени, фамилии, уровню либидо..." class="form-control">
+                        <button id="searchBtn" class="btn">
+                            <i class="fas fa-search"></i> Поиск
+                        </button>
+                    </div>
+                    
+                    <div class="filter-controls">
+                        <select id="levelFilter" class="form-control">
+                            <option value="">Все уровни либидо</option>
+                            <option value="Низкое">Низкое либидо</option>
+                            <option value="Среднее">Среднее либидо</option>
+                            <option value="Высокое">Высокое либидо</option>
+                            <option value="Очень высокое">Очень высокое либидо</option>
+                        </select>
+                        
+                        <select id="testTypeFilter" class="form-control">
+                            <option value="">Все типы теста</option>
+                            <option value="regular">Обычный тест</option>
+                            <option value="menopause">Менопауза</option>
+                        </select>
+                        
+                        <button id="exportBtn" class="btn btn-outline">
+                            <i class="fas fa-download"></i> Экспорт в Excel
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="archive-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalUsers">0</div>
+                        <div class="stat-label">Всего участников</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="avgScore">0</div>
+                        <div class="stat-label">Средний балл</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="completionRate">0%</div>
+                        <div class="stat-label">Завершили тест</div>
+                    </div>
+                </div>
+                
+                <div class="results-table-container">
+                    <table class="results-table" id="resultsTable">
+                        <thead>
+                            <tr>
+                                <th>ФИО</th>
+                                <th>Возраст</th>
+                                <th>Телефон</th>
+                                <th>Telegram</th>
+                                <th>Тип теста</th>
+                                <th>Уровень либидо</th>
+                                <th>Баллы</th>
+                                <th>Дата</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultsTableBody">
+                            <!-- Данные будут загружаться здесь -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="pagination" id="pagination">
+                    <!-- Пагинация будет здесь -->
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -585,6 +688,7 @@
     <script src="script.js"></script>
 </body>
 </html>
+
 
 
 
