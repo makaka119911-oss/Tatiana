@@ -7,6 +7,9 @@ let currentStep = 1;
 let totalSteps = 6;
 let testData = {};
 let registrationData = {};
+let archiveData = [];
+let currentPage = 1;
+const itemsPerPage = 10;
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Сайт загружен');
@@ -57,7 +60,453 @@ function initEventListeners() {
     if (consultationForm) {
         consultationForm.addEventListener('submit', handleConsultationSubmit);
     }
+// ===== ARCHIVE FUNCTIONALITY =====
 
+// Функция для сохранения данных в localStorage
+function saveToArchive(userData, testResult) {
+    const archiveEntry = {
+        id: Date.now() + Math.random().toString(36).substr(2, 9),
+        timestamp: new Date().toISOString(),
+        userData: userData,
+        testResult: testResult,
+        completed: true
+    };
+    
+    // Получаем существующие данные
+    let existingData = JSON.parse(localStorage.getItem('libidoTestArchive') || '[]');
+    
+    // Добавляем новые данные
+    existingData.push(archiveEntry);
+    
+    // Сохраняем обратно
+    localStorage.setItem('libidoTestArchive', JSON.stringify(existingData));
+    
+    console.log('✅ Данные сохранены в архив');
+}
+
+// Функция для загрузки данных из архива
+function loadArchiveData() {
+    const data = JSON.parse(localStorage.getItem('libidoTestArchive') || '[]');
+    archiveData = data;
+    return data;
+}
+
+// Функция для поиска в архиве
+function searchArchive(query, levelFilter, testTypeFilter) {
+    let filteredData = loadArchiveData();
+    
+    // Поиск по тексту
+    if (query) {
+        const searchTerm = query.toLowerCase();
+        filteredData = filteredData.filter(item => 
+            item.userData.firstName.toLowerCase().includes(searchTerm) ||
+            item.userData.lastName.toLowerCase().includes(searchTerm) ||
+            item.testResult.level.toLowerCase().includes(searchTerm) ||
+            item.userData.telegram.toLowerCase().includes(searchTerm)
+        );
+    }
+    
+    // Фильтр по уровню либидо
+    if (levelFilter) {
+        filteredData = filteredData.filter(item => 
+            item.testResult.level.includes(levelFilter)
+        );
+    }
+    
+    // Фильтр по типу теста
+    if (testTypeFilter) {
+        filteredData = filteredData.filter(item => 
+            item.testResult.testType === testTypeFilter
+        );
+    }
+    
+    return filteredData;
+}
+
+// Функция для отображения данных в таблице
+function displayArchiveData(data, page = 1) {
+    const tableBody = document.getElementById('resultsTableBody');
+    const pagination = document.getElementById('pagination');
+    
+    if (!tableBody) return;
+    
+    // Очищаем таблицу
+    tableBody.innerHTML = '';
+    
+    // Рассчитываем пагинацию
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const pageData = data.slice(startIndex, endIndex);
+    const totalPages = Math.ceil(data.length / itemsPerPage);
+    
+    // Заполняем таблицу
+    pageData.forEach(item => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${item.userData.lastName} ${item.userData.firstName}</td>
+            <td>${item.userData.age}</td>
+            <td>${item.userData.phone}</td>
+            <td>${item.userData.telegram}</td>
+            <td>${item.testResult.testType === 'regular' ? 'Обычный' : 'Менопауза'}</td>
+            <td>
+                <span class="level-badge ${getLevelClass(item.testResult.level)}">
+                    ${item.testResult.level}
+                </span>
+            </td>
+            <td>${item.testResult.score}</td>
+            <td>${new Date(item.timestamp).toLocaleDateString('ru-RU')}</td>
+            <td>
+                <button class="btn-view-details" onclick="viewUserDetails('${item.id}')">
+                    <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn-delete" onclick="deleteUserData('${item.id}')">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
+    
+    // Если данных нет
+    if (pageData.length === 0) {
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="9" style="text-align: center; padding: 2rem;">
+                    <i class="fas fa-inbox" style="font-size: 3rem; color: #ccc; margin-bottom: 1rem;"></i>
+                    <p>Нет данных для отображения</p>
+                </td>
+            </tr>
+        `;
+    }
+    
+    // Обновляем пагинацию
+    updatePagination(totalPages, page);
+    
+    // Обновляем статистику
+    updateArchiveStats(data);
+}
+
+// Функция для получения класса уровня либидо
+function getLevelClass(level) {
+    if (level.includes('Низкое')) return 'level-badge-low';
+    if (level.includes('Среднее')) return 'level-badge-medium';
+    if (level.includes('Высокое')) return 'level-badge-high';
+    if (level.includes('Очень высокое')) return 'level-badge-very-high';
+    return '';
+}
+
+// Функция для обновления пагинации
+function updatePagination(totalPages, currentPage) {
+    const pagination = document.getElementById('pagination');
+    if (!pagination) return;
+    
+    pagination.innerHTML = '';
+    
+    if (totalPages <= 1) return;
+    
+    // Кнопка "Назад"
+    if (currentPage > 1) {
+        const prevBtn = document.createElement('button');
+        prevBtn.className = 'pagination-btn';
+        prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+        prevBtn.onclick = () => {
+            displayArchiveData(archiveData, currentPage - 1);
+        };
+        pagination.appendChild(prevBtn);
+    }
+    
+    // Номера страниц
+    for (let i = 1; i <= totalPages; i++) {
+        const pageBtn = document.createElement('button');
+        pageBtn.className = `pagination-btn ${i === currentPage ? 'active' : ''}`;
+        pageBtn.textContent = i;
+        pageBtn.onclick = () => {
+            displayArchiveData(archiveData, i);
+        };
+        pagination.appendChild(pageBtn);
+    }
+    
+    // Кнопка "Вперед"
+    if (currentPage < totalPages) {
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'pagination-btn';
+        nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+        nextBtn.onclick = () => {
+            displayArchiveData(archiveData, currentPage + 1);
+        };
+        pagination.appendChild(nextBtn);
+    }
+}
+
+// Функция для обновления статистики
+function updateArchiveStats(data) {
+    const totalUsers = document.getElementById('totalUsers');
+    const avgScore = document.getElementById('avgScore');
+    const completionRate = document.getElementById('completionRate');
+    
+    if (!totalUsers || !avgScore || !completionRate) return;
+    
+    totalUsers.textContent = data.length;
+    
+    // Средний балл
+    if (data.length > 0) {
+        const totalScore = data.reduce((sum, item) => sum + item.testResult.score, 0);
+        avgScore.textContent = (totalScore / data.length).toFixed(1);
+    } else {
+        avgScore.textContent = '0';
+    }
+    
+    // Процент завершения (все данные уже завершены, так как попали в архив)
+    completionRate.textContent = '100%';
+}
+
+// Функция для просмотра деталей пользователя
+function viewUserDetails(userId) {
+    const userData = archiveData.find(item => item.id === userId);
+    if (!userData) return;
+    
+    // Создаем модальное окно с деталями
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Детальная информация</h3>
+                <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="user-details">
+                    <div class="detail-section">
+                        <h4>Контактная информация</h4>
+                        <p><strong>ФИО:</strong> ${userData.userData.lastName} ${userData.userData.firstName}</p>
+                        <p><strong>Возраст:</strong> ${userData.userData.age}</p>
+                        <p><strong>Телефон:</strong> ${userData.userData.phone}</p>
+                        <p><strong>Telegram:</strong> ${userData.userData.telegram}</p>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4>Результаты теста</h4>
+                        <p><strong>Тип теста:</strong> ${userData.testResult.testType === 'regular' ? 'Обычный' : 'Менопауза'}</p>
+                        <p><strong>Уровень либидо:</strong> ${userData.testResult.level}</p>
+                        <p><strong>Баллы:</strong> ${userData.testResult.score}</p>
+                        <p><strong>Дата прохождения:</strong> ${new Date(userData.timestamp).toLocaleString('ru-RU')}</p>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4>Описание результата</h4>
+                        <p>${userData.testResult.description}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="this.closest('.modal-overlay').remove()">
+                    Закрыть
+                </button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+}
+
+// Функция для удаления данных пользователя
+function deleteUserData(userId) {
+    if (!confirm('Вы уверены, что хотите удалить данные этого пользователя?')) {
+        return;
+    }
+    
+    archiveData = archiveData.filter(item => item.id !== userId);
+    localStorage.setItem('libidoTestArchive', JSON.stringify(archiveData));
+    
+    // Перезагружаем таблицу
+    displayArchiveData(archiveData, currentPage);
+    showSuccessMessage('✅ Данные пользователя удалены');
+}
+
+// Функция для экспорта в Excel
+function exportToExcel() {
+    const data = loadArchiveData();
+    
+    if (data.length === 0) {
+        showErrorMessage('❌ Нет данных для экспорта');
+        return;
+    }
+    
+    // Создаем CSV содержимое
+    let csv = 'Фамилия,Имя,Возраст,Телефон,Telegram,Тип теста,Уровень либидо,Баллы,Дата\n';
+    
+    data.forEach(item => {
+        csv += `"${item.userData.lastName}","${item.userData.firstName}","${item.userData.age}","${item.userData.phone}","${item.userData.telegram}","${item.testResult.testType === 'regular' ? 'Обычный' : 'Менопауза'}","${item.testResult.level}","${item.testResult.score}","${new Date(item.timestamp).toLocaleDateString('ru-RU')}"\n`;
+    });
+    
+    // Создаем и скачиваем файл
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', `архив_либидо_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    showSuccessMessage('✅ Данные экспортированы в CSV файл');
+}
+
+// Обработчик формы входа в архив
+function initArchiveLogin() {
+    const loginForm = document.getElementById('archiveLoginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById('archivePassword').value;
+            
+            if (password === ARCHIVE_PASSWORD) {
+                document.getElementById('archiveContent').style.display = 'block';
+                document.getElementById('archivePasswordError').style.display = 'none';
+                
+                // Загружаем и отображаем данные
+                const data = loadArchiveData();
+                archiveData = data;
+                displayArchiveData(data, 1);
+                
+                showSuccessMessage('✅ Доступ к архиву разрешен');
+            } else {
+                document.getElementById('archivePasswordError').style.display = 'block';
+                showErrorMessage('❌ Неверный пароль');
+            }
+        });
+    }
+}
+
+// Инициализация поиска и фильтров
+function initArchiveSearch() {
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const levelFilter = document.getElementById('levelFilter');
+    const testTypeFilter = document.getElementById('testTypeFilter');
+    const exportBtn = document.getElementById('exportBtn');
+    
+    function performSearch() {
+        const query = searchInput.value;
+        const level = levelFilter.value;
+        const testType = testTypeFilter.value;
+        
+        const filteredData = searchArchive(query, level, testType);
+        archiveData = filteredData;
+        displayArchiveData(filteredData, 1);
+    }
+    
+    if (searchBtn) {
+        searchBtn.addEventListener('click', performSearch);
+    }
+    
+    if (searchInput) {
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+    }
+    
+    if (levelFilter) {
+        levelFilter.addEventListener('change', performSearch);
+    }
+    
+    if (testTypeFilter) {
+        testTypeFilter.addEventListener('change', performSearch);
+    }
+    
+    if (exportBtn) {
+        exportBtn.addEventListener('click', exportToExcel);
+    }
+}
+
+// Обновляем функцию handleTestSubmit для сохранения в архив
+async function handleTestSubmit(e) {
+    e.preventDefault();
+    
+    // Проверяем валидность последнего шага
+    if (!validateStep(6)) {
+        showErrorMessage('Пожалуйста, ответьте на все обязательные вопросы этого шага');
+        return;
+    }
+    
+    const form = e.target;
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    
+    try {
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Обработка...';
+        submitBtn.disabled = true;
+        
+        // Собираем данные теста
+        const formData = new FormData(form);
+        testData = Object.fromEntries(formData.entries());
+        
+        // Рассчитываем результат
+        const result = calculateTestResult(testData);
+        
+        // Сохраняем в архив
+        saveToArchive(registrationData, result);
+        
+        // Показываем результат
+        showTestResult(result);
+        
+        // Отправляем результаты в Telegram
+        await sendTestResultsToTelegram(testData, result);
+        
+        // Разблокируем все разделы
+        localStorage.setItem('diagnosticCompleted', 'true');
+        unlockAllSections();
+        
+        showSuccessMessage('✅ Диагностика завершена! Теперь вам доступны все разделы сайта.');
+        
+    } catch (error) {
+        console.error('Ошибка обработки теста:', error);
+        showErrorMessage('❌ Ошибка обработки теста. Пожалуйста, попробуйте еще раз.');
+    } finally {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }
+}
+
+// Обновляем DOMContentLoaded для инициализации архива
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Сайт загружен');
+
+    // Проверяем, пройдена ли диагностика
+    checkDiagnosticStatus();
+
+    // Инициализация
+    initEventListeners();
+    initTestSteps();
+    initArchiveLogin();
+    initArchiveSearch();
+});
+
+// Добавляем ссылку в навигацию (обновите навигацию в HTML)
+// <li><a href="#archive" class="archive-link">Архив</a></li>
+
+// И обработчик в initEventListeners()
+document.querySelectorAll('.archive-link').forEach(link => {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+        showArchiveSection();
+    });
+});
+
+// Функция для показа секции архива
+function showArchiveSection() {
+    hideAllSections();
+    document.getElementById('archive').classList.remove('section-hidden');
+    scrollToTop();
+}
     // Кнопка "Назад к тесту"
     const backToTestBtn = document.getElementById('backToTest');
     if (backToTestBtn) {
