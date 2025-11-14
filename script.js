@@ -3,14 +3,16 @@ const TELEGRAM_BOT_TOKEN = '8402206062:AAEJim1GkriKqY_o1mOo0YWSWQDdw5Qy2h0';
 const TELEGRAM_CHAT_ID = '-1002313355102';
 const ARCHIVE_PASSWORD = 'admin123'; // Пароль для архива
 
-// Глобальные переменные
+// Глобальные переменные для теста
 let currentStep = 1;
-let totalSteps = 6;
-let testData = {};
+let totalSteps = 7;
+let testType = '';
 let registrationData = {};
+let testData = {};
 let archiveData = [];
+let itemsPerPage = 10;
 let currentPage = 1;
-const itemsPerPage = 10;
+
 // Функция для перехода между шагами теста
 function showStep(stepNumber) {
     console.log('Переход к шагу:', stepNumber);
@@ -34,8 +36,6 @@ function showStep(stepNumber) {
             top: 0,
             behavior: 'smooth'
         });
-    } else {
-        console.error('Шаг не найден: step' + stepNumber);
     }
 }
 
@@ -51,14 +51,9 @@ function updateProgress() {
 
 // Инициализация теста
 function initTest() {
-   document.addEventListener('DOMContentLoaded', function() {
-    console.log('Сайт загружен');
-    checkDiagnosticStatus();
-    initEventListeners();
-    initArchiveLogin();
-    initArchiveSearch();
-    initTest(); // Добавьте эту строку
-}); // Обработчик для кнопки "Далее" на первом шаге
+    console.log('Инициализация теста...');
+    
+    // Обработчик для кнопки "Начать тест" на первом шаге
     const nextFromStep1 = document.getElementById('nextFromStep1');
     if (nextFromStep1) {
         nextFromStep1.addEventListener('click', function() {
@@ -71,12 +66,11 @@ function initTest() {
             testType = selectedTestType.value;
             console.log('Выбран тип теста:', testType);
             
-            // Для менопаузы пропускаем промежуточные шаги
+            // Для менопаузы пропускаем периоды 1-4
             if (testType === 'menopause') {
-                // Показываем специальный шаг для менопаузы
-                showStep(6);
+                showStep(6); // Переходим сразу к тесту для менопаузы
             } else {
-                showStep(2);
+                showStep(2); // Переходим к первому периоду обычного теста
             }
         });
     }
@@ -126,6 +120,7 @@ function initTest() {
     initTestSteps();
 }
 
+// Функция для инициализации кликабельных вариантов ответов
 function initTestSteps() {
     document.querySelectorAll('.option-item').forEach(item => {
         item.addEventListener('click', function() {
@@ -154,28 +149,29 @@ function calculateTestResult(data) {
             'Хочется 1 раза в неделю': 2,
             'Хочется 1 раз в 3 дня': 3,
             'Хочется через день': 4,
-            'Хочется каждый день': 5
+            'Хочется каждый день': 5,
+            'Хочется каждый день по много раз': 6
         };
         
         // Баллы за интенсивность
         const intensityScores = {
-            'Очень слабое': 1,
-            'Слабое': 2,
-            'Умеренное': 3,
-            'Сильное': 4,
-            'Очень сильное': 5
+            'Легкое желание': 1,
+            'Среднее желание': 2,
+            'Сильное желание': 3,
+            'Очень сильное желание': 4,
+            'Максимально сильное желание (на столько, что почти невозможно терпеть)': 5
         };
         
-        // Баллы за удовлетворенность
-        const satisfactionScores = {
-            'Полностью не удовлетворена': 1,
-            'Скорее не удовлетворена': 2,
-            'Нейтральна': 3,
-            'Скорее удовлетворена': 4,
-            'Полностью удовлетворена': 5
+        // Баллы за возбуждение
+        const arousalScores = {
+            'Вообще не возбуждает': 1,
+            'Немного возбуждает': 2,
+            'Средне возбуждает': 3,
+            'Сильно возбуждает': 4,
+            'Очень сильно возбуждает': 5
         };
         
-        // Считаем баллы за каждый период
+        // Считаем баллы за каждый период (1-4)
         for (let i = 1; i <= 4; i++) {
             const periodKey = `period${i}`;
             if (data[`${periodKey}_frequency`]) {
@@ -184,36 +180,46 @@ function calculateTestResult(data) {
             if (data[`${periodKey}_intensity`]) {
                 totalScore += intensityScores[data[`${periodKey}_intensity`]] || 0;
             }
-            if (data[`${periodKey}_satisfaction`]) {
-                totalScore += satisfactionScores[data[`${periodKey}_satisfaction`]] || 0;
+            if (data[`${periodKey}_arousal_erected`]) {
+                totalScore += arousalScores[data[`${periodKey}_arousal_erected`]] || 0;
+            }
+            if (data[`${periodKey}_arousal_non_erected`]) {
+                totalScore += arousalScores[data[`${periodKey}_arousal_non_erected`]] || 0;
             }
         }
     } else {
-        // Упрощенный расчет для менопаузы
-        totalScore = Math.floor(Math.random() * 60) + 20; // От 20 до 80 баллов
-    }
-    
-    // Дополнительные факторы
-    if (data.stress_level) {
-        const stressScores = {
-            'Почти никогда': 5,
-            'Иногда': 4,
-            'Регулярно': 3,
-            'Часто': 2,
-            'Постоянно': 1
+        // Расчет для менопаузы
+        const frequencyScores = {
+            'Вообще не хочется': 1,
+            'Хочется 1 раза в неделю': 2,
+            'Хочется 1 раз в 3 дня': 3,
+            'Хочется через день': 4,
+            'Хочется каждый день': 5,
+            'Хочется каждый день по много раз': 6
         };
-        totalScore += stressScores[data.stress_level] || 0;
-    }
-    
-    if (data.sleep_quality) {
-        const sleepScores = {
-            'Очень плохое': 1,
-            'Плохое': 2,
-            'Удовлетворительное': 3,
-            'Хорошее': 4,
-            'Отличное': 5
+        
+        const intensityScores = {
+            'Легкое желание': 1,
+            'Среднее желание': 2,
+            'Сильное желание': 3,
+            'Очень сильное желание': 4,
+            'Максимально сильное желание (на столько, что почти невозможно терпеть)': 5
         };
-        totalScore += sleepScores[data.sleep_quality] || 0;
+        
+        const arousalScores = {
+            'Вообще не возбуждает': 1,
+            'Немного возбуждает': 2,
+            'Средне возбуждает': 3,
+            'Сильно возбуждает': 4,
+            'Очень сильно возбуждает': 5
+        };
+        
+        // Основные вопросы менопаузы
+        if (data.menopause_frequency) totalScore += frequencyScores[data.menopause_frequency] * 2;
+        if (data.menopause_intensity) totalScore += intensityScores[data.menopause_intensity] * 2;
+        if (data.menopause_arousal_erected_want) totalScore += arousalScores[data.menopause_arousal_erected_want];
+        if (data.menopause_arousal_erected_not_want) totalScore += arousalScores[data.menopause_arousal_erected_not_want];
+        // Добавьте остальные вопросы менопаузы...
     }
     
     // Нормализуем score до 100
@@ -236,13 +242,13 @@ function calculateTestResult(data) {
             description = 'У вас очень высокий уровень либидо! Это прекрасный показатель вашей сексуальной энергии. Рекомендуется научиться управлять этой силой для гармоничной жизни.';
         }
     } else {
-        if (totalScore <= 30) {
+        if (totalScore <= 25) {
             level = 'Низкое либидо в менопаузе';
-            description = 'В период менопаузы снижение либидо является распространенным явлением из-за гормональных изменений. Специальные практики и подходы могут помочь восстановить энергию.';
+            description = 'В период менопаузы снижение либидо является распространенным явлением из-за гормональных изменений. Специальные практики и подходы могут помочь восстановить энергию и улучшить качество жизни.';
         } else if (totalScore <= 50) {
             level = 'Среднее либидо в менопаузе';
-            description = 'У вас сохраняется умеренный уровень либидо, что является хорошим показателем для периода менопаузы. Есть возможности для улучшения через специальные методики.';
-        } else if (totalScore <= 70) {
+            description = 'У вас сохраняется умеренный уровень либидо, что является хорошим показателем для периода менопаузы. Есть возможности для улучшения через специальные методики работы с женской энергией.';
+        } else if (totalScore <= 75) {
             level = 'Высокое либидо в менопаузе';
             description = 'Поздравляем! Несмотря на менопаузу, у вас сохраняется высокий уровень либидо. Это свидетельствует о хорошем гормональном фоне и адаптационных способностях организма.';
         } else {
@@ -253,165 +259,6 @@ function calculateTestResult(data) {
     
     return { level, description, score: totalScore, testType: data.test_type };
 }
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Сайт загружен');
-
-    // Проверяем, пройдена ли диагностика
-    checkDiagnosticStatus();
-
-    // Инициализация
-    initEventListeners();
-    initTestSteps();
-    initArchiveLogin();
-    initArchiveSearch();
-});
-
-function checkDiagnosticStatus() {
-    const diagnosticCompleted = localStorage.getItem('diagnosticCompleted') === 'true';
-    if (diagnosticCompleted) {
-        unlockAllSections();
-    }
-}
-
-function unlockAllSections() {
-    // Скрываем замки и показываем контент для всех секций
-    const sections = ['about', 'power', 'services', 'process', 'awakening', 'contacts'];
-    
-    sections.forEach(section => {
-        const lock = document.getElementById(section + 'Lock');
-        const content = document.getElementById(section + 'Content');
-        
-        if (lock) lock.style.display = 'none';
-        if (content) content.style.display = 'block';
-    });
-}
-
-function initEventListeners() {
-    // Форма регистрации
-    const registrationForm = document.getElementById('registrationForm');
-    if (registrationForm) {
-        registrationForm.addEventListener('submit', handleRegistrationSubmit);
-    }
-
-    // Форма теста
-    const testForm = document.getElementById('libidoTestForm');
-    if (testForm) {
-        testForm.addEventListener('submit', handleTestSubmit);
-    }
-
-    // Форма консультации
-    const consultationForm = document.getElementById('consultationForm');
-    if (consultationForm) {
-        consultationForm.addEventListener('submit', handleConsultationSubmit);
-    }
-
-    // Кнопка "Назад к тесту"
-    const backToTestBtn = document.getElementById('backToTest');
-    if (backToTestBtn) {
-        backToTestBtn.addEventListener('click', function() {
-            showTestSection();
-        });
-    }
-// В функции initEventListeners добавьте:
-document.querySelectorAll('input[name="season_dependency"]').forEach(radio => {
-    radio.addEventListener('change', function() {
-        const description = document.getElementById('seasonDescription');
-        if (description) {
-            description.style.display = this.value === 'Да' ? 'block' : 'none';
-        }
-    });
-});
-    // Сезонная зависимость
-    document.querySelectorAll('input[name="season_dependency"]').forEach(radio => {
-        radio.addEventListener('change', function() {
-            const description = document.getElementById('seasonDescription');
-            description.style.display = this.value === 'Да' ? 'block' : 'none';
-        });
-    });
-
-    // Навигационные ссылки
-    document.querySelectorAll('.registration-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            showRegistrationSection();
-        });
-    });
-
-    document.querySelectorAll('.consultation-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            showContactsSection();
-        });
-    });
-
-    document.querySelectorAll('.about-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            showAboutSection();
-        });
-    });
-
-    document.querySelectorAll('.power-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            showPowerSection();
-        });
-    });
-
-    document.querySelectorAll('.services-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            showServicesSection();
-        });
-    });
-
-    document.querySelectorAll('.process-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            showProcessSection();
-        });
-    });
-
-    document.querySelectorAll('.awakening-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            showAwakeningSection();
-        });
-    });
-
-    document.querySelectorAll('.contacts-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            showContactsSection();
-        });
-    });
-
-    // Ссылка на архив
-    document.querySelectorAll('.archive-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            showArchiveSection();
-        });
-    });
-
-    // Мобильное меню
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const navLinks = document.getElementById('navLinks');
-    if (mobileMenuBtn) {
-        mobileMenuBtn.addEventListener('click', function() {
-            navLinks.classList.toggle('active');
-        });
-    }
-
-    // Закрытие меню при клике на ссылку
-    document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', function() {
-            navLinks.classList.remove('active');
-        });
-    });
-}
-
-// ===== ARCHIVE FUNCTIONALITY =====
 
 // Функция для сохранения данных в localStorage
 function saveToArchive(userData, testResult) {
@@ -803,8 +650,59 @@ function showArchiveSection() {
     scrollToTop();
 }
 
-// Остальные функции (initTestSteps, validateStep, nextStep, prevStep и т.д.) остаются без изменений
-// ... (добавьте сюда все остальные функции из предыдущего кода)
+// Основная функция инициализации
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Сайт загружен');
+
+    // Проверяем, пройдена ли диагностика
+    checkDiagnosticStatus();
+
+    // Инициализация
+    initEventListeners();
+    initTest(); // ← ДОБАВЛЕНА ЭТА СТРОКА
+    initArchiveLogin();
+    initArchiveSearch();
+});
+
+function checkDiagnosticStatus() {
+    const diagnosticCompleted = localStorage.getItem('diagnosticCompleted') === 'true';
+    if (diagnosticCompleted) {
+        unlockAllSections();
+    }
+}
+
+function unlockAllSections() {
+    // Скрываем замки и показываем контент для всех секций
+    const sections = ['about', 'power', 'services', 'process', 'awakening', 'contacts'];
+    
+    sections.forEach(section => {
+        const lock = document.getElementById(section + 'Lock');
+        const content = document.getElementById(section + 'Content');
+        
+        if (lock) lock.style.display = 'none';
+        if (content) content.style.display = 'block';
+    });
+}
+
+function initEventListeners() {
+    // Форма регистрации
+    const registrationForm = document.getElementById('registrationForm');
+    if (registrationForm) {
+        registrationForm.addEventListener('submit', handleRegistrationSubmit);
+    }
+
+    // Форма теста
+    const testForm = document.getElementById('libidoTestForm');
+    if (testForm) {
+        testForm.addEventListener('submit', handleTestSubmit);
+    }
+
+    // Форма консультации
+    const consultationForm = document.getElementById('consultationForm');
+    if (consultationForm) {
+        consultationForm.addEventListener('submit', handleConsultationSubmit);
+    }
+
     // Кнопка "Назад к тесту"
     const backToTestBtn = document.getElementById('backToTest');
     if (backToTestBtn) {
@@ -817,7 +715,9 @@ function showArchiveSection() {
     document.querySelectorAll('input[name="season_dependency"]').forEach(radio => {
         radio.addEventListener('change', function() {
             const description = document.getElementById('seasonDescription');
-            description.style.display = this.value === 'Да' ? 'block' : 'none';
+            if (description) {
+                description.style.display = this.value === 'Да' ? 'block' : 'none';
+            }
         });
     });
 
@@ -878,6 +778,14 @@ function showArchiveSection() {
         });
     });
 
+    // Ссылка на архив
+    document.querySelectorAll('.archive-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            showArchiveSection();
+        });
+    });
+
     // Мобильное меню
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
     const navLinks = document.getElementById('navLinks');
@@ -893,423 +801,6 @@ function showArchiveSection() {
             navLinks.classList.remove('active');
         });
     });
-}
-
-function initTestSteps() {
-    // Добавляем обработчики для опций
-    document.querySelectorAll('.option-item').forEach(item => {
-        item.addEventListener('click', function() {
-            const radio = this.querySelector('input[type="radio"]');
-            if (radio) {
-                radio.checked = true;
-                
-                // Добавляем визуальное выделение
-                this.parentElement.querySelectorAll('.option-item').forEach(opt => {
-                    opt.classList.remove('selected');
-                });
-                this.classList.add('selected');
-            }
-        });
-    });
-}
-
-// Функция проверки валидности шага
-function validateStep(step) {
-    const stepElement = document.getElementById('step' + step);
-    if (!stepElement) return true;
-
-    const requiredInputs = stepElement.querySelectorAll('[required]');
-    let isValid = true;
-
-    // Сбрасываем предыдущие ошибки
-    stepElement.querySelectorAll('.error-message').forEach(error => {
-        error.style.display = 'none';
-    });
-    stepElement.querySelectorAll('.form-control.error').forEach(input => {
-        input.classList.remove('error');
-    });
-
-    // Убираем выделение ошибок с вопросов
-    stepElement.querySelectorAll('.question-block').forEach(block => {
-        block.classList.remove('error-highlight');
-    });
-
-    // Проверяем каждое обязательное поле
-    requiredInputs.forEach(input => {
-        if (input.type === 'radio') {
-            // Для радио-кнопок проверяем, что хотя бы одна в группе выбрана
-            const radioGroup = stepElement.querySelectorAll(`input[name="${input.name}"]`);
-            const isChecked = Array.from(radioGroup).some(radio => radio.checked);
-            
-            if (!isChecked) {
-                isValid = false;
-                // Показываем ошибку для этой группы
-                const errorElement = document.getElementById(input.name + 'Error');
-                if (errorElement) {
-                    errorElement.style.display = 'block';
-                }
-                
-                // Выделяем вопрос красным
-                const questionBlock = input.closest('.question-block');
-                if (questionBlock) {
-                    questionBlock.classList.add('error-highlight');
-                }
-            }
-        } else {
-            // Для других типов полей проверяем значение
-            if (!input.value.trim()) {
-                isValid = false;
-                input.classList.add('error');
-                const errorElement = document.getElementById(input.name + 'Error');
-                if (errorElement) {
-                    errorElement.style.display = 'block';
-                }
-            }
-        }
-    });
-
-    return isValid;
-}
-
-let currentTestType = '';
-
-function nextStep(step) {
-    if (!validateStep(currentStep)) {
-        showNotification('Пожалуйста, ответьте на все обязательные вопросы этого шага', 'error');
-        return;
-    }
-
-    if (step === 2) {
-        const testType = document.querySelector('input[name="test_type"]:checked');
-        if (!testType) {
-            showNotification('Пожалуйста, выберите тип теста', 'error');
-            return;
-        }
-        
-        currentTestType = testType.value;
-        totalSteps = currentTestType === 'regular' ? 6 : 2;
-    }
-    
-    // Hide all steps
-    document.querySelectorAll('.test-step').forEach(stepEl => {
-        stepEl.classList.remove('active');
-    });
-    
-    // Show appropriate step based on test type
-    let stepToShow;
-    if (step === 1) {
-        stepToShow = 'step1';
-    } else if (step === 6) {
-        stepToShow = 'step6';
-    } else {
-        stepToShow = `step${step}_${currentTestType}`;
-    }
-    
-    document.getElementById(stepToShow).classList.add('active');
-    currentStep = step;
-    
-    updateProgress();
-    scrollToTop();
-}
-
-function prevStep(step) {
-    // Hide all steps
-    document.querySelectorAll('.test-step').forEach(stepEl => {
-        stepEl.classList.remove('active');
-    });
-    
-    // Show appropriate step based on test type
-    let stepToShow;
-    if (step === 1) {
-        stepToShow = 'step1';
-    } else if (step === 6) {
-        stepToShow = 'step6';
-    } else {
-        stepToShow = `step${step}_${currentTestType}`;
-    }
-    
-    document.getElementById(stepToShow).classList.add('active');
-    currentStep = step;
-    
-    updateProgress();
-    scrollToTop();
-}
-
-function prevStep(step) {
-    document.querySelector('.test-step.active').classList.remove('active');
-    document.getElementById('step' + step).classList.add('active');
-    currentStep = step;
-    
-    updateProgress();
-    
-    // Прокрутка к верху страницы
-    scrollToTop();
-}
-
-function scrollToTop() {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-}
-
-function updateProgress() {
-    const progress = (currentStep / totalSteps) * 100;
-    document.getElementById('testProgress').style.width = progress + '%';
-    document.getElementById('progressText').textContent = `Шаг ${currentStep} из ${totalSteps}`;
-}
-
-// Добавьте эти функции после функции updateProgress()
-// Замените существующую функцию generateTestSteps на эту:
-function generateTestSteps(testType) {
-    const stepsContainer = document.getElementById('libidoTestForm');
-    
-    // Удаляем предыдущие сгенерированные шаги (кроме первого и последнего)
-    document.querySelectorAll('.test-step:not(#step1):not(#step6)').forEach(step => {
-        step.remove();
-    });
-    
-    if (testType === 'regular') {
-        // Генерируем 4 периода для обычного теста
-        const periods = [
-            { id: 1, name: 'От конца месячных до овуляции' },
-            { id: 2, name: 'В период овуляции' },
-            { id: 3, name: 'От конца овуляции до начала месячных' },
-            { id: 4, name: 'В период месячных' }
-        ];
-        
-        periods.forEach((period, index) => {
-            const stepNumber = index + 2;
-            const stepHTML = `
-                <div class="test-step" id="step${stepNumber}">
-                    <div class="step-header">
-                        <h4>Период: ${period.name}</h4>
-                        <p>Ответьте на вопросы для этого периода цикла</p>
-                    </div>
-                    
-                    ${generatePeriodQuestions(period.id, period.name)}
-                    
-                    <div class="test-navigation">
-                        <button type="button" class="btn btn-outline" onclick="prevStep(${stepNumber - 1})">
-                            <i class="fas fa-arrow-left"></i> Назад
-                        </button>
-                        <button type="button" class="btn btn-secondary" onclick="nextStep(${stepNumber + 1})">
-                            Далее <i class="fas fa-arrow-right"></i>
-                        </button>
-                    </div>
-                </div>
-            `;
-            
-            // Вставляем перед последним шагом (сезонным вопросом)
-            const lastStep = document.getElementById('step6');
-            lastStep.insertAdjacentHTML('beforebegin', stepHTML);
-        });
-        
-        totalSteps = 6;
-    } else {
-        // Для менопаузы - один шаг с вопросами
-        const stepHTML = `
-            <div class="test-step" id="step2">
-                <div class="step-header">
-                    <h4>Вопросы для периода менопаузы</h4>
-                    <p>Ответьте на вопросы о вашем текущем состоянии</p>
-                </div>
-                
-                ${generateMenopauseQuestions()}
-                
-                <div class="test-navigation">
-                    <button type="button" class="btn btn-outline" onclick="prevStep(1)">
-                        <i class="fas fa-arrow-left"></i> Назад
-                    </button>
-                    <button type="button" class="btn btn-secondary" onclick="nextStep(6)">
-                        Далее <i class="fas fa-arrow-right"></i>
-                    </button>
-                </div>
-            </div>
-        `;
-        
-        const lastStep = document.getElementById('step6');
-        lastStep.insertAdjacentHTML('beforebegin', stepHTML);
-        totalSteps = 2;
-    }
-    
-    // Переинициализируем обработчики
-    initTestSteps();
-}
-
-function generatePeriodQuestions(periodId, periodName) {
-    return `
-        <div class="question-block">
-            <div class="question-text">Как часто хочется секса в период "${periodName}"?</div>
-            <div class="options-grid">
-                ${generateOptions(`period${periodId}_frequency`, [
-                    'Вообще не хочется',
-                    'Хочется 1 раза в неделю',
-                    'Хочется 1 раз в 3 дня',
-                    'Хочется через день',
-                    'Хочется каждый день',
-                    'Хочется каждый день по много раз'
-                ])}
-            </div>
-        </div>
-        
-        <div class="question-block">
-            <div class="question-text">Сила желания в те дни, когда хочется секса?</div>
-            <div class="options-grid">
-                ${generateOptions(`period${periodId}_strength`, [
-                    'Легкое желание',
-                    'Среднее желание',
-                    'Сильное желание',
-                    'Очень сильное желание',
-                    'Максимально сильное желание(на столько,что почти невозможно терпеть)'
-                ])}
-            </div>
-        </div>
-        
-        <div class="question-block">
-            <div class="question-text">Возбуждает ли Вас вид эрегированного полового члена в дни, когда хочется секса?</div>
-            <div class="options-grid">
-                ${generateOptions(`period${periodId}_erected_want`, [
-                    'Вообще не возбуждает',
-                    'Немного возбуждает',
-                    'Средне возбуждает',
-                    'Сильно возбуждает',
-                    'Очень сильно возбуждает'
-                ])}
-            </div>
-        </div>
-        
-        <div class="question-block">
-            <div class="question-text">Возбуждает ли Вас вид эрегированного полового члена в дни, когда НЕ хочется секса?</div>
-            <div class="options-grid">
-                ${generateOptions(`period${periodId}_erected_not_want`, [
-                    'Вообще не возбуждает',
-                    'Немного возбуждает',
-                    'Средне возбуждает',
-                    'Сильно возбуждает',
-                    'Очень сильно возбуждает'
-                ])}
-            </div>
-        </div>
-        
-        <div class="question-block">
-            <div class="question-text">Возбуждает ли Вас вид НЕэрегированного полового члена в дни, когда хочется секса?</div>
-            <div class="options-grid">
-                ${generateOptions(`period${periodId}_non_erected_want`, [
-                    'Вообще не возбуждает',
-                    'Немного возбуждает',
-                    'Средне возбуждает',
-                    'Сильно возбуждает',
-                    'Очень сильно возбуждает'
-                ])}
-            </div>
-        </div>
-        
-        <div class="question-block">
-            <div class="question-text">Возбуждает ли Вас вид НЕэрегированного полового члена в дни, когда НЕ хочется секса?</div>
-            <div class="options-grid">
-                ${generateOptions(`period${periodId}_non_erected_not_want`, [
-                    'Вообще не возбуждает',
-                    'Немного возбуждает',
-                    'Средне возбуждает',
-                    'Сильно возбуждает',
-                    'Очень сильно возбуждает'
-                ])}
-            </div>
-        </div>
-    `;
-}
-
-function generateMenopauseQuestions() {
-    return `
-        <div class="question-block">
-            <div class="question-text">Как часто хочется секса в текущий период?</div>
-            <div class="options-grid">
-                ${generateOptions('menopause_frequency', [
-                    'Вообще не хочется',
-                    'Хочется 1 раза в неделю',
-                    'Хочется 1 раз в 3 дня',
-                    'Хочется через день',
-                    'Хочется каждый день',
-                    'Хочется каждый день по много раз'
-                ])}
-            </div>
-        </div>
-        
-        <div class="question-block">
-            <div class="question-text">Сила желания в те дни, когда хочется секса?</div>
-            <div class="options-grid">
-                ${generateOptions('menopause_strength', [
-                    'Легкое желание',
-                    'Среднее желание',
-                    'Сильное желание',
-                    'Очень сильное желание',
-                    'Максимально сильное желание(на столько,что почти невозможно терпеть)'
-                ])}
-            </div>
-        </div>
-        
-        <div class="question-block">
-            <div class="question-text">Возбуждает ли Вас вид эрегированного полового члена в дни, когда хочется секса?</div>
-            <div class="options-grid">
-                ${generateOptions('menopause_erected_want', [
-                    'Вообще не возбуждает',
-                    'Немного возбуждает',
-                    'Средне возбуждает',
-                    'Сильно возбуждает',
-                    'Очень сильно возбуждает'
-                ])}
-            </div>
-        </div>
-        
-        <div class="question-block">
-            <div class="question-text">Возбуждает ли Вас вид эрегированного полового члена в дни, когда НЕ хочется секса?</div>
-            <div class="options-grid">
-                ${generateOptions('menopause_erected_not_want', [
-                    'Вообще не возбуждает',
-                    'Немного возбуждает',
-                    'Средне возбуждает',
-                    'Сильно возбуждает',
-                    'Очень сильно возбуждает'
-                ])}
-            </div>
-        </div>
-        
-        <div class="question-block">
-            <div class="question-text">Возбуждает ли Вас вид НЕэрегированного полового члена в дни, когда хочется секса?</div>
-            <div class="options-grid">
-                ${generateOptions('menopause_non_erected_want', [
-                    'Вообще не возбуждает',
-                    'Немного возбуждает',
-                    'Средне возбуждает',
-                    'Сильно возбуждает',
-                    'Очень сильно возбуждает'
-                ])}
-            </div>
-        </div>
-        
-        <div class="question-block">
-            <div class="question-text">Возбуждает ли Вас вид НЕэрегированного полового члена в дни, когда НЕ хочется секса?</div>
-            <div class="options-grid">
-                ${generateOptions('menopause_non_erected_not_want', [
-                    'Вообще не возбуждает',
-                    'Немного возбуждает',
-                    'Средне возбуждает',
-                    'Сильно возбуждает',
-                    'Очень сильно возбуждает'
-                ])}
-            </div>
-        </div>
-    `;
-}
-
-function generateOptions(name, options) {
-    return options.map(option => `
-        <label class="option-item">
-            <input type="radio" name="${name}" value="${option}" required>
-            ${option}
-        </label>
-    `).join('');
 }
 
 // Валидация формы регистрации
@@ -1429,7 +920,7 @@ async function handleRegistrationSubmit(e) {
         showNotification('✅ Регистрация прошла успешно! Переходим к тесту.', 'success');
         
         localStorage.setItem('registrationCompleted', 'true');
-        setTimeout(() => showSection('test'), 1500);
+        setTimeout(() => showTestSection(), 1500);
         
     } catch (error) {
         console.error('Ошибка регистрации:', error);
@@ -1667,121 +1158,6 @@ async function sendConsultationToTelegram(data) {
         console.error('Ошибка отправки заявки:', error);
         throw error;
     }
-}
-
-function calculateTestResult(data) {
-    let totalScore = 0;
-    const testType = data.test_type;
-    
-    // Система баллов для каждого ответа
-    const scoreMap = {
-        'frequency': {
-            'Вообще не хочется': 0,
-            'Хочется 1 раза в неделю': 1,
-            'Хочется 1 раз в 3 дня': 2,
-            'Хочется через день': 3,
-            'Хочется каждый день': 4,
-            'Хочется каждый день по много раз': 5
-        },
-        'strength': {
-            'Легкое желание': 1,
-            'Среднее желание': 2,
-            'Сильное желание': 3,
-            'Очень сильное желание': 4,
-            'Максимально сильное желание(на столько,что почти невозможно терпеть)': 5
-        },
-        'arousal': {
-            'Вообще не возбуждает': 0,
-            'Немного возбуждает': 1,
-            'Средне возбуждает': 2,
-            'Сильно возбуждает': 3,
-            'Очень сильно возбуждает': 4
-        }
-    };
-    
-    if (testType === 'regular') {
-        // Подсчет для обычного теста (4 периода)
-        for (let i = 1; i <= 4; i++) {
-            const prefix = `period${i}_`;
-            
-            if (data[prefix + 'frequency']) {
-                totalScore += scoreMap.frequency[data[prefix + 'frequency']] || 0;
-            }
-            if (data[prefix + 'strength']) {
-                totalScore += scoreMap.strength[data[prefix + 'strength']] || 0;
-            }
-            if (data[prefix + 'erected_want']) {
-                totalScore += scoreMap.arousal[data[prefix + 'erected_want']] || 0;
-            }
-            if (data[prefix + 'erected_not_want']) {
-                totalScore += scoreMap.arousal[data[prefix + 'erected_not_want']] || 0;
-            }
-            if (data[prefix + 'non_erected_want']) {
-                totalScore += scoreMap.arousal[data[prefix + 'non_erected_want']] || 0;
-            }
-            if (data[prefix + 'non_erected_not_want']) {
-                totalScore += scoreMap.arousal[data[prefix + 'non_erected_not_want']] || 0;
-            }
-        }
-        
-        // Усредняем баллы
-        totalScore = Math.round(totalScore / 4);
-    } else {
-        // Подсчет для теста менопаузы
-        if (data.menopause_frequency) {
-            totalScore += scoreMap.frequency[data.menopause_frequency] || 0;
-        }
-        if (data.menopause_strength) {
-            totalScore += scoreMap.strength[data.menopause_strength] || 0;
-        }
-        if (data.menopause_erected_want) {
-            totalScore += scoreMap.arousal[data.menopause_erected_want] || 0;
-        }
-        if (data.menopause_erected_not_want) {
-            totalScore += scoreMap.arousal[data.menopause_erected_not_want] || 0;
-        }
-        if (data.menopause_non_erected_want) {
-            totalScore += scoreMap.arousal[data.menopause_non_erected_want] || 0;
-        }
-        if (data.menopause_non_erected_not_want) {
-            totalScore += scoreMap.arousal[data.menopause_non_erected_not_want] || 0;
-        }
-    }
-    
-    // Определяем уровень либидо
-    let level, description;
-    
-    if (testType === 'regular') {
-        if (totalScore <= 8) {
-            level = 'Низкое либидо';
-            description = 'Ваше либидо находится на низком уровне. Это может быть связано с гормональными изменениями, стрессом или другими факторами. Рекомендуется консультация для выявления причин и разработки индивидуального плана восстановления.';
-        } else if (totalScore <= 16) {
-            level = 'Среднее либидо';
-            description = 'У вас средний уровень либидо. Есть потенциал для усиления сексуальной энергии через работу с гормональным балансом и психологическими аспектами.';
-        } else if (totalScore <= 24) {
-            level = 'Высокое либидо';
-            description = 'Поздравляем! У вас высокий уровень либидо. Ваша сексуальная энергия находится в хорошем состоянии, но есть возможности для дальнейшего развития и гармонизации.';
-        } else {
-            level = 'Очень высокое либидо';
-            description = 'У вас очень высокий уровень либидо! Это прекрасный показатель вашей сексуальной энергии. Важно научиться правильно направлять эту энергию для достижения гармонии во всех сферах жизни.';
-        }
-    } else {
-        if (totalScore <= 6) {
-            level = 'Низкое либидо в менопаузе';
-            description = 'В период менопаузы снижение либидо является распространенным явлением из-за гормональных изменений. Существуют эффективные методы восстановления, включая гормональную терапию и натуральные подходы.';
-        } else if (totalScore <= 12) {
-            level = 'Среднее либидо в менопаузе';
-            description = 'У вас сохраняется умеренный уровень либидо, что является хорошим показателем для периода менопаузы. Есть возможности для усиления сексуальной энергии через специальные методики.';
-        } else if (totalScore <= 18) {
-            level = 'Высокое либидо в менопаузе';
-            description = 'Поздравляем! Несмотря на менопаузу, у вас сохраняется высокий уровень либидо. Это прекрасная основа для дальнейшего развития вашей сексуальности.';
-        } else {
-            level = 'Очень высокое либидо в менопаузе';
-            description = 'У вас исключительно высокий уровень либидо для периода менопаузы! Это редкий и ценный показатель. Важно научиться управлять этой энергией для максимальной реализации.';
-        }
-    }
-    
-    return { level, description, score: totalScore, testType };
 }
 
 function showTestResult(result) {
