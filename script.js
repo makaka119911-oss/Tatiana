@@ -730,6 +730,8 @@ function validateStep(step) {
     return isValid;
 }
 
+let currentTestType = '';
+
 function nextStep(step) {
     if (!validateStep(currentStep)) {
         showNotification('Пожалуйста, ответьте на все обязательные вопросы этого шага', 'error');
@@ -743,18 +745,52 @@ function nextStep(step) {
             return;
         }
         
-        // Генерируем шаги на основе типа теста
-        generateTestSteps(testType.value);
-        totalSteps = testType.value === 'regular' ? 6 : 2;
+        currentTestType = testType.value;
+        totalSteps = currentTestType === 'regular' ? 6 : 2;
     }
     
-    document.querySelector('.test-step.active').classList.remove('active');
-    document.getElementById('step' + step).classList.add('active');
+    // Hide all steps
+    document.querySelectorAll('.test-step').forEach(stepEl => {
+        stepEl.classList.remove('active');
+    });
+    
+    // Show appropriate step based on test type
+    let stepToShow;
+    if (step === 1) {
+        stepToShow = 'step1';
+    } else if (step === 6) {
+        stepToShow = 'step6';
+    } else {
+        stepToShow = `step${step}_${currentTestType}`;
+    }
+    
+    document.getElementById(stepToShow).classList.add('active');
     currentStep = step;
     
     updateProgress();
+    scrollToTop();
+}
+
+function prevStep(step) {
+    // Hide all steps
+    document.querySelectorAll('.test-step').forEach(stepEl => {
+        stepEl.classList.remove('active');
+    });
     
-    // Прокрутка к верху страницы
+    // Show appropriate step based on test type
+    let stepToShow;
+    if (step === 1) {
+        stepToShow = 'step1';
+    } else if (step === 6) {
+        stepToShow = 'step6';
+    } else {
+        stepToShow = `step${step}_${currentTestType}`;
+    }
+    
+    document.getElementById(stepToShow).classList.add('active');
+    currentStep = step;
+    
+    updateProgress();
     scrollToTop();
 }
 
