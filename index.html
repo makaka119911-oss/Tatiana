@@ -2033,7 +2033,134 @@
         let archiveData = [];
         let currentPage = 1;
         const itemsPerPage = 10;
+// Глобальные переменные для теста
+let currentStep = 1;
+let totalSteps = 6;
+let testType = '';
 
+// Функция для перехода между шагами
+function showStep(stepNumber) {
+    // Скрываем все шаги
+    document.querySelectorAll('.test-step').forEach(step => {
+        step.classList.remove('active');
+    });
+    
+    // Показываем нужный шаг
+    document.getElementById('step' + stepNumber).classList.add('active');
+    currentStep = stepNumber;
+    
+    // Обновляем прогресс
+    updateProgress();
+    
+    // Прокрутка к верху
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+// Функция обновления прогресса
+function updateProgress() {
+    const progress = (currentStep / totalSteps) * 100;
+    document.getElementById('testProgress').style.width = progress + '%';
+    document.getElementById('progressText').textContent = `Шаг ${currentStep} из ${totalSteps}`;
+}
+
+// Инициализация при загрузке страницы
+document.addEventListener('DOMContentLoaded', function() {
+    // Обработчик для кнопки "Далее" на первом шаге
+    document.getElementById('nextFromStep1').addEventListener('click', function() {
+        const selectedTestType = document.querySelector('input[name="test_type"]:checked');
+        if (!selectedTestType) {
+            showNotification('Пожалуйста, выберите тип теста', 'error');
+            return;
+        }
+        
+        testType = selectedTestType.value;
+        
+        // Для менопаузы пропускаем промежуточные шаги
+        if (testType === 'menopause') {
+            // Показываем сразу последний шаг или специальный шаг для менопаузы
+            showStep(6);
+        } else {
+            showStep(2);
+        }
+    });
+    
+    // Обработчик для сезонной зависимости
+    document.querySelectorAll('input[name="season_dependency"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            const description = document.getElementById('seasonDescription');
+            if (description) {
+                description.style.display = this.value === 'Да' ? 'block' : 'none';
+            }
+        });
+    });
+    
+    // Обработчик отправки формы теста
+    document.getElementById('libidoTestForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Собираем данные формы
+        const formData = new FormData(this);
+        const testData = Object.fromEntries(formData.entries());
+        
+        // Добавляем тип теста
+        testData.test_type = testType;
+        
+        // Рассчитываем результат
+        const result = calculateSimpleTestResult(testData);
+        
+        // Показываем результат
+        showTestResult(result);
+    });
+});
+
+// Упрощенная функция расчета результата
+function calculateSimpleTestResult(data) {
+    // Простая логика для демонстрации
+    let score = Math.floor(Math.random() * 100);
+    let level, description;
+    
+    if (score < 25) {
+        level = 'Низкое либидо';
+        description = 'Ваше либидо находится на низком уровне. Рекомендуется консультация специалиста.';
+    } else if (score < 50) {
+        level = 'Среднее либидо';
+        description = 'У вас средний уровень либидо. Есть потенциал для улучшения.';
+    } else if (score < 75) {
+        level = 'Высокое либидо';
+        description = 'Поздравляем! У вас высокий уровень либидо.';
+    } else {
+        level = 'Очень высокое либидо';
+        description = 'У вас очень высокий уровень либидо!';
+    }
+    
+    return { level, description, score };
+}
+
+// Функция показа результата
+function showTestResult(result) {
+    const resultLevel = document.getElementById('resultLevel');
+    const resultDescription = document.getElementById('resultDescription');
+    
+    // Устанавливаем класс и текст
+    if (result.level.includes('Низкое')) {
+        resultLevel.className = 'result-level level-low';
+    } else if (result.level.includes('Среднее')) {
+        resultLevel.className = 'result-level level-medium';
+    } else if (result.level.includes('Высокое')) {
+        resultLevel.className = 'result-level level-high';
+    } else {
+        resultLevel.className = 'result-level level-very-high';
+    }
+    
+    resultLevel.textContent = result.level;
+    resultDescription.textContent = result.description;
+    
+    // Показываем секцию с результатом
+    showSection('result');
+}
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Сайт загружен');
             checkDiagnosticStatus();
@@ -2889,6 +3016,7 @@
     </script>
 </body>
 </html>
+
 
 
 
