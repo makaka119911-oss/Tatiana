@@ -1248,7 +1248,64 @@ section {
         display: block;
     }
 }
-/* Добавьте этот CSS в конец ваших стилей */
+/* Стили для улучшенных уведомлений */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 12px;
+    z-index: 10000;
+    animation: slideInRight 0.5s ease-out;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    max-width: 400px;
+    color: white;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    line-height: 1.4;
+    white-space: pre-line;
+}
+
+.notification.success {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+}
+
+.notification.error {
+    background: linear-gradient(135deg, #dc3545, #e83e8c);
+}
+
+.notification.info {
+    background: linear-gradient(135deg, #2196F3, #1976D2);
+}
+
+.notification.warning {
+    background: linear-gradient(135deg, #FF9800, #F57C00);
+}
+
+/* Анимация появления */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Анимация исчезновения */
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}/* Добавьте этот CSS в конец ваших стилей */
 .notification {
     position: fixed;
     top: 20px;
