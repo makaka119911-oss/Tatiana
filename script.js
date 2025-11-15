@@ -918,18 +918,19 @@ async function handleRegistrationSubmit(e) {
         // Показываем уведомление о начале отправки
         showNotification('⏳ Отправляем данные...', 'info');
         
-        // Отправляем в Telegram с таймаутом
-        const sendPromise = sendRegistrationToTelegram(registrationData, userPhoto);
-        const timeoutPromise = new Promise((_, reject) => 
-            setTimeout(() => reject(new Error('Время отправки истекло. Проверьте интернет-соединение')), 15000)
-        );
+        // Сначала конвертируем фото в base64 для архива
+        const photoBase64 = await fileToBase64(userPhoto);
         
-        await Promise.race([sendPromise, timeoutPromise]);
+        // Отправляем в Telegram с улучшенной обработкой ошибок
+        await sendRegistrationToTelegram(registrationData, userPhoto);
         
         showNotification('✅ Регистрация прошла успешно! Переходим к тесту.', 'success');
         
-        // Сохраняем статус и показываем тест
-        localStorage.setItem('registrationCompleted', 'true');
+        // Сохраняем данные для архива (временно, пока не пройдем тест)
+        registrationData.photo = photoBase64;
+        localStorage.setItem('tempRegistrationData', JSON.stringify(registrationData));
+        
+        // Показываем тест
         setTimeout(() => showTestSection(), 1500);
         
     } catch (error) {
@@ -948,11 +949,16 @@ async function handleRegistrationSubmit(e) {
             errorMessage += 'Фотография слишком большая. Выберите файл до 5 МБ';
         } else if (error.message.includes('JPG, PNG')) {
             errorMessage += 'Неверный формат файла. Используйте JPG, PNG или GIF';
+        } else if (error.message.includes('Telegram') || error.message.includes('бот')) {
+            errorMessage += 'Проблема с отправкой в Telegram. Попробуйте позже или свяжитесь с администратором';
         } else {
             errorMessage += 'Ошибка при отправке: ' + error.message;
         }
         
         showNotification(errorMessage, 'error');
+        
+        // НЕ сохраняем данные и НЕ переходим дальше при ошибке
+        localStorage.removeItem('tempRegistrationData');
     } finally {
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
@@ -1053,8 +1059,12 @@ async function sendRegistrationToTelegram(data, photoFile) {
         message += `   └ *Возраст:* ${data.age}\n`;
         message += `   └ *Телефон:* ${data.phone}\n`;
         message += `   └ *Telegram:* ${data.telegram}\n`;
-        message += `   └ *Фото:* ${photoFile ? 'Да' : 'Нет'}\n`;
+        message += `   └ *Размер фото:* ${(photoFile.size / 1024 / 1024).toFixed(2)} МБ\n`;
         message += `\n⏰ *Дата регистрации:* ${new Date().toLocaleString('ru-RU')}`;
+
+        // Создаем AbortController для таймаута
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000);
 
         // Пытаемся отправить текстовое сообщение
         const textResponse = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
@@ -1066,39 +1076,58 @@ async function sendRegistrationToTelegram(data, photoFile) {
                 chat_id: TELEGRAM_CHAT_ID,
                 text: message,
                 parse_mode: 'Markdown'
-            })
+            }),
+            signal: controller.signal
         });
+
+        clearTimeout(timeoutId);
 
         if (!textResponse.ok) {
             const errorData = await textResponse.text();
-            throw new Error(`Ошибка Telegram: ${textResponse.status} - ${errorData}`);
+            throw new Error(`Ошибка Telegram (${textResponse.status}): ${errorData}`);
         }
 
         const textResult = await textResponse.json();
         
         if (!textResult.ok) {
-            throw new Error(textResult.description || 'Неизвестная ошибка Telegram');
+            throw new Error(`Telegram: ${textResult.description || 'Неизвестная ошибка'}`);
         }
 
-        // Затем отправляем фото, если есть
-        if (photoFile) {
+        console.log('✅ Текст регистрации отправлен в Telegram');
+
+        // Пытаемся отправить фото (но не блокируем регистрацию при ошибке фото)
+        try {
             await sendPhotoToTelegram(photoFile, `Фото: ${data.firstName} ${data.lastName}`);
+        } catch (photoError) {
+            console.warn('Фото не отправлено, но регистрация продолжается:', photoError);
+            // Можно отправить сообщение о проблеме с фото
+            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chat_id: TELEGRAM_CHAT_ID,
+                    text: `⚠️ *ВНИМАНИЕ:* Фото пользователя ${data.firstName} ${data.lastName} не удалось отправить. Причина: ${photoError.message}`,
+                    parse_mode: 'Markdown'
+                })
+            });
         }
-
-        console.log('✅ Регистрация успешно отправлена в Telegram');
         
     } catch (error) {
         console.error('Ошибка отправки регистрации:', error);
         
         // Преобразуем технические ошибки в понятные сообщения
-        if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
-            throw new Error('Нет соединения с сервером. Проверьте интернет-подключение');
-        } else if (error.message.includes('timeout')) {
-            throw new Error('Сервер не отвечает. Попробуйте позже');
+        if (error.name === 'AbortError') {
+            throw new Error('Сервер Telegram не отвежает. Попробуйте позже');
+        } else if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+            throw new Error('Нет соединения с интернетом. Проверьте подключение');
         } else if (error.message.includes('chat not found') || error.message.includes('400')) {
             throw new Error('Ошибка настройки бота. Сообщите администратору');
+        } else if (error.message.includes('429')) {
+            throw new Error('Слишком много запросов. Подождите немного и попробуйте снова');
         } else {
-            throw new Error('Ошибка отправки: ' + error.message);
+            throw new Error('Ошибка отправки данных: ' + error.message);
         }
     }
 }
