@@ -3008,17 +3008,17 @@
             }
         }
 
-       async function sendPhotoToTelegram(photoFile, caption) {
+async function sendPhotoToTelegram(photoFile, caption) {
+    const formData = new FormData();
+    formData.append('chat_id', TELEGRAM_CHAT_ID);
+    formData.append('photo', photoFile);
+    formData.append('caption', caption.substring(0, 200)); // Ограничиваем длину caption
+
+    // Создаем AbortController для таймаута
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 25000);
+
     try {
-        const formData = new FormData();
-        formData.append('chat_id', TELEGRAM_CHAT_ID);
-        formData.append('photo', photoFile);
-        formData.append('caption', caption.substring(0, 200)); // Ограничиваем длину caption
-
-        // Добавляем таймаут для отправки фото
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 секунд для фото
-
         const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
             method: 'POST',
             body: formData,
@@ -3029,13 +3029,13 @@
 
         if (!response.ok) {
             const errorText = await response.text();
-            throw new Error(`Ошибка отправки фото: ${response.status} - ${errorText}`);
+            throw new Error(`Ошибка ${response.status}: ${errorText}`);
         }
 
         const result = await response.json();
         
         if (!result.ok) {
-            throw new Error(result.description || 'Ошибка загрузки фото');
+            throw new Error(result.description || 'Неизвестная ошибка загрузки фото');
         }
 
         console.log('✅ Фото успешно отправлено в Telegram');
@@ -3048,8 +3048,7 @@
         } else if (error.message.includes('Failed to fetch')) {
             throw new Error('Проблемы с интернет-соединением при отправке фото');
         } else {
-            // Не блокируем всю регистрацию из-за ошибки фото
-            console.warn('Фото не отправлено, но продолжаем регистрацию:', error.message);
+            throw new Error('Не удалось отправить фото: ' + error.message);
         }
     }
 }
@@ -3803,6 +3802,7 @@
     </script>
 </body>
 </html>
+
 
 
 
