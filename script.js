@@ -261,20 +261,26 @@ function calculateTestResult(data) {
 }
 
 // Функция для сохранения данных в localStorage
-function saveToArchive(userData, testResult) {
-    const archiveEntry = {
-        id: Date.now() + Math.random().toString(36).substr(2, 9),
-        timestamp: new Date().toISOString(),
-        userData: userData,
-        testResult: testResult,
-        completed: true
-    };
-    
-    let existingData = JSON.parse(localStorage.getItem('libidoTestArchive') || '[]');
-    existingData.push(archiveEntry);
-    localStorage.setItem('libidoTestArchive', JSON.stringify(existingData));
-    
-    console.log('✅ Данные сохранены в архив, включая фото');
+function saveToArchive(userData, testData, testResult) {
+    try {
+        const archiveEntry = {
+            id: Date.now() + Math.random().toString(36).substr(2, 9),
+            timestamp: new Date().toISOString(),
+            userData: userData,
+            testData: testData,
+            testResult: testResult,
+            completed: true
+        };
+        
+        let existingData = JSON.parse(localStorage.getItem('libidoTestArchive') || '[]');
+        existingData.push(archiveEntry);
+        localStorage.setItem('libidoTestArchive', JSON.stringify(existingData));
+        
+        console.log('✅ Данные сохранены в архив');
+    } catch (error) {
+        console.error('Ошибка сохранения в архив:', error);
+        showNotification('⚠️ Данные теста сохранены, но возникла проблема с локальным архивом', 'warning');
+    }
 }
 
 // Функция для загрузки данных из архива
@@ -980,7 +986,7 @@ async function handleTestSubmit(e) {
     
     // Проверяем валидность последнего шага
     if (!validateStep(6)) {
-        showErrorMessage('Пожалуйста, ответьте на все обязательные вопросы этого шага');
+        showNotification('Пожалуйста, ответьте на все обязательные вопросы этого шага', 'error');
         return;
     }
     
@@ -996,24 +1002,56 @@ async function handleTestSubmit(e) {
         const formData = new FormData(form);
         testData = Object.fromEntries(formData.entries());
         
+        // Получаем временные данные регистрации
+        const tempRegistrationData = JSON.parse(localStorage.getItem('tempRegistrationData') || '{}');
+        if (!tempRegistrationData.firstName) {
+            throw new Error('Данные регистрации не найдены. Пожалуйста, пройдите регистрацию заново.');
+        }
+        
         // Рассчитываем результат
         const result = calculateTestResult(testData);
         
         // Показываем результат
         showTestResult(result);
         
-        // Отправляем результаты в Telegram
-        await sendTestResultsToTelegram(testData, result);
+        // Пытаемся отправить результаты в Telegram
+        await sendTestResultsToTelegram(testData, result, tempRegistrationData);
+        
+        // Сохраняем в архив только после успешной отправки
+        saveToArchive(tempRegistrationData, testData, result);
         
         // Разблокируем все разделы
         localStorage.setItem('diagnosticCompleted', 'true');
         unlockAllSections();
         
-        showSuccessMessage('✅ Диагностика завершена! Теперь вам доступны все разделы сайта.');
+        // Очищаем временные данные
+        localStorage.removeItem('tempRegistrationData');
+        
+        showNotification('✅ Диагностика завершена! Теперь вам доступны все разделы сайта.', 'success');
         
     } catch (error) {
         console.error('Ошибка обработки теста:', error);
-        showErrorMessage('❌ Ошибка обработки теста. Пожалуйста, попробуйте еще раз.');
+        
+        let errorMessage = '❌ ';
+        if (error.message.includes('Данные регистрации не найдены')) {
+            errorMessage += error.message;
+        } else if (error.message.includes('Failed to fetch') || error.message.includes('Network Error')) {
+            errorMessage += 'Проблемы с интернет-соединением. Результат сохранен локально, но не отправлен в Telegram.';
+            // В этом случае все равно сохраняем данные, но уведомляем об ошибке отправки
+            const tempRegistrationData = JSON.parse(localStorage.getItem('tempRegistrationData') || '{}');
+            if (tempRegistrationData.firstName) {
+                const result = calculateTestResult(testData);
+                saveToArchive(tempRegistrationData, testData, result);
+                localStorage.setItem('diagnosticCompleted', 'true');
+                unlockAllSections();
+                localStorage.removeItem('tempRegistrationData');
+                errorMessage += '\n\nДанные сохранены в архиве.';
+            }
+        } else {
+            errorMessage += 'Ошибка обработки теста: ' + error.message;
+        }
+        
+        showNotification(errorMessage, 'error');
     } finally {
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
@@ -1117,7 +1155,33 @@ async function sendRegistrationToTelegram(data, photoFile) {
     } catch (error) {
         console.error('Ошибка отправки регистрации:', error);
         
-        // Преобразуем технические ошибки в понятные сообщения
+       // Функция проверки доступности Telegram API
+async function checkTelegramAvailability() {
+    try {
+        const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getMe`, {
+            method: 'GET',
+            signal: AbortSignal.timeout(5000)
+        });
+        
+        if (!response.ok) {
+            throw new Error('Telegram API недоступен');
+        }
+        
+        const data = await response.json();
+        return data.ok;
+    } catch (error) {
+        console.warn('Telegram API недоступен:', error);
+        return false;
+    }
+}
+
+// Проверяем при загрузке страницы
+document.addEventListener('DOMContentLoaded', async function() {
+    const isTelegramAvailable = await checkTelegramAvailability();
+    if (!isTelegramAvailable) {
+        console.warn('Telegram API временно недоступен');
+    }
+}); // Преобразуем технические ошибки в понятные сообщения
         if (error.name === 'AbortError') {
             throw new Error('Сервер Telegram не отвежает. Попробуйте позже');
         } else if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
