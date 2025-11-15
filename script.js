@@ -895,36 +895,64 @@ async function handleRegistrationSubmit(e) {
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Регистрация...';
         submitBtn.disabled = true;
         
+        // Собираем данные формы
         const formData = new FormData(form);
         registrationData = Object.fromEntries(formData.entries());
         
-        // Обработка загрузки фото
-        const photoInput = document.getElementById('photo');
-        if (photoInput.files[0]) {
-            const file = photoInput.files[0];
-            
-            // Проверка размера файла (5MB)
-            if (file.size > 5 * 1024 * 1024) {
-                throw new Error('Размер файла не должен превышать 5MB');
-            }
-            
-            // Конвертация в base64
-            registrationData.photo = await fileToBase64(file);
-        } else {
-            registrationData.photo = null;
+        // Проверяем наличие фото
+        if (!userPhoto) {
+            throw new Error('Пожалуйста, загрузите вашу фотографию');
+        }
+
+        // Проверка размера фото
+        if (userPhoto.size > 5 * 1024 * 1024) {
+            throw new Error('Размер фотографии не должен превышать 5 МБ');
+        }
+
+        // Проверка типа файла
+        const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+        if (!validTypes.includes(userPhoto.type)) {
+            throw new Error('Поддерживаются только файлы JPG, PNG и GIF');
         }
         
-        // Отправляем в Telegram
-        await sendRegistrationToTelegram(registrationData);
+        // Показываем уведомление о начале отправки
+        showNotification('⏳ Отправляем данные...', 'info');
+        
+        // Отправляем в Telegram с таймаутом
+        const sendPromise = sendRegistrationToTelegram(registrationData, userPhoto);
+        const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Время отправки истекло. Проверьте интернет-соединение')), 15000)
+        );
+        
+        await Promise.race([sendPromise, timeoutPromise]);
         
         showNotification('✅ Регистрация прошла успешно! Переходим к тесту.', 'success');
         
+        // Сохраняем статус и показываем тест
         localStorage.setItem('registrationCompleted', 'true');
         setTimeout(() => showTestSection(), 1500);
         
     } catch (error) {
         console.error('Ошибка регистрации:', error);
-        showNotification('❌ Ошибка регистрации: ' + error.message, 'error');
+        
+        // Более понятные сообщения об ошибках на русском
+        let errorMessage = '❌ ';
+        
+        if (error.message.includes('failed to fetch') || error.message.includes('Network Error')) {
+            errorMessage += 'Проблемы с интернет-соединением. Проверьте:\n• Подключение к интернету\n• Блокировку сайтов\n• Попробуйте позже';
+        } else if (error.message.includes('timeout') || error.message.includes('истекло')) {
+            errorMessage += 'Слишком долгая отправка. Проверьте интернет-соединение и попробуйте снова';
+        } else if (error.message.includes('photo') || error.message.includes('фото')) {
+            errorMessage += error.message;
+        } else if (error.message.includes('5 МБ')) {
+            errorMessage += 'Фотография слишком большая. Выберите файл до 5 МБ';
+        } else if (error.message.includes('JPG, PNG')) {
+            errorMessage += 'Неверный формат файла. Используйте JPG, PNG или GIF';
+        } else {
+            errorMessage += 'Ошибка при отправке: ' + error.message;
+        }
+        
+        showNotification(errorMessage, 'error');
     } finally {
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
@@ -1015,9 +1043,9 @@ async function handleConsultationSubmit(e) {
 }
 
 // Функции для отправки в Telegram
-async function sendRegistrationToTelegram(data) {
+async function sendRegistrationToTelegram(data, photoFile) {
     try {
-        // Отправляем текстовое сообщение
+        // Формируем сообщение
         let message = `🌟 *НОВАЯ РЕГИСТРАЦИЯ* 🌟\n\n`;
         message += `👤 *Контактная информация:*\n`;
         message += `   └ *Фамилия:* ${data.lastName}\n`;
@@ -1025,9 +1053,11 @@ async function sendRegistrationToTelegram(data) {
         message += `   └ *Возраст:* ${data.age}\n`;
         message += `   └ *Телефон:* ${data.phone}\n`;
         message += `   └ *Telegram:* ${data.telegram}\n`;
+        message += `   └ *Фото:* ${photoFile ? 'Да' : 'Нет'}\n`;
         message += `\n⏰ *Дата регистрации:* ${new Date().toLocaleString('ru-RU')}`;
 
-        const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        // Пытаемся отправить текстовое сообщение
+        const textResponse = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -1039,17 +1069,37 @@ async function sendRegistrationToTelegram(data) {
             })
         });
 
-        const result = await response.json();
+        if (!textResponse.ok) {
+            const errorData = await textResponse.text();
+            throw new Error(`Ошибка Telegram: ${textResponse.status} - ${errorData}`);
+        }
+
+        const textResult = await textResponse.json();
         
-        if (!response.ok || !result.ok) {
-            throw new Error(result.description || 'Ошибка отправки в Telegram');
+        if (!textResult.ok) {
+            throw new Error(textResult.description || 'Неизвестная ошибка Telegram');
+        }
+
+        // Затем отправляем фото, если есть
+        if (photoFile) {
+            await sendPhotoToTelegram(photoFile, `Фото: ${data.firstName} ${data.lastName}`);
         }
 
         console.log('✅ Регистрация успешно отправлена в Telegram');
         
     } catch (error) {
         console.error('Ошибка отправки регистрации:', error);
-        throw error;
+        
+        // Преобразуем технические ошибки в понятные сообщения
+        if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+            throw new Error('Нет соединения с сервером. Проверьте интернет-подключение');
+        } else if (error.message.includes('timeout')) {
+            throw new Error('Сервер не отвечает. Попробуйте позже');
+        } else if (error.message.includes('chat not found') || error.message.includes('400')) {
+            throw new Error('Ошибка настройки бота. Сообщите администратору');
+        } else {
+            throw new Error('Ошибка отправки: ' + error.message);
+        }
     }
 }
 
