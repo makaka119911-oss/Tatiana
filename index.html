@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Татьяна Солнечная - Раскрытие женской силы</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         :root {
             --deep-burgundy: #8B4352;
@@ -850,6 +851,242 @@
             margin-bottom: 1rem;
         }
 
+        /* Archive Styles */
+        .archive-controls {
+            margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-box input {
+            flex: 1;
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .archive-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--deep-burgundy);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--dark-text);
+            font-size: 0.9rem;
+        }
+
+        .results-table-container {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .results-table th,
+        .results-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .results-table th {
+            background: var(--lavender);
+            font-weight: 600;
+            color: var(--deep-burgundy);
+        }
+
+        .results-table tr:hover {
+            background: #f9f9f9;
+        }
+
+        .level-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .level-badge-low {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .level-badge-medium {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .level-badge-high {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .level-badge-very-high {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .btn-view-details,
+        .btn-delete {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-view-details {
+            color: var(--info-blue);
+            margin-right: 0.5rem;
+        }
+
+        .btn-view-details:hover {
+            background: rgba(33, 150, 243, 0.1);
+        }
+
+        .btn-delete {
+            color: #e74c3c;
+        }
+
+        .btn-delete:hover {
+            background: rgba(231, 76, 60, 0.1);
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .pagination-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pagination-btn:hover {
+            background: var(--lavender);
+            border-color: var(--purple-mystic);
+        }
+
+        .pagination-btn.active {
+            background: var(--purple-mystic);
+            color: white;
+            border-color: var(--purple-mystic);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            padding: 1rem;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            color: var(--deep-burgundy);
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            padding: 0.5rem;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid #eee;
+            text-align: right;
+        }
+
+        .user-details .detail-section {
+            margin-bottom: 2rem;
+        }
+
+        .user-details .detail-section h4 {
+            color: var(--deep-burgundy);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .user-details p {
+            margin-bottom: 0.5rem;
+        }
+
         /* Notification Styles */
         .notification {
             position: fixed;
@@ -1123,6 +1360,27 @@
             }
 
             .awakening-signs {
+                grid-template-columns: 1fr;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .filter-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .results-table-container {
+                overflow-x: auto;
+            }
+            
+            .results-table {
+                min-width: 800px;
+            }
+            
+            .archive-stats {
                 grid-template-columns: 1fr;
             }
 
@@ -1748,17 +2006,144 @@
         </div>
     </section>
 
+    <!-- Archive Section -->
+    <section id="archive" class="section-hidden">
+        <div class="container">
+            <div class="archive-login" id="archiveLogin">
+                <div class="form-container">
+                    <div class="form-header">
+                        <h3><i class="fas fa-lock"></i> Доступ к архиву</h3>
+                        <p>Введите пароль для просмотра базы данных</p>
+                    </div>
+                    <form id="archiveLoginForm">
+                        <div class="form-group">
+                            <label for="archivePassword">Пароль</label>
+                            <input type="password" id="archivePassword" class="form-control" required>
+                            <div class="error-message" id="archivePasswordError">Неверный пароль</div>
+                        </div>
+                        <div class="form-group" style="text-align: center;">
+                            <button type="submit" class="btn">
+                                <i class="fas fa-unlock"></i> Войти в архив
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div id="archiveContent" style="display: none;">
+                <div class="section-title">
+                    <h2><i class="fas fa-database"></i> Архив клиентов</h2>
+                    <p>База данных всех прошедших диагностику</p>
+                </div>
+                
+                <!-- Controls -->
+                <div class="archive-controls">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Поиск по имени, фамилии, телефону..." class="form-control">
+                        <button id="searchBtn" class="btn">
+                            <i class="fas fa-search"></i> Поиск
+                        </button>
+                    </div>
+                    
+                    <div class="filter-controls">
+                        <select id="levelFilter" class="form-control">
+                            <option value="">Все уровни либидо</option>
+                            <option value="Низкое">Низкое</option>
+                            <option value="Среднее">Среднее</option>
+                            <option value="Высокое">Высокое</option>
+                            <option value="Очень высокое">Очень высокое</option>
+                        </select>
+                        
+                        <select id="testTypeFilter" class="form-control">
+                            <option value="">Все типы тестов</option>
+                            <option value="regular">Обычный</option>
+                            <option value="menopause">Менопауза</option>
+                        </select>
+                        
+                        <button id="exportBtn" class="btn btn-outline">
+                            <i class="fas fa-download"></i> Экспорт в Excel
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Statistics -->
+                <div class="archive-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalUsers">0</div>
+                        <div class="stat-label">Всего пользователей</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="avgScore">0</div>
+                        <div class="stat-label">Средний балл</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="completionRate">0%</div>
+                        <div class="stat-label">Завершили тест</div>
+                    </div>
+                </div>
+                
+                <!-- Results Table -->
+                <div class="results-table-container">
+                    <table class="results-table">
+                        <thead>
+                            <tr>
+                                <th>Фото</th>
+                                <th>ФИО</th>
+                                <th>Возраст</th>
+                                <th>Телефон</th>
+                                <th>Telegram</th>
+                                <th>Тип теста</th>
+                                <th>Уровень либидо</th>
+                                <th>Баллы</th>
+                                <th>Дата</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultsTableBody">
+                            <!-- Данные будут здесь -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Pagination -->
+                <div class="pagination" id="pagination">
+                    <!-- Пагинация будет здесь -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Скрытая кнопка доступа к архиву -->
+    <div style="position: fixed; bottom: 10px; right: 10px; z-index: 9999;">
+        <button id="secretArchiveBtn" style="
+            width: 40px; 
+            height: 40px; 
+            background: transparent; 
+            border: none; 
+            cursor: pointer;
+            opacity: 0.1;
+            transition: opacity 0.3s;
+        " title="Секретный архив">
+            <i class="fas fa-user-secret" style="color: var(--deep-burgundy); font-size: 20px;"></i>
+        </button>
+    </div>
+
     <script>
         // Конфигурация Telegram
         const TELEGRAM_BOT_TOKEN = '8402206062:AAEJim1GkriKqY_o1mOo0YWSWQDdw5Qy2h0';
         const TELEGRAM_CHAT_ID = '-1002313355102';
+        const ARCHIVE_PASSWORD = 'admin123'; // Пароль для архива
 
         // Глобальные переменные
         let currentStep = 1;
         let totalSteps = 6;
-        let testData = {};
+        let testType = '';
         let registrationData = {};
+        let testData = {};
         let userPhoto = null;
+        let archiveData = [];
+        let itemsPerPage = 10;
+        let currentArchivePage = 1;
 
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Сайт загружен');
@@ -1770,6 +2155,7 @@
             initEventListeners();
             initTestSteps();
             initPhotoUpload();
+            initArchive();
         });
 
         function checkDiagnosticStatus() {
@@ -1780,7 +2166,6 @@
         }
 
         function unlockAllSections() {
-            // Скрываем замки и показываем контент для всех секций
             const sections = ['about', 'power', 'services', 'process', 'awakening', 'contacts'];
             
             sections.forEach(section => {
@@ -1823,7 +2208,9 @@
             document.querySelectorAll('input[name="season_dependency"]').forEach(radio => {
                 radio.addEventListener('change', function() {
                     const description = document.getElementById('seasonDescription');
-                    description.style.display = this.value === 'Да' ? 'block' : 'none';
+                    if (description) {
+                        description.style.display = this.value === 'Да' ? 'block' : 'none';
+                    }
                 });
             });
 
@@ -1902,14 +2289,12 @@
         }
 
         function initTestSteps() {
-            // Добавляем обработчики для опций
             document.querySelectorAll('.option-item').forEach(item => {
                 item.addEventListener('click', function() {
                     const radio = this.querySelector('input[type="radio"]');
                     if (radio) {
                         radio.checked = true;
                         
-                        // Добавляем визуальное выделение
                         this.parentElement.querySelectorAll('.option-item').forEach(opt => {
                             opt.classList.remove('selected');
                         });
@@ -1917,6 +2302,28 @@
                     }
                 });
             });
+
+            // Обработчик для кнопки "Начать тест" на первом шаге
+            const nextFromStep1 = document.getElementById('nextFromStep1');
+            if (nextFromStep1) {
+                nextFromStep1.addEventListener('click', function() {
+                    const selectedTestType = document.querySelector('input[name="test_type"]:checked');
+                    if (!selectedTestType) {
+                        showNotification('Пожалуйста, выберите тип теста', 'error');
+                        return;
+                    }
+                    
+                    testType = selectedTestType.value;
+                    console.log('Выбран тип теста:', testType);
+                    
+                    // Для менопаузы пропускаем периоды 1-4
+                    if (testType === 'menopause') {
+                        showStep(6); // Переходим сразу к тесту для менопаузы
+                    } else {
+                        showStep(2); // Переходим к первому периоду обычного теста
+                    }
+                });
+            }
         }
 
         function initPhotoUpload() {
@@ -1973,13 +2380,13 @@
             function handleFileSelection(file) {
                 // Проверка типа файла
                 if (!file.type.match('image.*')) {
-                    showErrorMessage('Пожалуйста, выберите файл изображения (JPG, PNG, GIF)');
+                    showNotification('Пожалуйста, выберите файл изображения (JPG, PNG, GIF)', 'error');
                     return;
                 }
 
                 // Проверка размера файла (5 МБ)
                 if (file.size > 5 * 1024 * 1024) {
-                    showErrorMessage('Размер файла не должен превышать 5 МБ');
+                    showNotification('Размер файла не должен превышать 5 МБ', 'error');
                     return;
                 }
 
@@ -2073,14 +2480,14 @@
         function nextStep(step) {
             // Проверяем валидность текущего шага перед переходом
             if (!validateStep(currentStep)) {
-                showErrorMessage('Пожалуйста, ответьте на все обязательные вопросы этого шага');
+                showNotification('Пожалуйста, ответьте на все обязательные вопросы этого шага', 'error');
                 return;
             }
 
             if (step === 2) {
                 const testType = document.querySelector('input[name="test_type"]:checked');
                 if (!testType) {
-                    showErrorMessage('Пожалуйста, выберите тип теста');
+                    showNotification('Пожалуйста, выберите тип теста', 'error');
                     return;
                 }
                 
@@ -2441,7 +2848,7 @@
             e.preventDefault();
             
             if (!validateRegistrationForm(e.target)) {
-                showErrorMessage('Пожалуйста, заполните все обязательные поля корректно');
+                showNotification('Пожалуйста, заполните все обязательные поля корректно', 'error');
                 return;
             }
             
@@ -2465,7 +2872,7 @@
                 // Отправляем в Telegram
                 await sendRegistrationToTelegram(registrationData, userPhoto);
                 
-                showSuccessMessage('✅ Регистрация прошла успешно! Переходим к тесту.');
+                showNotification('✅ Регистрация прошла успешно! Переходим к тесту.', 'success');
                 
                 // Сохраняем статус и показываем тест
                 localStorage.setItem('registrationCompleted', 'true');
@@ -2473,7 +2880,7 @@
                 
             } catch (error) {
                 console.error('Ошибка регистрации:', error);
-                showErrorMessage('❌ Ошибка регистрации: ' + error.message);
+                showNotification('❌ Ошибка регистрации: ' + error.message, 'error');
             } finally {
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
@@ -2485,7 +2892,7 @@
             
             // Проверяем валидность последнего шага
             if (!validateStep(6)) {
-                showErrorMessage('Пожалуйста, ответьте на все обязательные вопросы этого шага');
+                showNotification('Пожалуйста, ответьте на все обязательные вопросы этого шага', 'error');
                 return;
             }
             
@@ -2507,6 +2914,9 @@
                 // Показываем результат
                 showTestResult(result);
                 
+                // Сохраняем в архив
+                saveToArchive(registrationData, testData, result, userPhoto);
+                
                 // Отправляем результаты в Telegram
                 await sendTestResultsToTelegram(testData, result);
                 
@@ -2514,11 +2924,11 @@
                 localStorage.setItem('diagnosticCompleted', 'true');
                 unlockAllSections();
                 
-                showSuccessMessage('✅ Диагностика завершена! Теперь вам доступны все разделы сайта.');
+                showNotification('✅ Диагностика завершена! Теперь вам доступны все разделы сайта.', 'success');
                 
             } catch (error) {
                 console.error('Ошибка обработки теста:', error);
-                showErrorMessage('❌ Ошибка обработки теста. Пожалуйста, попробуйте еще раз.');
+                showNotification('❌ Ошибка обработки теста. Пожалуйста, попробуйте еще раз.', 'error');
             } finally {
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
@@ -2541,12 +2951,12 @@
                 
                 await sendConsultationToTelegram(consultationData);
                 
-                showSuccessMessage('✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.');
+                showNotification('✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.', 'success');
                 form.reset();
                 
             } catch (error) {
                 console.error('Ошибка отправки заявки:', error);
-                showErrorMessage('❌ Ошибка отправки заявки. Пожалуйста, попробуйте еще раз.');
+                showNotification('❌ Ошибка отправки заявки. Пожалуйста, попробуйте еще раз.', 'error');
             } finally {
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
@@ -2673,7 +3083,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                    },
+                        },
                     body: JSON.stringify({
                         chat_id: TELEGRAM_CHAT_ID,
                         text: message,
@@ -2709,7 +3119,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                    },
+                        },
                     body: JSON.stringify({
                         chat_id: TELEGRAM_CHAT_ID,
                         text: message,
@@ -2839,7 +3249,7 @@
                     description = 'Поздравляем! Несмотря на менопаузу, у вас сохраняется высокий уровень либидо. Это прекрасная основа для дальнейшего развития вашей сексуальности.';
                 } else {
                     level = 'Очень высокое либидо в менопаузе';
-                    description = 'У вас исключительно высокий уровень либидо для периода менопаузы! Это редкий и ценный показатель. Важно научиться управлять этой энергией для максимальной реализации.';
+                    description = 'У вас исключительно высокий уровень либидо для периода менопаузы! Это редкий и ценный показатель. Ваша сексуальная энергия может стать источником творчества и vitality.';
                 }
             }
             
@@ -2931,6 +3341,21 @@
             scrollToTop();
         }
 
+        function showArchiveSection() {
+            hideAllSections();
+            document.getElementById('archive').classList.remove('section-hidden');
+            
+            // Сбрасываем форму при каждом входе в архив
+            const loginForm = document.getElementById('archiveLoginForm');
+            if (loginForm) {
+                loginForm.reset();
+            }
+            document.getElementById('archiveContent').style.display = 'none';
+            document.getElementById('archivePasswordError').style.display = 'none';
+            
+            scrollToTop();
+        }
+
         function hideAllSections() {
             document.querySelectorAll('section').forEach(section => {
                 section.classList.add('section-hidden');
@@ -2945,18 +3370,6 @@
         }
 
         // Уведомления
-        function showSuccessMessage(text) {
-            showNotification(text, 'success');
-        }
-
-        function showErrorMessage(text) {
-            showNotification(text, 'error');
-        }
-
-        function showInfoMessage(text) {
-            showNotification(text, 'info');
-        }
-
         function showNotification(text, type) {
             // Удаляем существующие уведомления
             const existingNotifications = document.querySelectorAll('.notification');
@@ -2979,9 +3392,399 @@
                 }
             }, 5000);
         }
+
+        // ==================== АРХИВ ====================
+
+        function initArchive() {
+            // Секретная кнопка
+            document.getElementById('secretArchiveBtn').addEventListener('click', function() {
+                showArchiveSection();
+            });
+            
+            // Форма входа в архив
+            const loginForm = document.getElementById('archiveLoginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const password = document.getElementById('archivePassword').value;
+                    
+                    if (password === ARCHIVE_PASSWORD) {
+                        document.getElementById('archiveLogin').style.display = 'none';
+                        document.getElementById('archiveContent').style.display = 'block';
+                        document.getElementById('archivePasswordError').style.display = 'none';
+                        
+                        // Загружаем и отображаем данные
+                        loadArchiveData();
+                        displayArchiveData(archiveData, 1);
+                        
+                        showNotification('✅ Доступ к архиву разрешен', 'success');
+                    } else {
+                        document.getElementById('archivePasswordError').style.display = 'block';
+                        showNotification('❌ Неверный пароль', 'error');
+                    }
+                });
+            }
+            
+            // Поиск и фильтры
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.getElementById('searchBtn');
+            const levelFilter = document.getElementById('levelFilter');
+            const testTypeFilter = document.getElementById('testTypeFilter');
+            const exportBtn = document.getElementById('exportBtn');
+            
+            function performSearch() {
+                const query = searchInput.value;
+                const level = levelFilter.value;
+                const testType = testTypeFilter.value;
+                
+                const filteredData = searchArchive(query, level, testType);
+                archiveData = filteredData;
+                displayArchiveData(filteredData, 1);
+            }
+            
+            if (searchBtn) {
+                searchBtn.addEventListener('click', performSearch);
+            }
+            
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        performSearch();
+                    }
+                });
+            }
+            
+            if (levelFilter) {
+                levelFilter.addEventListener('change', performSearch);
+            }
+            
+            if (testTypeFilter) {
+                testTypeFilter.addEventListener('change', performSearch);
+            }
+            
+            if (exportBtn) {
+                exportBtn.addEventListener('click', exportToExcel);
+            }
+        }
+
+        function saveToArchive(userData, testData, testResult, photoFile) {
+            // Конвертируем фото в base64 для хранения
+            const photoPromise = new Promise((resolve) => {
+                if (photoFile) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        resolve(e.target.result);
+                    };
+                    reader.readAsDataURL(photoFile);
+                } else {
+                    resolve(null);
+                }
+            });
+            
+            photoPromise.then(photoBase64 => {
+                const archiveEntry = {
+                    id: Date.now() + Math.random().toString(36).substr(2, 9),
+                    timestamp: new Date().toISOString(),
+                    userData: {
+                        ...userData,
+                        photo: photoBase64
+                    },
+                    testData: testData,
+                    testResult: testResult,
+                    completed: true
+                };
+                
+                let existingData = JSON.parse(localStorage.getItem('libidoTestArchive') || '[]');
+                existingData.push(archiveEntry);
+                localStorage.setItem('libidoTestArchive', JSON.stringify(existingData));
+                
+                console.log('✅ Данные сохранены в архив, включая фото');
+            });
+        }
+
+        function loadArchiveData() {
+            const data = JSON.parse(localStorage.getItem('libidoTestArchive') || '[]');
+            archiveData = data;
+            return data;
+        }
+
+        function searchArchive(query, levelFilter, testTypeFilter) {
+            let filteredData = loadArchiveData();
+            
+            // Поиск по тексту
+            if (query) {
+                const searchTerm = query.toLowerCase();
+                filteredData = filteredData.filter(item => 
+                    item.userData.firstName.toLowerCase().includes(searchTerm) ||
+                    item.userData.lastName.toLowerCase().includes(searchTerm) ||
+                    item.testResult.level.toLowerCase().includes(searchTerm) ||
+                    item.userData.telegram.toLowerCase().includes(searchTerm) ||
+                    item.userData.phone.includes(query)
+                );
+            }
+            
+            // Фильтр по уровню либидо
+            if (levelFilter) {
+                filteredData = filteredData.filter(item => 
+                    item.testResult.level.includes(levelFilter)
+                );
+            }
+            
+            // Фильтр по типу теста
+            if (testTypeFilter) {
+                filteredData = filteredData.filter(item => 
+                    item.testResult.testType === testTypeFilter
+                );
+            }
+            
+            return filteredData;
+        }
+
+        function displayArchiveData(data, page = 1) {
+            const tableBody = document.getElementById('resultsTableBody');
+            const pagination = document.getElementById('pagination');
+            
+            if (!tableBody) return;
+            
+            // Очищаем таблицу
+            tableBody.innerHTML = '';
+            
+            // Рассчитываем пагинацию
+            const startIndex = (page - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const pageData = data.slice(startIndex, endIndex);
+            const totalPages = Math.ceil(data.length / itemsPerPage);
+            currentArchivePage = page;
+            
+            // Заполняем таблицу
+            pageData.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            ${item.userData.photo ? 
+                                `<img src="${item.userData.photo}" alt="Фото" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">` : 
+                                '<div style="width: 40px; height: 40px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center;"><i class="fas fa-user" style="color: #ccc;"></i></div>'
+                            }
+                            <span>${item.userData.lastName} ${item.userData.firstName}</span>
+                        </div>
+                    </td>
+                    <td>${item.userData.age}</td>
+                    <td>${item.userData.phone}</td>
+                    <td>${item.userData.telegram}</td>
+                    <td>${item.testResult.testType === 'regular' ? 'Обычный' : 'Менопауза'}</td>
+                    <td>
+                        <span class="level-badge ${getLevelClass(item.testResult.level)}">
+                            ${item.testResult.level}
+                        </span>
+                    </td>
+                    <td>${item.testResult.score}</td>
+                    <td>${new Date(item.timestamp).toLocaleDateString('ru-RU')}</td>
+                    <td>
+                        <button class="btn-view-details" onclick="viewUserDetails('${item.id}')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn-delete" onclick="deleteUserData('${item.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+            
+            // Если данных нет
+            if (pageData.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="9" style="text-align: center; padding: 2rem;">
+                            <i class="fas fa-inbox" style="font-size: 3rem; color: #ccc; margin-bottom: 1rem;"></i>
+                            <p>Нет данных для отображения</p>
+                        </td>
+                    </tr>
+                `;
+            }
+            
+            // Обновляем пагинацию
+            updatePagination(totalPages, page);
+            
+            // Обновляем статистику
+            updateArchiveStats(data);
+        }
+
+        function getLevelClass(level) {
+            if (level.includes('Низкое')) return 'level-badge-low';
+            if (level.includes('Среднее')) return 'level-badge-medium';
+            if (level.includes('Высокое')) return 'level-badge-high';
+            if (level.includes('Очень высокое')) return 'level-badge-very-high';
+            return '';
+        }
+
+        function updatePagination(totalPages, currentPage) {
+            const pagination = document.getElementById('pagination');
+            if (!pagination) return;
+            
+            pagination.innerHTML = '';
+            
+            if (totalPages <= 1) return;
+            
+            // Кнопка "Назад"
+            if (currentPage > 1) {
+                const prevBtn = document.createElement('button');
+                prevBtn.className = 'pagination-btn';
+                prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+                prevBtn.onclick = () => {
+                    displayArchiveData(archiveData, currentPage - 1);
+                };
+                pagination.appendChild(prevBtn);
+            }
+            
+            // Номера страниц
+            for (let i = 1; i <= totalPages; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `pagination-btn ${i === currentPage ? 'active' : ''}`;
+                pageBtn.textContent = i;
+                pageBtn.onclick = () => {
+                    displayArchiveData(archiveData, i);
+                };
+                pagination.appendChild(pageBtn);
+            }
+            
+            // Кнопка "Вперед"
+            if (currentPage < totalPages) {
+                const nextBtn = document.createElement('button');
+                nextBtn.className = 'pagination-btn';
+                nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+                nextBtn.onclick = () => {
+                    displayArchiveData(archiveData, currentPage + 1);
+                };
+                pagination.appendChild(nextBtn);
+            }
+        }
+
+        function updateArchiveStats(data) {
+            const totalUsers = document.getElementById('totalUsers');
+            const avgScore = document.getElementById('avgScore');
+            const completionRate = document.getElementById('completionRate');
+            
+            if (!totalUsers || !avgScore || !completionRate) return;
+            
+            totalUsers.textContent = data.length;
+            
+            // Средний балл
+            if (data.length > 0) {
+                const totalScore = data.reduce((sum, item) => sum + item.testResult.score, 0);
+                avgScore.textContent = (totalScore / data.length).toFixed(1);
+            } else {
+                avgScore.textContent = '0';
+            }
+            
+            // Процент завершения (все данные уже завершены, так как попали в архив)
+            completionRate.textContent = '100%';
+        }
+
+        function viewUserDetails(userId) {
+            const userData = archiveData.find(item => item.id === userId);
+            if (!userData) return;
+            
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Детальная информация</h3>
+                        <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="user-details">
+                            <div class="detail-section" style="text-align: center;">
+                                ${userData.userData.photo ? 
+                                    `<img src="${userData.userData.photo}" alt="Фото профиля" style="max-width: 200px; border-radius: 10px; margin-bottom: 1rem;">` : 
+                                    '<div style="width: 200px; height: 200px; background: #f0f0f0; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;"><i class="fas fa-user" style="font-size: 3rem; color: #ccc;"></i></div>'
+                                }
+                                <h4>${userData.userData.lastName} ${userData.userData.firstName}</h4>
+                                <p>Возраст: ${userData.userData.age} лет</p>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <h4>Контактная информация</h4>
+                                <p><strong>Телефон:</strong> ${userData.userData.phone}</p>
+                                <p><strong>Telegram:</strong> ${userData.userData.telegram}</p>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <h4>Результаты теста</h4>
+                                <p><strong>Тип теста:</strong> ${userData.testResult.testType === 'regular' ? 'Обычный' : 'Менопауза'}</p>
+                                <p><strong>Уровень либидо:</strong> ${userData.testResult.level}</p>
+                                <p><strong>Баллы:</strong> ${userData.testResult.score}</p>
+                                <p><strong>Дата прохождения:</strong> ${new Date(userData.timestamp).toLocaleString('ru-RU')}</p>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <h4>Описание результата</h4>
+                                <p>${userData.testResult.description}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-outline" onclick="this.closest('.modal-overlay').remove()">
+                            Закрыть
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+
+        function deleteUserData(userId) {
+            if (!confirm('Вы уверены, что хотите удалить данные этого пользователя?')) {
+                return;
+            }
+            
+            archiveData = archiveData.filter(item => item.id !== userId);
+            localStorage.setItem('libidoTestArchive', JSON.stringify(archiveData));
+            
+            // Перезагружаем таблицу
+            displayArchiveData(archiveData, currentArchivePage);
+            showNotification('✅ Данные пользователя удалены', 'success');
+        }
+
+        function exportToExcel() {
+            const data = loadArchiveData();
+            
+            if (data.length === 0) {
+                showNotification('❌ Нет данных для экспорта', 'error');
+                return;
+            }
+            
+            // Создаем CSV содержимое
+            let csv = 'Фамилия,Имя,Возраст,Телефон,Telegram,Тип теста,Уровень либидо,Баллы,Дата\n';
+            
+            data.forEach(item => {
+                csv += `"${item.userData.lastName}","${item.userData.firstName}","${item.userData.age}","${item.userData.phone}","${item.userData.telegram}","${item.testResult.testType === 'regular' ? 'Обычный' : 'Менопауза'}","${item.testResult.level}","${item.testResult.score}","${new Date(item.timestamp).toLocaleDateString('ru-RU')}"\n`;
+            });
+            
+            // Создаем и скачиваем файл
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            link.setAttribute('href', url);
+            link.setAttribute('download', `архив_либидо_${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showNotification('✅ Данные экспортированы в CSV файл', 'success');
+        }
     </script>
 </body>
 </html>
+
 
 
 
