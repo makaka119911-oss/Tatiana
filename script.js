@@ -1321,25 +1321,61 @@ function showInfoMessage(text) {
     showNotification(text, 'info');
 }
 
-function showNotification(text, type) {
+function showNotification(text, type = 'info') {
     // Удаляем существующие уведомления
     const existingNotifications = document.querySelectorAll('.notification');
-    existingNotifications.forEach(notification => notification.remove());
+    existingNotifications.forEach(notification => {
+        notification.style.animation = 'slideOutRight 0.5s ease-in forwards';
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 500);
+    });
     
+    // Создаем новое уведомление
     const notification = document.createElement('div');
     notification.className = `notification ${type}`;
+    
+    // Иконки для разных типов уведомлений
+    const icons = {
+        success: 'check-circle',
+        error: 'exclamation-triangle',
+        info: 'info-circle',
+        warning: 'exclamation-circle'
+    };
+    
     notification.innerHTML = `
-        <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-triangle' : 'info-circle'}" 
-           style="margin-right: 8px;"></i> 
-        ${text}
+        <i class="fas fa-${icons[type] || 'info-circle'}" 
+           style="margin-right: 12px; font-size: 1.2rem;"></i> 
+        <div>${text}</div>
     `;
     
     document.body.appendChild(notification);
     
-    // Автоматическое скрытие
+    // Автоматическое скрытие (дольше для ошибок)
+    const duration = type === 'error' ? 8000 : 5000;
+    
     setTimeout(() => {
         if (notification.parentNode) {
-            notification.parentNode.removeChild(notification);
+            notification.style.animation = 'slideOutRight 0.5s ease-in forwards';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 500);
         }
-    }, 5000);
+    }, duration);
+    
+    // Возможность закрыть уведомление кликом
+    notification.addEventListener('click', function() {
+        if (notification.parentNode) {
+            notification.style.animation = 'slideOutRight 0.5s ease-in forwards';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 500);
+        }
+    });
 }
