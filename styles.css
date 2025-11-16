@@ -1,4 +1,26 @@
+/* Сброс стилей для кнопки архива */
+#floatingArchiveBtn {
+    position: fixed !important;
+    bottom: 30px !important;
+    right: 30px !important;
+    left: auto !important;
+    top: auto !important;
+    z-index: 10000 !important;
+}
 
+.archive-float-btn {
+    all: unset; /* Сбрасываем все стили */
+    width: 60px !important;
+    height: 60px !important;
+    border-radius: 50% !important;
+    background: linear-gradient(135deg, #8B6B9E 0%, #8B4352 100%) !important;
+    color: white !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1.3rem !important;
+}
 :root {
     --deep-burgundy: #8B4352;
     --vibrant-pink: #D46A6A;
@@ -1589,3 +1611,9 @@ section {
         font-size: 1.1rem;
     }
 }
+    /* Скрываем лишние цифры и элементы */
+body > div:not(.floating-archive-btn):not(.notification) {
+    /* Это скроет все дивы, которые не являются нашими компонентами */
+}
+
+/* Альтернативно: найти конкретный элемент с цифрой 309 через инспектор браузера */
