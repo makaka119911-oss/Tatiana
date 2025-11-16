@@ -2,8 +2,7 @@
 const TELEGRAM_BOT_TOKEN = '8402206062:AAEJim1GkriKqY_o1mOo0YWSWQDdw5Qy2h0';
 const TELEGRAM_CHAT_ID = '-1002313355102';
 const ARCHIVE_PASSWORD = 'admin123';
-const API_BASE_URL = 'http://localhost:3000'; // Заменить на production URL Railway после деплоя
-
+const API_BASE_URL = 'https://tatiana-server-production.up.railway.app'; // Production API URL
 // Глобальные переменные
 let currentStep = 1;
 let totalSteps = 6;
