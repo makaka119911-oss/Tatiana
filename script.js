@@ -25,20 +25,36 @@ function showStep(stepNumber) {
     // Функция для управления плавающей кнопкой архива
 // Функция для управления плавающей кнопкой архива - ВСЕГДА АКТИВНА
 // Функция для управления плавающей кнопкой архива - ВСЕГДА АКТИВНА
+// Функция для управления плавающей кнопкой архива
 function initArchiveButton() {
-    const archiveBtn = document.getElementById('floatingArchiveBtn');
+    console.log('🔄 Инициализация кнопки архива...');
     
-    if (archiveBtn) {
+    const archiveBtn = document.getElementById('floatingArchiveBtn');
+    const archiveButton = document.querySelector('.archive-float-btn');
+    
+    if (archiveBtn && archiveButton) {
+        console.log('✅ Кнопка архива найдена');
+        
         // Обработчик клика по кнопке
-        archiveBtn.querySelector('.archive-float-btn').addEventListener('click', function(e) {
+        archiveButton.addEventListener('click', function(e) {
             e.preventDefault();
-            console.log('Кнопка архива нажата'); // Для отладки
+            e.stopPropagation();
+            console.log('🎯 Кнопка архива нажата!');
             showArchiveSection();
         });
         
-        console.log('Кнопка архива инициализирована'); // Для отладки
+        // Дополнительно: обработчик на всю область кнопки
+        archiveBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('🎯 Область кнопки архива нажата!');
+            showArchiveSection();
+        });
+        
     } else {
-        console.error('Кнопка архива не найдена'); // Для отладки
+        console.error('❌ Кнопка архива НЕ найдена!');
+        console.log('floatingArchiveBtn:', archiveBtn);
+        console.log('.archive-float-btn:', archiveButton);
     }
 }
 // Обновите функцию unlockAllSections чтобы показывать кнопку архива
@@ -749,22 +765,24 @@ function initArchiveSearch() {
 
 // Функция для показа секции архива
 function showArchiveSection() {
-    console.log('showArchiveSection вызвана'); // Отладка
+    console.log('📂 Открываем секцию архива...');
     
     hideAllSections();
     const archiveSection = document.getElementById('archive');
     
     if (archiveSection) {
         archiveSection.classList.remove('section-hidden');
-        console.log('Секция архива показана'); // Отладка
+        console.log('✅ Секция архива показана');
     } else {
-        console.error('Секция архива не найдена'); // Отладка
+        console.error('❌ Секция архива не найдена в DOM');
+        return;
     }
     
     // Сбрасываем форму при каждом входе в архив
     const loginForm = document.getElementById('archiveLoginForm');
     if (loginForm) {
         loginForm.reset();
+        console.log('✅ Форма входа сброшена');
     }
     
     const archiveContent = document.getElementById('archiveContent');
@@ -781,20 +799,23 @@ function showArchiveSection() {
     
     // Показываем уведомление о доступе к архиву
     showNotification('🔐 Введите пароль для доступа к архиву', 'info');
+    console.log('🎯 Архив готов к вводу пароля');
 }
 // Основная функция инициализации
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Сайт загружен');
-
+    console.log('🚀 Сайт загружен, начинаем инициализацию...');
+    
     // Проверяем, пройдена ли диагностика
     checkDiagnosticStatus();
-
+    
     // Инициализация
     initEventListeners();
     initTest();
     initArchiveLogin();
     initArchiveSearch();
-    initArchiveButton(); // ← Кнопка архива всегда инициализируется
+    initArchiveButton(); // ← Эта строка ДОЛЖНА быть здесь!
+    
+    console.log('✅ Все инициализации завершены');
 });
 
 function checkDiagnosticStatus() {
