@@ -22,7 +22,42 @@ function showStep(stepNumber) {
     document.querySelectorAll('.test-step').forEach(step => {
         step.classList.remove('active');
     });
+    // Функция для управления плавающей кнопкой архива
+function initArchiveButton() {
+    const archiveBtn = document.getElementById('floatingArchiveBtn');
+    const diagnosticCompleted = localStorage.getItem('diagnosticCompleted') === 'true';
     
+    // Показываем кнопку только если диагностика пройдена
+    if (archiveBtn && diagnosticCompleted) {
+        archiveBtn.style.display = 'block';
+        
+        // Обработчик клика по кнопке
+        archiveBtn.querySelector('.archive-float-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            showArchiveSection();
+        });
+    }
+}
+
+// Обновите функцию unlockAllSections чтобы показывать кнопку архива
+function unlockAllSections() {
+    // Скрываем замки и показываем контент для всех секций
+    const sections = ['about', 'power', 'services', 'process', 'awakening', 'contacts'];
+    
+    sections.forEach(section => {
+        const lock = document.getElementById(section + 'Lock');
+        const content = document.getElementById(section + 'Content');
+        
+        if (lock) lock.style.display = 'none';
+        if (content) content.style.display = 'block';
+    });
+    
+    // ПОКАЗЫВАЕМ КНОПКУ АРХИВА
+    const archiveBtn = document.getElementById('floatingArchiveBtn');
+    if (archiveBtn) {
+        archiveBtn.style.display = 'block';
+    }
+}
     // Показываем нужный шаг
     const stepElement = document.getElementById('step' + stepNumber);
     if (stepElement) {
@@ -725,14 +760,13 @@ function showArchiveSection() {
         loginForm.reset();
     }
     document.getElementById('archiveContent').style.display = 'none';
-    const passwordError = document.getElementById('archivePasswordError');
-    if (passwordError) {
-        passwordError.style.display = 'none';
-    }
+    document.getElementById('archivePasswordError').style.display = 'none';
     
     scrollToTop();
+    
+    // Показываем уведомление о доступе к архиву
+    showNotification('🔐 Введите пароль для доступа к архиву', 'info');
 }
-
 // Основная функция инициализации
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Сайт загружен');
@@ -745,6 +779,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initTest();
     initArchiveLogin();
     initArchiveSearch();
+    initArchiveButton();
 });
 
 function checkDiagnosticStatus() {
