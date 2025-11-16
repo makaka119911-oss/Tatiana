@@ -1750,3 +1750,144 @@ function exportToExcel() {
     
     showNotification('✅ Данные экспортированы в CSV файл', 'success');
 }
+
+// ========== ФУНКЦИИ ОТОБРАЖЕНИЯ АРХИВА ==========
+const itemsPerPage = 10;
+let currentArchivePage = 1;
+
+function displayArchiveData(data, page = 1) {
+    const tableBody = document.getElementById('resultsTableBody');
+    const cardsContainer = document.getElementById('archiveCards');
+    if (!tableBody) return;
+    tableBody.innerHTML = '';
+    if (cardsContainer) cardsContainer.innerHTML = '';
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const pageData = data.slice(startIndex, endIndex);
+    const totalPages = Math.ceil(data.length / itemsPerPage);
+    currentArchivePage = page;
+    pageData.forEach(item => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td><div style="display: flex; align-items: center; gap: 10px;">
+                ${getUserPhoto(item.userData)}
+                <span>${item.userData.lastName} ${item.userData.firstName}</span>
+            </div></td>
+            <td>${item.userData.age}</td>
+            <td>${formatPhone(item.userData.phone)}</td>
+            <td>${item.userData.telegram}</td>
+            <td>${item.testResult.testType === 'regular' ? 'Обычный' : 'Менопауза'}</td>
+            <td><span class="level-badge ${getLevelClass(item.testResult.level)}">${item.testResult.level}</span></td>
+            <td>${item.testResult.score}</td>
+            <td>${new Date(item.timestamp).toLocaleDateString('ru-RU')}</td>
+            <td>
+                <button class="btn-view-details" onclick="viewUserDetails('${item.id}')">
+                    <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn-delete" onclick="deleteUserData('${item.id}')">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
+    if (cardsContainer) {
+        pageData.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'archive-card';
+            card.innerHTML = `
+                <div class="archive-card-header">
+                    ${getUserPhoto(item.userData, 'archive-card-photo')}
+                    <div class="archive-card-info">
+                        <h4>${item.userData.lastName} ${item.userData.firstName}</h4>
+                        <span class="level-badge ${getLevelClass(item.testResult.level)}">${item.testResult.level}</span>
+                    </div>
+                </div>
+                <div class="archive-card-details">
+                    <div><strong>Возраст:</strong> ${item.userData.age}</div>
+                    <div><strong>Телефон:</strong> ${formatPhone(item.userData.phone)}</div>
+                    <div><strong>Telegram:</strong> ${item.userData.telegram}</div>
+                    <div><strong>Тип:</strong> ${item.testResult.testType === 'regular' ? 'Обычный' : 'Менопауза'}</div>
+                    <div><strong>Баллы:</strong> ${item.testResult.score}</div>
+                    <div><strong>Дата:</strong> ${new Date(item.timestamp).toLocaleDateString('ru-RU')}</div>
+                </div>
+                <div class="archive-card-actions">
+                    <button class="btn-view-details" onclick="viewUserDetails('${item.id}')">
+                        <i class="fas fa-eye"></i> Подробнее
+                    </button>
+                    <button class="btn-delete" onclick="deleteUserData('${item.id}')">
+                        <i class="fas fa-trash"></i> Удалить
+                    </button>
+                </div>
+            `;
+            cardsContainer.appendChild(card);
+        });
+    }
+    updatePagination(totalPages, page);
+    updateArchiveStats(data);
+}
+
+function getUserPhoto(userData, className = '') {
+    if (userData.photoUrl) {
+        return `<img src="${userData.photoUrl}" alt="Фото" class="${className}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">`;
+    }
+    return `<div class="${className}" style="width: 40px; height: 40px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center;"><i class="fas fa-user" style="color: #ccc;"></i></div>`;
+}
+
+function formatPhone(phone) {
+    if (!phone) return '-';
+    return phone.replace(/(\d{1})(\d{3})(\d{3})(\d{2})(\d{2})/, '+$1 ($2) $3-$4-$5');
+}
+
+function getLevelClass(level) {
+    switch(level) {
+        case 'low': return 'level-low';
+        case 'medium': return 'level-medium';
+        case 'high': return 'level-high';
+        default: return 'level-unknown';
+    }
+}
+
+function updatePagination(totalPages, currentPage) {
+    const pagination = document.getElementById('pagination');
+    if (!pagination) return;
+    pagination.innerHTML = '';
+    if (currentPage > 1) {
+        const prevBtn = document.createElement('button');
+        prevBtn.textContent = '< Назад';
+        prevBtn.onclick = () => displayArchiveData(loadArchiveData(), currentPage - 1);
+        pagination.appendChild(prevBtn);
+    }
+    for (let i = 1; i <= totalPages; i++) {
+        const pageBtn = document.createElement('button');
+        pageBtn.textContent = i;
+        pageBtn.className = i === currentPage ? 'active' : '';
+        pageBtn.onclick = () => displayArchiveData(loadArchiveData(), i);
+        pagination.appendChild(pageBtn);
+    }
+    if (currentPage < totalPages) {
+        const nextBtn = document.createElement('button');
+        nextBtn.textContent = 'Вперёд >';
+        nextBtn.onclick = () => displayArchiveData(loadArchiveData(), currentPage + 1);
+        pagination.appendChild(nextBtn);
+    }
+}
+
+function updateArchiveStats(data) {
+    const statsContainer = document.getElementById('archiveStats');
+    if (!statsContainer) return;
+    const totalCount = data.length;
+    const lowLevel = data.filter(item => item.testResult.level === 'low').length;
+    const mediumLevel = data.filter(item => item.testResult.level === 'medium').length;
+    const highLevel = data.filter(item => item.testResult.level === 'high').length;
+    statsContainer.innerHTML = `
+        <div><strong>Всего:</strong> ${totalCount}</div>
+        <div><strong>Низкий:</strong> ${lowLevel}</div>
+        <div><strong>Средний:</strong> ${mediumLevel}</div>
+        <div><strong>Высокий:</strong> ${highLevel}</div>
+    `;
+}
+
+function viewUserDetails(userId) {
+    showNotification('ℹ️ Функция просмотра деталей будет добавлена позже', 'info');
+}
