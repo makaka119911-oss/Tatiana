@@ -173,6 +173,63 @@ function initTestSteps() {
     });
 }
 
+// Hash-based navigation handler
+window.addEventListener('hashchange', function() {
+  const hash = window.location.hash.substring(1); // Remove the '#'
+  
+  if (hash) {
+    switch(hash) {
+      case 'registration':
+        showRegistrationSection();
+        break;
+      case 'test':
+        showTestSection();
+        break;
+      case 'result':
+        showResultSection();
+        break;
+      case 'about':
+        showAboutSection();
+        break;
+      case 'power':
+        showPowerSection();
+        break;
+      case 'services':
+        showServicesSection();
+        break;
+      case 'process':
+        showProcessSection();
+        break;
+      case 'awakening':
+        showAwakeningSection();
+        break;
+      case 'contacts':
+        showContactsSection();
+        break;
+      case 'archive':
+        showArchiveSection();
+        break;
+      default:
+        // Show hero if no valid section
+        hideAllSections();
+        document.querySelector('.hero').classList.remove('section-hidden');
+    }
+  } else {
+    // Show hero when no hash
+    hideAllSections();
+    document.querySelector('.hero').classList.remove('section-hidden');
+  }
+});
+
+// Handle initial page load with hash
+if (window.location.hash) {
+  window.dispatchEvent(new Event('hashchange'));
+} else {
+  // Show hero on initial load if no hash
+  hideAllSections();
+  document.querySelector('.hero').classList.remove('section-hidden');
+}
+
 function initPhotoUpload() {
     const photoInput = document.getElementById('photoInput');
     const photoUploadArea = document.getElementById('photoUploadArea');
