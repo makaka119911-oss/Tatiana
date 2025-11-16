@@ -24,6 +24,7 @@ function showStep(stepNumber) {
     });
     // Функция для управления плавающей кнопкой архива
 // Функция для управления плавающей кнопкой архива - ВСЕГДА АКТИВНА
+// Функция для управления плавающей кнопкой архива - ВСЕГДА АКТИВНА
 function initArchiveButton() {
     const archiveBtn = document.getElementById('floatingArchiveBtn');
     
@@ -31,8 +32,13 @@ function initArchiveButton() {
         // Обработчик клика по кнопке
         archiveBtn.querySelector('.archive-float-btn').addEventListener('click', function(e) {
             e.preventDefault();
+            console.log('Кнопка архива нажата'); // Для отладки
             showArchiveSection();
         });
+        
+        console.log('Кнопка архива инициализирована'); // Для отладки
+    } else {
+        console.error('Кнопка архива не найдена'); // Для отладки
     }
 }
 // Обновите функцию unlockAllSections чтобы показывать кнопку архива
@@ -743,16 +749,33 @@ function initArchiveSearch() {
 
 // Функция для показа секции архива
 function showArchiveSection() {
+    console.log('showArchiveSection вызвана'); // Отладка
+    
     hideAllSections();
-    document.getElementById('archive').classList.remove('section-hidden');
+    const archiveSection = document.getElementById('archive');
+    
+    if (archiveSection) {
+        archiveSection.classList.remove('section-hidden');
+        console.log('Секция архива показана'); // Отладка
+    } else {
+        console.error('Секция архива не найдена'); // Отладка
+    }
     
     // Сбрасываем форму при каждом входе в архив
     const loginForm = document.getElementById('archiveLoginForm');
     if (loginForm) {
         loginForm.reset();
     }
-    document.getElementById('archiveContent').style.display = 'none';
-    document.getElementById('archivePasswordError').style.display = 'none';
+    
+    const archiveContent = document.getElementById('archiveContent');
+    if (archiveContent) {
+        archiveContent.style.display = 'none';
+    }
+    
+    const passwordError = document.getElementById('archivePasswordError');
+    if (passwordError) {
+        passwordError.style.display = 'none';
+    }
     
     scrollToTop();
     
