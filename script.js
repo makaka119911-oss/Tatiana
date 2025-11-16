@@ -339,7 +339,7 @@ function displayArchiveData(data, page = 1) {
         <td>
             <div style="display: flex; align-items: center; gap: 10px;">
                 ${item.userData.photo ? 
-                    `<img src="${item.userData.photo}" alt="Фото" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">` : 
+                    `<img src="${API_BASE_URL}/photo/${item.userData.photo}" alt="Фото" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">` : 
                     '<div style="width: 40px; height: 40px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center;"><i class="fas fa-user" style="color: #ccc;"></i></div>'
                 }
                 <span>${item.userData.lastName} ${item.userData.firstName}</span>
