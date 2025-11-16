@@ -106,7 +106,7 @@ function initTest() {
             showTestResult(result);
             
             // Сохраняем в архив
-            saveToArchive(registrationData, result);
+            await saveToArchive(registrationData, testData, result);
             
             // Разблокируем все разделы
             localStorage.setItem('diagnosticCompleted', 'true');
@@ -261,7 +261,7 @@ function calculateTestResult(data) {
 }
 
 // Функция для сохранения данных в localStorage
-function saveToArchive(userData, testResult) {
+function await saveToArchive(userData, testResult) {
     const archiveEntry = {
         id: Date.now() + Math.random().toString(36).substr(2, 9),
         timestamp: new Date().toISOString(),
