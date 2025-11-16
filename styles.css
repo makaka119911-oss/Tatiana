@@ -1136,7 +1136,9 @@ section {
 }
 
 /* Section Hidden */
-.section-hidden {
+.1470
+850
+{
     display: none;
 }
 
@@ -1569,4 +1571,13 @@ section {
     .archive-cards {
         display: block;
     }
+
+    /* Fix: Hide all sections by default, show only hero */
+section {
+  display: none;
+}
+
+section.hero {
+  display: block;
+}
 }
