@@ -1323,45 +1323,158 @@ function initArchive() {
     }
 }
 
-function saveToArchive(userData, testData, testResult, photoFile) {
-    // Конвертируем фото в base64 для хранения
-    const photoPromise = new Promise((resolve) => {
-        if (photoFile) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                resolve(e.target.result);
-            };
-            reader.readAsDataURL(photoFile);
-        } else {
-            resolve(null);
-        }
-    });
-    
-    photoPromise.then(photoBase64 => {
-        const archiveEntry = {
-            id: Date.now() + Math.random().toString(36).substr(2, 9),
-            timestamp: new Date().toISOString(),
-            userData: {
-                ...userData,
-                photo: photoBase64
-            },
-            testData: testData,
-            testResult: testResult,
-            completed: true
-        };
-        
-        let existingData = JSON.parse(localStorage.getItem('libidoTestArchive') || '[]');
-        existingData.push(archiveEntry);
-        localStorage.setItem('libidoTestArchive', JSON.stringify(existingData));
-        
-        console.log('✅ Данные сохранены в архив, включая фото');
+
+// API configuration
+const API_BASE_URL = 'http://localhost:3001/api';
+
+// Helper function to convert file to base64
+function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+        reader.readAsDataURL(file);
     });
 }
 
-function loadArchiveData() {
-    const data = JSON.parse(localStorage.getItem('libidoTestArchive') || '[]');
-    archiveData = data;
-    return data;
+// Function to save data to localStorage
+function saveToLocalStorage(userData, testData, testResult, photoBase64) {
+    const existingData = JSON.parse(localStorage.getItem('libidoTestArchive') || '[]');
+    existingData.push({
+        ...userData,
+        photo: photoBase64,
+        testData,
+        testResult,
+        timestamp: new Date().toISOString(),
+        completed: true
+    });
+    localStorage.setItem('libidoTestArchive', JSON.stringify(existingData));
+    console.log('✅ Data saved to localStorage');
+}
+
+// Async function to save archive data with server support
+async function saveToArchive(userData, testData, testResult, photoFile) {
+    try {
+        console.log('📤 Saving data to archive...');
+        
+        // Convert photo to base64
+        let photoBase64 = '';
+        if (photoFile) {
+            photoBase64 = await fileToBase64(photoFile);
+        }
+        
+        // Prepare data object
+        const archiveData = {
+            ...userData,
+            photo: photoBase64,
+            testData,
+            testResult,
+            timestamp: new Date().toISOString(),
+            completed: true
+        };
+        
+        // Try to send to server
+        try {
+            const response = await fetch(`${API_BASE_URL}/archive`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(archiveData)
+            });
+            
+            if (response.ok) {
+                const result = await response.json();
+                console.log('✅ Data successfully saved to server', result);
+                return result;
+            } else {
+                console.log('❌ Server error, falling back to localStorage');
+                saveToLocalStorage(userData, testData, testResult, photoBase64);
+            }
+        } catch (serverError) {
+            console.log('❌ Server connection failed, saving to localStorage instead');
+            saveToLocalStorage(userData, testData, testResult, photoBase64);
+        }
+    } catch (error) {
+        console.error('❌ Error in saveToArchive:', error);
+        // Save to localStorage as final fallback
+        saveToLocalStorage(userData, testData, testResult, '');
+    }
+}
+
+// Function to load archive data from server with localStorage fallback
+async function loadArchiveData() {
+    try {
+        let serverData = [];
+        let localData = [];
+        
+        // Try to fetch from server
+        try {
+            const response = await fetch(`${API_BASE_URL}/archive`);
+            if (response.ok) {
+                serverData = await response.json();
+                console.log('✅ Loaded data from server');
+            } else {
+                console.log('⚠️ Could not fetch from server, using localStorage');
+            }
+        } catch (serverError) {
+            console.log('⚠️ Server unreachable, using localStorage');
+        }
+        
+        // Load from localStorage
+        localData = JSON.parse(localStorage.getItem('libidoTestArchive') || '[]');
+        
+        // Merge data and remove duplicates by ID
+        const mergedData = [...serverData];
+        const serverIds = new Set(serverData.map(item => item.id));
+        localData.forEach(item => {
+            if (!serverIds.has(item.id)) {
+                mergedData.push(item);
+            }
+        });
+        
+        console.log('✅ Archive data loaded successfully');
+        return mergedData;
+    } catch (error) {
+        console.error('❌ Error loading archive data:', error);
+        return JSON.parse(localStorage.getItem('libidoTestArchive') || '[]');
+    }
+}
+
+// Function to delete user data from archive
+async function deleteUserData(userId) {
+    try {
+        if (!confirm('Are you sure you want to delete this user\'s data?')) {
+            console.log('Delete operation cancelled');
+            return false;
+        }
+        
+        console.log('🗑️ Deleting user data...');
+        
+        // Try to delete from server
+        try {
+            const response = await fetch(`${API_BASE_URL}/archive/${userId}`, {
+                method: 'DELETE'
+            });
+            
+            if (response.ok) {
+                console.log('✅ Data deleted from server');
+            } else {
+                console.log('⚠️ Could not delete from server');
+            }
+        } catch (serverError) {
+            console.log('⚠️ Server unreachable for delete');
+        }
+        
+        // Delete from localStorage
+        const existingData = JSON.parse(localStorage.getItem('libidoTestArchive') || '[]');
+        const filteredData = existingData.filter(item => item.userId !== userId);
+        localStorage.setItem('libidoTestArchive', JSON.stringify(filteredData));
+        console.log('✅ Data deleted from localStorage');
+        
+        return true;
+    } catch (error) {
+        console.error('❌ Error deleting user data:', error);
+        return false;
+    }
 }
 
 function searchArchive(query, levelFilter, testTypeFilter) {
