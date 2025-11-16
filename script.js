@@ -23,14 +23,11 @@ function showStep(stepNumber) {
         step.classList.remove('active');
     });
     // Функция для управления плавающей кнопкой архива
+// Функция для управления плавающей кнопкой архива - ВСЕГДА АКТИВНА
 function initArchiveButton() {
     const archiveBtn = document.getElementById('floatingArchiveBtn');
-    const diagnosticCompleted = localStorage.getItem('diagnosticCompleted') === 'true';
     
-    // Показываем кнопку только если диагностика пройдена
-    if (archiveBtn && diagnosticCompleted) {
-        archiveBtn.style.display = 'block';
-        
+    if (archiveBtn) {
         // Обработчик клика по кнопке
         archiveBtn.querySelector('.archive-float-btn').addEventListener('click', function(e) {
             e.preventDefault();
@@ -38,7 +35,6 @@ function initArchiveButton() {
         });
     }
 }
-
 // Обновите функцию unlockAllSections чтобы показывать кнопку архива
 function unlockAllSections() {
     // Скрываем замки и показываем контент для всех секций
@@ -52,11 +48,7 @@ function unlockAllSections() {
         if (content) content.style.display = 'block';
     });
     
-    // ПОКАЗЫВАЕМ КНОПКУ АРХИВА
-    const archiveBtn = document.getElementById('floatingArchiveBtn');
-    if (archiveBtn) {
-        archiveBtn.style.display = 'block';
-    }
+    // НЕ УПРАВЛЯЕМ КНОПКОЙ АРХИВА ЗДЕСЬ - ОНА ВСЕГДА ВИДИМА
 }
     // Показываем нужный шаг
     const stepElement = document.getElementById('step' + stepNumber);
@@ -779,7 +771,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initTest();
     initArchiveLogin();
     initArchiveSearch();
-    initArchiveButton();
+    initArchiveButton(); // ← Кнопка архива всегда инициализируется
 });
 
 function checkDiagnosticStatus() {
