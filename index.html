@@ -3141,7 +3141,6 @@
 
 
 
-3091
 
 
 
@@ -3178,6 +3177,7 @@
 
   <script>
     // Archive functionality
+      setTimeout(() => {
     const archiveHiddenBtn = document.getElementById('archiveHiddenBtn');
     const archiveLink = document.querySelector('.archive-link');
     
@@ -3193,6 +3193,7 @@
         showArchiveSection();
       });
     }
+          }, 0);
     
     function showArchiveSection() {
     hideAllSections();
@@ -3205,6 +3206,7 @@
   <div style="position: fixed; bottom: 10px; right: 10px; z-index: 999; 10.1; cursor: pointer;" id="archiveHiddenBtn" title="Архив">
     <i class="fas fa-lock" style="font-size: 20px; color: #8B4352;"></i>
   </div>
+
 
 
 
