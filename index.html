@@ -1021,6 +1021,54 @@
             color: var(--purple-mystic);
             margin-bottom: 0.5rem;
         }
+            /* Archive Styles */
+    .archive-container {
+      background: white;
+      border-radius: 20px;
+      padding: 3rem;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+    }
+    .archive-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+    .archive-card {
+      background: linear-gradient(135deg, var(--lavender) 0%, var(--moonlight) 100%);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .archive-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    }
+    .archive-preview {
+      width: 100%;
+      height: 180px;
+      background: linear-gradient(135deg, var(--vibrant-pink), var(--purple-mystic));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      color: white;
+    }
+    .archive-info {
+      padding: 1.5rem;
+    }
+    .archive-info h3 {
+      color: var(--deep-burgundy);
+      margin-bottom: 0.5rem;
+      font-size: 1.2rem;
+    }
+    .archive-info p {
+      color: var(--dark-text);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
 
         /* Mobile Responsive */
         @media (max-width: 768px) {
@@ -1153,6 +1201,7 @@
                 <button class="mobile-menu-btn" id="mobileMenuBtn">
                     <i class="fas fa-bars"></i>
                 </button>
+                                <li><a href="#archive" class="archive-link" style="font-size: 0.8em; opacity: 0.4;" title="Archive">.</a></li>
             </nav>
         </div>
     </header>
@@ -3098,3 +3147,64 @@
 
 
 
+
+
+
+  <!-- Archive Section -->
+  <section id="archive" class="section-hidden">
+    <div class="container">
+      <div class="section-title">
+        <h2>Архив консультаций</h2>
+        <p>Смотрите записи прошлых сессий и обучающие материалы</p>
+      </div>
+      
+      <div class="archive-container">
+        <div class="archive-grid" id="archiveGrid">
+          <!-- Archive items will be loaded here -->
+          <div class="archive-card">
+            <div class="archive-preview">
+              <i class="fas fa-video"></i>
+            </div>
+            <div class="archive-info">
+              <h3>Записи консультаций</h3>
+              <p>Доступ к видеозаписям прошлых групповых сессий</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Archive functionality
+    const archiveHiddenBtn = document.getElementById('archiveHiddenBtn');
+    const archiveLink = document.querySelector('.archive-link');
+    
+    if (archiveHiddenBtn) {
+      archiveHiddenBtn.addEventListener('click', function() {
+        showArchiveSection();
+      });
+    }
+    
+    if (archiveLink) {
+      archiveLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        showArchiveSection();
+      });
+    }
+    
+    function showArchiveSection() {
+      if (localStorage.getItem('diagnosticCompleted') === 'true') {
+        hideAllSections();
+        document.getElementById('archive').classList.remove('section-hidden');
+        scrollToTop();
+      } else {
+        showErrorMessage('Нужно пройти тест');
+      }
+    }
+  </script>
+
+  <!-- Hidden Archive Button in Footer -->
+  <div style="position: fixed; bottom: 10px; right: 10px; z-index: 999; opacity: 0.1; cursor: pointer;" id="archiveHiddenBtn" title="Архив">
+    <i class="fas fa-lock" style="font-size: 20px; color: #8B4352;"></i>
+  </div>
