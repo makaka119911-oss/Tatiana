@@ -327,73 +327,45 @@ async function searchArchive(query, levelFilter, testTypeFilter) {
 
 // Функция для отображения данных в таблице
 function displayArchiveData(data, page = 1) {
-    const tableBody = document.getElementById('resultsTableBody');
-    const pagination = document.getElementById('pagination');
+    const archiveGrid = document.getElementById('archiveGrid');
+    if (!archiveGrid) return;
     
-    if (!tableBody) return;
+    archiveGrid.innerHTML = '';
     
-    // Очищаем таблицу
-    tableBody.innerHTML = '';
-    
-    // Рассчитываем пагинацию
-    const startIndex = (page - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const pageData = data.slice(startIndex, endIndex);
-    const totalPages = Math.ceil(data.length / itemsPerPage);
-    
-    // Заполняем таблицу
-   pageData.forEach(item => {
-    const row = document.createElement('tr');
-    row.innerHTML = `
-        <td>
-            <div style="display: flex; align-items: center; gap: 10px;">
-                ${item.userData.photo ? 
-                    `<img src="${item.userData.photo}" alt="Фото" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">` : 
-                    '<div style="width: 40px; height: 40px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center;"><i class="fas fa-user" style="color: #ccc;"></i></div>'
-                }
-                <span>${item.userData.lastName} ${item.userData.firstName}</span>
+    if (data.length === 0) {
+        archiveGrid.innerHTML = `
+            <div class="no-data-message">
+                <i class="fas fa-inbox" style="font-size: 3rem; color: #ccc; margin-bottom: 1rem;"></i>
+                <p>Архив пуст</p>
             </div>
-        </td>
-        <td>${item.userData.age}</td>
-        <td>${item.userData.phone}</td>
-        <td>${item.userData.telegram}</td>
-        <td>${item.testResult.testType === 'regular' ? 'Обычный' : 'Менопауза'}</td>
-        <td>
-            <span class="level-badge ${getLevelClass(item.testResult.level)}">
-                ${item.testResult.level}
-            </span>
-        </td>
-        <td>${item.testResult.score}</td>
-        <td>${new Date(item.timestamp).toLocaleDateString('ru-RU')}</td>
-        <td>
-            <button class="btn-view-details" onclick="viewUserDetails('${item.id}')">
-                <i class="fas fa-eye"></i>
-            </button>
-            <button class="btn-delete" onclick="deleteUserData('${item.id}')">
-                <i class="fas fa-trash"></i>
-            </button>
-        </td>
-    `;
-    tableBody.appendChild(row);
-});
-    
-    // Если данных нет
-    if (pageData.length === 0) {
-        tableBody.innerHTML = `
-            <tr>
-                <td colspan="9" style="text-align: center; padding: 2rem;">
-                    <i class="fas fa-inbox" style="font-size: 3rem; color: #ccc; margin-bottom: 1rem;"></i>
-                    <p>Нет данных для отображения</p>
-                </td>
-            </tr>
         `;
+        return;
     }
     
-    // Обновляем пагинацию
-    updatePagination(totalPages, page);
-    
-    // Обновляем статистику
-    updateArchiveStats(data);
+    // Отображаем данные карточками
+    data.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'archive-card';
+        card.innerHTML = `
+            <div class="archive-preview">
+                ${item.photo ? 
+                    `<img src="${item.photo}" alt="Фото" style="width: 100%; height: 100%; object-fit: cover;">` :
+                    `<i class="fas fa-user"></i>`
+                }
+            </div>
+            <div class="archive-info">
+                <h3>${item.firstName} ${item.lastName}</h3>
+                <p><strong>Возраст:</strong> ${item.age}</p>
+                <p><strong>Телефон:</strong> ${item.phone}</p>
+                <p><strong>Telegram:</strong> ${item.telegram}</p>
+                <p><strong>Уровень либидо:</strong> ${item.libidonLevel || item.testResult?.level}</p>
+                <p><strong>Дата:</strong> ${new Date(item.timestamp || item.createdAt).toLocaleDateString('ru-RU')}</p>
+            </div>
+        `;
+        archiveGrid.appendChild(card);
+    });
+}
+
 }
 
 // Функция для получения класса уровня либидо
@@ -574,36 +546,38 @@ function exportToExcel() {
 }
 
 // Обработчик формы входа в архив
-function initArchiveLogin() {
+async function initArchiveLogin() {
     const loginArchiveBtn = document.getElementById('loginArchiveBtn');
     if (loginArchiveBtn) {
         loginArchiveBtn.addEventListener('click', async () => {
             const passwordInput = document.getElementById('archivePassword');
             const password = passwordInput.value;
             const loginMessage = document.getElementById('loginMessage');
-            loginMessage.textContent = '';
-
+            
             if (!password) {
-                loginMessage.textContent = 'Введите пароль.';
+                loginMessage.textContent = 'Введите пароль';
                 return;
             }
 
-            const success = await loginToArchive(password); // Используем новую функцию из api-functions.js
-
-            if (success) {
-                localStorage.setItem('archiveLoggedIn', 'true');
-                document.getElementById('archiveLogin').classList.add('section-hidden');
-                document.getElementById('archiveContent').classList.remove('section-hidden');
+            try {
+                // ✅ ИСПОЛЬЗУЕМ ФУНКЦИЮ ИЗ API-FUNCTIONS.JS
+                const success = await loginToArchive(password);
                 
-                // Загружаем и отображаем данные
-                const data = await loadArchiveData();
-                archiveData = data;
-                displayArchiveData(data, 1);
-                
-                showSuccessMessage('✅ Доступ к архиву разрешен');
-            } else {
-                loginMessage.textContent = 'Неверный пароль.';
-                passwordInput.value = '';
+                if (success) {
+                    localStorage.setItem('archiveLoggedIn', 'true');
+                    document.getElementById('archiveLogin').classList.add('section-hidden');
+                    document.getElementById('archiveContent').classList.remove('section-hidden');
+                    
+                    // ✅ ЗАГРУЖАЕМ ДАННЫЕ С СЕРВЕРА
+                    const archiveData = await loadArchiveData();
+                    displayArchiveData(archiveData);
+                    
+                    showSuccessMessage('✅ Доступ к архиву разрешен');
+                } else {
+                    loginMessage.textContent = 'Неверный пароль';
+                }
+            } catch (error) {
+                loginMessage.textContent = 'Ошибка входа: ' + error.message;
             }
         });
     }
@@ -974,11 +948,9 @@ function fileToBase64(file) {
         reader.onerror = error => reject(error);
     });
 }
-
 async function handleTestSubmit(e) {
     e.preventDefault();
     
-    // Проверяем валидность последнего шага
     if (!validateStep(6)) {
         showErrorMessage('Пожалуйста, ответьте на все обязательные вопросы этого шага');
         return;
@@ -1002,18 +974,22 @@ async function handleTestSubmit(e) {
         // Показываем результат
         showTestResult(result);
         
-        // Отправляем результаты в Telegram
-        await sendTestResultsToTelegram(testData, result);
+        // ✅ СОХРАНЯЕМ НА СЕРВЕР И В АРХИВ
+        const saveSuccess = await saveToArchive(registrationData, testData, result);
         
-        // Разблокируем все разделы
-        localStorage.setItem('diagnosticCompleted', 'true');
-        unlockAllSections();
-        
-        showSuccessMessage('✅ Диагностика завершена! Теперь вам доступны все разделы сайта.');
+        if (saveSuccess) {
+            // Разблокируем все разделы
+            localStorage.setItem('diagnosticCompleted', 'true');
+            unlockAllSections();
+            
+            showSuccessMessage('✅ Диагностика завершена! Данные сохранены в архив.');
+        } else {
+            throw new Error('Не удалось сохранить данные в архив');
+        }
         
     } catch (error) {
         console.error('Ошибка обработки теста:', error);
-        showErrorMessage('❌ Ошибка обработки теста. Пожалуйста, попробуйте еще раз.');
+        showErrorMessage('❌ Ошибка обработки теста: ' + error.message);
     } finally {
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
