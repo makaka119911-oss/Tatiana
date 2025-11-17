@@ -1,20 +1,2 @@
-# Node.js
-node_modules/
-npm-debug.log*
-
-# Server files
 server/
-
-# OS
-.DS_Store
-Thumbs.db
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Jekyll
-_site/
-.jekyll-cache/
+node_modules/
