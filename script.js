@@ -658,18 +658,27 @@ async function showArchiveSection() {
     scrollToTop();
 }
 
-// Основная функция инициализации
+// 🔄 ОБНОВЛЕННАЯ ИНИЦИАЛИЗАЦИЯ
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Сайт загружен');
-
-    // Проверяем, пройдена ли диагностика
+    console.log('🔄 Инициализация приложения...');
+    
+    // Проверяем статус диагностики
     checkDiagnosticStatus();
-
-    // Инициализация
+    
+    // Инициализируем все модули
     initEventListeners();
-    initTest(); // ← ДОБАВЛЕНА ЭТА СТРОКА
-    initArchiveLogin();
+    initTest();
+    initArchiveWithPassword(); // 🔐 ЗАМЕНИЛИ на новую функцию
     initArchiveSearch();
+    
+    // Синхронизируем архив с сервером
+    setTimeout(() => {
+        syncArchiveWithServer().then(success => {
+            if (success) {
+                console.log('✅ Архив синхронизирован с сервером');
+            }
+        });
+    }, 2000);
 });
 
 function checkDiagnosticStatus() {
@@ -1325,7 +1334,269 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }, 2000);
 });
+// 🔐 ФУНКЦИИ ДЛЯ РАБОТЫ С АРХИВОМ С ПАРОЛЕМ
 
+// Пароль для архива
+const ARCHIVE_PASSWORD = 'rerehepf123';
+
+// Инициализация архива с защитой паролем
+function initArchiveWithPassword() {
+    const loginArchiveBtn = document.getElementById('loginArchiveBtn');
+    const logoutArchiveBtn = document.getElementById('logoutArchiveBtn');
+    const archivePasswordInput = document.getElementById('archivePassword');
+    
+    if (loginArchiveBtn) {
+        loginArchiveBtn.addEventListener('click', handleArchiveLogin);
+    }
+    
+    if (logoutArchiveBtn) {
+        logoutArchiveBtn.addEventListener('click', handleArchiveLogout);
+    }
+    
+    if (archivePasswordInput) {
+        archivePasswordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                handleArchiveLogin();
+            }
+        });
+    }
+    
+    // Проверяем, не авторизован ли пользователь уже
+    const isArchiveLoggedIn = localStorage.getItem('archiveAuthenticated') === 'true';
+    if (isArchiveLoggedIn) {
+        showArchiveContent();
+    }
+}
+
+// Обработчик входа в архив
+async function handleArchiveLogin() {
+    const passwordInput = document.getElementById('archivePassword');
+    const passwordError = document.getElementById('archivePasswordError');
+    const loginBtn = document.getElementById('loginArchiveBtn');
+    
+    if (!passwordInput) return;
+    
+    const password = passwordInput.value.trim();
+    const originalText = loginBtn.innerHTML;
+    
+    try {
+        loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Проверка...';
+        loginBtn.disabled = true;
+        
+        // Сбрасываем ошибку
+        if (passwordError) {
+            passwordError.style.display = 'none';
+        }
+        
+        if (!password) {
+            throw new Error('Введите пароль');
+        }
+        
+        // ✅ ПРОВЕРЯЕМ ПАРОЛЬ
+        if (password !== ARCHIVE_PASSWORD) {
+            throw new Error('Неверный пароль');
+        }
+        
+        // Сохраняем статус авторизации
+        localStorage.setItem('archiveAuthenticated', 'true');
+        
+        // Показываем контент архива
+        showArchiveContent();
+        
+        showSuccessMessage('✅ Доступ к архиву разрешен');
+        
+    } catch (error) {
+        console.error('Ошибка входа в архив:', error);
+        
+        if (passwordError) {
+            passwordError.textContent = error.message;
+            passwordError.style.display = 'block';
+        }
+        
+        passwordInput.focus();
+    } finally {
+        loginBtn.innerHTML = originalText;
+        loginBtn.disabled = false;
+    }
+}
+
+// Обработчик выхода из архива
+function handleArchiveLogout() {
+    localStorage.removeItem('archiveAuthenticated');
+    showArchiveLoginForm();
+    showSuccessMessage('✅ Вы вышли из архива');
+}
+
+// Показать форму входа в архив
+function showArchiveLoginForm() {
+    const loginForm = document.getElementById('archiveLoginForm');
+    const archiveContent = document.getElementById('archiveContent');
+    const passwordInput = document.getElementById('archivePassword');
+    const passwordError = document.getElementById('archivePasswordError');
+    
+    if (loginForm) loginForm.classList.remove('section-hidden');
+    if (archiveContent) archiveContent.classList.add('section-hidden');
+    if (passwordInput) passwordInput.value = '';
+    if (passwordError) passwordError.style.display = 'none';
+}
+
+// Показать содержимое архива
+async function showArchiveContent() {
+    const loginForm = document.getElementById('archiveLoginForm');
+    const archiveContent = document.getElementById('archiveContent');
+    
+    if (loginForm) loginForm.classList.add('section-hidden');
+    if (archiveContent) archiveContent.classList.remove('section-hidden');
+    
+    // Загружаем данные архива
+    await loadAndDisplayArchiveData();
+}
+
+// Загрузка и отображение данных архива
+async function loadAndDisplayArchiveData() {
+    try {
+        console.log('🔄 Загрузка данных архива...');
+        
+        // Показываем индикатор загрузки
+        const tableBody = document.getElementById('resultsTableBody');
+        if (tableBody) {
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="9" style="text-align: center; padding: 2rem;">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Загрузка данных архива...</p>
+                    </td>
+                </tr>
+            `;
+        }
+        
+        // Загружаем данные с сервера
+        const archiveData = await loadArchiveData();
+        console.log('✅ Данные архива загружены:', archiveData);
+        
+        // Отображаем данные
+        displayArchiveTableData(archiveData);
+        
+    } catch (error) {
+        console.error('❌ Ошибка загрузки архива:', error);
+        
+        const tableBody = document.getElementById('resultsTableBody');
+        if (tableBody) {
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="9" style="text-align: center; padding: 2rem; color: #e74c3c;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Ошибка загрузки данных: ${error.message}</p>
+                    </td>
+                </tr>
+            `;
+        }
+    }
+}
+
+// Отображение данных в таблице
+function displayArchiveTableData(data, page = 1) {
+    const tableBody = document.getElementById('resultsTableBody');
+    if (!tableBody) return;
+    
+    // Очищаем таблицу
+    tableBody.innerHTML = '';
+    
+    if (!data || data.length === 0) {
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="9" style="text-align: center; padding: 2rem;">
+                    <i class="fas fa-inbox" style="font-size: 3rem; color: #ccc; margin-bottom: 1rem;"></i>
+                    <p>Архив пуст</p>
+                </td>
+            </tr>
+        `;
+        return;
+    }
+    
+    // Отображаем данные
+    data.forEach((item, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    ${item.photo ? 
+                        `<img src="${item.photo}" alt="Фото" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">` : 
+                        '<div style="width: 40px; height: 40px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center;"><i class="fas fa-user" style="color: #ccc;"></i></div>'
+                    }
+                    <div>
+                        <strong>${item.firstName} ${item.lastName}</strong>
+                    </div>
+                </div>
+            </td>
+            <td>${item.age}</td>
+            <td>${item.phone}</td>
+            <td>${item.telegram}</td>
+            <td>${item.testResult?.testType === 'regular' ? 'Обычный' : 'Менопауза'}</td>
+            <td>
+                <span class="level-badge ${getLevelClass(item.testResult?.level)}">
+                    ${item.testResult?.level || 'Не указано'}
+                </span>
+            </td>
+            <td>${item.testResult?.score || 0}</td>
+            <td>${new Date(item.timestamp || item.createdAt).toLocaleDateString('ru-RU')}</td>
+            <td>
+                <button class="btn-view-details" onclick="viewUserDetails('${item._id || item.id}')" title="Просмотр деталей">
+                    <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn-delete" onclick="deleteUserFromArchive('${item._id || item.id}')" title="Удалить">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
+    
+    // Обновляем статистику
+    updateArchiveStats(data);
+}
+
+// Функция для просмотра деталей пользователя
+function viewUserDetails(userId) {
+    // Здесь можно добавить модальное окно с детальной информацией
+    showNotification('Функция просмотра деталей в разработке', 'info');
+}
+
+// Функция удаления пользователя из архива
+async function deleteUserFromArchive(userId) {
+    if (!confirm('Вы уверены, что хотите удалить эти данные из архива?')) {
+        return;
+    }
+    
+    try {
+        const success = await deleteUserDataFromServer(userId);
+        if (success) {
+            // Перезагружаем данные
+            await loadAndDisplayArchiveData();
+        }
+    } catch (error) {
+        console.error('❌ Ошибка удаления:', error);
+        showNotification('❌ Ошибка удаления: ' + error.message, 'error');
+    }
+}
+
+// Обновление статистики архива
+function updateArchiveStats(data) {
+    const totalUsers = document.getElementById('totalUsers');
+    const avgScore = document.getElementById('avgScore');
+    const completionRate = document.getElementById('completionRate');
+    
+    if (totalUsers) totalUsers.textContent = data.length;
+    
+    if (avgScore && data.length > 0) {
+        const totalScore = data.reduce((sum, item) => sum + (item.testResult?.score || 0), 0);
+        avgScore.textContent = (totalScore / data.length).toFixed(1);
+    }
+    
+    if (completionRate) {
+        completionRate.textContent = '100%';
+    }
+}
 // ✅ ФУНКЦИЯ СИНХРОНИЗАЦИИ
 async function syncArchiveWithServer() {
     try {
