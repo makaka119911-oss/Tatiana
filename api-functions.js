@@ -1,5 +1,5 @@
 // API Configuration
-const API_BASE_URL = 'https://tatiana-server-production.up.railway.app/api';
+const API_BASE_URL = 'http://localhost:3000/api';
 
 // Обновленная функция сохранения в архив
 async function saveToArchive(userData, testData, testResult) {
@@ -125,3 +125,29 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.warn('⚠️ API сервер недоступен. Проверьте соединение.');
     }
 });
+
+// Функция для входа в архив (новая)
+async function loginToArchive(password) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/archive/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ password })
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+            console.log('✅ Вход в архив успешен');
+            return true;
+        } else {
+            throw new Error(result.message || 'Неверный пароль');
+        }
+    } catch (error) {
+        console.error('❌ Ошибка входа в архив:', error);
+        showNotification('❌ Ошибка входа: ' + error.message, 'error');
+        return false;
+    }
+}

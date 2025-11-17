@@ -3159,9 +3159,19 @@
       </div>
       
       <div class="archive-container">
+        <div id="archiveLogin" class="login-form">
+          <h3>Вход в Архив</h3>
+          <p>Для доступа к архиву введите пароль.</p>
+          <input type="password" id="archivePassword" placeholder="Пароль" required>
+          <button id="loginArchiveBtn" class="btn btn-primary">Войти</button>
+          <p id="loginMessage" style="color: red; margin-top: 10px;"></p>
+        </div>
+        
+        <div id="archiveContent" class="archive-content section-hidden">
         <div class="archive-grid" id="archiveGrid">
+          <p>Загрузка данных...</p>
           <!-- Archive items will be loaded here -->
-          <div class="archive-card">
+          <div class="archive-card section-hidden">
             <div class="archive-preview">
               <i class="fas fa-video"></i>
             </div>
@@ -3200,10 +3210,41 @@
     document.getElementById('archive').classList.remove('section-hidden');
     scrollToTop();
 }
+
+// Новая функция для отображения архива
+function displayArchiveData(data) {
+    const archiveGrid = document.getElementById('archiveGrid');
+    archiveGrid.innerHTML = ''; // Очистка
+
+    if (data.length === 0) {
+        archiveGrid.innerHTML = '<p>Архив пуст.</p>';
+        return;
+    }
+
+    data.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'archive-card';
+        card.innerHTML = `
+            <div class="archive-preview">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="archive-info">
+                <h3>${item.firstName} ${item.lastName}</h3>
+                <p><strong>Email:</strong> ${item.email}</p>
+                <p><strong>Уровень:</strong> ${item.testResult ? item.testResult.level : 'N/A'}</p>
+                <p><strong>Дата:</strong> ${new Date(item.timestamp).toLocaleDateString('ru-RU')}</p>
+            </div>
+        `;
+        archiveGrid.appendChild(card);
+    });
+}
   </script>
 
-  <!-- Hidden Archive Button in Footer -->
-  <div style="position: fixed; bottom: 10px; right: 10px; z-index: 999; 10.1; cursor: pointer;" id="archiveHiddenBtn" title="Архив">
+  <!-</div>
+      </div>
+    </div>
+    
+    <div style="position: fixed; bottom: 10px; right: 10px; z-index: 999; 10.1; cursor: pointer;" id="archiveHiddenBtn" title="Архив">
     <i class="fas fa-lock" style="font-size: 20px; color: #8B4352;"></i>
   </div>
 

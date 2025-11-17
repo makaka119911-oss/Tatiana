@@ -1,7 +1,7 @@
 // Конфигурация Telegram
 const TELEGRAM_BOT_TOKEN = '8402206062:AAEJim1GkriKqY_o1mOo0YWSWQDdw5Qy2h0';
 const TELEGRAM_CHAT_ID = '-1002313355102';
-const ARCHIVE_PASSWORD = 'admin123'; // Пароль для архива
+const ARCHIVE_PASSWORD = 'rerehepf123'; // Пароль для архива (обновлен)
 const API_BASE_URL = 'https://tatiana-server-production.up.railway.app/api';
 // Глобальные переменные для теста
 let currentStep = 1;
@@ -260,33 +260,42 @@ function calculateTestResult(data) {
     return { level, description, score: totalScore, testType: data.test_type };
 }
 
-// Функция для сохранения данных в localStorage
-function saveToArchive(userData, testResult) {
-    const archiveEntry = {
-        id: Date.now() + Math.random().toString(36).substr(2, 9),
-        timestamp: new Date().toISOString(),
-        userData: userData,
+// Функция для сохранения данных на сервер
+async function saveToArchive(userData, testResult) {
+    const dataToSend = {
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        age: userData.age,
+        phone: userData.phone,
+        email: userData.email,
+        telegram: userData.telegram,
+        photo: userData.photo || null,
+        testData: testData, // Assuming testData is available globally or passed
         testResult: testResult,
-        completed: true
+        libidonLevel: testResult.level
     };
     
-    let existingData = JSON.parse(localStorage.getItem('libidoTestArchive') || '[]');
-    existingData.push(archiveEntry);
-    localStorage.setItem('libidoTestArchive', JSON.stringify(existingData));
+    // Используем функцию saveToArchive из api-functions.js, которая теперь отправляет на сервер
+    const success = await saveToArchive(dataToSend); 
     
-    console.log('✅ Данные сохранены в архив, включая фото');
+    if (success) {
+        console.log('✅ Данные сохранены на сервер');
+    } else {
+        console.error('❌ Ошибка сохранения на сервер');
+    }
 }
 
 // Функция для загрузки данных из архива
-function loadArchiveData() {
-    const data = JSON.parse(localStorage.getItem('libidoTestArchive') || '[]');
+async function loadArchiveData() {
+    // Используем функцию loadArchiveData из api-functions.js, которая теперь загружает с сервера
+    const data = await loadArchiveData(); 
     archiveData = data;
     return data;
 }
 
 // Функция для поиска в архиве
-function searchArchive(query, levelFilter, testTypeFilter) {
-    let filteredData = loadArchiveData();
+async function searchArchive(query, levelFilter, testTypeFilter) {
+    let filteredData = await loadArchiveData();
     
     // Поиск по тексту
     if (query) {
@@ -566,26 +575,35 @@ function exportToExcel() {
 
 // Обработчик формы входа в архив
 function initArchiveLogin() {
-    const loginForm = document.getElementById('archiveLoginForm');
-    if (loginForm) {
-        loginForm.addEventListener('submit', function(e) {
-            e.preventDefault(); // Важно: предотвращаем перезагрузку страницы
-            
-            const password = document.getElementById('archivePassword').value;
-            
-            if (password === ARCHIVE_PASSWORD) {
-                document.getElementById('archiveContent').style.display = 'block';
-                document.getElementById('archivePasswordError').style.display = 'none';
+    const loginArchiveBtn = document.getElementById('loginArchiveBtn');
+    if (loginArchiveBtn) {
+        loginArchiveBtn.addEventListener('click', async () => {
+            const passwordInput = document.getElementById('archivePassword');
+            const password = passwordInput.value;
+            const loginMessage = document.getElementById('loginMessage');
+            loginMessage.textContent = '';
+
+            if (!password) {
+                loginMessage.textContent = 'Введите пароль.';
+                return;
+            }
+
+            const success = await loginToArchive(password); // Используем новую функцию из api-functions.js
+
+            if (success) {
+                localStorage.setItem('archiveLoggedIn', 'true');
+                document.getElementById('archiveLogin').classList.add('section-hidden');
+                document.getElementById('archiveContent').classList.remove('section-hidden');
                 
                 // Загружаем и отображаем данные
-                const data = loadArchiveData();
+                const data = await loadArchiveData();
                 archiveData = data;
                 displayArchiveData(data, 1);
                 
                 showSuccessMessage('✅ Доступ к архиву разрешен');
             } else {
-                document.getElementById('archivePasswordError').style.display = 'block';
-                showErrorMessage('❌ Неверный пароль');
+                loginMessage.textContent = 'Неверный пароль.';
+                passwordInput.value = '';
             }
         });
     }
@@ -635,17 +653,33 @@ function initArchiveSearch() {
 }
 
 // Функция для показа секции архива
-function showArchiveSection() {
+async function showArchiveSection() {
     hideAllSections();
     document.getElementById('archive').classList.remove('section-hidden');
     
-    // Сбрасываем форму при каждом входе в архив
-    const loginForm = document.getElementById('archiveLoginForm');
-    if (loginForm) {
-        loginForm.reset();
+    const isLoggedIn = localStorage.getItem('archiveLoggedIn') === 'true';
+    const loginForm = document.getElementById('archiveLogin');
+    const archiveContent = document.getElementById('archiveContent');
+    
+    if (isLoggedIn) {
+        loginForm.classList.add('section-hidden');
+        archiveContent.classList.remove('section-hidden');
+        
+        // Загружаем и отображаем данные
+        const data = await loadArchiveData();
+        archiveData = data;
+        displayArchiveData(data, 1);
+        
+    } else {
+        loginForm.classList.remove('section-hidden');
+        archiveContent.classList.add('section-hidden');
+        
+        // Сбрасываем форму
+        const passwordInput = document.getElementById('archivePassword');
+        if (passwordInput) passwordInput.value = '';
+        const loginMessage = document.getElementById('loginMessage');
+        if (loginMessage) loginMessage.textContent = '';
     }
-    document.getElementById('archiveContent').style.display = 'none';
-    document.getElementById('archivePasswordError').style.display = 'none';
     
     scrollToTop();
 }
