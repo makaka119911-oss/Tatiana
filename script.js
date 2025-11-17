@@ -1303,3 +1303,42 @@ function showNotification(text, type) {
         }
     }, 5000);
 }
+// ✅ ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ СТРАНИЦЫ
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🔄 Инициализация приложения...');
+    
+    // Проверяем статус диагностики
+    checkDiagnosticStatus();
+    
+    // Инициализируем все модули
+    initEventListeners();
+    initTest();
+    initArchiveLogin();
+    initArchiveSearch();
+    
+    // ✅ СИНХРОНИЗИРУЕМ АРХИВ С СЕРВЕРОМ
+    setTimeout(() => {
+        syncArchiveWithServer().then(success => {
+            if (success) {
+                console.log('✅ Архив синхронизирован с сервером');
+            }
+        });
+    }, 2000);
+});
+
+// ✅ ФУНКЦИЯ СИНХРОНИЗАЦИИ
+async function syncArchiveWithServer() {
+    try {
+        const isHealthy = await checkServerHealth();
+        if (isHealthy) {
+            console.log('✅ Сервер доступен');
+            return true;
+        } else {
+            console.warn('⚠️ Сервер недоступен');
+            return false;
+        }
+    } catch (error) {
+        console.error('❌ Ошибка синхронизации:', error);
+        return false;
+    }
+}
