@@ -1,5 +1,5 @@
 // API Configuration
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = 'https://tatiana-server-production.up.railway.app/api';
 
 // Обновленная функция сохранения в архив
 async function saveToArchive(userData, testData, testResult) {
