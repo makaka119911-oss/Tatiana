@@ -3034,160 +3034,62 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <!-- Archive Section -->
-  <section id="archive" class="section-hidden">
+<!-- Архив Section -->
+<section id="archive" class="section-hidden">
     <div class="container">
-      <div class="section-title">
-        <h2>Архив консультаций</h2>
-        <p>Смотрите записи прошлых сессий и обучающие материалы</p>
-      </div>
-      
-      <div class="archive-container">
-        <div id="archiveLogin" class="login-form">
-          <h3>Вход в Архив</h3>
-          <p>Для доступа к архиву введите пароль.</p>
-          <input type="password" id="archivePassword" placeholder="Пароль" required>
-          <button id="loginArchiveBtn" class="btn btn-primary">Войти</button>
-          <p id="loginMessage" style="color: red; margin-top: 10px;"></p>
+        <div class="section-title">
+            <h2>Архив консультаций</h2>
+            <p>Защищенный архив всех результатов тестирования</p>
         </div>
         
-        <div id="archiveContent" class="archive-content section-hidden">
-        <div class="archive-grid" id="archiveGrid">
-          <p>Загрузка данных...</p>
-          <!-- Archive items will be loaded here -->
-          <div class="archive-card section-hidden">
-            <div class="archive-preview">
-              <i class="fas fa-video"></i>
+        <div class="archive-container">
+            <div id="archiveLogin" class="access-lock">
+                <div class="lock-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3>Доступ к архиву</h3>
+                <p>Для доступа введите пароль</p>
+                <div class="form-group" style="max-width: 300px; margin: 1.5rem auto;">
+                    <input type="password" id="archivePassword" class="form-control" placeholder="Пароль" style="text-align: center;">
+                    <p id="loginMessage" style="color: #e74c3c; margin-top: 10px; font-size: 0.9rem;"></p>
+                </div>
+                <button id="loginArchiveBtn" class="btn">
+                    <i class="fas fa-unlock"></i> Войти в архив
+                </button>
             </div>
-            <div class="archive-info">
-              <h3>Записи консультаций</h3>
-              <p>Доступ к видеозаписям прошлых групповых сессий</p>
+            
+            <div id="archiveContent" class="section-hidden">
+                <div class="archive-controls">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Поиск по имени или фамилии..." class="form-control">
+                        <button id="searchBtn" class="btn btn-outline">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="archive-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalUsers">0</div>
+                        <div class="stat-label">Всего пользователей</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="avgScore">0</div>
+                        <div class="stat-label">Средний балл</div>
+                    </div>
+                </div>
+                
+                <div class="archive-grid" id="archiveGrid">
+                    <div class="loading-message">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Загрузка данных архива...</p>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </section>
-
-  <script>
+</section>
+ <script>
     // Archive functionality
       setTimeout(() => {
     const archiveHiddenBtn = document.getElementById('archiveHiddenBtn');
@@ -3250,6 +3152,125 @@ function displayArchiveData(data) {
     <i class="fas fa-lock" style="font-size: 20px; color: #8B4352;"></i>
   </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+ 
 
 
 
