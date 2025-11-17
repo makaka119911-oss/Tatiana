@@ -598,7 +598,7 @@ async function showArchiveSection() {
     scrollToTop();
 }
 
-// 🔄 ОБНОВЛЕННАЯ ИНИЦИАЛИЗАЦИЯ
+// 🔄 ОБНОВЛЕННАЯ ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🔄 Инициализация приложения...');
     
@@ -606,10 +606,10 @@ document.addEventListener('DOMContentLoaded', function() {
     checkDiagnosticStatus();
     
     // Инициализируем все модули
-    initEventListeners();
-    initTest();
-    initArchiveWithPassword(); // 🔐 ЗАМЕНИЛИ на новую функцию
-    initArchiveSearch();
+    initEventListeners();           // ← обработчики событий
+    initTest();                     // ← тест
+    initArchiveWithPassword();      // ← архив с паролем
+    initArchiveSearch();            // ← поиск в архиве
     
     // Синхронизируем архив с сервером
     setTimeout(() => {
@@ -641,6 +641,7 @@ function unlockAllSections() {
     });
 }
 
+// 🔄 ОБНОВИТЕ функцию initEventListeners - добавьте архив
 function initEventListeners() {
     // Форма регистрации
     const registrationForm = document.getElementById('registrationForm');
@@ -735,13 +736,21 @@ function initEventListeners() {
         });
     });
 
-    // Ссылка на архив
+    // 🔐 ДОБАВЛЕНО: Ссылка на архив
     document.querySelectorAll('.archive-link').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             showArchiveSection();
         });
     });
+
+    // 🔐 ДОБАВЛЕНО: Скрытая кнопка архива
+    const archiveHiddenBtn = document.getElementById('archiveHiddenBtn');
+    if (archiveHiddenBtn) {
+        archiveHiddenBtn.addEventListener('click', function() {
+            showArchiveSection();
+        });
+    }
 
     // Мобильное меню
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
@@ -759,7 +768,6 @@ function initEventListeners() {
         });
     });
 }
-
 // Валидация формы регистрации
 function validateRegistrationForm(form) {
     let isValid = true;
@@ -1280,34 +1288,24 @@ document.addEventListener('DOMContentLoaded', function() {
 const ARCHIVE_PASSWORD = 'rerehepf123';
 
 // Инициализация архива с защитой паролем
-function initArchiveWithPassword() {
-    const loginArchiveBtn = document.getElementById('loginArchiveBtn');
-    const logoutArchiveBtn = document.getElementById('logoutArchiveBtn');
-    const archivePasswordInput = document.getElementById('archivePassword');
-    
-    if (loginArchiveBtn) {
-        loginArchiveBtn.addEventListener('click', handleArchiveLogin);
+// 🔐 УДАЛЕНИЕ ПОЛЬЗОВАТЕЛЯ ИЗ АРХИВА
+async function deleteUserFromArchive(userId) {
+    if (!confirm('❌ Вы уверены, что хотите удалить эти данные из архива?\nЭто действие нельзя отменить.')) {
+        return;
     }
     
-    if (logoutArchiveBtn) {
-        logoutArchiveBtn.addEventListener('click', handleArchiveLogout);
-    }
-    
-    if (archivePasswordInput) {
-        archivePasswordInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                handleArchiveLogin();
-            }
-        });
-    }
-    
-    // Проверяем, не авторизован ли пользователь уже
-    const isArchiveLoggedIn = localStorage.getItem('archiveAuthenticated') === 'true';
-    if (isArchiveLoggedIn) {
-        showArchiveContent();
+    try {
+        const success = await deleteUserDataFromServer(userId);
+        if (success) {
+            // Перезагружаем данные
+            await loadAndDisplayArchiveData();
+            showSuccessMessage('✅ Данные успешно удалены из архива');
+        }
+    } catch (error) {
+        console.error('❌ Ошибка удаления:', error);
+        showNotification('❌ Ошибка удаления: ' + error.message, 'error');
     }
 }
-
 // 🔐 ОБРАБОТЧИК ВХОДА В АРХИВ
 async function handleArchiveLogin() {
     const passwordInput = document.getElementById('archivePassword');
