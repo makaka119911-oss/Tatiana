@@ -1,15 +1,4 @@
-# Отключаем обработку Jekyll для определенных папок
 exclude:
   - server/
-  - server/node_modules/
   - node_modules/
   - .gitignore
-  - README.md
-  - package.json
-  - package-lock.json
-
-# Базовые настройки
-title: "Татьяна Солнечная"
-description: "Пробуждение женской силы"
-baseurl: ""
-url: "https://makaka119911-oss.github.io"
