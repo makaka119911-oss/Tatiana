@@ -24,7 +24,30 @@ if (!fs.existsSync(UPLOADS_DIR)) {
     fs.mkdirSync(UPLOADS_DIR, { recursive: true });
 }
 
-// Функции для работы с данными
+// --- АВТОРИЗАЦИЯ ---
+const ADMIN_PASSWORD = 'rerehepf123';
+let sessionActive = false; // простая сессия
+
+app.post('/api/login', (req, res) => {
+  const { password } = req.body;
+  if (password === ADMIN_PASSWORD) {
+    sessionActive = true;
+    res.json({ success: true });
+  } else {
+    res.status(401).json({ success: false, error: 'Wrong password' });
+  }
+});
+
+function checkAuth(req, res, next) {
+  // можно заменить на куку-токен
+  if (sessionActive) {
+    next();
+  } else {
+    res.status(403).json({error: 'Forbidden'});
+  }
+}
+
+// --- Функции для работы с данными ---
 function readData() {
     try {
         if (fs.existsSync(DATA_FILE)) {
@@ -66,15 +89,15 @@ function savePhoto(base64Data, fileName) {
     }
 }
 
-// API Routes
+// --- API ---
 
-// Получить все данные
-app.get('/api/archive', (req, res) => {
+// Получить все данные (Только после входа)
+app.get('/api/archive', checkAuth, (req, res) => {
     const data = readData();
     res.json(data);
 });
 
-// Добавить новую запись
+// Добавить новую запись (открыто для новых регистраций)
 app.post('/api/archive', (req, res) => {
     const { userData, testData, testResult, photo } = req.body;
     
@@ -107,8 +130,8 @@ app.post('/api/archive', (req, res) => {
     }
 });
 
-// Удалить запись
-app.delete('/api/archive/:id', (req, res) => {
+// Удалить запись (Защищено)
+app.delete('/api/archive/:id', checkAuth, (req, res) => {
     const { id } = req.params;
     const data = readData();
     const filteredData = data.filter(item => item.id !== id);
@@ -120,7 +143,7 @@ app.delete('/api/archive/:id', (req, res) => {
     }
 });
 
-// Получить фото
+// Получить фото (открыто)
 app.get('/api/photo/:filename', (req, res) => {
     const { filename } = req.params;
     const filePath = path.join(UPLOADS_DIR, filename);
