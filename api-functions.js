@@ -38,7 +38,86 @@ async function saveToArchive(userData, testData, testResult) {
         return false;
     }
 }
+// ✅ НОВАЯ ФУНКЦИЯ ДЛЯ ПРОВЕРКИ И ОБНОВЛЕНИЯ АРХИВА
+async function syncArchiveWithServer() {
+    try {
+        console.log('🔄 Синхронизация архива с сервером...');
+        
+        // Проверяем доступность сервера
+        const isHealthy = await checkServerHealth();
+        if (!isHealthy) {
+            console.warn('⚠️ Сервер недоступен, используем локальные данные');
+            return false;
+        }
+        
+        // Загружаем данные с сервера
+        const serverData = await loadArchiveData();
+        console.log('✅ Данные с сервера загружены:', serverData);
+        
+        return true;
+    } catch (error) {
+        console.error('❌ Ошибка синхронизации с сервером:', error);
+        return false;
+    }
+}
 
+// ✅ ОБНОВЛЕННАЯ ФУНКЦИЯ СОХРАНЕНИЯ
+async function saveToArchive(userData, testData, testResult) {
+    try {
+        const payload = {
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            age: userData.age,
+            phone: userData.phone,
+            email: userData.email,
+            telegram: userData.telegram,
+            photo: userData.photo || null,
+            testData: testData,
+            testResult: testResult,
+            libidonLevel: testResult.level,
+            timestamp: new Date().toISOString()
+        };
+
+        const response = await fetch(`${API_BASE_URL}/archive`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+        
+        if (response.ok && result.success) {
+            console.log('✅ Данные сохранены на сервер:', result);
+            
+            // ✅ ОТПРАВЛЯЕМ В TELEGRAM
+            await sendTestResultsToTelegram(testData, testResult);
+            
+            return true;
+        } else {
+            throw new Error(result.error || 'Ошибка сохранения на сервер');
+        }
+    } catch (error) {
+        console.error('❌ Ошибка сохранения в архив:', error);
+        
+        // ✅ РЕЗЕРВНОЕ СОХРАНЕНИЕ В LOCALSTORAGE
+        try {
+            const localArchive = JSON.parse(localStorage.getItem('libidoTestArchive')) || [];
+            localArchive.push({
+                ...payload,
+                id: Date.now().toString(),
+                localBackup: true
+            });
+            localStorage.setItem('libidoTestArchive', JSON.stringify(localArchive));
+            console.log('✅ Данные сохранены в локальный бэкап');
+        } catch (localError) {
+            console.error('❌ Ошибка локального сохранения:', localError);
+        }
+        
+        return false;
+    }
+}
 // Обновленная функция загрузки данных архива
 async function loadArchiveData() {
     try {
