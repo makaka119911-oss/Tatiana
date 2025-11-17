@@ -368,13 +368,14 @@ function displayArchiveData(data, page = 1) {
 
 }
 
-// Функция для получения класса уровня либидо
+// 🔐 ПОЛУЧИТЬ КЛАСС ДЛЯ УРОВНЯ ЛИБИДО
 function getLevelClass(level) {
+    if (!level) return 'level-badge-unknown';
     if (level.includes('Низкое')) return 'level-badge-low';
     if (level.includes('Среднее')) return 'level-badge-medium';
     if (level.includes('Высокое')) return 'level-badge-high';
     if (level.includes('Очень высокое')) return 'level-badge-very-high';
-    return '';
+    return 'level-badge-unknown';
 }
 
 // Функция для обновления пагинации
@@ -442,75 +443,29 @@ function updateArchiveStats(data) {
     completionRate.textContent = '100%';
 }
 
-// Функция для просмотра деталей пользователя
+// 🔐 ПРОСМОТР ДЕТАЛЕЙ ПОЛЬЗОВАТЕЛЯ
 function viewUserDetails(userId) {
-    const userData = archiveData.find(item => item.id === userId);
-    if (!userData) return;
-    
-    const modal = document.createElement('div');
-    modal.className = 'modal-overlay';
-    modal.innerHTML = `
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Детальная информация</h3>
-                <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="user-details">
-                    <div class="detail-section" style="text-align: center;">
-                        ${userData.userData.photo ? 
-                            `<img src="${userData.userData.photo}" alt="Фото профиля" style="max-width: 200px; border-radius: 10px; margin-bottom: 1rem;">` : 
-                            '<div style="width: 200px; height: 200px; background: #f0f0f0; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;"><i class="fas fa-user" style="font-size: 3rem; color: #ccc;"></i></div>'
-                        }
-                        <h4>${userData.userData.lastName} ${userData.userData.firstName}</h4>
-                        <p>Возраст: ${userData.userData.age} лет</p>
-                    </div>
-                    
-                    <div class="detail-section">
-                        <h4>Контактная информация</h4>
-                        <p><strong>Телефон:</strong> ${userData.userData.phone}</p>
-                        <p><strong>Telegram:</strong> ${userData.userData.telegram}</p>
-                    </div>
-                    
-                    <div class="detail-section">
-                        <h4>Результаты теста</h4>
-                        <p><strong>Тип теста:</strong> ${userData.testResult.testType === 'regular' ? 'Обычный' : 'Менопауза'}</p>
-                        <p><strong>Уровень либидо:</strong> ${userData.testResult.level}</p>
-                        <p><strong>Баллы:</strong> ${userData.testResult.score}</p>
-                        <p><strong>Дата прохождения:</strong> ${new Date(userData.timestamp).toLocaleString('ru-RU')}</p>
-                    </div>
-                    
-                    <div class="detail-section">
-                        <h4>Описание результата</h4>
-                        <p>${userData.testResult.description}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-outline" onclick="this.closest('.modal-overlay').remove()">
-                    Закрыть
-                </button>
-            </div>
-        </div>
-    `;
-    
-    document.body.appendChild(modal);
+    showNotification('📊 Функция детального просмотра будет добавлена в следующем обновлении', 'info');
 }
 
-// Функция для удаления данных пользователя
-function deleteUserData(userId) {
-    if (!confirm('Вы уверены, что хотите удалить данные этого пользователя?')) {
+
+// 🔐 УДАЛЕНИЕ ПОЛЬЗОВАТЕЛЯ ИЗ АРХИВА
+async function deleteUserFromArchive(userId) {
+    if (!confirm('❌ Вы уверены, что хотите удалить эти данные из архива?\nЭто действие нельзя отменить.')) {
         return;
     }
     
-    archiveData = archiveData.filter(item => item.id !== userId);
-    localStorage.setItem('libidoTestArchive', JSON.stringify(archiveData));
-    
-    // Перезагружаем таблицу
-    displayArchiveData(archiveData, currentPage);
-    showSuccessMessage('✅ Данные пользователя удалены');
+    try {
+        const success = await deleteUserDataFromServer(userId);
+        if (success) {
+            // Перезагружаем данные
+            await loadAndDisplayArchiveData();
+            showSuccessMessage('✅ Данные успешно удалены из архива');
+        }
+    } catch (error) {
+        console.error('❌ Ошибка удаления:', error);
+        showNotification('❌ Ошибка удаления: ' + error.message, 'error');
+    }
 }
 
 // Функция для экспорта в Excel
@@ -626,33 +581,18 @@ function initArchiveSearch() {
     }
 }
 
-// Функция для показа секции архива
+// 🔐 ОБНОВЛЕННАЯ ФУНКЦИЯ ПОКАЗА АРХИВА
 async function showArchiveSection() {
     hideAllSections();
     document.getElementById('archive').classList.remove('section-hidden');
     
-    const isLoggedIn = localStorage.getItem('archiveLoggedIn') === 'true';
-    const loginForm = document.getElementById('archiveLogin');
-    const archiveContent = document.getElementById('archiveContent');
+    // Проверяем авторизацию
+    const isAuthenticated = localStorage.getItem('archiveAuthenticated') === 'true';
     
-    if (isLoggedIn) {
-        loginForm.classList.add('section-hidden');
-        archiveContent.classList.remove('section-hidden');
-        
-        // Загружаем и отображаем данные
-        const data = await loadArchiveData();
-        archiveData = data;
-        displayArchiveData(data, 1);
-        
+    if (isAuthenticated) {
+        await showArchiveContent();
     } else {
-        loginForm.classList.remove('section-hidden');
-        archiveContent.classList.add('section-hidden');
-        
-        // Сбрасываем форму
-        const passwordInput = document.getElementById('archivePassword');
-        if (passwordInput) passwordInput.value = '';
-        const loginMessage = document.getElementById('loginMessage');
-        if (loginMessage) loginMessage.textContent = '';
+        showArchiveLoginForm();
     }
     
     scrollToTop();
@@ -1368,13 +1308,13 @@ function initArchiveWithPassword() {
     }
 }
 
-// Обработчик входа в архив
+// 🔐 ОБРАБОТЧИК ВХОДА В АРХИВ
 async function handleArchiveLogin() {
     const passwordInput = document.getElementById('archivePassword');
     const passwordError = document.getElementById('archivePasswordError');
     const loginBtn = document.getElementById('loginArchiveBtn');
     
-    if (!passwordInput) return;
+    if (!passwordInput || !loginBtn) return;
     
     const password = passwordInput.value.trim();
     const originalText = loginBtn.innerHTML;
@@ -1386,14 +1326,15 @@ async function handleArchiveLogin() {
         // Сбрасываем ошибку
         if (passwordError) {
             passwordError.style.display = 'none';
+            passwordError.textContent = '';
         }
         
         if (!password) {
             throw new Error('Введите пароль');
         }
         
-        // ✅ ПРОВЕРЯЕМ ПАРОЛЬ
-        if (password !== ARCHIVE_PASSWORD) {
+        // ✅ ПРОВЕРЯЕМ ПАРОЛЬ - rerehepf123
+        if (password !== 'rerehepf123') {
             throw new Error('Неверный пароль');
         }
         
@@ -1401,7 +1342,7 @@ async function handleArchiveLogin() {
         localStorage.setItem('archiveAuthenticated', 'true');
         
         // Показываем контент архива
-        showArchiveContent();
+        await showArchiveContent();
         
         showSuccessMessage('✅ Доступ к архиву разрешен');
         
@@ -1414,33 +1355,41 @@ async function handleArchiveLogin() {
         }
         
         passwordInput.focus();
+        passwordInput.select();
+        
     } finally {
         loginBtn.innerHTML = originalText;
         loginBtn.disabled = false;
     }
 }
 
-// Обработчик выхода из архива
+// 🔐 ОБРАБОТЧИК ВЫХОДА ИЗ АРХИВА
 function handleArchiveLogout() {
     localStorage.removeItem('archiveAuthenticated');
     showArchiveLoginForm();
     showSuccessMessage('✅ Вы вышли из архива');
 }
-
-// Показать форму входа в архив
+// 🔐 ПОКАЗАТЬ ФОРМУ ВХОДА В АРХИВ
 function showArchiveLoginForm() {
     const loginForm = document.getElementById('archiveLoginForm');
     const archiveContent = document.getElementById('archiveContent');
-    const passwordInput = document.getElementById('archivePassword');
-    const passwordError = document.getElementById('archivePasswordError');
     
     if (loginForm) loginForm.classList.remove('section-hidden');
     if (archiveContent) archiveContent.classList.add('section-hidden');
+    
+    // Сбрасываем форму
+    const passwordInput = document.getElementById('archivePassword');
+    const passwordError = document.getElementById('archivePasswordError');
+    
     if (passwordInput) passwordInput.value = '';
-    if (passwordError) passwordError.style.display = 'none';
+    if (passwordError) {
+        passwordError.style.display = 'none';
+        passwordError.textContent = '';
+    }
 }
 
-// Показать содержимое архива
+
+// 🔐 ПОКАЗАТЬ СОДЕРЖИМОЕ АРХИВА (после ввода пароля)
 async function showArchiveContent() {
     const loginForm = document.getElementById('archiveLoginForm');
     const archiveContent = document.getElementById('archiveContent');
@@ -1451,8 +1400,7 @@ async function showArchiveContent() {
     // Загружаем данные архива
     await loadAndDisplayArchiveData();
 }
-
-// Загрузка и отображение данных архива
+// 🔐 ЗАГРУЗКА И ОТОБРАЖЕНИЕ ДАННЫХ АРХИВА
 async function loadAndDisplayArchiveData() {
     try {
         console.log('🔄 Загрузка данных архива...');
@@ -1463,8 +1411,8 @@ async function loadAndDisplayArchiveData() {
             tableBody.innerHTML = `
                 <tr>
                     <td colspan="9" style="text-align: center; padding: 2rem;">
-                        <i class="fas fa-spinner fa-spin"></i>
-                        <p>Загрузка данных архива...</p>
+                        <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--purple-mystic);"></i>
+                        <p style="margin-top: 1rem;">Загрузка данных архива...</p>
                     </td>
                 </tr>
             `;
@@ -1474,28 +1422,8 @@ async function loadAndDisplayArchiveData() {
         const archiveData = await loadArchiveData();
         console.log('✅ Данные архива загружены:', archiveData);
         
-        // Отображаем данные
-        displayArchiveTableData(archiveData);
-        
-    } catch (error) {
-        console.error('❌ Ошибка загрузки архива:', error);
-        
-        const tableBody = document.getElementById('resultsTableBody');
-        if (tableBody) {
-            tableBody.innerHTML = `
-                <tr>
-                    <td colspan="9" style="text-align: center; padding: 2rem; color: #e74c3c;">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <p>Ошибка загрузки данных: ${error.message}</p>
-                    </td>
-                </tr>
-            `;
-        }
-    }
-}
-
-// Отображение данных в таблице
-function displayArchiveTableData(data, page = 1) {
+       // 🔐 ОТОБРАЖЕНИЕ ДАННЫХ В ТАБЛИЦЕ
+function displayArchiveTableData(data) {
     const tableBody = document.getElementById('resultsTableBody');
     if (!tableBody) return;
     
@@ -1505,9 +1433,10 @@ function displayArchiveTableData(data, page = 1) {
     if (!data || data.length === 0) {
         tableBody.innerHTML = `
             <tr>
-                <td colspan="9" style="text-align: center; padding: 2rem;">
+                <td colspan="9" style="text-align: center; padding: 3rem;">
                     <i class="fas fa-inbox" style="font-size: 3rem; color: #ccc; margin-bottom: 1rem;"></i>
                     <p>Архив пуст</p>
+                    <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">Нет данных для отображения</p>
                 </td>
             </tr>
         `;
@@ -1515,38 +1444,53 @@ function displayArchiveTableData(data, page = 1) {
     }
     
     // Отображаем данные
-    data.forEach((item, index) => {
+    data.forEach((item) => {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>
                 <div style="display: flex; align-items: center; gap: 10px;">
                     ${item.photo ? 
-                        `<img src="${item.photo}" alt="Фото" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">` : 
-                        '<div style="width: 40px; height: 40px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center;"><i class="fas fa-user" style="color: #ccc;"></i></div>'
+                        `<img src="${item.photo}" alt="Фото" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--soft-pink);">` : 
+                        '<div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--lavender), var(--moonlight)); display: flex; align-items: center; justify-content: center; border: 2px solid var(--soft-pink);"><i class="fas fa-user" style="color: var(--purple-mystic);"></i></div>'
                     }
                     <div>
                         <strong>${item.firstName} ${item.lastName}</strong>
+                        ${item.email ? `<br><small style="color: #666;">${item.email}</small>` : ''}
                     </div>
                 </div>
             </td>
-            <td>${item.age}</td>
-            <td>${item.phone}</td>
-            <td>${item.telegram}</td>
-            <td>${item.testResult?.testType === 'regular' ? 'Обычный' : 'Менопауза'}</td>
+            <td>${item.age || 'Не указан'}</td>
+            <td>${item.phone || 'Не указан'}</td>
+            <td>${item.telegram || 'Не указан'}</td>
             <td>
-                <span class="level-badge ${getLevelClass(item.testResult?.level)}">
-                    ${item.testResult?.level || 'Не указано'}
+                <span class="test-type-badge">
+                    ${item.testResult?.testType === 'regular' ? 'Обычный' : 'Менопауза'}
                 </span>
             </td>
-            <td>${item.testResult?.score || 0}</td>
-            <td>${new Date(item.timestamp || item.createdAt).toLocaleDateString('ru-RU')}</td>
             <td>
-                <button class="btn-view-details" onclick="viewUserDetails('${item._id || item.id}')" title="Просмотр деталей">
-                    <i class="fas fa-eye"></i>
-                </button>
-                <button class="btn-delete" onclick="deleteUserFromArchive('${item._id || item.id}')" title="Удалить">
-                    <i class="fas fa-trash"></i>
-                </button>
+                <span class="level-badge ${getLevelClass(item.testResult?.level || item.libidonLevel)}">
+                    ${item.testResult?.level || item.libidonLevel || 'Не определен'}
+                </span>
+            </td>
+            <td>
+                <strong>${item.testResult?.score || 0}</strong>
+            </td>
+            <td>
+                ${new Date(item.timestamp || item.createdAt || Date.now()).toLocaleDateString('ru-RU')}
+                <br>
+                <small style="color: #666;">
+                    ${new Date(item.timestamp || item.createdAt || Date.now()).toLocaleTimeString('ru-RU')}
+                </small>
+            </td>
+            <td>
+                <div style="display: flex; gap: 5px;">
+                    <button class="btn-view-details" onclick="viewUserDetails('${item._id || item.id}')" title="Просмотр деталей">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="btn-delete" onclick="deleteUserFromArchive('${item._id || item.id}')" title="Удалить из архива">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
             </td>
         `;
         tableBody.appendChild(row);
@@ -1579,8 +1523,7 @@ async function deleteUserFromArchive(userId) {
         showNotification('❌ Ошибка удаления: ' + error.message, 'error');
     }
 }
-
-// Обновление статистики архива
+// 🔐 ОБНОВЛЕНИЕ СТАТИСТИКИ АРХИВА
 function updateArchiveStats(data) {
     const totalUsers = document.getElementById('totalUsers');
     const avgScore = document.getElementById('avgScore');
@@ -1589,14 +1532,17 @@ function updateArchiveStats(data) {
     if (totalUsers) totalUsers.textContent = data.length;
     
     if (avgScore && data.length > 0) {
-        const totalScore = data.reduce((sum, item) => sum + (item.testResult?.score || 0), 0);
-        avgScore.textContent = (totalScore / data.length).toFixed(1);
+        const validScores = data.filter(item => item.testResult?.score != null);
+        const totalScore = validScores.reduce((sum, item) => sum + (item.testResult?.score || 0), 0);
+        avgScore.textContent = validScores.length > 0 ? (totalScore / validScores.length).toFixed(1) : '0';
     }
     
     if (completionRate) {
         completionRate.textContent = '100%';
     }
 }
+
+
 // ✅ ФУНКЦИЯ СИНХРОНИЗАЦИИ
 async function syncArchiveWithServer() {
     try {
