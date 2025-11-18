@@ -3220,6 +3220,21 @@ function displayArchiveData(data) {
     <div style="position: fixed; bottom: 10px; right: 10px; z-index: 999; 10.1; cursor: pointer;" id="archiveHiddenBtn" title="Архив">
     <i class="fas fa-lock" style="font-size: 20px; color: #8B4352;"></i>
   </div>
+<script>
+function handleLoginForm() {
+  const password = document.getElementById('archivePassword').value;
+  const correctPassword = 'rekerapi123';
+  
+  if (password === correctPassword) {
+    alert('Пароль верный! Добро пожаловать в архив.');
+    document.getElementById('archiveLoginForm').style.display = 'none';
+    document.getElementById('archiveContent').style.display = 'block';
+  } else {
+    alert('Неверный пароль. Попробуйте ещё раз.');
+    document.getElementById('archivePassword').value = '';
+  }
+}
+</script>
 
 
 
@@ -3346,18 +3361,3 @@ function displayArchiveData(data) {
 
 
 
-<script>
-function handleLoginForm() {
-  const password = document.getElementById('archivePassword').value;
-  const correctPassword = 'rekerapi123';
-  
-  if (password === correctPassword) {
-    alert('Пароль верный! Добро пожаловать в архив.');
-    document.getElementById('archiveLoginForm').style.display = 'none';
-    document.getElementById('archiveContent').style.display = 'block';
-  } else {
-    alert('Неверный пароль. Попробуйте ещё раз.');
-    document.getElementById('archivePassword').value = '';
-  }
-}
-</script>
