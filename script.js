@@ -1557,3 +1557,40 @@ async function syncArchiveWithServer() {
         return false;
     }
 }
+
+
+    // 🔐 ИНИЦИАЛИЗАЦИЯ АРХИВА С ПАРОЛЕМ
+function initArchiveWithPassword() {
+    console.log('🔄 initArchiveWithPassword вызвана');
+
+    const loginBtn = document.getElementById('loginArchiveBtn');
+    if (!loginBtn) {
+        console.error('❌ loginArchiveBtn не найден');
+        return;
+    }
+
+    // Удаляем старые обработчики
+    const newLoginBtn = loginBtn.cloneNode(true);
+    loginBtn.parentNode.replaceChild(newLoginBtn, loginBtn);
+
+    // Назначаем обработчик на новую кнопку
+    document.getElementById('loginArchiveBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        console.log('🎯 Кнопка входа в архив нажата');
+        handleArchiveLogin();
+    });
+
+    // Обработка Enter в поле пароля
+    const passwordInput = document.getElementById('archivePassword');
+    if (passwordInput) {
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                console.log('⌨️ Enter в поле пароля');
+                handleArchiveLogin();
+            }
+        });
+    }
+
+    console.log('✅ Обработчики архива установлены');
+}
