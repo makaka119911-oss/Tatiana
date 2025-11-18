@@ -678,6 +678,7 @@ function initEventListeners() {
             }
         });
     });
+        initArchiveWithPassword(); // Инициализируем архив с паролем
 
     // Навигационные ссылки
     document.querySelectorAll('.registration-link').forEach(link => {
