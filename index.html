@@ -1201,9 +1201,7 @@
                     <li><a href="#awakening" class="awakening-link">Пробуждение</a></li>
                     <li><a href="#contacts" class="contacts-link">Контакты</a></li>
                 </ul>
-                <button type="button" id="loginArchiveBtn" onclick="showArchiveSection()" class="btn btn-large">
-    <i class="fas fa-unlock"></i> Войти в архив
-</button>
+                
             </nav>
         </div>
     </header>
@@ -3061,14 +3059,9 @@
                 </div>
                 
                 <div class="form-group" style="text-align: center; margin-top: 2rem;">
-                    <button type="button" id="3864 onclick="handleArchiveLogin()"
-                        " class="btn btn-large">
+                    <button type="button" id="archiveLoginBtn" onclick="handleArchiveLogin()" class="btn btn-large">
                         <i class="fas fa-unlock"></i> Войти в архив
                     </button>
-                </div>
-                
-                <div style="text-align: center; margin-top: 1rem;">
-                    <small style="color: #666;">Пароль: rerehepf123</small>
                 </div>
             </div>
             
@@ -3080,36 +3073,6 @@
                     <button type="button" id="logoutArchiveBtn" class="btn btn-outline" style="margin-top: 1rem;">
                         <i class="fas fa-sign-out-alt"></i> Выйти из архива
                     </button>
-                </div>
-                
-                <div class="archive-controls">
-                    <div class="search-box">
-                        <input type="text" id="searchInput" placeholder="Поиск по имени, фамилии или уровню..." 
-                               class="form-control">
-                        <button id="searchBtn" class="btn btn-outline">
-                            <i class="fas fa-search"></i> Поиск
-                        </button>
-                    </div>
-                    
-                    <div class="filter-controls">
-                        <select id="levelFilter" class="form-control">
-                            <option value="">Все уровни</option>
-                            <option value="Низкое">Низкое либидо</option>
-                            <option value="Среднее">Среднее либидо</option>
-                            <option value="Высокое">Высокое либидо</option>
-                            <option value="Очень высокое">Очень высокое либидо</option>
-                        </select>
-                        
-                        <select id="testTypeFilter" class="form-control">
-                            <option value="">Все типы тестов</option>
-                            <option value="regular">Обычный тест</option>
-                            <option value="menopause">Менопауза</option>
-                        </select>
-                        
-                        <button id="exportBtn" class="btn btn-outline">
-                            <i class="fas fa-download"></i> Экспорт
-                        </button>
-                    </div>
                 </div>
                 
                 <!-- Статистика -->
@@ -3128,15 +3091,39 @@
                     </div>
                 </div>
                 
+                <!-- Элементы управления -->
+                <div class="archive-controls">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Поиск по имени, фамилии..." class="form-control">
+                        <button id="searchBtn" class="btn btn-outline">
+                            <i class="fas fa-search"></i> Поиск
+                        </button>
+                    </div>
+                    
+                    <div class="filter-controls">
+                        <select id="levelFilter" class="form-control">
+                            <option value="">Все уровни</option>
+                            <option value="Низкое">Низкое либидо</option>
+                            <option value="Среднее">Среднее либидо</option>
+                            <option value="Высокое">Высокое либидо</option>
+                            <option value="Очень высокое">Очень высокое либидо</option>
+                        </select>
+                        
+                        <button id="refreshBtn" class="btn btn-outline">
+                            <i class="fas fa-sync-alt"></i> Обновить
+                        </button>
+                    </div>
+                </div>
+                
                 <!-- Таблица результатов -->
                 <div class="results-table-container">
                     <table class="results-table">
                         <thead>
                             <tr>
+                                <th>Фото</th>
                                 <th>Пользователь</th>
                                 <th>Возраст</th>
-                                <th>Телефон</th>
-                                <th>Telegram</th>
+                                <th>Контакты</th>
                                 <th>Тип теста</th>
                                 <th>Уровень либидо</th>
                                 <th>Баллы</th>
@@ -3150,9 +3137,11 @@
                     </table>
                 </div>
                 
-                <!-- Пагинация -->
-                <div class="pagination" id="pagination">
-                    <!-- Пагинация будет сгенерирована здесь -->
+                <!-- Сообщение при отсутствии данных -->
+                <div id="archiveEmpty" class="section-hidden" style="text-align: center; padding: 3rem;">
+                    <i class="fas fa-inbox" style="font-size: 4rem; color: #ccc; margin-bottom: 1rem;"></i>
+                    <h3 style="color: #666;">Архив пуст</h3>
+                    <p style="color: #888;">Нет данных для отображения</p>
                 </div>
             </div>
         </div>
