@@ -3344,3 +3344,20 @@ function displayArchiveData(data) {
 
 
 
+
+
+<script>
+function handleLoginForm() {
+  const password = document.getElementById('archivePassword').value;
+  const correctPassword = 'rekerapi123';
+  
+  if (password === correctPassword) {
+    alert('Пароль верный! Добро пожаловать в архив.');
+    document.getElementById('archiveLoginForm').style.display = 'none';
+    document.getElementById('archiveContent').style.display = 'block';
+  } else {
+    alert('Неверный пароль. Попробуйте ещё раз.');
+    document.getElementById('archivePassword').value = '';
+  }
+}
+</script>
