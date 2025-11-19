@@ -174,14 +174,16 @@ async function loadArchiveData() {
       }
     });
     
-    if (!response.ok) throw new Error('Ошибка загрузки архива');
+    if (!response.ok) {
+      throw new Error(`HTTP Error: ${response.status}`);
+    }
     
     const data = await response.json();
     populateArchiveTable(data);
   } catch (error) {
-    console.error('Ошибка:', error);
+    console.error('Ошибка загрузки архива:', error);
     document.getElementById('archive-table-body').innerHTML = 
-      '<tr><td colspan="4" style="text-align: center; padding: 20px; color: #e74c3c;">Ошибка загрузки данных</td></tr>';
+      '<tr><td colspan="4" style="text-align: center; padding: 20px; color: #e74c3c;">Ошибка загрузки данных: ' + error.message + '</td></tr>';
   } finally {
     loading.style.display = 'none';
   }
@@ -197,10 +199,10 @@ function populateArchiveTable(records) {
   
   tbody.innerHTML = records.map(record => `
     <tr style="border-bottom: 1px solid #ddd;">
-      <td style="padding: 10px; border: 1px solid #ddd;">${record.fio || record.firstName + ' ' + record.lastName}</td>
+      <td style="padding: 10px; border: 1px solid #ddd;">${record.fio || 'N/A'}</td>
       <td style="padding: 10px; border: 1px solid #ddd;">${new Date(record.date).toLocaleDateString('ru-RU')}</td>
-      <td style="padding: 10px; border: 1px solid #ddd;">${record.testResult || record.libidoScore || 'Тест в процессе'}</td>
-      <td style="padding: 10px; border: 1px solid #ddd;">${record.phone || ''}</td>
+      <td style="padding: 10px; border: 1px solid #ddd;">${record.testResult || 'N/A'}</td>
+      <td style="padding: 10px; border: 1px solid #ddd;">${record.phone || 'N/A'}</td>
     </tr>
   `).join('');
 }
