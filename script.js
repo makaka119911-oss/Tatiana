@@ -12,6 +12,7 @@ let testData = {};
 let archiveData = [];
 let itemsPerPage = 10;
 let currentPage = 1;
+
 // ==================== АРХИВ - ПОЛНОСТЬЮ РАБОЧИЙ КОД ====================
 const ARCHIVE_PASSWORD = 'rerehepf123';
 
@@ -383,50 +384,58 @@ function initArchiveHandlers() {
             }
         });
     }
-    
-    // Обработчик для скрытой кнопки архива
-    const archiveHiddenBtn = document.getElementById('archiveHiddenBtn');
-    if (archiveHiddenBtn) {
-        archiveHiddenBtn.addEventListener('click', function() {
-            showArchiveSection();
-        });
-    }
 }
 
-
+// ==================== ФУНКЦИИ ТЕСТА И РЕГИСТРАЦИИ ====================
 
 // 🔄 ОБНОВЛЕНИЕ ФУНКЦИИ СОХРАНЕНИЯ РЕЗУЛЬТАТОВ ТЕСТА
-// Добавьте этот код в функцию handleTestSubmit после расчета результата:
-
 async function handleTestSubmit(e) {
     e.preventDefault();
     
-    // ... существующий код ...
+    if (!validateTestForm()) {
+        showNotification('Пожалуйста, ответьте на все вопросы', 'error');
+        return;
+    }
     
-    // После расчета результата добавляем сохранение в архив:
-    const result = calculateTestResult(testData);
-    
-    // Сохраняем в архив
-    const archiveItem = {
-        id: Date.now().toString(),
-        timestamp: new Date().toISOString(),
-        ...registrationData,
-        testData: testData,
-        testResult: result,
-        libidonLevel: result.level,
-        testType: testData.test_type
-    };
+    try {
+        // Сбор данных теста
+        const formData = new FormData(e.target);
+        testData = Object.fromEntries(formData.entries());
+        testData.test_type = testType;
+        
+        // Расчет результата
+        const result = calculateTestResult(testData);
+        
+        // Сохраняем в архив
+        const archiveItem = {
+            id: Date.now().toString(),
+            timestamp: new Date().toISOString(),
+            ...registrationData,
+            testData: testData,
+            testResult: result,
+            libidonLevel: result.level,
+            testType: testData.test_type
+        };
 
-    const archive = JSON.parse(localStorage.getItem('libidoTestArchive')) || [];
-    archive.push(archiveItem);
-    localStorage.setItem('libidoTestArchive', JSON.stringify(archive));
-    
-    // ... остальной код ...
+        const archive = JSON.parse(localStorage.getItem('libidoTestArchive')) || [];
+        archive.push(archiveItem);
+        localStorage.setItem('libidoTestArchive', JSON.stringify(archive));
+        
+        // Показ результатов
+        showResultSection();
+        displayTestResult(result);
+        
+        // Отправка в Telegram
+        await sendToTelegram(archiveItem);
+        
+        showSuccessMessage('Результаты сохранены и отправлены!');
+        
+    } catch (error) {
+        console.error('Ошибка при отправке теста:', error);
+        showErrorMessage('Ошибка при отправке результатов');
+    }
 }
 
-
-
-// ОСТАЛЬНЫЕ ФУНКЦИИ ТЕСТА И РЕГИСТРАЦИИ
 // Функция для перехода между шагами теста
 function showStep(stepNumber) {
     console.log('Переход к шагу:', stepNumber);
@@ -623,6 +632,71 @@ function calculateTestResult(data) {
     return { level, description, score: totalScore, testType: data.test_type };
 }
 
+// Валидация формы теста
+function validateTestForm() {
+    const requiredFields = document.querySelectorAll('.test-step.active [required]');
+    for (let field of requiredFields) {
+        if (!field.value) {
+            return false;
+        }
+    }
+    return true;
+}
+
+// Отображение результатов теста
+function displayTestResult(result) {
+    const resultLevel = document.getElementById('resultLevel');
+    const resultDescription = document.getElementById('resultDescription');
+    const resultScore = document.getElementById('resultScore');
+    
+    if (resultLevel) resultLevel.textContent = result.level;
+    if (resultDescription) resultDescription.textContent = result.description;
+    if (resultScore) resultScore.textContent = result.score;
+}
+
+// Отправка в Telegram
+async function sendToTelegram(data) {
+    try {
+        const message = `
+📊 Новый результат теста либидо
+
+👤 Имя: ${data.firstName} ${data.lastName}
+📅 Возраст: ${data.age}
+📱 Телефон: ${data.phone}
+✈️ Telegram: ${data.telegram}
+
+🧪 Тип теста: ${data.testType === 'regular' ? 'Обычный' : 'Менопауза'}
+🎯 Результат: ${data.testResult.level}
+⭐ Баллы: ${data.testResult.score}
+
+📝 Описание: ${data.testResult.description}
+        `.trim();
+        
+        const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                chat_id: TELEGRAM_CHAT_ID,
+                text: message,
+                parse_mode: 'HTML'
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error('Ошибка отправки в Telegram');
+        }
+        
+        console.log('✅ Данные отправлены в Telegram');
+    } catch (error) {
+        console.error('❌ Ошибка отправки в Telegram:', error);
+        throw error;
+    }
+}
+
+// ==================== НАВИГАЦИЯ И УТИЛИТЫ ====================
+
 // Навигация по секциям
 function showRegistrationSection() {
     hideAllSections();
@@ -742,9 +816,11 @@ function unlockAllSections() {
     });
 }
 
+// ==================== ИНИЦИАЛИЗАЦИЯ ====================
+
 // 🌟 ОКОНЧАТЕЛЬНАЯ ИНИЦИАЛИЗАЦИЯ
 window.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Страница загружена, инициализируем архив...');
+    console.log('🚀 Страница загружена, инициализируем приложение...');
     
     // Проверяем статус диагностики
     checkDiagnosticStatus();
@@ -815,4 +891,23 @@ window.addEventListener('DOMContentLoaded', function() {
     
     // Обработчик для архива
     initArchiveHandlers();
+    
+    // Обработчик формы регистрации
+    const registrationForm = document.getElementById('registrationForm');
+    if (registrationForm) {
+        registrationForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            registrationData = Object.fromEntries(formData.entries());
+            showTestSection();
+        });
+    }
+    
+    // Обработчик формы теста
+    const testForm = document.getElementById('testForm');
+    if (testForm) {
+        testForm.addEventListener('submit', handleTestSubmit);
+    }
+    
+    console.log('✅ Приложение полностью инициализировано');
 });
