@@ -1,7 +1,6 @@
 // Конфигурация Telegram
 const TELEGRAM_BOT_TOKEN = '8402206062:AAEJim1GkriKqY_o1mOo0YWSWQDdw5Qy2h0';
 const TELEGRAM_CHAT_ID = '-1002313355102';
-
 const API_BASE_URL = 'https://tatiana-server-production.up.railway.app/api';
 
 // Глобальные переменные для теста
@@ -17,9 +16,9 @@ let currentPage = 1;
 // 🔐 АРХИВ - ИСПРАВЛЕННЫЙ РАБОЧИЙ КОД
 const ARCHIVE_PASSWORD = 'rerehepf123';
 
-// 🔄 ОСНОВНАЯ ФУНКЦИЯ ПОКАЗА АРХИВА
+// 🔄 ОСНОВНАЙ ФУНКЦИЯ ПОКАЗА АРХИВА
 function showArchiveSection() {
-    console.log('🎯 Открываем раздел архива');
+    console.log('🌟 Открываем раздел архива');
     
     hideAllSections();
     document.getElementById('archive').classList.remove('section-hidden');
@@ -61,7 +60,7 @@ function showArchiveContent() {
         archiveContent.style.display = 'block';
     }
     
-    // Загрузка данных архива
+    // Загружка данных архива
     loadArchiveData();
 }
 
@@ -114,18 +113,18 @@ function handleArchiveLogin() {
 
 // 🔐 ОБРАБОТКА ВЫХОДА ИЗ АРХИВА
 function handleArchiveLogout() {
-    console.log('🚪 Выход из архива...');
+    console.log('😚 Выход из архива...');
     
     showArchiveLoginForm();
     showSuccessMessage('✅ Вы вышли из архива');
 }
 
-// 📊 ЗАГРУЗКА ДАННЫХ АРХИВА
+// 📊 ЗАГРУЖКА ДАННЫХ АРХИВА
 function loadArchiveData() {
-    console.log('📥 Загрузка данных архива...');
+    console.log('📵 Загружка данных архива...');
     
     try {
-        // Загрузка из localStorage
+        // Загружка из localStorage
         const archive = JSON.parse(localStorage.getItem('libidoTestArchive')) || [];
         
         // Отображение данных
@@ -137,8 +136,8 @@ function loadArchiveData() {
         console.log('✅ Данные архива загружены:', archive.length, 'записей');
         
     } catch (error) {
-        console.error('❌ Ошибка загрузки архива:', error);
-        showArchiveError('Ошибка загрузки данных архива');
+        console.error('❌ Ошибка загружки архива:', error);
+        showArchiveError('Ошибка загружки данных архива');
     }
 }
 
@@ -149,7 +148,6 @@ function displayArchiveData(data) {
     
     if (!tableBody) return;
     
-    // Проверка на пустые данные
     if (!data || data.length === 0) {
         tableBody.innerHTML = '';
         if (archiveEmpty) {
@@ -162,7 +160,6 @@ function displayArchiveData(data) {
         archiveEmpty.style.display = 'none';
     }
     
-    // Заполнение таблицы
     tableBody.innerHTML = data.map(item => `
         <tr>
             <td>
@@ -179,7 +176,7 @@ function displayArchiveData(data) {
             <td>${item.age || 'Не указан'}</td>
             <td>
                 <div>📱 ${item.phone || ''}</div>
-                <div>✈️ ${item.telegram || ''}</div>
+                <div>✏️ ${item.telegram || ''}</div>
             </td>
             <td>
                 <span class="test-type-badge">
@@ -209,7 +206,7 @@ function displayArchiveData(data) {
     `).join('');
 }
 
-// 🎯 ПОЛУЧЕНИЕ КЛАССА ДЛЯ УРОВНЯ
+// 🌟 ПОЛУЧЕНИЕ КЛАССА ДЛЯ УРОВНЯ
 function getLevelClass(level) {
     if (!level) return 'unknown';
     if (level.includes('Низкое')) return 'low';
@@ -219,7 +216,7 @@ function getLevelClass(level) {
     return 'unknown';
 }
 
-// 📈 ОБНОВЛЕНИЕ СТАТИСТИКИ АРХИВА
+// 📊 ОБНОВЛЕНИЕ СТАТИСТИКИ АРХИВА
 function updateArchiveStats(data) {
     const totalUsers = document.getElementById('totalUsers');
     const avgScore = document.getElementById('avgScore');
@@ -227,30 +224,26 @@ function updateArchiveStats(data) {
     
     if (totalUsers) totalUsers.textContent = data.length;
     
-    // Расчет среднего балла
     const scores = data.map(item => item.testResult?.score).filter(score => score !== undefined && score !== null);
     const average = scores.length ? (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1) : 0;
     if (avgScore) avgScore.textContent = average;
     
-    // Процент завершенных тестов
     const completed = data.filter(item => item.testResult || item.testData).length;
     const rate = data.length ? Math.round((completed / data.length) * 100) : 0;
     if (completionRate) completionRate.textContent = `${rate}%`;
 }
 
-// 🗑️ УДАЛЕНИЕ ПОЛЬЗОВАТЕЛЯ ИЗ АРХИВА
+// 🗑️ УДАЛЕНИЕ ПОІЗВАТЕЛЯ ИЗ АРХИВА
 function deleteUserFromArchive(userId) {
     if (!confirm('Вы уверены, что хотите удалить этого пользователя из архива?')) {
         return;
     }
     
     try {
-        // Удаление из локальных данных
         const archive = JSON.parse(localStorage.getItem('libidoTestArchive')) || [];
         const updatedArchive = archive.filter(item => item.id !== userId);
         localStorage.setItem('libidoTestArchive', JSON.stringify(updatedArchive));
         
-        // Обновление отображения
         loadArchiveData();
         
         showSuccessMessage('✅ Пользователь удален из архива');
@@ -261,7 +254,7 @@ function deleteUserFromArchive(userId) {
     }
 }
 
-// 👁️ ПРОСМОТР ДЕТАЛЕЙ ПОЛЬЗОВАТЕЛЯ
+// 👁️ ПРОСМОТР ДЕТАЛЕЙ ПОЛьЗОВАТЕЛЯ
 function viewUserDetails(userId) {
     const archive = JSON.parse(localStorage.getItem('libidoTestArchive')) || [];
     const user = archive.find(item => item.id === userId);
@@ -271,12 +264,11 @@ function viewUserDetails(userId) {
         return;
     }
     
-    // Простой просмотр через alert (можно заменить на модальное окно)
     const details = `
 👤 Имя: ${user.firstName} ${user.lastName}
 🎂 Возраст: ${user.age}
 📱 Телефон: ${user.phone}
-✈️ Telegram: ${user.telegram}
+✏️ Telegram: ${user.telegram}
 📊 Уровень: ${user.testResult?.level || user.libidonLevel}
 ⭐ Баллы: ${user.testResult?.score || 0}
 📅 Дата: ${user.timestamp ? new Date(user.timestamp).toLocaleString('ru-RU') : 'Не указана'}
@@ -300,15 +292,13 @@ function showArchiveError(message) {
     }
 }
 
-// 🎯 ИНИЦИАЛИЗАЦИЯ ОБРАБОТЧИКОВ АРХИВА
+// 🌟 ИНИЦИАЛИЗАЦИЯ ОБРАБОТЧИКОВ АРХИВА
 function initArchiveHandlers() {
-    // Обработчик для кнопки выхода
     const logoutBtn = document.getElementById('logoutArchiveBtn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', handleArchiveLogout);
     }
     
-    // Обработчик для поля пароля (Enter)
     const passwordInput = document.getElementById('archivePassword');
     if (passwordInput) {
         passwordInput.addEventListener('keypress', function(e) {
@@ -319,33 +309,20 @@ function initArchiveHandlers() {
     }
 }
 
-// ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ СТРАНИЦЫ
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Страница загружена, инициализируем архив...');
-    initArchiveHandlers();
-});
-
 // ОСТАЛЬНЫЕ ФУНКЦИИ ТЕСТА И РЕГИСТРАЦИИ
-
 // Функция для перехода между шагами теста
 function showStep(stepNumber) {
     console.log('Переход к шагу:', stepNumber);
     
-    // Скрываем все шаги
     document.querySelectorAll('.test-step').forEach(step => {
         step.classList.remove('active');
     });
     
-    // Показываем нужный шаг
     const stepElement = document.getElementById('step' + stepNumber);
     if (stepElement) {
         stepElement.classList.add('active');
         currentStep = stepNumber;
-        
-        // Обновляем прогресс
         updateProgress();
-        
-        // Прокрутка к верху
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
@@ -367,7 +344,6 @@ function updateProgress() {
 function initTest() {
     console.log('Инициализация теста...');
     
-    // Обработчик для кнопки "Начать тест" на первом шаге
     const nextFromStep1 = document.getElementById('nextFromStep1');
     if (nextFromStep1) {
         nextFromStep1.addEventListener('click', function() {
@@ -380,16 +356,14 @@ function initTest() {
             testType = selectedTestType.value;
             console.log('Выбран тип теста:', testType);
             
-            // Для менопаузы пропускаем периоды 1-4
             if (testType === 'menopause') {
-                showStep(6); // Переходим сразу к тесту для менопаузы
+                showStep(6);
             } else {
-                showStep(2); // Переходим к первому периоду обычного теста
+                showStep(2);
             }
         });
     }
     
-    // Обработчик для сезонной зависимости
     document.querySelectorAll('input[name="season_dependency"]').forEach(radio => {
         radio.addEventListener('change', function() {
             const description = document.getElementById('seasonDescription');
@@ -399,7 +373,6 @@ function initTest() {
         });
     });
     
-    // Инициализация выбора вариантов ответов
     initTestSteps();
 }
 
@@ -424,9 +397,7 @@ function calculateTestResult(data) {
     let totalScore = 0;
     let maxScore = 100;
     
-    // Расчет баллов на основе ответов
     if (data.test_type === 'regular') {
-        // Баллы за частоту по периодам
         const frequencyScores = {
             'Вообще не хочется': 1,
             'Хочется 1 раза в неделю': 2,
@@ -436,7 +407,6 @@ function calculateTestResult(data) {
             'Хочется каждый день по много раз': 6
         };
         
-        // Баллы за интенсивность
         const intensityScores = {
             'Легкое желание': 1,
             'Среднее желание': 2,
@@ -445,7 +415,6 @@ function calculateTestResult(data) {
             'Максимально сильное желание (на столько, что почти невозможно терпеть)': 5
         };
         
-        // Баллы за возбуждение
         const arousalScores = {
             'Вообще не возбуждает': 1,
             'Немного возбуждает': 2,
@@ -454,7 +423,6 @@ function calculateTestResult(data) {
             'Очень сильно возбуждает': 5
         };
         
-        // Считаем баллы за каждый период (1-4)
         for (let i = 1; i <= 4; i++) {
             const periodKey = `period${i}`;
             if (data[`${periodKey}_frequency`]) {
@@ -471,7 +439,6 @@ function calculateTestResult(data) {
             }
         }
     } else {
-        // Расчет для менопаузы
         const frequencyScores = {
             'Вообще не хочется': 1,
             'Хочется 1 раза в неделю': 2,
@@ -497,13 +464,11 @@ function calculateTestResult(data) {
             'Очень сильно возбуждает': 5
         };
         
-        // Основные вопросы менопаузы
         if (data.menopause_frequency) totalScore += frequencyScores[data.menopause_frequency] * 2;
         if (data.menopause_intensity) totalScore += intensityScores[data.menopause_intensity] * 2;
         if (data.menopause_arousal_erected_want) totalScore += arousalScores[data.menopause_arousal_erected_want];
     }
     
-    // Нормализуем score до 100
     totalScore = Math.min(totalScore, maxScore);
     
     let level, description;
@@ -621,7 +586,6 @@ function showErrorMessage(text) {
 }
 
 function showNotification(text, type) {
-    // Удаляем существующие уведомления
     const existingNotifications = document.querySelectorAll('.notification');
     existingNotifications.forEach(notification => notification.remove());
     
@@ -629,13 +593,12 @@ function showNotification(text, type) {
     notification.className = `notification ${type}`;
     notification.innerHTML = `
         <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-triangle' : 'info-circle'}" 
-           style="margin-right: 8px;"></i> 
+        style="margin-right: 8px;"></i> 
         ${text}
     `;
     
     document.body.appendChild(notification);
     
-    // Автоматическое скрытие
     setTimeout(() => {
         if (notification.parentNode) {
             notification.parentNode.removeChild(notification);
@@ -662,8 +625,8 @@ function unlockAllSections() {
     });
 }
 
-// 🎯 ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ СТРАНИЦЫ
-document.addEventListener('DOMContentLoaded', function() {
+// 🌟 ОКОНЧАТЕЛЬНАЯ ИНИЦИАЛИЗАЦИЯ
+window.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 Страница загружена, инициализируем архив...');
     
     // Проверяем статус диагностики
@@ -672,7 +635,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Инициализируем тест
     initTest();
     
-    // Добавляем обработчик для скрытой кнопки архива
+    // Обработчик для скрытой кнопки архива
     const archiveHiddenBtn = document.getElementById('archiveHiddenBtn');
     if (archiveHiddenBtn) {
         archiveHiddenBtn.addEventListener('click', function() {
@@ -680,7 +643,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Добавляем обработчик для ссылки архива
+    // Обработчик для ссылки архива
     const archiveLinks = document.querySelectorAll('.archive-link');
     archiveLinks.forEach(link => {
         link.addEventListener('click', function(e) {
@@ -696,46 +659,43 @@ document.addEventListener('DOMContentLoaded', function() {
             showRegistrationSection();
         });
     });
-
     document.querySelectorAll('.about-link').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             showAboutSection();
         });
     });
-
     document.querySelectorAll('.power-link').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             showPowerSection();
         });
     });
-
     document.querySelectorAll('.services-link').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             showServicesSection();
         });
     });
-
     document.querySelectorAll('.process-link').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             showProcessSection();
         });
     });
-
     document.querySelectorAll('.awakening-link').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             showAwakeningSection();
         });
     });
-
     document.querySelectorAll('.contacts-link').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             showContactsSection();
         });
     });
+    
+    // Обработчик для архива
+    initArchiveHandlers();
 });
