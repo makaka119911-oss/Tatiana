@@ -393,11 +393,7 @@ function initArchiveHandlers() {
     }
 }
 
-// ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ СТРАНИЦЫ
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Страница загружена, инициализируем архив...');
-    initArchiveHandlers();
-});
+
 
 // 🔄 ОБНОВЛЕНИЕ ФУНКЦИИ СОХРАНЕНИЯ РЕЗУЛЬТАТОВ ТЕСТА
 // Добавьте этот код в функцию handleTestSubmit после расчета результата:
