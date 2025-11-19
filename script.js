@@ -12,18 +12,17 @@ let testData = {};
 let archiveData = [];
 let itemsPerPage = 10;
 let currentPage = 1;
-
-// 🔐 АРХИВ - ИСПРАВЛЕННЫЙ РАБОЧИЙ КОД
+// ==================== АРХИВ - ПОЛНОСТЬЮ РАБОЧИЙ КОД ====================
 const ARCHIVE_PASSWORD = 'rerehepf123';
 
-// 🔄 ОСНОВНАЙ ФУНКЦИЯ ПОКАЗА АРХИВА
+// 🔄 ОСНОВНАЯ ФУНКЦИЯ ПОКАЗА АРХИВА
 function showArchiveSection() {
-    console.log('🌟 Открываем раздел архива');
+    console.log('🎯 Открываем раздел архива');
     
     hideAllSections();
     document.getElementById('archive').classList.remove('section-hidden');
     
-    // СБРОС СОСТОЯНИЯ АРХИВА
+    // Сброс состояния архива
     showArchiveLoginForm();
     
     scrollToTop();
@@ -36,15 +35,23 @@ function showArchiveLoginForm() {
     
     if (loginForm) {
         loginForm.style.display = 'block';
+        loginForm.classList.remove('section-hidden');
     }
     
     if (archiveContent) {
         archiveContent.style.display = 'none';
+        archiveContent.classList.add('section-hidden');
     }
     
     // Очистка поля пароля
     const passwordInput = document.getElementById('archivePassword');
+    const passwordError = document.getElementById('archivePasswordError');
+    
     if (passwordInput) passwordInput.value = '';
+    if (passwordError) {
+        passwordError.style.display = 'none';
+        passwordError.textContent = '';
+    }
 }
 
 // 🔐 ПОКАЗ СОДЕРЖИМОГО АРХИВА
@@ -54,17 +61,19 @@ function showArchiveContent() {
     
     if (loginForm) {
         loginForm.style.display = 'none';
+        loginForm.classList.add('section-hidden');
     }
     
     if (archiveContent) {
         archiveContent.style.display = 'block';
+        archiveContent.classList.remove('section-hidden');
     }
     
-    // Загружка данных архива
+    // Загрузка данных архива
     loadArchiveData();
 }
 
-// 🔐 ОБРАБОТКА ВХОДА В АРХИВ (ИСПРАВЛЕННАЯ)
+// 🔐 ОБРАБОТКА ВХОДА В АРХИВ
 function handleArchiveLogin() {
     console.log('🔐 Обработка входа в архив...');
     
@@ -113,18 +122,20 @@ function handleArchiveLogin() {
 
 // 🔐 ОБРАБОТКА ВЫХОДА ИЗ АРХИВА
 function handleArchiveLogout() {
-    console.log('😚 Выход из архива...');
+    console.log('🚪 Выход из архива...');
     
     showArchiveLoginForm();
     showSuccessMessage('✅ Вы вышли из архива');
 }
 
-// 📊 ЗАГРУЖКА ДАННЫХ АРХИВА
+// 📊 ЗАГРУЗКА ДАННЫХ АРХИВА
 function loadArchiveData() {
-    console.log('📵 Загружка данных архива...');
+    console.log('📥 Загрузка данных архива...');
     
     try {
-        // Загружка из localStorage
+        showArchiveLoading();
+        
+        // Загрузка из localStorage
         const archive = JSON.parse(localStorage.getItem('libidoTestArchive')) || [];
         
         // Отображение данных
@@ -136,8 +147,8 @@ function loadArchiveData() {
         console.log('✅ Данные архива загружены:', archive.length, 'записей');
         
     } catch (error) {
-        console.error('❌ Ошибка загружки архива:', error);
-        showArchiveError('Ошибка загружки данных архива');
+        console.error('❌ Ошибка загрузки архива:', error);
+        showArchiveError('Ошибка загрузки данных архива');
     }
 }
 
@@ -148,65 +159,71 @@ function displayArchiveData(data) {
     
     if (!tableBody) return;
     
+    // Проверка на пустые данные
     if (!data || data.length === 0) {
         tableBody.innerHTML = '';
         if (archiveEmpty) {
             archiveEmpty.style.display = 'block';
+            archiveEmpty.classList.remove('section-hidden');
         }
         return;
     }
     
     if (archiveEmpty) {
         archiveEmpty.style.display = 'none';
+        archiveEmpty.classList.add('section-hidden');
     }
     
-    tableBody.innerHTML = data.map(item => `
-        <tr>
-            <td>
-                ${item.photo ? 
-                    `<img src="${item.photo}" alt="Фото" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">` : 
-                    `<div style="width: 50px; height: 50px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-user" style="color: #ccc;"></i>
-                    </div>`
-                }
-            </td>
-            <td>
-                <strong>${item.firstName || ''} ${item.lastName || ''}</strong>
-            </td>
-            <td>${item.age || 'Не указан'}</td>
-            <td>
-                <div>📱 ${item.phone || ''}</div>
-                <div>✏️ ${item.telegram || ''}</div>
-            </td>
-            <td>
-                <span class="test-type-badge">
-                    ${(item.testData?.test_type === 'regular' || item.testType === 'regular') ? 'Обычный' : 'Менопауза'}
-                </span>
-            </td>
-            <td>
-                <span class="level-badge level-badge-${getLevelClass(item.testResult?.level || item.libidonLevel)}">
-                    ${item.testResult?.level || item.libidonLevel || 'Не определен'}
-                </span>
-            </td>
-            <td>
-                <strong>${item.testResult?.score || 0}</strong>
-            </td>
-            <td>
-                ${item.timestamp ? new Date(item.timestamp).toLocaleDateString('ru-RU') : 'Не указана'}
-            </td>
-            <td>
-                <button class="btn-view-details" onclick="viewUserDetails('${item.id}')" title="Подробнее">
-                    <i class="fas fa-eye"></i>
-                </button>
-                <button class="btn-delete" onclick="deleteUserFromArchive('${item.id}')" title="Удалить">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </td>
-        </tr>
-    `).join('');
+    // Заполнение таблицы
+    tableBody.innerHTML = data.map(item => {
+        const levelClass = getLevelClass(item.testResult?.level || item.libidonLevel);
+        const testType = (item.testData?.test_type === 'regular' || item.testType === 'regular') ? 'Обычный' : 'Менопауза';
+        const score = item.testResult?.score || 0;
+        const level = item.testResult?.level || item.libidonLevel || 'Не определен';
+        const date = item.timestamp ? new Date(item.timestamp).toLocaleDateString('ru-RU') : 'Не указана';
+        
+        return `
+            <tr>
+                <td>
+                    ${item.photo ? 
+                        `<img src="${item.photo}" alt="Фото" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">` : 
+                        `<div style="width: 50px; height: 50px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-user" style="color: #ccc;"></i>
+                        </div>`
+                    }
+                </td>
+                <td>
+                    <strong>${item.firstName || ''} ${item.lastName || ''}</strong>
+                </td>
+                <td>${item.age || 'Не указан'}</td>
+                <td>
+                    <div>📱 ${item.phone || ''}</div>
+                    <div>✈️ ${item.telegram || ''}</div>
+                </td>
+                <td>
+                    <span class="test-type-badge">${testType}</span>
+                </td>
+                <td>
+                    <span class="level-badge level-badge-${levelClass}">${level}</span>
+                </td>
+                <td>
+                    <strong>${score}</strong>
+                </td>
+                <td>${date}</td>
+                <td>
+                    <button class="btn-view-details" onclick="viewUserDetails('${item.id}')" title="Подробнее">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="btn-delete" onclick="deleteUserFromArchive('${item.id}')" title="Удалить">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+    }).join('');
 }
 
-// 🌟 ПОЛУЧЕНИЕ КЛАССА ДЛЯ УРОВНЯ
+// 🎯 ПОЛУЧЕНИЕ КЛАССА ДЛЯ УРОВНЯ
 function getLevelClass(level) {
     if (!level) return 'unknown';
     if (level.includes('Низкое')) return 'low';
@@ -216,7 +233,7 @@ function getLevelClass(level) {
     return 'unknown';
 }
 
-// 📊 ОБНОВЛЕНИЕ СТАТИСТИКИ АРХИВА
+// 📈 ОБНОВЛЕНИЕ СТАТИСТИКИ АРХИВА
 function updateArchiveStats(data) {
     const totalUsers = document.getElementById('totalUsers');
     const avgScore = document.getElementById('avgScore');
@@ -224,26 +241,30 @@ function updateArchiveStats(data) {
     
     if (totalUsers) totalUsers.textContent = data.length;
     
+    // Расчет среднего балла
     const scores = data.map(item => item.testResult?.score).filter(score => score !== undefined && score !== null);
     const average = scores.length ? (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1) : 0;
     if (avgScore) avgScore.textContent = average;
     
+    // Процент завершенных тестов
     const completed = data.filter(item => item.testResult || item.testData).length;
     const rate = data.length ? Math.round((completed / data.length) * 100) : 0;
     if (completionRate) completionRate.textContent = `${rate}%`;
 }
 
-// 🗑️ УДАЛЕНИЕ ПОІЗВАТЕЛЯ ИЗ АРХИВА
+// 🗑️ УДАЛЕНИЕ ПОЛЬЗОВАТЕЛЯ ИЗ АРХИВА
 function deleteUserFromArchive(userId) {
     if (!confirm('Вы уверены, что хотите удалить этого пользователя из архива?')) {
         return;
     }
     
     try {
+        // Удаление из локальных данных
         const archive = JSON.parse(localStorage.getItem('libidoTestArchive')) || [];
         const updatedArchive = archive.filter(item => item.id !== userId);
         localStorage.setItem('libidoTestArchive', JSON.stringify(updatedArchive));
         
+        // Обновление отображения
         loadArchiveData();
         
         showSuccessMessage('✅ Пользователь удален из архива');
@@ -254,7 +275,7 @@ function deleteUserFromArchive(userId) {
     }
 }
 
-// 👁️ ПРОСМОТР ДЕТАЛЕЙ ПОЛьЗОВАТЕЛЯ
+// 👁️ ПРОСМОТР ДЕТАЛЕЙ ПОЛЬЗОВАТЕЛЯ
 function viewUserDetails(userId) {
     const archive = JSON.parse(localStorage.getItem('libidoTestArchive')) || [];
     const user = archive.find(item => item.id === userId);
@@ -264,17 +285,56 @@ function viewUserDetails(userId) {
         return;
     }
     
-    const details = `
-👤 Имя: ${user.firstName} ${user.lastName}
-🎂 Возраст: ${user.age}
-📱 Телефон: ${user.phone}
-✏️ Telegram: ${user.telegram}
-📊 Уровень: ${user.testResult?.level || user.libidonLevel}
-⭐ Баллы: ${user.testResult?.score || 0}
-📅 Дата: ${user.timestamp ? new Date(user.timestamp).toLocaleString('ru-RU') : 'Не указана'}
+    // Создание модального окна
+    const modalHtml = `
+        <div class="modal-overlay" onclick="closeModal()">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <div class="modal-header">
+                    <h3>Детальная информация</h3>
+                    <button class="modal-close" onclick="closeModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="user-details">
+                        <div class="detail-section">
+                            <h4>👤 Личная информация</h4>
+                            <p><strong>Имя:</strong> ${user.firstName} ${user.lastName}</p>
+                            <p><strong>Возраст:</strong> ${user.age || 'Не указан'}</p>
+                            <p><strong>Телефон:</strong> ${user.phone}</p>
+                            <p><strong>Telegram:</strong> ${user.telegram}</p>
+                        </div>
+                        
+                        <div class="detail-section">
+                            <h4>📊 Результаты теста</h4>
+                            <p><strong>Уровень либидо:</strong> ${user.testResult?.level || user.libidonLevel || 'Не определен'}</p>
+                            <p><strong>Баллы:</strong> ${user.testResult?.score || 0}</p>
+                            <p><strong>Тип теста:</strong> ${(user.testData?.test_type === 'regular' || user.testType === 'regular') ? 'Обычный' : 'Менопауза'}</p>
+                            <p><strong>Дата прохождения:</strong> ${user.timestamp ? new Date(user.timestamp).toLocaleString('ru-RU') : 'Не указана'}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline" onclick="closeModal()">Закрыть</button>
+                </div>
+            </div>
+        </div>
     `;
     
-    alert(details);
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+}
+
+// ❌ ПОКАЗ ЗАГРУЗКИ АРХИВА
+function showArchiveLoading() {
+    const tableBody = document.getElementById('resultsTableBody');
+    if (tableBody) {
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="9" style="text-align: center; padding: 3rem;">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--purple-mystic);"></i>
+                    <p style="margin-top: 1rem;">Загрузка данных архива...</p>
+                </td>
+            </tr>
+        `;
+    }
 }
 
 // ❌ ПОКАЗ ОШИБКИ АРХИВА
@@ -292,13 +352,29 @@ function showArchiveError(message) {
     }
 }
 
-// 🌟 ИНИЦИАЛИЗАЦИЯ ОБРАБОТЧИКОВ АРХИВА
+// 🔒 ЗАКРЫТИЕ МОДАЛЬНОГО ОКНА
+function closeModal() {
+    const modal = document.querySelector('.modal-overlay');
+    if (modal) {
+        modal.remove();
+    }
+}
+
+// 🎯 ИНИЦИАЛИЗАЦИЯ ОБРАБОТЧИКОВ АРХИВА
 function initArchiveHandlers() {
+    // Обработчик для кнопки входа
+    const loginBtn = document.getElementById('archiveLoginBtn');
+    if (loginBtn) {
+        loginBtn.addEventListener('click', handleArchiveLogin);
+    }
+    
+    // Обработчик для кнопки выхода
     const logoutBtn = document.getElementById('logoutArchiveBtn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', handleArchiveLogout);
     }
     
+    // Обработчик для поля пароля (Enter)
     const passwordInput = document.getElementById('archivePassword');
     if (passwordInput) {
         passwordInput.addEventListener('keypress', function(e) {
@@ -307,7 +383,52 @@ function initArchiveHandlers() {
             }
         });
     }
+    
+    // Обработчик для скрытой кнопки архива
+    const archiveHiddenBtn = document.getElementById('archiveHiddenBtn');
+    if (archiveHiddenBtn) {
+        archiveHiddenBtn.addEventListener('click', function() {
+            showArchiveSection();
+        });
+    }
 }
+
+// ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ СТРАНИЦЫ
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 Страница загружена, инициализируем архив...');
+    initArchiveHandlers();
+});
+
+// 🔄 ОБНОВЛЕНИЕ ФУНКЦИИ СОХРАНЕНИЯ РЕЗУЛЬТАТОВ ТЕСТА
+// Добавьте этот код в функцию handleTestSubmit после расчета результата:
+
+async function handleTestSubmit(e) {
+    e.preventDefault();
+    
+    // ... существующий код ...
+    
+    // После расчета результата добавляем сохранение в архив:
+    const result = calculateTestResult(testData);
+    
+    // Сохраняем в архив
+    const archiveItem = {
+        id: Date.now().toString(),
+        timestamp: new Date().toISOString(),
+        ...registrationData,
+        testData: testData,
+        testResult: result,
+        libidonLevel: result.level,
+        testType: testData.test_type
+    };
+
+    const archive = JSON.parse(localStorage.getItem('libidoTestArchive')) || [];
+    archive.push(archiveItem);
+    localStorage.setItem('libidoTestArchive', JSON.stringify(archive));
+    
+    // ... остальной код ...
+}
+
+
 
 // ОСТАЛЬНЫЕ ФУНКЦИИ ТЕСТА И РЕГИСТРАЦИИ
 // Функция для перехода между шагами теста
