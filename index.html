@@ -3112,3 +3112,81 @@
 
 <script src="archive.js"></script>
 <script src="server-integration.js"></script>
+<script>
+window.handleRegistrationSubmit = async function(e) {
+    e.preventDefault();
+    if (!validateRegistrationForm(e.target)) {
+        showErrorMessage('Please fill all required fields');
+        return;
+    }
+    const form = e.target;
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    try {
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
+        submitBtn.disabled = true;
+        const formData = new FormData(form);
+        registrationData = Object.fromEntries(formData.entries());
+        if (!userPhoto) throw new Error('Please upload photo');
+        const serverFormData = new FormData();
+        serverFormData.append('firstName', registrationData.firstName);
+        serverFormData.append('lastName', registrationData.lastName);
+        serverFormData.append('age', registrationData.age);
+        serverFormData.append('phone', registrationData.phone);
+        serverFormData.append('telegram', registrationData.telegram);
+        serverFormData.append('photo', userPhoto);
+        const serverResponse = await fetch('https://tatiana-server-production.up.railway.app/api/register', {method: 'POST', body: serverFormData});
+        if (!serverResponse.ok) throw new Error('Server error');
+        const serverData = await serverResponse.json();
+        console.log('✅ Saved to server:', serverData.registrationId);
+        localStorage.setItem('registrationId', serverData.registrationId);
+        await sendRegistrationToTelegram(registrationData, userPhoto);
+        showSuccessMessage('✅ Registration complete! Proceeding to test.');
+        localStorage.setItem('registrationCompleted', 'true');
+        setTimeout(() => showTestSection(), 1500);
+    } catch (error) {
+        console.error('Error:', error);
+        showErrorMessage('Error: ' + error.message);
+    } finally {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }
+};
+window.handleTestSubmit = async function(e) {
+    e.preventDefault();
+    if (!validateStep(6)) {
+        showErrorMessage('Please answer all questions');
+        return;
+    }
+    const form = e.target;
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    try {
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+        submitBtn.disabled = true;
+        const formData = new FormData(form);
+        testData = Object.fromEntries(formData.entries());
+        const registrationId = localStorage.getItem('registrationId');
+        if (!registrationId) throw new Error('Registration ID not found');
+        const result = calculateTestResult(testData);
+        const serverResponse = await fetch('https://tatiana-server-production.up.railway.app/api/test-result', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({registrationId: registrationId, testData: testData, result: result})
+        });
+        if (!serverResponse.ok) throw new Error('Server error');
+        console.log('✅ Saved test to server');
+        showTestResult(result);
+        await sendTestResultsToTelegram(testData, result);
+        localStorage.setItem('diagnosticCompleted', 'true');
+        unlockAllSections();
+        showSuccessMessage('✅ Complete! All sections unlocked.');
+    } catch (error) {
+        console.error('Error:', error);
+        showErrorMessage('Error: ' + error.message);
+    } finally {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }
+};
+</script>
