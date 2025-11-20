@@ -1,13 +1,16 @@
-// Server integration for registration and test results
-// This file overrides handleRegistrationSubmit and handleTestSubmit to send data to Railway server
+// Server integration for Tatiana website - Backend API communication
+// Secure version without hardcoded Telegram tokens
 
 const API_BASE_URL = 'https://tatiana-server-production.up.railway.app/api';
 
-// Override handleRegistrationSubmit
+console.log('✅ Server integration loaded. API base:', API_BASE_URL);
+
+// Override handleRegistrationSubmit to use backend API
 window.handleRegistrationSubmit = async function(e) {
   e.preventDefault();
+  
   if (!validateRegistrationForm(e.target)) {
-    showErrorMessage('Please fill all required fields');
+    showErrorMessage('Пожалуйста, заполните все обязательные поля корректно');
     return;
   }
 
@@ -16,63 +19,92 @@ window.handleRegistrationSubmit = async function(e) {
   const originalText = submitBtn.innerHTML;
 
   try {
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Регистрация...';
     submitBtn.disabled = true;
 
+    // Collect form data
     const formData = new FormData(form);
-    registrationData = Object.fromEntries(formData.entries());
+    const registrationData = Object.fromEntries(formData.entries());
+    
+    console.log('📝 Starting registration process...');
 
-    if (!userPhoto) {
-      throw new Error('Please upload photo');
-    }
-
-    // SEND TO SERVER FIRST
+    // Create FormData for server
     const serverFormData = new FormData();
     serverFormData.append('lastName', registrationData.lastName);
     serverFormData.append('firstName', registrationData.firstName);
     serverFormData.append('age', registrationData.age);
     serverFormData.append('phone', registrationData.phone);
     serverFormData.append('telegram', registrationData.telegram);
-    serverFormData.append('photo', userPhoto);
+    
+    // Add photo if available
+    if (window.userPhoto) {
+      serverFormData.append('photo', window.userPhoto);
+      console.log('📷 Photo included:', window.userPhoto.name);
+    }
 
-    const serverResponse = await fetch(`${API_BASE_URL}/register`, {
+    // Send to backend API
+    console.log('🔄 Sending to backend:', API_BASE_URL + '/register');
+    
+    const serverResponse = await fetch(API_BASE_URL + '/register', {
       method: 'POST',
       body: serverFormData
     });
 
+    console.log('📨 Server response status:', serverResponse.status);
+    
+    const responseData = await serverResponse.json();
+    console.log('📊 Server response:', responseData);
+
     if (!serverResponse.ok) {
-      const errorData = await serverResponse.json();
-      throw new Error(errorData.error || 'Server error');
+      throw new Error(responseData.error || `HTTP ${serverResponse.status}`);
     }
 
-    const serverData = await serverResponse.json();
-    const registrationId = serverData.id;
+    if (!responseData.success) {
+      throw new Error(responseData.error || 'Registration failed');
+    }
 
-    console.log('✅ Registration saved to server. ID:', registrationId);
+    // Save registration ID for test results
+    const registrationId = responseData.registrationId;
     localStorage.setItem('registrationId', registrationId);
+    window.registrationId = registrationId;
 
-    // THEN send to Telegram
-    await sendRegistrationToTelegram(registrationData, userPhoto);
-
-    showSuccessMessage('✅ Registration successful!');
+    console.log('✅ Registration successful, ID:', registrationId);
+    
+    showSuccessMessage('✅ Регистрация успешно завершена! Переходим к тесту.');
     localStorage.setItem('registrationCompleted', 'true');
 
-    setTimeout(() => showTestSection(), 1500);
+    // Move to test section
+    setTimeout(() => {
+      showTestSection();
+    }, 1500);
+
   } catch (error) {
-    console.error('Registration error:', error);
-    showErrorMessage('❌ Error: ' + error.message);
+    console.error('❌ Registration failed:', error);
+    
+    let errorMessage = 'Ошибка регистрации: ';
+    if (error.message.includes('Failed to fetch')) {
+      errorMessage = 'Не удалось подключиться к серверу. Проверьте интернет-соединение.';
+    } else if (error.message.includes('HTTP 5')) {
+      errorMessage = 'Временная проблема с сервером. Попробуйте позже.';
+    } else if (error.message.includes('HTTP 4')) {
+      errorMessage = 'Ошибка в данных: ' + error.message;
+    } else {
+      errorMessage += error.message;
+    }
+    
+    showErrorMessage(errorMessage);
   } finally {
     submitBtn.innerHTML = originalText;
     submitBtn.disabled = false;
   }
 };
 
-// Override handleTestSubmit
+// Override handleTestSubmit to use backend API
 window.handleTestSubmit = async function(e) {
   e.preventDefault();
 
   if (!validateStep(6)) {
-    showErrorMessage('Please answer all questions');
+    showErrorMessage('Пожалуйста, ответьте на все обязательные вопросы этого шага');
     return;
   }
 
@@ -81,49 +113,229 @@ window.handleTestSubmit = async function(e) {
   const originalText = submitBtn.innerHTML;
 
   try {
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Обработка результатов...';
     submitBtn.disabled = true;
 
-    const formData = new FormData(form);
-    testData = Object.fromEntries(formData.entries());
-    const result = calculateTestResult(testData);
-
-    // SEND TO SERVER FIRST
+    // Get registration ID
     const registrationId = localStorage.getItem('registrationId');
+    if (!registrationId) {
+      throw new Error('Не найден ID регистрации. Пожалуйста, начните с регистрации.');
+    }
+
+    // Collect test data
+    const formData = new FormData(form);
+    const testData = Object.fromEntries(formData.entries());
     
-    const testResponse = await fetch(`${API_BASE_URL}/test-result`, {
+    // Calculate result
+    const result = calculateTestResult(testData);
+    console.log('🧪 Test result calculated:', result);
+
+    // Send to backend API
+    const testResponse = await fetch(API_BASE_URL + '/test-result', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         registrationId: registrationId,
+        testData: testData,
         level: result.level,
-        score: result.score,
-        testData: testData
+        score: result.score
       })
     });
 
+    console.log('📨 Test response status:', testResponse.status);
+    
+    const testResponseData = await testResponse.json();
+    console.log('📊 Test response:', testResponseData);
+
     if (!testResponse.ok) {
-      throw new Error('Server error');
+      throw new Error(testResponseData.error || `HTTP ${testResponse.status}`);
     }
 
-    console.log('✅ Test results saved to server');
+    if (!testResponseData.success) {
+      throw new Error(testResponseData.error || 'Test submission failed');
+    }
 
-    // Show result
+    console.log('✅ Test results saved successfully');
+
+    // Show results to user
     showTestResult(result);
 
-    // THEN send to Telegram
-    await sendTestResultsToTelegram(testData, result);
-
+    // Unlock all sections
     localStorage.setItem('diagnosticCompleted', 'true');
     unlockAllSections();
-    showSuccessMessage('✅ Test completed!');
+    
+    showSuccessMessage('✅ Диагностика завершена! Теперь вам доступны все разделы сайта.');
+
   } catch (error) {
-    console.error('Test error:', error);
-    showErrorMessage('❌ Error: ' + error.message);
+    console.error('❌ Test submission failed:', error);
+    
+    let errorMessage = 'Ошибка сохранения результатов: ';
+    if (error.message.includes('Failed to fetch')) {
+      errorMessage = 'Не удалось подключиться к серверу. Проверьте интернет-соединение.';
+    } else {
+      errorMessage += error.message;
+    }
+    
+    showErrorMessage(errorMessage);
   } finally {
     submitBtn.innerHTML = originalText;
     submitBtn.disabled = false;
   }
 };
 
-console.log('✅ Server integration loaded');
+// Archive functions using backend API
+window.ArchiveSystem = {
+  openArchive: function() {
+    document.getElementById('archive-modal').style.display = 'flex';
+    document.getElementById('archive-password').focus();
+  },
+
+  closeArchive: function() {
+    document.getElementById('archive-modal').style.display = 'none';
+    document.getElementById('archive-password').value = '';
+    document.getElementById('archive-error').style.display = 'none';
+    document.getElementById('archive-login').style.display = 'block';
+    document.getElementById('archive-content').style.display = 'none';
+  },
+
+  loadData: async function() {
+    const loading = document.getElementById('archive-loading');
+    const password = document.getElementById('archive-password').value;
+
+    loading.style.display = 'block';
+
+    try {
+      const response = await fetch(API_BASE_URL + '/archive', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${password}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          throw new Error('Invalid password');
+        }
+        throw new Error(`HTTP Error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      if (data.success && data.archive) {
+        window.archiveData = data.archive;
+        this.populateArchiveTable(window.archiveData);
+        
+        // Show archive content
+        document.getElementById('archive-login').style.display = 'none';
+        document.getElementById('archive-content').style.display = 'block';
+        document.getElementById('archive-error').style.display = 'none';
+      } else {
+        throw new Error('Invalid response from server');
+      }
+    } catch (error) {
+      console.error('Error loading archive:', error);
+      document.getElementById('archive-error').style.display = 'block';
+      document.getElementById('archive-error').textContent = 
+        error.message === 'Invalid password' ? 'Неверный пароль!' : 'Ошибка загрузки данных: ' + error.message;
+    } finally {
+      loading.style.display = 'none';
+    }
+  },
+
+  populateArchiveTable: function(records) {
+    const tbody = document.getElementById('archive-table-body');
+
+    if (!records || records.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" style="padding: 2rem; text-align: center; color: #999;">Нет записей</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = records.map((record, idx) => `
+      <tr style="border-bottom: 1px solid #eee; ${idx % 2 === 0 ? 'background: #f9f9f9;' : ''}">
+        <td style="padding: 12px; color: #333;">${record.lastName} ${record.firstName}</td>
+        <td style="padding: 12px; color: #666;">${record.age || 'N/A'}</td>
+        <td style="padding: 12px; color: #666;">${record.phone || 'N/A'}</td>
+        <td style="padding: 12px; color: #666;">${record.telegram || 'N/A'}</td>
+        <td style="padding: 12px;">
+          <span style="display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: 600;
+            ${record.libidoLevel?.includes('Низкое') ? 'background: #ffebee; color: #c62828;' : ''}
+            ${record.libidoLevel?.includes('Среднее') ? 'background: #fff3e0; color: #ef6c00;' : ''}
+            ${record.libidoLevel?.includes('Высокое') && !record.libidoLevel?.includes('Очень') ? 'background: #e8f5e9; color: #2e7d32;' : ''}
+            ${record.libidoLevel?.includes('Очень') ? 'background: #f3e5f5; color: #7b1fa2;' : ''}
+          ">${record.libidoLevel || 'N/A'}</span>
+        </td>
+        <td style="padding: 12px; text-align: center; color: #333; font-weight: 600;">${record.score || '-'}</td>
+        <td style="padding: 12px; text-align: center; color: #999; font-size: 13px;">${new Date(record.registeredAt).toLocaleDateString('ru-RU')}</td>
+      </tr>
+    `).join('');
+  }
+};
+
+// Initialize archive when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+  // Archive button event listeners
+  const archiveLoginBtn = document.getElementById('archive-login-btn');
+  const archiveLogoutBtn = document.getElementById('archive-logout-btn');
+  const archiveCloseBtn = document.getElementById('archive-close-btn');
+  
+  if (archiveLoginBtn) {
+    archiveLoginBtn.onclick = function() {
+      window.ArchiveSystem.loadData();
+    };
+  }
+  
+  if (archiveLogoutBtn) {
+    archiveLogoutBtn.onclick = function() {
+      window.ArchiveSystem.closeArchive();
+    };
+  }
+  
+  if (archiveCloseBtn) {
+    archiveCloseBtn.onclick = function() {
+      window.ArchiveSystem.closeArchive();
+    };
+  }
+
+  // Archive search and filter
+  const archiveSearch = document.getElementById('archive-search');
+  const archiveFilter = document.getElementById('archive-filter');
+  
+  if (archiveSearch) {
+    archiveSearch.onkeyup = function() {
+      window.ArchiveSystem.filterArchiveTable();
+    };
+  }
+  
+  if (archiveFilter) {
+    archiveFilter.onchange = function() {
+      window.ArchiveSystem.filterArchiveTable();
+    };
+  }
+});
+
+// Archive filtering function
+window.ArchiveSystem.filterArchiveTable = function() {
+  const search = document.getElementById('archive-search').value.toLowerCase();
+  const filter = document.getElementById('archive-filter').value;
+  const tbody = document.getElementById('archive-table-body');
+
+  if (!window.archiveData) return;
+
+  const filtered = window.archiveData.filter(record => {
+    const fullName = `${record.lastName} ${record.firstName}`.toLowerCase();
+    const matchSearch = !search || fullName.includes(search);
+    const matchFilter = !filter || record.libidoLevel?.includes(filter);
+    return matchSearch && matchFilter;
+  });
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="padding: 2rem; text-align: center; color: #999;">Совпадений не найдено</td></tr>';
+  } else {
+    this.populateArchiveTable(filtered);
+  }
+};
+
+console.log('🚀 Server integration initialized successfully');
