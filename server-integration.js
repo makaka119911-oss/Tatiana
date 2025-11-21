@@ -1,6 +1,11 @@
+console.log('✅ Server integration loaded');
 
+// CORRECT API BASE URL - без /api/archive в конце
+const API_BASE_URL = 'https://tatiana-server-production.up.railway.app';
+// CORRECT ARCHIVE PASSWORD - matches server
+const ARCHIVE_PASSWORD = 'tatiana_archive_2024_LBg_makaka_9f3a7c2e8d1b5a4c6';
 
-console.log('✅ Server integration loaded. API base:', API_BASE_URL);
+console.log('🌐 API Base URL:', API_BASE_URL);
 
 // Override handleRegistrationSubmit to use backend API
 window.handleRegistrationSubmit = async function(e) {
@@ -23,28 +28,17 @@ window.handleRegistrationSubmit = async function(e) {
     const formData = new FormData(form);
     const registrationData = Object.fromEntries(formData.entries());
     
-    console.log('📝 Starting registration process...');
+    console.log('📝 Starting registration process...', registrationData);
 
-    // Create FormData for server
-    const serverFormData = new FormData();
-    serverFormData.append('lastName', registrationData.lastName);
-    serverFormData.append('firstName', registrationData.firstName);
-    serverFormData.append('age', registrationData.age);
-    serverFormData.append('phone', registrationData.phone);
-    serverFormData.append('telegram', registrationData.telegram);
+    // Send to backend API - CORRECT ENDPOINT
+    console.log('🔄 Sending to backend:', API_BASE_URL + '/api/register');
     
-    // Add photo if available
-    if (window.userPhoto) {
-      serverFormData.append('photo', window.userPhoto);
-      console.log('📷 Photo included:', window.userPhoto.name);
-    }
-
-    // Send to backend API
-    console.log('🔄 Sending to backend:', API_BASE_URL + '/register');
-    
-    const serverResponse = await fetch(API_BASE_URL + '/register', {
+    const serverResponse = await fetch(API_BASE_URL + '/api/register', {
       method: 'POST',
-      body: serverFormData
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(registrationData)
     });
 
     console.log('📨 Server response status:', serverResponse.status);
@@ -127,8 +121,8 @@ window.handleTestSubmit = async function(e) {
     const result = calculateTestResult(testData);
     console.log('🧪 Test result calculated:', result);
 
-    // Send to backend API
-    const testResponse = await fetch(API_BASE_URL + '/test-result', {
+    // Send to backend API - CORRECT ENDPOINT
+    const testResponse = await fetch(API_BASE_URL + '/api/test-result', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -201,17 +195,30 @@ window.ArchiveSystem = {
     const loading = document.getElementById('archive-loading');
     const password = document.getElementById('archive-password').value;
 
+    // Use the CORRECT password from server
+    const correctPassword = ARCHIVE_PASSWORD;
+
     loading.style.display = 'block';
 
     try {
-      const response = await fetch(API_BASE_URL + '/archive', {
+      console.log('🔐 Archive auth attempt with password:', password);
+      
+      // First verify password locally
+      if (password !== correctPassword) {
+        throw new Error('Invalid password');
+      }
+
+      // Then fetch from server - CORRECT ENDPOINT
+      const response = await fetch(API_BASE_URL + '/api/archive', {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${password}`,
+          'Authorization': `Bearer ${correctPassword}`,
           'Content-Type': 'application/json'
         }
       });
 
+      console.log('📨 Archive response status:', response.status);
+      
       if (!response.ok) {
         if (response.status === 401) {
           throw new Error('Invalid password');
@@ -220,9 +227,10 @@ window.ArchiveSystem = {
       }
 
       const data = await response.json();
+      console.log('📊 Archive data received:', data);
       
-      if (data.success && data.archive) {
-        window.archiveData = data.archive;
+      if (data.success && data.records) {
+        window.archiveData = data.records;
         this.populateArchiveTable(window.archiveData);
         
         // Show archive content
@@ -252,27 +260,50 @@ window.ArchiveSystem = {
 
     tbody.innerHTML = records.map((record, idx) => `
       <tr style="border-bottom: 1px solid #eee; ${idx % 2 === 0 ? 'background: #f9f9f9;' : ''}">
-        <td style="padding: 12px; color: #333;">${record.lastName} ${record.firstName}</td>
+        <td style="padding: 12px; color: #333;">${record.fio || 'N/A'}</td>
         <td style="padding: 12px; color: #666;">${record.age || 'N/A'}</td>
         <td style="padding: 12px; color: #666;">${record.phone || 'N/A'}</td>
         <td style="padding: 12px; color: #666;">${record.telegram || 'N/A'}</td>
         <td style="padding: 12px;">
           <span style="display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: 600;
-            ${record.libidoLevel?.includes('Низкое') ? 'background: #ffebee; color: #c62828;' : ''}
-            ${record.libidoLevel?.includes('Среднее') ? 'background: #fff3e0; color: #ef6c00;' : ''}
-            ${record.libidoLevel?.includes('Высокое') && !record.libidoLevel?.includes('Очень') ? 'background: #e8f5e9; color: #2e7d32;' : ''}
-            ${record.libidoLevel?.includes('Очень') ? 'background: #f3e5f5; color: #7b1fa2;' : ''}
-          ">${record.libidoLevel || 'N/A'}</span>
+            ${record.level?.includes('Low') ? 'background: #ffebee; color: #c62828;' : ''}
+            ${record.level?.includes('Medium') ? 'background: #fff3e0; color: #ef6c00;' : ''}
+            ${record.level?.includes('High') && !record.level?.includes('Very') ? 'background: #e8f5e9; color: #2e7d32;' : ''}
+            ${record.level?.includes('Very') ? 'background: #f3e5f5; color: #7b1fa2;' : ''}
+          ">${record.level || 'N/A'}</span>
         </td>
         <td style="padding: 12px; text-align: center; color: #333; font-weight: 600;">${record.score || '-'}</td>
-        <td style="padding: 12px; text-align: center; color: #999; font-size: 13px;">${new Date(record.registeredAt).toLocaleDateString('ru-RU')}</td>
+        <td style="padding: 12px; text-align: center; color: #999; font-size: 13px;">${new Date(record.date).toLocaleDateString('ru-RU')}</td>
       </tr>
     `).join('');
+  },
+
+  filterArchiveTable: function() {
+    const search = document.getElementById('archive-search').value.toLowerCase();
+    const filter = document.getElementById('archive-filter').value;
+    const tbody = document.getElementById('archive-table-body');
+
+    if (!window.archiveData) return;
+
+    const filtered = window.archiveData.filter(record => {
+      const fullName = (record.fio || '').toLowerCase();
+      const matchSearch = !search || fullName.includes(search);
+      const matchFilter = !filter || (record.level || '').includes(filter);
+      return matchSearch && matchFilter;
+    });
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" style="padding: 2rem; text-align: center; color: #999;">Совпадений не найдено</td></tr>';
+    } else {
+      this.populateArchiveTable(filtered);
+    }
   }
 };
 
 // Initialize archive when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
+  console.log('📁 Archive system initialized');
+  
   // Archive button event listeners
   const archiveLoginBtn = document.getElementById('archive-login-btn');
   const archiveLogoutBtn = document.getElementById('archive-logout-btn');
@@ -312,27 +343,5 @@ document.addEventListener('DOMContentLoaded', function() {
     };
   }
 });
-
-// Archive filtering function
-window.ArchiveSystem.filterArchiveTable = function() {
-  const search = document.getElementById('archive-search').value.toLowerCase();
-  const filter = document.getElementById('archive-filter').value;
-  const tbody = document.getElementById('archive-table-body');
-
-  if (!window.archiveData) return;
-
-  const filtered = window.archiveData.filter(record => {
-    const fullName = `${record.lastName} ${record.firstName}`.toLowerCase();
-    const matchSearch = !search || fullName.includes(search);
-    const matchFilter = !filter || record.libidoLevel?.includes(filter);
-    return matchSearch && matchFilter;
-  });
-
-  if (filtered.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="7" style="padding: 2rem; text-align: center; color: #999;">Совпадений не найдено</td></tr>';
-  } else {
-    this.populateArchiveTable(filtered);
-  }
-};
 
 console.log('🚀 Server integration initialized successfully');
