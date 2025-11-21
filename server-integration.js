@@ -1,13 +1,12 @@
 console.log('✅ Server integration loaded');
 
-// CORRECT API BASE URL - без /api/archive в конце
+// CORRECT API BASE URL for Railway
 const API_BASE_URL = 'https://tatiana-server-production.up.railway.app';
-// CORRECT ARCHIVE PASSWORD - matches server
 const ARCHIVE_PASSWORD = 'tatiana_archive_2024_LBg_makaka_9f3a7c2e8d1b5a4c6';
 
 console.log('🌐 API Base URL:', API_BASE_URL);
 
-// Override handleRegistrationSubmit to use backend API
+// Override handleRegistrationSubmit
 window.handleRegistrationSubmit = async function(e) {
   e.preventDefault();
   
@@ -30,7 +29,7 @@ window.handleRegistrationSubmit = async function(e) {
     
     console.log('📝 Starting registration process...', registrationData);
 
-    // Send to backend API - CORRECT ENDPOINT
+    // Send to backend API
     console.log('🔄 Sending to backend:', API_BASE_URL + '/api/register');
     
     const serverResponse = await fetch(API_BASE_URL + '/api/register', {
@@ -90,7 +89,7 @@ window.handleRegistrationSubmit = async function(e) {
   }
 };
 
-// Override handleTestSubmit to use backend API
+// Override handleTestSubmit
 window.handleTestSubmit = async function(e) {
   e.preventDefault();
 
@@ -121,7 +120,7 @@ window.handleTestSubmit = async function(e) {
     const result = calculateTestResult(testData);
     console.log('🧪 Test result calculated:', result);
 
-    // Send to backend API - CORRECT ENDPOINT
+    // Send to backend API
     const testResponse = await fetch(API_BASE_URL + '/api/test-result', {
       method: 'POST',
       headers: {
@@ -176,7 +175,7 @@ window.handleTestSubmit = async function(e) {
   }
 };
 
-// Archive functions using backend API
+// Archive functions
 window.ArchiveSystem = {
   openArchive: function() {
     document.getElementById('archive-modal').style.display = 'flex';
@@ -195,24 +194,21 @@ window.ArchiveSystem = {
     const loading = document.getElementById('archive-loading');
     const password = document.getElementById('archive-password').value;
 
-    // Use the CORRECT password from server
-    const correctPassword = ARCHIVE_PASSWORD;
-
     loading.style.display = 'block';
 
     try {
-      console.log('🔐 Archive auth attempt with password:', password);
+      console.log('🔐 Archive auth attempt');
       
-      // First verify password locally
-      if (password !== correctPassword) {
+      // Verify password
+      if (password !== ARCHIVE_PASSWORD) {
         throw new Error('Invalid password');
       }
 
-      // Then fetch from server - CORRECT ENDPOINT
+      // Fetch from server
       const response = await fetch(API_BASE_URL + '/api/archive', {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${correctPassword}`,
+          'Authorization': `Bearer ${ARCHIVE_PASSWORD}`,
           'Content-Type': 'application/json'
         }
       });
@@ -299,49 +295,5 @@ window.ArchiveSystem = {
     }
   }
 };
-
-// Initialize archive when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('📁 Archive system initialized');
-  
-  // Archive button event listeners
-  const archiveLoginBtn = document.getElementById('archive-login-btn');
-  const archiveLogoutBtn = document.getElementById('archive-logout-btn');
-  const archiveCloseBtn = document.getElementById('archive-close-btn');
-  
-  if (archiveLoginBtn) {
-    archiveLoginBtn.onclick = function() {
-      window.ArchiveSystem.loadData();
-    };
-  }
-  
-  if (archiveLogoutBtn) {
-    archiveLogoutBtn.onclick = function() {
-      window.ArchiveSystem.closeArchive();
-    };
-  }
-  
-  if (archiveCloseBtn) {
-    archiveCloseBtn.onclick = function() {
-      window.ArchiveSystem.closeArchive();
-    };
-  }
-
-  // Archive search and filter
-  const archiveSearch = document.getElementById('archive-search');
-  const archiveFilter = document.getElementById('archive-filter');
-  
-  if (archiveSearch) {
-    archiveSearch.onkeyup = function() {
-      window.ArchiveSystem.filterArchiveTable();
-    };
-  }
-  
-  if (archiveFilter) {
-    archiveFilter.onchange = function() {
-      window.ArchiveSystem.filterArchiveTable();
-    };
-  }
-});
 
 console.log('🚀 Server integration initialized successfully');
