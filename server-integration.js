@@ -1,7 +1,4 @@
-// Server integration for Tatiana website - Backend API communication
-// Secure version without hardcoded Telegram tokens
 
-const API_BASE_URL = 'https://tatiana-server-production.up.railway.app/api';
 
 console.log('✅ Server integration loaded. API base:', API_BASE_URL);
 
