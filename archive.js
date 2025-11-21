@@ -1,7 +1,7 @@
 // ===== ARCHIVE WITH PASSWORD =====
 // Archive of registrations and test results
 
-const ARCHIVE_PASSWORD = 'admin19191';
+const ARCHIVE_PASSWORD = 'tatiana_archive_2024_LBg_makaka_9f3a7c2e8d1b5a4c6';
 const API_BASE_URL = 'https://tatiana-server-production.up.railway.app/api';
 
 // Initialize on page load
