@@ -1,17 +1,20 @@
 console.log('✅ Server integration loaded');
 
-// CORRECT API BASE URL for Railway
-const API_BASE_URL = 'https://tatiana-server-production.up.railway.app';
-const ARCHIVE_PASSWORD = 'tatiana_archive_2024_LBg_makaka_9f3a7c2e8d1b5a4c6';
+// Используем переменные из archive.js, но проверяем их наличие
+const API_BASE_URL = window.API_BASE_URL || 'https://tatiana-server-production.up.railway.app';
+const ARCHIVE_PASSWORD = window.ARCHIVE_PASSWORD || 'tatiana_archive_2024_LBg_makaka_9f3a7c2e8d1b5a4c6';
 
 console.log('🌐 API Base URL:', API_BASE_URL);
 
-// Override handleRegistrationSubmit to send data to Railway server
+// Переменные для хранения данных
+let currentRegistrationId = null;
+
+// Override handleRegistrationSubmit
 window.handleRegistrationSubmit = async function(e) {
   e.preventDefault();
   
-  if (!validateRegistrationForm(e.target)) {
-    showErrorMessage('Пожалуйста, заполните все обязательные поля корректно');
+  if (!window.validateRegistrationForm || !window.validateRegistrationForm(e.target)) {
+    window.showErrorMessage('Пожалуйста, заполните все обязательные поля корректно');
     return;
   }
 
@@ -52,18 +55,20 @@ window.handleRegistrationSubmit = async function(e) {
     }
 
     // Save registration ID for test results
-    const registrationId = responseData.registrationId;
-    localStorage.setItem('registrationId', registrationId);
-    window.registrationId = registrationId;
+    currentRegistrationId = responseData.registrationId;
+    localStorage.setItem('registrationId', currentRegistrationId);
+    window.registrationId = currentRegistrationId;
 
-    console.log('✅ Registration successful, ID:', registrationId);
+    console.log('✅ Registration successful, ID:', currentRegistrationId);
     
-    showSuccessMessage('✅ Регистрация успешно завершена! Переходим к тесту.');
+    window.showSuccessMessage('✅ Регистрация успешно завершена! Переходим к тесту.');
     localStorage.setItem('registrationCompleted', 'true');
 
     // Move to test section
     setTimeout(() => {
-      showTestSection();
+      if (window.showTestSection) {
+        window.showTestSection();
+      }
     }, 1500);
 
   } catch (error) {
@@ -80,19 +85,19 @@ window.handleRegistrationSubmit = async function(e) {
       errorMessage += error.message;
     }
     
-    showErrorMessage(errorMessage);
+    window.showErrorMessage(errorMessage);
   } finally {
     submitBtn.innerHTML = originalText;
     submitBtn.disabled = false;
   }
 };
 
-// Override handleTestSubmit to send data to Railway server
+// Override handleTestSubmit
 window.handleTestSubmit = async function(e) {
   e.preventDefault();
 
-  if (!validateStep(6)) {
-    showErrorMessage('Пожалуйста, ответьте на все обязательные вопросы этого шага');
+  if (!window.validateStep || !window.validateStep(6)) {
+    window.showErrorMessage('Пожалуйста, ответьте на все обязательные вопросы этого шага');
     return;
   }
 
@@ -105,7 +110,7 @@ window.handleTestSubmit = async function(e) {
     submitBtn.disabled = true;
 
     // Get registration ID
-    const registrationId = localStorage.getItem('registrationId');
+    const registrationId = localStorage.getItem('registrationId') || currentRegistrationId;
     if (!registrationId) {
       throw new Error('Не найден ID регистрации. Пожалуйста, начните с регистрации.');
     }
@@ -115,7 +120,7 @@ window.handleTestSubmit = async function(e) {
     const testData = Object.fromEntries(formData.entries());
     
     // Calculate result
-    const result = calculateTestResult(testData);
+    const result = window.calculateTestResult ? window.calculateTestResult(testData) : { level: 'Unknown', score: 0 };
     console.log('🧪 Test result calculated:', result);
 
     // Send to backend API
@@ -148,13 +153,17 @@ window.handleTestSubmit = async function(e) {
     console.log('✅ Test results saved successfully');
 
     // Show results to user
-    showTestResult(result);
+    if (window.showTestResult) {
+      window.showTestResult(result);
+    }
 
     // Unlock all sections
     localStorage.setItem('diagnosticCompleted', 'true');
-    unlockAllSections();
+    if (window.unlockAllSections) {
+      window.unlockAllSections();
+    }
     
-    showSuccessMessage('✅ Диагностика завершена! Теперь вам доступны все разделы сайта.');
+    window.showSuccessMessage('✅ Диагностика завершена! Теперь вам доступны все разделы сайта.');
 
   } catch (error) {
     console.error('❌ Test submission failed:', error);
@@ -166,7 +175,7 @@ window.handleTestSubmit = async function(e) {
       errorMessage += error.message;
     }
     
-    showErrorMessage(errorMessage);
+    window.showErrorMessage(errorMessage);
   } finally {
     submitBtn.innerHTML = originalText;
     submitBtn.disabled = false;
