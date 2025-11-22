@@ -1,6 +1,5 @@
 // ===== ARCHIVE WITH PASSWORD =====
 // Archive of registrations and test results
-
 const ARCHIVE_PASSWORD = 'tatiana_archive_2024_LBg_makaka_9f3a7c2e8d1b5a4c6';
 const API_BASE_URL = 'https://tatiana-server-production.up.railway.app/api/archive';
 
@@ -15,7 +14,7 @@ function initArchive() {
 function createArchiveButton() {
   const archiveBtn = document.createElement('button');
   archiveBtn.id = 'archive-btn';
-  archiveBtn.innerHTML = '\ud83d\udcc4';
+  archiveBtn.innerHTML = '📄';
   archiveBtn.style.cssText = `
     position: fixed;
     bottom: 10px;
@@ -70,56 +69,36 @@ function createArchiveModal() {
   modal.innerHTML = `
     <div style="background: white; border-radius: 20px; padding: 2rem; max-width: 900px; width: 90%; max-height: 80vh; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-        <h2 style="color: #8B4352; margin: 0;">\ud83d\udcc4 Archive</h2>
+        <h2 style="color: #8B4352; margin: 0;">📄 Archive</h2>
         <button id="archive-close-btn" style="background: none; border: none; font-size: 28px; cursor: pointer; color: #999;">×</button>
       </div>
 
       <!-- Login Form -->
       <div id="archive-login">
         <p style="color: #666; margin-bottom: 1rem;">Enter password to access archive</p>
-        <div style="margin-bottom: 1rem;">
-          <input type="password" id="archive-password" placeholder="Password" style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; box-sizing: border-box;">
-        </div>
-        <button id="archive-login-btn" style="width: 100%; padding: 12px; background: linear-gradient(135deg, #D46A6A, #8B6B9E); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 16px;">Enter Archive</button>
-        <div id="archive-error" style="color: #e74c3c; margin-top: 1rem; display: none;">Invalid password!</div>
+        <input type="password" id="archive-password" placeholder="Enter password" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px;">
+        <button id="archive-submit-btn" style="width: 100%; padding: 10px; background: #8B4352; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Access Archive</button>
+        <div id="archive-error" style="color: red; margin-top: 10px; display: none;"></div>
       </div>
 
-      <!-- Archive Content -->
+      <!-- Archive Table -->
       <div id="archive-content" style="display: none;">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 10px;">
-          <div style="display: flex; gap: 10px;">
-            <input type="text" id="archive-search" placeholder="\ud83d\udd0d Search by name..." style="padding: 10px; border: 2px solid #ddd; border-radius: 8px; width: 250px; box-sizing: border-box;">
-            <select id="archive-filter" style="padding: 10px; border: 2px solid #ddd; border-radius: 8px;">
-              <option value="">All libido levels</option>
-              <option value="Low">Low libido</option>
-              <option value="Medium">Medium libido</option>
-              <option value="High">High libido</option>
-              <option value="Very high">Very high libido</option>
-            </select>
-          </div>
-          <button id="archive-logout-btn" style="padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Exit</button>
+        <div style="margin-bottom: 1rem;">
+          <input type="text" id="archive-search" placeholder="Search..." style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 10px;">
+          <button id="archive-export-btn" style="padding: 8px 16px; background: #8B4352; color: white; border: none; border-radius: 5px; cursor: pointer;">📥 Export CSV</button>
         </div>
-
-        <div id="archive-loading" style="display: none; text-align: center; padding: 2rem;">
-          <p>Loading data...</p>
-        </div>
-
-        <div id="archive-table-container" style="overflow-x: auto;">
+        <div style="overflow-x: auto;">
           <table id="archive-table" style="width: 100%; border-collapse: collapse;">
             <thead>
-              <tr style="background: #f5f5f5; border-bottom: 2px solid #ddd;">
-                <th style="padding: 12px; text-align: left; color: #333; font-weight: 600;">Name</th>
-                <th style="padding: 12px; text-align: left; color: #333; font-weight: 600;">Age</th>
-                <th style="padding: 12px; text-align: left; color: #333; font-weight: 600;">Phone</th>
-                <th style="padding: 12px; text-align: left; color: #333; font-weight: 600;">Telegram</th>
-                <th style="padding: 12px; text-align: left; color: #333; font-weight: 600;">Libido Level</th>
-                <th style="padding: 12px; text-align: center; color: #333; font-weight: 600;">Score</th>
-                <th style="padding: 12px; text-align: center; color: #333; font-weight: 600;">Date</th>
+              <tr style="background: #f5f5f5;">
+                <th style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">ID</th>
+                <th style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">Name</th>
+                <th style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">Score</th>
+                <th style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">Level</th>
+                <th style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">Date</th>
               </tr>
             </thead>
-            <tbody id="archive-table-body">
-              <tr><td colspan="7" style="padding: 2rem; text-align: center; color: #999;">No records</td></tr>
-            </tbody>
+            <tbody id="archive-tbody"></tbody>
           </table>
         </div>
       </div>
@@ -128,134 +107,163 @@ function createArchiveModal() {
 
   document.body.appendChild(modal);
 
-  // Event handlers
-  document.getElementById('archive-login-btn').onclick = handleArchiveLogin;
-  document.getElementById('archive-logout-btn').onclick = handleArchiveLogout;
+  // Event listeners
   document.getElementById('archive-close-btn').onclick = closeArchiveModal;
+  document.getElementById('archive-submit-btn').onclick = submitArchivePassword;
   document.getElementById('archive-password').onkeypress = (e) => {
-    if (e.key === 'Enter') handleArchiveLogin();
-  };
-
-  // Search and filter
-  document.getElementById('archive-search').onkeyup = filterArchiveTable;
-  document.getElementById('archive-filter').onchange = filterArchiveTable;
-
-  modal.onclick = (e) => {
-    if (e.target === modal) closeArchiveModal();
+    if (e.key === 'Enter') submitArchivePassword();
   };
 }
 
 function openArchiveModal() {
-  document.getElementById('archive-modal').style.display = 'flex';
-  document.getElementById('archive-password').focus();
+  const modal = document.getElementById('archive-modal');
+  modal.style.display = 'flex';
 }
 
 function closeArchiveModal() {
-  document.getElementById('archive-modal').style.display = 'none';
-  document.getElementById('archive-password').value = '';
-  document.getElementById('archive-error').style.display = 'none';
+  const modal = document.getElementById('archive-modal');
+  modal.style.display = 'none';
   document.getElementById('archive-login').style.display = 'block';
   document.getElementById('archive-content').style.display = 'none';
+  document.getElementById('archive-password').value = '';
+  document.getElementById('archive-error').style.display = 'none';
 }
 
-function handleArchiveLogin() {
+async function submitArchivePassword() {
   const password = document.getElementById('archive-password').value;
+  const errorDiv = document.getElementById('archive-error');
+  errorDiv.style.display = 'none';
 
-  if (password === ARCHIVE_PASSWORD) {
-    document.getElementById('archive-error').style.display = 'none';
-    document.getElementById('archive-login').style.display = 'none';
-    document.getElementById('archive-content').style.display = 'block';
-    loadArchiveData();
-  } else {
-    document.getElementById('archive-error').style.display = 'block';
-    document.getElementById('archive-password').value = '';
-  }
-}
-
-function handleArchiveLogout() {
-  closeArchiveModal();
-}
-
-async function loadArchiveData() {
-  const loading = document.getElementById('archive-loading');
-  loading.style.display = 'block';
-
-  try {
-    const response = await fetch(`${API_BASE_URL}/archive`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${ARCHIVE_PASSWORD}`,
-        'Content-Type': 'application/json'
-      }
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP Error: ${response.status}`);
-    }
-
-    const data = await response.json();
-    window.archiveData = data.records || [];
-    populateArchiveTable(window.archiveData);
-  } catch (error) {
-    console.error('Error loading archive:', error);
-    document.getElementById('archive-table-body').innerHTML = 
-      `<tr><td colspan="7" style="padding: 2rem; text-align: center; color: #e74c3c;">Error: ${error.message}</td></tr>`;
-  } finally {
-    loading.style.display = 'none';
-  }
-}
-
-function populateArchiveTable(records) {
-  const tbody = document.getElementById('archive-table-body');
-
-  if (!records || records.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="7" style="padding: 2rem; text-align: center; color: #999;">No records</td></tr>';
+  if (!password) {
+    errorDiv.textContent = 'Please enter a password';
+    errorDiv.style.display = 'block';
     return;
   }
 
-  tbody.innerHTML = records.map((record, idx) => `
-    <tr style="border-bottom: 1px solid #eee; ${idx % 2 === 0 ? 'background: #f9f9f9;' : ''}">
-      <td style="padding: 12px; color: #333;">${record.fio || 'N/A'}</td>
-      <td style="padding: 12px; color: #666;">${record.age || 'N/A'}</td>
-      <td style="padding: 12px; color: #666;">${record.phone || 'N/A'}</td>
-      <td style="padding: 12px; color: #666;">${record.telegram || 'N/A'}</td>
-      <td style="padding: 12px;">
-        <span style="display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: 600;
-          ${record.level?.includes('Low') ? 'background: #ffebee; color: #c62828;' : ''}
-          ${record.level?.includes('Medium') ? 'background: #fff3e0; color: #ef6c00;' : ''}
-          ${record.level?.includes('High') && !record.level?.includes('Very') ? 'background: #e8f5e9; color: #2e7d32;' : ''}
-          ${record.level?.includes('Very') ? 'background: #f3e5f5; color: #7b1fa2;' : ''}
-        ">${record.level || 'N/A'}</span>
-      </td>
-      <td style="padding: 12px; text-align: center; color: #333; font-weight: 600;">${record.score || '-'}</td>
-      <td style="padding: 12px; text-align: center; color: #999; font-size: 13px;">${new Date(record.date).toLocaleDateString('en-US')}</td>
-    </tr>
-  `).join('');
-}
+  try {
+    console.log('Sending password to:', API_BASE_URL);
+    console.log('Headers being sent:', {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${password}`,
+      'X-Requested-With': 'XMLHttpRequest'
+    });
 
-function filterArchiveTable() {
-  const search = document.getElementById('archive-search').value.toLowerCase();
-  const filter = document.getElementById('archive-filter').value;
-  const tbody = document.getElementById('archive-table-body');
+    const response = await fetch(API_BASE_URL, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${password}`,
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    });
 
-  if (!window.archiveData) return;
+    console.log('Response status:', response.status);
+    console.log('Response headers:', {
+      'Content-Type': response.headers.get('Content-Type'),
+      'Content-Length': response.headers.get('Content-Length')
+    });
 
-  const filtered = window.archiveData.filter(record => {
-    const matchSearch = !search || record.fio.toLowerCase().includes(search);
-    const matchFilter = !filter || record.level?.includes(filter);
-    return matchSearch && matchFilter;
-  });
+    if (!response.ok) {
+      console.error('Response error:', response.status, response.statusText);
+      const errorText = await response.text();
+      console.error('Error body:', errorText);
+      
+      if (response.status === 401) {
+        errorDiv.textContent = 'Invalid password';
+      } else if (response.status === 403) {
+        errorDiv.textContent = 'Access forbidden';
+      } else {
+        errorDiv.textContent = `Error: ${response.status} ${response.statusText}`;
+      }
+      errorDiv.style.display = 'block';
+      return;
+    }
 
-  if (filtered.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="7" style="padding: 2rem; text-align: center; color: #999;">No matches found</td></tr>';
-  } else {
-    populateArchiveTable(filtered);
+    const data = await response.json();
+    console.log('Received data:', data);
+
+    displayArchiveData(data);
+    document.getElementById('archive-login').style.display = 'none';
+    document.getElementById('archive-content').style.display = 'block';
+
+  } catch (error) {
+    console.error('Fetch error:', error);
+    console.error('Error details:', {
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    });
+    errorDiv.textContent = `Error: ${error.message}`;
+    errorDiv.style.display = 'block';
   }
 }
 
-// Export for use in main script
-window.ArchiveSystem = {
-  openArchive: openArchiveModal,
-  closeArchive: closeArchiveModal,
-  loadData: loadArchiveData
-};
+function displayArchiveData(data) {
+  const tbody = document.getElementById('archive-tbody');
+  tbody.innerHTML = '';
+
+  if (!data || data.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" style="padding: 20px; text-align: center; color: #999;">No data available</td></tr>';
+    return;
+  }
+
+  data.forEach((item, index) => {
+    const row = document.createElement('tr');
+    if (index % 2 === 0) {
+      row.style.background = '#f9f9f9';
+    }
+    row.style.borderBottom = '1px solid #eee';
+    row.innerHTML = `
+      <td style="padding: 12px; border-bottom: 1px solid #eee;">${item.id || index + 1}</td>
+      <td style="padding: 12px; border-bottom: 1px solid #eee;">${item.name || 'N/A'}</td>
+      <td style="padding: 12px; border-bottom: 1px solid #eee;">${item.score || 'N/A'}</td>
+      <td style="padding: 12px; border-bottom: 1px solid #eee;">${item.level || 'N/A'}</td>
+      <td style="padding: 12px; border-bottom: 1px solid #eee;">${new Date(item.date).toLocaleDateString() || 'N/A'}</td>
+    `;
+    tbody.appendChild(row);
+  });
+}
+
+// Search functionality
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    const searchInput = document.getElementById('archive-search');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        const rows = document.querySelectorAll('#archive-tbody tr');
+        rows.forEach(row => {
+          const text = row.textContent.toLowerCase();
+          row.style.display = text.includes(searchTerm) ? '' : 'none';
+        });
+      });
+    }
+  }, 100);
+});
+
+// CSV Export functionality
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    const exportBtn = document.getElementById('archive-export-btn');
+    if (exportBtn) {
+      exportBtn.addEventListener('click', () => {
+        const table = document.getElementById('archive-table');
+        let csv = '';
+        const rows = table.querySelectorAll('tr');
+        rows.forEach(row => {
+          const cells = row.querySelectorAll('td, th');
+          const rowData = Array.from(cells).map(cell => `"${cell.textContent.trim()}"`).join(',');
+          csv += rowData + '\n';
+        });
+
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `archive_${new Date().toISOString().split('T')[0]}.csv`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+      });
+    }
+  }, 100);
+});
