@@ -27,14 +27,6 @@ window.handleRegistrationSubmit = async function(e) {
     const formData = new FormData(form);
     const registrationData = Object.fromEntries(formData.entries());
     
-    // Handle photo
-    let photoData = null;
-    if (window.userPhoto) {
-      photoData = await convertImageToBase64(window.userPhoto);
-    }
-    
-    registrationData.photoData = photoData;
-
     console.log('📝 Starting registration process...', registrationData);
 
     // Send to backend API
@@ -94,16 +86,6 @@ window.handleRegistrationSubmit = async function(e) {
     submitBtn.disabled = false;
   }
 };
-
-// Helper function to convert image to Base64
-function convertImageToBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
-    reader.readAsDataURL(file);
-  });
-}
 
 // Override handleTestSubmit
 window.handleTestSubmit = async function(e) {
@@ -266,7 +248,15 @@ window.ArchiveSystem = {
     const tbody = document.getElementById('archive-table-body');
 
     if (!records || records.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="7" style="padding: 2rem; text-align: center; color: #999;">Нет записей</td></tr>';
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7" style="padding: 4rem 2rem; text-align: center; color: #999;">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">📭</div>
+            <div style="font-size: 1.2rem; margin-bottom: 0.5rem;">Архив пуст</div>
+            <div style="font-size: 0.9rem; color: #666;">Нет данных для отображения</div>
+          </td>
+        </tr>
+      `;
       return;
     }
 
