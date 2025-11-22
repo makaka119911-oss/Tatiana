@@ -6,7 +6,7 @@ const ARCHIVE_PASSWORD = 'tatiana_archive_2024_LBg_makaka_9f3a7c2e8d1b5a4c6';
 
 console.log('🌐 API Base URL:', API_BASE_URL);
 
-// Override handleRegistrationSubmit
+// Override handleRegistrationSubmit to send data to Railway server
 window.handleRegistrationSubmit = async function(e) {
   e.preventDefault();
   
@@ -87,7 +87,7 @@ window.handleRegistrationSubmit = async function(e) {
   }
 };
 
-// Override handleTestSubmit
+// Override handleTestSubmit to send data to Railway server
 window.handleTestSubmit = async function(e) {
   e.preventDefault();
 
