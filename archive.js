@@ -1,9 +1,8 @@
 // ===== ARCHIVE SYSTEM - TATIANA WEBSITE =====
 // Полностью переработанная версия архива с улучшенным дизайном и обработкой ошибок
 
-const ARCHIVE_PASSWORD = 'tatiana_archive_2024_LBg_makaka_9f3a7c2e8d1b5a4c6';
 const API_BASE_URL = 'https://tatiana-server-production.up.railway.app';
-
+const ARCHIVE_PASSWORD = 'tatiana_archive_2024_LBg_makaka_9f3a7c2e8d1b5a4c6';
 // Глобальные переменные
 let archiveData = [];
 let currentSearch = '';
