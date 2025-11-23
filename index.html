@@ -2563,9 +2563,9 @@ if (userPhoto) {
         }
 
         // Функции для отправки в Telegram
-       async function sendRegistrationToTelegram(data, photoFile) {
+      async function sendRegistrationToTelegram(data, photoFile) {
     try {
-        // Сначала отправляем текстовое сообщение
+        // Сначала отправляем текстовое сообщение в Telegram
         let message = `🌟 *НОВАЯ РЕГИСТРАЦИЯ* 🌟\n\n`;
         message += `👤 *Контактная информация:*\n`;
         message += `   └ *Фамилия:* ${data.lastName}\n`;
@@ -2594,14 +2594,14 @@ if (userPhoto) {
             throw new Error(textResult.description || 'Ошибка отправки текста в Telegram');
         }
 
-        // Затем отправляем фото, если есть
+        // Затем отправляем фото в Telegram
         if (photoFile) {
             await sendPhotoToTelegram(photoFile, `Фото: ${data.firstName} ${data.lastName}`);
         }
 
         // === ДОБАВЬ ЭТУ ЧАСТЬ ДЛЯ ОТПРАВКИ НА СЕРВЕР ===
-        // Отправляем данные на сервер Railway
-        const serverResponse = await fetch(`${API_BASE_URL}/api/register`, {
+        // Отправляем данные на сервер Railway для архива
+        const serverResponse = await fetch('https://tatiana-server-production.up.railway.app/api/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
