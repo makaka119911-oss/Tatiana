@@ -1,5 +1,5 @@
 // ===== ARCHIVE SYSTEM - TATIANA WEBSITE =====
-// Обновленная версия с исправлениями и улучшенным дизайном
+// Полностью переписанная версия с улучшенным дизайном
 
 const API_BASE_URL = 'https://tatiana-server-production.up.railway.app';
 const ARCHIVE_PASSWORD = 'tatiana_archive_2024_LBg_makaka_9f3a7c2e8d1b5a4c6';
@@ -53,6 +53,7 @@ function createArchiveButton() {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     `;
 
+    // Анимации при наведении
     archiveBtn.addEventListener('mouseenter', function() {
         this.style.opacity = '1';
         this.style.background = 'rgba(139, 67, 82, 0.2)';
@@ -70,7 +71,8 @@ function createArchiveButton() {
     archiveBtn.addEventListener('click', openArchiveModal);
     document.body.appendChild(archiveBtn);
 }
-// Создание модального окна архива с улучшенным дизайном
+
+// Создание модального окна архива
 function createArchiveModal() {
     const oldModal = document.getElementById('archive-modal');
     if (oldModal) oldModal.remove();
@@ -297,10 +299,10 @@ function createArchiveModal() {
                                 cursor: pointer;
                             ">
                                 <option value="">Все уровни</option>
-                                <option value="Низкое">🔴 Низкое либидо</option>
-                                <option value="Среднее">🟡 Среднее либидо</option>
-                                <option value="Высокое">🟢 Высокое либидо</option>
-                                <option value="Очень высокое">🟣 Очень высокое</option>
+                                <option value="Низкое">🌙 Низкое либидо</option>
+                                <option value="Среднее">⭐ Среднее либидо</option>
+                                <option value="Высокое">🔥 Высокое либидо</option>
+                                <option value="Очень высокое">💫 Очень высокое</option>
                             </select>
                         </div>
                     </div>
@@ -328,14 +330,14 @@ function createArchiveModal() {
                                 <tr style="background: linear-gradient(135deg, #8B4352, #8B6B9E);">
                                     <th style="
                                         padding: 12px 10px;
-                                        text-align: left;
+                                        text-align: center;
                                         color: white;
                                         font-weight: 600;
                                         font-size: 0.8rem;
                                         border-right: 1px solid rgba(255,255,255,0.15);
-                                        min-width: 60px;
+                                        min-width: 70px;
                                     ">
-                                        <div style="display: flex; align-items: center; gap: 6px;">
+                                        <div style="display: flex; align-items: center; gap: 6px; justify-content: center;">
                                             <span>🖼️</span>
                                             <span>Фото</span>
                                         </div>
@@ -452,29 +454,41 @@ function createArchiveModal() {
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.95);
             z-index: 10001;
             align-items: center;
             justify-content: center;
+            backdrop-filter: blur(10px);
         ">
-            <div style="position: relative; max-width: 90vw; max-height: 90vh;">
-                <img id="photo-modal-img" src="" style="max-width: 100%; max-height: 90vh; border-radius: 10px;">
+            <div style="position: relative; max-width: 90vw; max-height: 90vh; text-align: center;">
+                <img id="photo-modal-img" src="" style="
+                    max-width: 100%; 
+                    max-height: 85vh; 
+                    border-radius: 15px;
+                    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+                    border: 3px solid #8B4352;
+                ">
                 <button onclick="closePhotoModal()" style="
                     position: absolute;
-                    top: -40px;
-                    right: -40px;
-                    background: rgba(255,255,255,0.2);
-                    border: none;
+                    top: -50px;
+                    right: -50px;
+                    background: rgba(139, 67, 82, 0.8);
+                    border: 2px solid rgba(255,255,255,0.3);
                     color: white;
                     font-size: 24px;
                     cursor: pointer;
-                    width: 40px;
-                    height: 40px;
+                    width: 50px;
+                    height: 50px;
                     border-radius: 50%;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                ">×</button>
+                    transition: all 0.3s ease;
+                " onmouseover="this.style.background='rgba(139, 67, 82, 1)'" 
+                  onmouseout="this.style.background='rgba(139, 67, 82, 0.8)'">×</button>
+                <div style="color: white; margin-top: 15px; font-size: 0.9rem;">
+                    Нажмите в любом месте или ESC для закрытия
+                </div>
             </div>
         </div>
     `;
@@ -546,6 +560,17 @@ function addModalAnimations() {
             100% { transform: rotate(360deg); }
         }
         
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
         .archive-modal-content {
             animation: slideInUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
@@ -567,7 +592,15 @@ function addModalAnimations() {
         @keyframes subtlePulse {
             0% { opacity: 0.3; }
             50% { opacity: 0.5; }
-            100% { opacity: 0.3; }
+            100% { opacity: 0.3;
+        }
+
+        #photo-modal {
+            animation: fadeIn 0.3s ease;
+        }
+
+        #photo-modal-img {
+            animation: zoomIn 0.3s ease;
         }
     `;
     document.head.appendChild(style);
@@ -623,12 +656,22 @@ function openPhotoModal(photoUrl) {
     const img = document.getElementById('photo-modal-img');
     img.src = photoUrl;
     modal.style.display = 'flex';
+    
+    // Закрытие по клику на фон или ESC
+    modal.onclick = function(e) {
+        if (e.target === modal) closePhotoModal();
+    };
+    
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closePhotoModal();
+    });
 }
 
 // Закрытие модального окна фото
 function closePhotoModal() {
     const modal = document.getElementById('photo-modal');
     modal.style.display = 'none';
+    document.removeEventListener('keydown', closePhotoModal);
 }
 
 // Обработка входа в архив
@@ -890,10 +933,10 @@ function updateArchiveStats() {
     
     const statsText = `
         Всего записей: <strong style="color: #8B4352;">${total}</strong> | 
-        🔴 Низкое: <strong>${levels.low}</strong> | 
-        🟡 Среднее: <strong>${levels.medium}</strong> | 
-        🟢 Высокое: <strong>${levels.high}</strong> | 
-        🟣 Очень высокое: <strong>${levels.veryHigh}</strong>
+        🌙 Низкое: <strong>${levels.low}</strong> | 
+        ⭐ Среднее: <strong>${levels.medium}</strong> | 
+        🔥 Высокое: <strong>${levels.high}</strong> | 
+        💫 Очень высокое: <strong>${levels.veryHigh}</strong>
     `;
     
     document.getElementById('archive-stats').innerHTML = statsText;
@@ -1039,39 +1082,6 @@ function showNotification(message, type = 'info') {
         }
     }, 4000);
 }
-
-// Добавление CSS анимаций для уведомлений
-const notificationStyles = document.createElement('style');
-notificationStyles.textContent = `
-    @keyframes slideInRight {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-    
-    @keyframes slideOutRight {
-        from {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        to {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-    }
-    
-    @keyframes shake {
-        0%, 100% { transform: translateX(0); }
-        25% { transform: translateX(-5px); }
-        75% { transform: translateX(5px); }
-    }
-`;
-document.head.appendChild(notificationStyles);
 
 // Экспорт функций для глобального использования
 window.ArchiveSystem = {
