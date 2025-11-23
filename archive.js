@@ -1,12 +1,14 @@
 // ===== ARCHIVE SYSTEM - TATIANA WEBSITE =====
-// Полностью переработанная версия архива с улучшенным дизайном и обработкой ошибок
+// Обновленная версия с исправлениями и улучшенным дизайном
 
 const API_BASE_URL = 'https://tatiana-server-production.up.railway.app';
 const ARCHIVE_PASSWORD = 'tatiana_archive_2024_LBg_makaka_9f3a7c2e8d1b5a4c6';
+
 // Глобальные переменные
 let archiveData = [];
 let currentSearch = '';
 let currentFilter = '';
+let currentDisplayedRecords = [];
 
 // Инициализация архива при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
@@ -20,9 +22,8 @@ function initArchiveSystem() {
     console.log('✅ Система архива готова');
 }
 
-// Создание кнопки архива
+// Создание стильной кнопки архива
 function createArchiveButton() {
-    // Удаляем старую кнопку если есть
     const oldBtn = document.getElementById('archive-btn');
     if (oldBtn) oldBtn.remove();
 
@@ -32,46 +33,46 @@ function createArchiveButton() {
     archiveBtn.title = 'Архив данных';
     archiveBtn.style.cssText = `
         position: fixed;
-        bottom: 25px;
-        left: 25px;
-        width: 65px;
-        height: 65px;
+        bottom: 20px;
+        left: 20px;
+        width: 50px;
+        height: 50px;
         border-radius: 50%;
         background: linear-gradient(135deg, #8B4352, #8B6B9E);
-        border: 3px solid white;
+        border: 2px solid rgba(255,255,255,0.3);
         color: white;
         cursor: pointer;
-        opacity: 0.9;
+        opacity: 0.3;
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         z-index: 9999;
-        font-size: 26px;
+        font-size: 18px;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 6px 25px rgba(139, 67, 82, 0.4);
+        box-shadow: 0 2px 10px rgba(139, 67, 82, 0.2);
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        backdrop-filter: blur(5px);
     `;
 
     // Анимации при наведении
     archiveBtn.addEventListener('mouseenter', function() {
-        this.style.opacity = '1';
-        this.style.transform = 'scale(1.15) rotate(5deg)';
-        this.style.boxShadow = '0 8px 30px rgba(139, 67, 82, 0.6)';
+        this.style.opacity = '0.9';
+        this.style.transform = 'scale(1.1)';
+        this.style.boxShadow = '0 4px 15px rgba(139, 67, 82, 0.4)';
     });
 
     archiveBtn.addEventListener('mouseleave', function() {
-        this.style.opacity = '0.9';
-        this.style.transform = 'scale(1) rotate(0deg)';
-        this.style.boxShadow = '0 6px 25px rgba(139, 67, 82, 0.4)';
+        this.style.opacity = '0.3';
+        this.style.transform = 'scale(1)';
+        this.style.boxShadow = '0 2px 10px rgba(139, 67, 82, 0.2)';
     });
 
     archiveBtn.addEventListener('click', openArchiveModal);
     document.body.appendChild(archiveBtn);
 }
 
-// Создание модального окна архива
+// Создание модального окна архива с улучшенным дизайном
 function createArchiveModal() {
-    // Удаляем старый модал если есть
     const oldModal = document.getElementById('archive-modal');
     if (oldModal) oldModal.remove();
 
@@ -84,55 +85,55 @@ function createArchiveModal() {
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.85);
+        background: rgba(0, 0, 0, 0.9);
         z-index: 10000;
         align-items: center;
         justify-content: center;
-        backdrop-filter: blur(8px);
+        backdrop-filter: blur(10px);
         animation: fadeIn 0.3s ease;
     `;
 
     modal.innerHTML = `
         <div class="archive-modal-content" style="
             background: linear-gradient(165deg, #FFF8F0 0%, #F5E6C8 50%, #F0E6FF 100%);
-            border-radius: 24px;
+            border-radius: 20px;
             padding: 0;
             max-width: 95vw;
-            width: 1300px;
-            max-height: 90vh;
+            width: 1400px;
+            max-height: 95vh;
             overflow: hidden;
-            box-shadow: 0 25px 80px rgba(0,0,0,0.4);
-            border: 3px solid #8B4352;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            border: 2px solid #8B4352;
             position: relative;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         ">
             <!-- Заголовок -->
             <div style="
                 background: linear-gradient(135deg, #8B4352, #8B6B9E);
-                padding: 1.5rem 2rem;
+                padding: 1.2rem 2rem;
                 color: white;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                border-bottom: 3px solid rgba(255,255,255,0.2);
+                border-bottom: 2px solid rgba(255,255,255,0.2);
             ">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="font-size: 2rem;">📊</div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="font-size: 1.8rem;">📊</div>
                     <div>
-                        <h2 style="margin: 0; font-size: 1.6rem; font-weight: 700;">Архив данных</h2>
-                        <p style="margin: 0; opacity: 0.9; font-size: 0.9rem;">Система управления регистрациями и результатами тестов</p>
+                        <h2 style="margin: 0; font-size: 1.4rem; font-weight: 700;">Архив данных клиентов</h2>
+                        <p style="margin: 0; opacity: 0.9; font-size: 0.8rem;">Управление регистрациями и результатами тестов</p>
                     </div>
                 </div>
                 <button id="archive-close-btn" style="
                     background: rgba(255,255,255,0.2);
-                    border: 2px solid rgba(255,255,255,0.3);
+                    border: 1px solid rgba(255,255,255,0.3);
                     color: white;
-                    font-size: 24px;
+                    font-size: 20px;
                     cursor: pointer;
-                    padding: 8px;
+                    padding: 6px;
                     border-radius: 50%;
-                    width: 45px;
-                    height: 45px;
+                    width: 35px;
+                    height: 35px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
@@ -141,22 +142,21 @@ function createArchiveModal() {
             </div>
 
             <!-- Форма входа -->
-            <div id="archive-login" style="padding: 3rem 2rem; text-align: center;">
-                <div style="max-width: 500px; margin: 0 auto;">
-                    <div style="font-size: 4rem; color: #8B4352; margin-bottom: 1.5rem;">🔒</div>
-                    <h3 style="color: #8B4352; margin-bottom: 1rem; font-size: 1.8rem;">Защищенный доступ</h3>
-                    <p style="color: #666; margin-bottom: 2.5rem; font-size: 1.1rem; line-height: 1.6;">
-                        Для доступа к архиву данных требуется авторизация.<br>
-                        Введите пароль безопасности для продолжения.
+            <div id="archive-login" style="padding: 2.5rem 2rem; text-align: center;">
+                <div style="max-width: 400px; margin: 0 auto;">
+                    <div style="font-size: 3rem; color: #8B4352; margin-bottom: 1rem;">🔒</div>
+                    <h3 style="color: #8B4352; margin-bottom: 0.8rem; font-size: 1.5rem;">Защищенный доступ</h3>
+                    <p style="color: #666; margin-bottom: 2rem; font-size: 1rem; line-height: 1.5;">
+                        Для доступа к архиву данных требуется авторизация.
                     </p>
                     
-                    <div style="position: relative; margin-bottom: 2rem;">
+                    <div style="position: relative; margin-bottom: 1.5rem;">
                         <input type="password" id="archive-password" placeholder="Введите пароль доступа" style="
                             width: 100%;
-                            padding: 18px 20px;
-                            border: 3px solid #E6E6FA;
-                            border-radius: 12px;
-                            font-size: 16px;
+                            padding: 15px 20px;
+                            border: 2px solid #E6E6FA;
+                            border-radius: 10px;
+                            font-size: 15px;
                             box-sizing: border-box;
                             text-align: center;
                             background: white;
@@ -164,33 +164,34 @@ function createArchiveModal() {
                             font-weight: 500;
                         ">
                         <div style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer;" onclick="togglePasswordVisibility()">
-                            <span id="password-toggle" style="color: #8B6B9E; font-size: 1.2rem;">👁️</span>
+                            <span id="password-toggle" style="color: #8B6B9E; font-size: 1rem;">👁️</span>
                         </div>
                     </div>
                     
                     <button id="archive-login-btn" style="
                         width: 100%;
-                        padding: 18px;
+                        padding: 15px;
                         background: linear-gradient(135deg, #D46A6A, #8B6B9E);
                         color: white;
                         border: none;
-                        border-radius: 12px;
+                        border-radius: 10px;
                         cursor: pointer;
-                        font-weight: 700;
-                        font-size: 1.1rem;
+                        font-weight: 600;
+                        font-size: 1rem;
                         transition: all 0.3s ease;
-                        box-shadow: 0 6px 20px rgba(139, 107, 158, 0.4);
+                        box-shadow: 0 4px 15px rgba(139, 107, 158, 0.3);
                     ">🔓 Войти в архив</button>
                     
                     <div id="archive-error" style="
                         color: #e74c3c;
-                        margin-top: 1.5rem;
+                        margin-top: 1.2rem;
                         display: none;
                         background: #ffebee;
-                        padding: 1.2rem;
-                        border-radius: 10px;
-                        border-left: 5px solid #e74c3c;
+                        padding: 1rem;
+                        border-radius: 8px;
+                        border-left: 4px solid #e74c3c;
                         font-weight: 500;
+                        font-size: 0.9rem;
                     ">
                         ❌ Неверный пароль! Попробуйте снова.
                     </div>
@@ -198,62 +199,65 @@ function createArchiveModal() {
             </div>
 
             <!-- Содержимое архива -->
-            <div id="archive-content" style="display: none; padding: 0;">
+            <div id="archive-content" style="display: none; padding: 0; height: 100%;">
                 <!-- Панель управления -->
-                <div style="background: white; padding: 1.5rem 2rem; border-bottom: 2px solid #f0f0f0;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
-                        <div style="flex: 1; min-width: 300px;">
-                            <h3 style="color: #8B4352; margin: 0 0 0.5rem 0; font-size: 1.4rem;">
-                                📈 Панель управления данными
+                <div style="background: white; padding: 1.2rem 2rem; border-bottom: 1px solid #f0f0f0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                        <div style="flex: 1; min-width: 250px;">
+                            <h3 style="color: #8B4352; margin: 0 0 0.3rem 0; font-size: 1.2rem;">
+                                📈 Панель управления
                             </h3>
-                            <p style="color: #666; margin: 0; font-size: 0.95rem;" id="archive-stats">
+                            <p style="color: #666; margin: 0; font-size: 0.85rem;" id="archive-stats">
                                 Загрузка статистики...
                             </p>
                         </div>
                         
-                        <div style="display: flex; gap: 1rem; align-items: center;">
+                        <div style="display: flex; gap: 0.8rem; align-items: center; flex-wrap: wrap;">
                             <button id="refresh-data" style="
-                                padding: 12px 20px;
+                                padding: 10px 16px;
                                 background: #3498db;
                                 color: white;
                                 border: none;
-                                border-radius: 8px;
+                                border-radius: 6px;
                                 cursor: pointer;
                                 font-weight: 600;
                                 display: flex;
                                 align-items: center;
-                                gap: 8px;
+                                gap: 6px;
                                 transition: all 0.3s ease;
+                                font-size: 0.85rem;
                             ">
                                 🔄 Обновить
                             </button>
                             <button id="export-csv" style="
-                                padding: 12px 20px;
+                                padding: 10px 16px;
                                 background: #27ae60;
                                 color: white;
                                 border: none;
-                                border-radius: 8px;
+                                border-radius: 6px;
                                 cursor: pointer;
                                 font-weight: 600;
                                 display: flex;
                                 align-items: center;
-                                gap: 8px;
+                                gap: 6px;
                                 transition: all 0.3s ease;
+                                font-size: 0.85rem;
                             ">
                                 📥 Экспорт CSV
                             </button>
                             <button id="archive-logout-btn" style="
-                                padding: 12px 24px;
+                                padding: 10px 16px;
                                 background: #e74c3c;
                                 color: white;
                                 border: none;
-                                border-radius: 8px;
+                                border-radius: 6px;
                                 cursor: pointer;
                                 font-weight: 600;
                                 display: flex;
                                 align-items: center;
-                                gap: 8px;
+                                gap: 6px;
                                 transition: all 0.3s ease;
+                                font-size: 0.85rem;
                             ">
                                 🚪 Выйти
                             </button>
@@ -262,144 +266,158 @@ function createArchiveModal() {
                 </div>
 
                 <!-- Панель поиска и фильтров -->
-                <div style="background: #f8f9fa; padding: 1.5rem 2rem; border-bottom: 1px solid #e9ecef;">
-                    <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
-                        <div style="flex: 1; min-width: 350px;">
-                            <label style="display: block; color: #8B4352; font-weight: 600; margin-bottom: 0.8rem; font-size: 1rem;">
+                <div style="background: #f8f9fa; padding: 1.2rem 2rem; border-bottom: 1px solid #e9ecef;">
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <div style="flex: 1; min-width: 300px;">
+                            <label style="display: block; color: #8B4352; font-weight: 600; margin-bottom: 0.5rem; font-size: 0.9rem;">
                                 🔍 Поиск по имени или фамилии
                             </label>
                             <input type="text" id="archive-search" placeholder="Введите имя для поиска..." style="
                                 width: 100%;
-                                padding: 14px 16px;
-                                border: 2px solid #ddd;
-                                border-radius: 10px;
-                                font-size: 15px;
+                                padding: 12px 14px;
+                                border: 1px solid #ddd;
+                                border-radius: 8px;
+                                font-size: 14px;
                                 box-sizing: border-box;
                                 transition: all 0.3s ease;
                                 background: white;
                             ">
                         </div>
                         
-                        <div style="min-width: 280px;">
-                            <label style="display: block; color: #8B4352; font-weight: 600; margin-bottom: 0.8rem; font-size: 1rem;">
+                        <div style="min-width: 200px;">
+                            <label style="display: block; color: #8B4352; font-weight: 600; margin-bottom: 0.5rem; font-size: 0.9rem;">
                                 ⚡ Фильтр по уровню либидо
                             </label>
                             <select id="archive-filter" style="
                                 width: 100%;
-                                padding: 14px 16px;
-                                border: 2px solid #ddd;
-                                border-radius: 10px;
-                                font-size: 15px;
+                                padding: 12px 14px;
+                                border: 1px solid #ddd;
+                                border-radius: 8px;
+                                font-size: 14px;
                                 background: white;
                                 cursor: pointer;
                             ">
                                 <option value="">Все уровни</option>
-                                <option value="Low">🔴 Низкое либидо</option>
-                                <option value="Medium">🟡 Среднее либидо</option>
-                                <option value="High">🟢 Высокое либидо</option>
-                                <option value="Very high">🟣 Очень высокое</option>
+                                <option value="Низкое">🔴 Низкое либидо</option>
+                                <option value="Среднее">🟡 Среднее либидо</option>
+                                <option value="Высокое">🟢 Высокое либидо</option>
+                                <option value="Очень высокое">🟣 Очень высокое</option>
                             </select>
                         </div>
                     </div>
                 </div>
 
                 <!-- Индикатор загрузки -->
-                <div id="archive-loading" style="display: none; text-align: center; padding: 4rem 2rem;">
-                    <div style="font-size: 4rem; color: #8B4352; margin-bottom: 1.5rem;">
+                <div id="archive-loading" style="display: none; text-align: center; padding: 3rem 2rem;">
+                    <div style="font-size: 3rem; color: #8B4352; margin-bottom: 1rem;">
                         <div class="loading-spinner">⏳</div>
                     </div>
-                    <p style="color: #666; font-size: 1.2rem; margin-bottom: 0.5rem;">Загрузка данных архива</p>
-                    <p style="color: #999; font-size: 0.9rem;">Пожалуйста, подождите...</p>
+                    <p style="color: #666; font-size: 1rem; margin-bottom: 0.5rem;">Загрузка данных архива</p>
+                    <p style="color: #999; font-size: 0.8rem;">Пожалуйста, подождите...</p>
                 </div>
 
                 <!-- Контейнер таблицы -->
-                <div id="archive-table-container" style="padding: 0;">
-                    <div style="overflow-x: auto; max-height: 50vh;">
+                <div id="archive-table-container" style="padding: 0; flex: 1; overflow: hidden;">
+                    <div style="overflow-x: auto; max-height: calc(95vh - 200px);">
                         <table id="archive-table" style="
                             width: 100%;
                             border-collapse: collapse;
-                            min-width: 1200px;
+                            min-width: 1300px;
                             background: white;
                         ">
                             <thead style="position: sticky; top: 0; z-index: 10;">
                                 <tr style="background: linear-gradient(135deg, #8B4352, #8B6B9E);">
                                     <th style="
-                                        padding: 18px 16px;
+                                        padding: 12px 10px;
                                         text-align: left;
                                         color: white;
-                                        font-weight: 700;
-                                        font-size: 0.95rem;
+                                        font-weight: 600;
+                                        font-size: 0.8rem;
                                         border-right: 1px solid rgba(255,255,255,0.15);
-                                        min-width: 200px;
+                                        min-width: 60px;
                                     ">
-                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                        <div style="display: flex; align-items: center; gap: 6px;">
+                                            <span>🖼️</span>
+                                            <span>Фото</span>
+                                        </div>
+                                    </th>
+                                    <th style="
+                                        padding: 12px 10px;
+                                        text-align: left;
+                                        color: white;
+                                        font-weight: 600;
+                                        font-size: 0.8rem;
+                                        border-right: 1px solid rgba(255,255,255,0.15);
+                                        min-width: 180px;
+                                    ">
+                                        <div style="display: flex; align-items: center; gap: 6px;">
                                             <span>👤</span>
                                             <span>ФИО</span>
                                         </div>
                                     </th>
                                     <th style="
-                                        padding: 18px 12px;
+                                        padding: 12px 8px;
                                         text-align: center;
                                         color: white;
-                                        font-weight: 700;
-                                        font-size: 0.95rem;
+                                        font-weight: 600;
+                                        font-size: 0.8rem;
                                         border-right: 1px solid rgba(255,255,255,0.15);
-                                        min-width: 80px;
+                                        min-width: 60px;
                                     ">Возраст</th>
                                     <th style="
-                                        padding: 18px 16px;
+                                        padding: 12px 10px;
                                         text-align: left;
                                         color: white;
-                                        font-weight: 700;
-                                        font-size: 0.95rem;
+                                        font-weight: 600;
+                                        font-size: 0.8rem;
                                         border-right: 1px solid rgba(255,255,255,0.15);
-                                        min-width: 150px;
+                                        min-width: 120px;
                                     ">📞 Телефон</th>
                                     <th style="
-                                        padding: 18px 16px;
+                                        padding: 12px 10px;
                                         text-align: left;
                                         color: white;
-                                        font-weight: 700;
-                                        font-size: 0.95rem;
+                                        font-weight: 600;
+                                        font-size: 0.8rem;
                                         border-right: 1px solid rgba(255,255,255,0.15);
-                                        min-width: 150px;
+                                        min-width: 120px;
                                     ">✈️ Telegram</th>
                                     <th style="
-                                        padding: 18px 12px;
+                                        padding: 12px 8px;
                                         text-align: center;
                                         color: white;
-                                        font-weight: 700;
-                                        font-size: 0.95rem;
+                                        font-weight: 600;
+                                        font-size: 0.8rem;
                                         border-right: 1px solid rgba(255,255,255,0.15);
-                                        min-width: 180px;
+                                        min-width: 140px;
                                     ">⚡ Уровень либидо</th>
                                     <th style="
-                                        padding: 18px 12px;
+                                        padding: 12px 8px;
                                         text-align: center;
                                         color: white;
-                                        font-weight: 700;
-                                        font-size: 0.95rem;
+                                        font-weight: 600;
+                                        font-size: 0.8rem;
                                         border-right: 1px solid rgba(255,255,255,0.15);
-                                        min-width: 100px;
+                                        min-width: 70px;
                                     ">⭐ Баллы</th>
                                     <th style="
-                                        padding: 18px 12px;
+                                        padding: 12px 8px;
                                         text-align: center;
                                         color: white;
-                                        font-weight: 700;
-                                        font-size: 0.95rem;
-                                        min-width: 120px;
+                                        font-weight: 600;
+                                        font-size: 0.8rem;
+                                        min-width: 100px;
                                     ">📅 Дата</th>
                                 </tr>
                             </thead>
                             <tbody id="archive-table-body">
                                 <tr>
-                                    <td colspan="7" style="
-                                        padding: 4rem 2rem;
+                                    <td colspan="8" style="
+                                        padding: 3rem 2rem;
                                         text-align: center;
                                         color: #999;
                                         font-style: italic;
-                                        font-size: 1.1rem;
+                                        font-size: 0.9rem;
                                     ">
                                         Данные не загружены. Войдите в систему для просмотра архива.
                                     </td>
@@ -412,21 +430,52 @@ function createArchiveModal() {
                 <!-- Пагинация и информация -->
                 <div style="
                     background: #f8f9fa;
-                    padding: 1.2rem 2rem;
+                    padding: 1rem 2rem;
                     border-top: 1px solid #e9ecef;
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
                     flex-wrap: wrap;
-                    gap: 1rem;
+                    gap: 0.8rem;
                 ">
-                    <div style="color: #666; font-size: 0.9rem;" id="archive-info">
+                    <div style="color: #666; font-size: 0.8rem;" id="archive-info">
                         Загрузка информации...
                     </div>
-                    <div style="display: flex; gap: 0.5rem;" id="archive-pagination">
-                        <!-- Пагинация будет генерироваться динамически -->
-                    </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Модальное окно для просмотра фото -->
+        <div id="photo-modal" style="
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 10001;
+            align-items: center;
+            justify-content: center;
+        ">
+            <div style="position: relative; max-width: 90vw; max-height: 90vh;">
+                <img id="photo-modal-img" src="" style="max-width: 100%; max-height: 90vh; border-radius: 10px;">
+                <button onclick="closePhotoModal()" style="
+                    position: absolute;
+                    top: -40px;
+                    right: -40px;
+                    background: rgba(255,255,255,0.2);
+                    border: none;
+                    color: white;
+                    font-size: 24px;
+                    cursor: pointer;
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                ">×</button>
             </div>
         </div>
     `;
@@ -506,20 +555,20 @@ function addModalAnimations() {
             animation: spin 1.5s linear infinite;
         }
         
-        #archive-btn {
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        
         .archive-row:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+        }
+
+        #archive-btn {
+            animation: subtlePulse 4s infinite;
+        }
+
+        @keyframes subtlePulse {
+            0% { opacity: 0.3; }
+            50% { opacity: 0.5; }
+            100% { opacity: 0.3; }
         }
     `;
     document.head.appendChild(style);
@@ -557,6 +606,9 @@ function closeArchiveModal() {
     const modal = document.getElementById('archive-modal');
     modal.style.display = 'none';
     
+    // Закрыть фото модальное окно если открыто
+    closePhotoModal();
+    
     // Очистка данных
     document.getElementById('archive-password').value = '';
     document.getElementById('archive-error').style.display = 'none';
@@ -564,6 +616,20 @@ function closeArchiveModal() {
     currentFilter = '';
     document.getElementById('archive-search').value = '';
     document.getElementById('archive-filter').value = '';
+}
+
+// Открытие модального окна фото
+function openPhotoModal(photoUrl) {
+    const modal = document.getElementById('photo-modal');
+    const img = document.getElementById('photo-modal-img');
+    img.src = photoUrl;
+    modal.style.display = 'flex';
+}
+
+// Закрытие модального окна фото
+function closePhotoModal() {
+    const modal = document.getElementById('photo-modal');
+    modal.style.display = 'none';
 }
 
 // Обработка входа в архив
@@ -603,7 +669,7 @@ async function loadArchiveData() {
     loadingElement.style.display = 'block';
     tableBody.innerHTML = `
         <tr>
-            <td colspan="7" style="padding: 3rem; text-align: center; color: #999;">
+            <td colspan="8" style="padding: 2rem; text-align: center; color: #999;">
                 Загрузка данных...
             </td>
         </tr>
@@ -636,6 +702,7 @@ async function loadArchiveData() {
         
         if (data.success && data.records) {
             archiveData = data.records;
+            currentDisplayedRecords = archiveData;
             populateArchiveTable(archiveData);
             updateArchiveStats();
             showNotification('✅ Данные архива успешно загружены', 'success');
@@ -657,10 +724,10 @@ async function loadArchiveData() {
         
         tableBody.innerHTML = `
             <tr>
-                <td colspan="7" style="padding: 3rem; text-align: center; color: #e74c3c;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">❌</div>
-                    <div style="font-weight: 600; margin-bottom: 1rem;">${errorMessage}</div>
-                    <small>Проверьте консоль браузера для подробной информации</small>
+                <td colspan="8" style="padding: 2rem; text-align: center; color: #e74c3c;">
+                    <div style="font-size: 2rem; margin-bottom: 0.8rem;">❌</div>
+                    <div style="font-weight: 600; margin-bottom: 0.8rem;">${errorMessage}</div>
+                    <small style="font-size: 0.8rem;">Проверьте консоль браузера для подробной информации</small>
                 </td>
             </tr>
         `;
@@ -678,10 +745,10 @@ function populateArchiveTable(records) {
     if (!records || records.length === 0) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="7" style="padding: 4rem 2rem; text-align: center; color: #999;">
-                    <div style="font-size: 4rem; margin-bottom: 1rem;">📭</div>
-                    <div style="font-size: 1.2rem; margin-bottom: 0.5rem;">Архив пуст</div>
-                    <div style="font-size: 0.9rem; color: #666;">Нет данных для отображения</div>
+                <td colspan="8" style="padding: 3rem 2rem; text-align: center; color: #999;">
+                    <div style="font-size: 3rem; margin-bottom: 0.8rem;">📭</div>
+                    <div style="font-size: 1rem; margin-bottom: 0.5rem;">Архив пуст</div>
+                    <div style="font-size: 0.8rem; color: #666;">Нет данных для отображения</div>
                 </td>
             </tr>
         `;
@@ -692,61 +759,73 @@ function populateArchiveTable(records) {
         const levelStyle = getLevelStyle(record.level);
         const rowStyle = index % 2 === 0 ? 'background: #fafafa;' : 'background: white;';
         
+        // Создаем аватар если фото нет
+        const avatarHtml = record.photo_data ? 
+            `<img src="${record.photo_data}" 
+                  alt="Фото" 
+                  style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 2px solid #8B4352;"
+                  onclick="openPhotoModal('${record.photo_data}')"
+                  title="Нажмите для увеличения">` :
+            `<div style="
+                width: 40px; 
+                height: 40px; 
+                border-radius: 50%; 
+                background: linear-gradient(135deg, #8B4352, #8B6B9E);
+                display: flex; 
+                align-items: center; 
+                justify-content: center; 
+                color: white; 
+                font-weight: bold; 
+                font-size: 0.8rem;
+                border: 2px solid #E6E6FA;
+            ">
+                ${(record.fio || '?').charAt(0).toUpperCase()}
+            </div>`;
+        
         return `
-            <tr class="archive-row" style="${rowStyle} border-bottom: 1px solid #f0f0f0; transition: all 0.3s ease;">
-                <td style="padding: 16px; color: #333; font-weight: 500;">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <div style="
-                            width: 40px;
-                            height: 40px;
-                            border-radius: 50%;
-                            background: linear-gradient(135deg, #8B4352, #8B6B9E);
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            color: white;
-                            font-weight: bold;
-                            font-size: 0.9rem;
-                        ">
-                            ${(record.fio || '?').charAt(0).toUpperCase()}
-                        </div>
+            <tr class="archive-row" style="${rowStyle} border-bottom: 1px solid #f0f0f0; transition: all 0.2s ease;">
+                <td style="padding: 10px; text-align: center; vertical-align: middle;">
+                    ${avatarHtml}
+                </td>
+                <td style="padding: 10px; color: #333; font-weight: 500; vertical-align: middle;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
                         <div>
-                            <div style="font-weight: 600; color: #2c3e50;">${record.fio || 'Не указано'}</div>
-                            <div style="font-size: 0.8rem; color: #7f8c8d;">ID: ${record.registrationId || 'N/A'}</div>
+                            <div style="font-weight: 600; color: #2c3e50; font-size: 0.9rem;">${record.fio || 'Не указано'}</div>
+                            <div style="font-size: 0.7rem; color: #7f8c8d;">ID: ${record.registrationId || 'N/A'}</div>
                         </div>
                     </div>
                 </td>
-                <td style="padding: 16px 12px; text-align: center; color: #666; font-weight: 500;">
+                <td style="padding: 10px 8px; text-align: center; color: #666; font-weight: 500; vertical-align: middle;">
                     ${record.age || '-'}
                 </td>
-                <td style="padding: 16px; color: #666;">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span>📞</span>
-                        <span>${record.phone || 'Не указан'}</span>
+                <td style="padding: 10px; color: #666; vertical-align: middle;">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <span style="font-size: 0.9rem;">📞</span>
+                        <span style="font-size: 0.85rem;">${record.phone || 'Не указан'}</span>
                     </div>
                 </td>
-                <td style="padding: 16px; color: #666;">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span>✈️</span>
-                        <span>${record.telegram || 'Не указан'}</span>
+                <td style="padding: 10px; color: #666; vertical-align: middle;">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <span style="font-size: 0.9rem;">✈️</span>
+                        <span style="font-size: 0.85rem;">${record.telegram || 'Не указан'}</span>
                     </div>
                 </td>
-                <td style="padding: 16px 12px; text-align: center;">
+                <td style="padding: 10px 8px; text-align: center; vertical-align: middle;">
                     <span style="
                         display: inline-block;
-                        padding: 8px 16px;
-                        border-radius: 20px;
-                        font-size: 0.85rem;
+                        padding: 6px 12px;
+                        border-radius: 15px;
+                        font-size: 0.75rem;
                         font-weight: 600;
                         ${levelStyle}
                     ">
                         ${getLevelIcon(record.level)} ${record.level || 'Не указан'}
                     </span>
                 </td>
-                <td style="padding: 16px 12px; text-align: center; color: #333; font-weight: 700; font-size: 1.1rem;">
+                <td style="padding: 10px 8px; text-align: center; color: #333; font-weight: 700; font-size: 0.9rem; vertical-align: middle;">
                     ${record.score || '0'}
                 </td>
-                <td style="padding: 16px 12px; text-align: center; color: #999; font-size: 0.9rem;">
+                <td style="padding: 10px 8px; text-align: center; color: #999; font-size: 0.8rem; vertical-align: middle;">
                     ${record.date ? new Date(record.date).toLocaleDateString('ru-RU') : 'Не указана'}
                 </td>
             </tr>
@@ -761,10 +840,10 @@ function getLevelStyle(level) {
     if (!level) return 'background: #f5f5f5; color: #666; border: 1px solid #ddd;';
     
     const styles = {
-        'Low': 'background: linear-gradient(135deg, #ffebee, #ffcdd2); color: #c62828; border: 1px solid #ffcdd2;',
-        'Medium': 'background: linear-gradient(135deg, #fff3e0, #ffe0b2); color: #ef6c00; border: 1px solid #ffe0b2;',
-        'High': 'background: linear-gradient(135deg, #e8f5e9, #c8e6c9); color: #2e7d32; border: 1px solid #c8e6c9;',
-        'Very high': 'background: linear-gradient(135deg, #f3e5f5, #e1bee7); color: #7b1fa2; border: 1px solid #e1bee7;'
+        'Низкое': 'background: linear-gradient(135deg, #ffebee, #ffcdd2); color: #c62828; border: 1px solid #ffcdd2;',
+        'Среднее': 'background: linear-gradient(135deg, #fff3e0, #ffe0b2); color: #ef6c00; border: 1px solid #ffe0b2;',
+        'Высокое': 'background: linear-gradient(135deg, #e8f5e9, #c8e6c9); color: #2e7d32; border: 1px solid #c8e6c9;',
+        'Очень высокое': 'background: linear-gradient(135deg, #f3e5f5, #e1bee7); color: #7b1fa2; border: 1px solid #e1bee7;'
     };
     
     for (const [key, style] of Object.entries(styles)) {
@@ -779,10 +858,10 @@ function getLevelIcon(level) {
     if (!level) return '❓';
     
     const icons = {
-        'Low': '🔴',
-        'Medium': '🟡', 
-        'High': '🟢',
-        'Very high': '🟣'
+        'Низкое': '🔴',
+        'Среднее': '🟡', 
+        'Высокое': '🟢',
+        'Очень высокое': '🟣'
     };
     
     for (const [key, icon] of Object.entries(icons)) {
@@ -801,10 +880,10 @@ function updateArchiveStats() {
     
     const total = archiveData.length;
     const levels = {
-        low: archiveData.filter(r => r.level && r.level.includes('Low')).length,
-        medium: archiveData.filter(r => r.level && r.level.includes('Medium')).length,
-        high: archiveData.filter(r => r.level && r.level.includes('High') && !r.level.includes('Very')).length,
-        veryHigh: archiveData.filter(r => r.level && r.level.includes('Very')).length
+        low: archiveData.filter(r => r.level && r.level.includes('Низкое')).length,
+        medium: archiveData.filter(r => r.level && r.level.includes('Среднее')).length,
+        high: archiveData.filter(r => r.level && r.level.includes('Высокое') && !r.level.includes('Очень')).length,
+        veryHigh: archiveData.filter(r => r.level && r.level.includes('Очень')).length
     };
     
     const statsText = `
@@ -821,7 +900,7 @@ function updateArchiveStats() {
 // Обновление информации о данных
 function updateArchiveInfo(totalCount) {
     const filteredCount = currentSearch || currentFilter ? 
-        archiveData.filter(record => filterRecord(record)).length : 
+        currentDisplayedRecords.length : 
         totalCount;
     
     let infoText = `Показано: <strong>${filteredCount}</strong> из <strong>${totalCount}</strong> записей`;
@@ -842,6 +921,7 @@ function filterArchiveTable() {
     if (!archiveData || archiveData.length === 0) return;
     
     const filteredData = archiveData.filter(record => filterRecord(record));
+    currentDisplayedRecords = filteredData;
     populateArchiveTable(filteredData);
 }
 
@@ -903,7 +983,6 @@ function exportToCSV() {
 
 // Показать уведомление
 function showNotification(message, type = 'info') {
-    // Удаляем старые уведомления
     const oldNotifications = document.querySelectorAll('.archive-notification');
     oldNotifications.forEach(notif => notif.remove());
     
@@ -914,18 +993,18 @@ function showNotification(message, type = 'info') {
         position: fixed;
         top: 20px;
         right: 20px;
-        padding: 16px 20px;
-        border-radius: 12px;
+        padding: 12px 16px;
+        border-radius: 8px;
         z-index: 10001;
         animation: slideInRight 0.3s ease-out;
-        box-shadow: 0 6px 25px rgba(0,0,0,0.15);
-        max-width: 400px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        max-width: 300px;
         color: white;
         font-weight: 500;
-        font-size: 0.95rem;
+        font-size: 0.85rem;
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 8px;
         backdrop-filter: blur(10px);
     `;
     
@@ -947,7 +1026,6 @@ function showNotification(message, type = 'info') {
     
     document.body.appendChild(notification);
     
-    // Автоматическое скрытие
     setTimeout(() => {
         if (notification.parentNode) {
             notification.style.animation = 'slideOutRight 0.3s ease-in forwards';
@@ -987,8 +1065,8 @@ notificationStyles.textContent = `
     
     @keyframes shake {
         0%, 100% { transform: translateX(0); }
-        25% { transform: translateX(-8px); }
-        75% { transform: translateX(8px); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
     }
 `;
 document.head.appendChild(notificationStyles);
@@ -998,7 +1076,9 @@ window.ArchiveSystem = {
     openArchive: openArchiveModal,
     closeArchive: closeArchiveModal,
     loadData: loadArchiveData,
-    refreshData: loadArchiveData
+    refreshData: loadArchiveData,
+    openPhotoModal: openPhotoModal,
+    closePhotoModal: closePhotoModal
 };
 
 console.log('🎯 Модуль архива полностью загружен и готов к работе!');
