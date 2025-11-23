@@ -1213,40 +1213,40 @@
                     </div>
 
                     <!-- Блок загрузки фотографии -->
-                    <div class="form-group">
-                        <label class="required-field">Фотография</label>
-                        <div class="photo-upload-container">
-                            <div class="photo-upload-area" id="photoUploadArea">
-                                <div class="upload-icon">
-                                    <i class="fas fa-camera"></i>
-                                </div>
-                                <div class="upload-text">
-                                    <h4>Добавьте вашу фотографию</h4>
-                                    <p>Перетащите сюда фото или нажмите для выбора</p>
-                                </div>
-                                <button type="button" class="btn-upload" id="uploadButton">
-                                    <i class="fas fa-upload"></i> Выбрать файл
-                                </button>
-                                <input type="file" id="photoInput" class="file-input" accept="image/*" required>
-                                <div class="upload-requirements">
-                                    Поддерживаемые форматы: JPG, PNG, GIF. Максимальный размер: 5 МБ
-                                </div>
-                            </div>
-                            
-                            <div class="photo-preview-container" id="photoPreviewContainer">
-                                <div class="photo-preview">
-                                    <img id="photoPreview" src="" alt="Предпросмотр фото">
-                                    <button type="button" class="btn-remove-photo" id="removePhotoButton">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            
-                            <div class="photo-error" id="photoError">
-                                Пожалуйста, загрузите вашу фотографию
-                            </div>
-                        </div>
-                    </div>
+          <div class="form-group">
+    <label class="required-field">Фотография</label>
+    <div class="photo-upload-container">
+        <div class="photo-upload-area" id="photoUploadArea">
+            <div class="upload-icon">
+                <i class="fas fa-camera"></i>
+            </div>
+            <div class="upload-text">
+                <h4>Добавьте вашу фотографию</h4>
+                <p>Перетащите сюда фото или нажмите для выбора</p>
+            </div>
+            <button type="button" class="btn-upload" id="uploadButton">
+                <i class="fas fa-upload"></i> Выбрать файл
+            </button>
+            <input type="file" id="photoInput" class="file-input" accept="image/*" required>
+            <div class="upload-requirements">
+                Поддерживаемые форматы: JPG, PNG, GIF. Максимальный размер: 2 МБ
+            </div>
+        </div>
+        
+        <div class="photo-preview-container" id="photoPreviewContainer">
+            <div class="photo-preview">
+                <img id="photoPreview" src="" alt="Предпросмотр фото">
+                <button type="button" class="btn-remove-photo" id="removePhotoButton">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="photo-error" id="photoError">
+            Пожалуйста, загрузите вашу фотографию
+        </div>
+    </div>
+</div>
                     
                     <div class="form-group" style="text-align: center; margin-top: 2rem;">
                         <button type="submit" class="btn btn-large">
@@ -2462,7 +2462,15 @@
                 if (!userPhoto) {
                     throw new Error('Пожалуйста, загрузите фотографию');
                 }
-                
+                // Преобразуем фото в base64
+if (userPhoto) {
+    const base64Photo = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.readAsDataURL(userPhoto);
+    });
+    registrationData.photo = base64Photo;
+}
                 // Отправляем в Telegram
                 await sendRegistrationToTelegram(registrationData, userPhoto);
                 
@@ -2555,49 +2563,78 @@
         }
 
         // Функции для отправки в Telegram
-        async function sendRegistrationToTelegram(data, photoFile) {
-            try {
-                // Сначала отправляем текстовое сообщение
-                let message = `🌟 *НОВАЯ РЕГИСТРАЦИЯ* 🌟\n\n`;
-                message += `👤 *Контактная информация:*\n`;
-                message += `   └ *Фамилия:* ${data.lastName}\n`;
-                message += `   └ *Имя:* ${data.firstName}\n`;
-                message += `   └ *Возраст:* ${data.age}\n`;
-                message += `   └ *Телефон:* ${data.phone}\n`;
-                message += `   └ *Telegram:* ${data.telegram}\n`;
-                message += `   └ *Фото:* ${photoFile ? 'Да' : 'Нет'}\n`;
-                message += `\n⏰ *Дата регистрации:* ${new Date().toLocaleString('ru-RU')}`;
+       async function sendRegistrationToTelegram(data, photoFile) {
+    try {
+        // Сначала отправляем текстовое сообщение
+        let message = `🌟 *НОВАЯ РЕГИСТРАЦИЯ* 🌟\n\n`;
+        message += `👤 *Контактная информация:*\n`;
+        message += `   └ *Фамилия:* ${data.lastName}\n`;
+        message += `   └ *Имя:* ${data.firstName}\n`;
+        message += `   └ *Возраст:* ${data.age}\n`;
+        message += `   └ *Телефон:* ${data.phone}\n`;
+        message += `   └ *Telegram:* ${data.telegram}\n`;
+        message += `   └ *Фото:* ${photoFile ? 'Да' : 'Нет'}\n`;
+        message += `\n⏰ *Дата регистрации:* ${new Date().toLocaleString('ru-RU')}`;
 
-                const textResponse = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        chat_id: TELEGRAM_CHAT_ID,
-                        text: message,
-                        parse_mode: 'Markdown'
-                    })
-                });
+        const textResponse = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                chat_id: TELEGRAM_CHAT_ID,
+                text: message,
+                parse_mode: 'Markdown'
+            })
+        });
 
-                const textResult = await textResponse.json();
-                
-                if (!textResponse.ok || !textResult.ok) {
-                    throw new Error(textResult.description || 'Ошибка отправки текста в Telegram');
-                }
-
-                // Затем отправляем фото, если есть
-                if (photoFile) {
-                    await sendPhotoToTelegram(photoFile, `Фото: ${data.firstName} ${data.lastName}`);
-                }
-
-                console.log('✅ Регистрация успешно отправлена в Telegram');
-                
-            } catch (error) {
-                console.error('Ошибка отправки регистрации:', error);
-                throw error;
-            }
+        const textResult = await textResponse.json();
+        
+        if (!textResponse.ok || !textResult.ok) {
+            throw new Error(textResult.description || 'Ошибка отправки текста в Telegram');
         }
+
+        // Затем отправляем фото, если есть
+        if (photoFile) {
+            await sendPhotoToTelegram(photoFile, `Фото: ${data.firstName} ${data.lastName}`);
+        }
+
+        // === ДОБАВЬ ЭТУ ЧАСТЬ ДЛЯ ОТПРАВКИ НА СЕРВЕР ===
+        // Отправляем данные на сервер Railway
+        const serverResponse = await fetch(`${API_BASE_URL}/api/register`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                lastName: data.lastName,
+                firstName: data.firstName,
+                age: parseInt(data.age),
+                phone: data.phone,
+                telegram: data.telegram,
+                photo_data: data.photo_data // отправляем base64 фото
+            })
+        });
+
+        const serverResult = await serverResponse.json();
+        
+        if (!serverResponse.ok || !serverResult.success) {
+            console.error('Ошибка сохранения на сервере:', serverResult.error);
+            // Не прерываем процесс, просто логируем ошибку
+        } else {
+            console.log('✅ Данные сохранены на сервере, ID:', serverResult.registrationId);
+            // Сохраняем ID для будущего использования
+            localStorage.setItem('registrationId', serverResult.registrationId);
+        }
+        // === КОНЕЦ ДОБАВЛЕНИЯ ===
+
+        console.log('✅ Регистрация успешно отправлена в Telegram и на сервер');
+        
+    } catch (error) {
+        console.error('Ошибка отправки регистрации:', error);
+        throw error;
+    }
+}
 
         async function sendPhotoToTelegram(photoFile, caption) {
             try {
