@@ -22,55 +22,54 @@ function initArchiveSystem() {
     console.log('✅ Система архива готова');
 }
 
-// Создание стильной кнопки архива
+// Создание кнопки архива - ПРОЗРАЧНЫЙ ЗАМОЧЕК
 function createArchiveButton() {
     const oldBtn = document.getElementById('archive-btn');
     if (oldBtn) oldBtn.remove();
 
     const archiveBtn = document.createElement('button');
     archiveBtn.id = 'archive-btn';
-    archiveBtn.innerHTML = '📊';
+    archiveBtn.innerHTML = '🔒';
     archiveBtn.title = 'Архив данных';
     archiveBtn.style.cssText = `
         position: fixed;
-        bottom: 20px;
-        left: 20px;
+        bottom: 25px;
+        left: 25px;
         width: 50px;
         height: 50px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #8B4352, #8B6B9E);
-        border: 2px solid rgba(255,255,255,0.3);
-        color: white;
+        background: rgba(139, 67, 82, 0.1);
+        border: 2px solid rgba(139, 67, 82, 0.3);
+        color: #8B4352;
         cursor: pointer;
-        opacity: 0.3;
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        opacity: 0.6;
+        transition: all 0.4s ease;
         z-index: 9999;
-        font-size: 18px;
+        font-size: 20px;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 2px 10px rgba(139, 67, 82, 0.2);
+        backdrop-filter: blur(10px);
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        backdrop-filter: blur(5px);
     `;
 
-    // Анимации при наведении
     archiveBtn.addEventListener('mouseenter', function() {
-        this.style.opacity = '0.9';
+        this.style.opacity = '1';
+        this.style.background = 'rgba(139, 67, 82, 0.2)';
         this.style.transform = 'scale(1.1)';
-        this.style.boxShadow = '0 4px 15px rgba(139, 67, 82, 0.4)';
+        this.style.borderColor = 'rgba(139, 67, 82, 0.5)';
     });
 
     archiveBtn.addEventListener('mouseleave', function() {
-        this.style.opacity = '0.3';
+        this.style.opacity = '0.6';
+        this.style.background = 'rgba(139, 67, 82, 0.1)';
         this.style.transform = 'scale(1)';
-        this.style.boxShadow = '0 2px 10px rgba(139, 67, 82, 0.2)';
+        this.style.borderColor = 'rgba(139, 67, 82, 0.3)';
     });
 
     archiveBtn.addEventListener('click', openArchiveModal);
     document.body.appendChild(archiveBtn);
 }
-
 // Создание модального окна архива с улучшенным дизайном
 function createArchiveModal() {
     const oldModal = document.getElementById('archive-modal');
@@ -738,7 +737,7 @@ async function loadArchiveData() {
     }
 }
 
-// Заполнение таблицы данными
+// Заполнение таблицы данными с фото
 function populateArchiveTable(records) {
     const tbody = document.getElementById('archive-table-body');
 
@@ -759,16 +758,18 @@ function populateArchiveTable(records) {
         const levelStyle = getLevelStyle(record.level);
         const rowStyle = index % 2 === 0 ? 'background: #fafafa;' : 'background: white;';
         
-        // Создаем аватар если фото нет
-        const avatarHtml = record.photo_data ? 
+        // Фото или аватар
+        const photoHtml = record.photo_data ? 
             `<img src="${record.photo_data}" 
-                  alt="Фото" 
-                  style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 2px solid #8B4352;"
+                  alt="Фото ${record.fio}" 
+                  style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 2px solid #8B4352; transition: all 0.3s ease;"
                   onclick="openPhotoModal('${record.photo_data}')"
+                  onmouseover="this.style.transform='scale(1.1)'"
+                  onmouseout="this.style.transform='scale(1)'"
                   title="Нажмите для увеличения">` :
             `<div style="
-                width: 40px; 
-                height: 40px; 
+                width: 50px; 
+                height: 50px; 
                 border-radius: 50%; 
                 background: linear-gradient(135deg, #8B4352, #8B6B9E);
                 display: flex; 
@@ -776,56 +777,57 @@ function populateArchiveTable(records) {
                 justify-content: center; 
                 color: white; 
                 font-weight: bold; 
-                font-size: 0.8rem;
+                font-size: 1rem;
                 border: 2px solid #E6E6FA;
-            ">
+                cursor: pointer;
+            " title="Фото не загружено">
                 ${(record.fio || '?').charAt(0).toUpperCase()}
             </div>`;
         
         return `
-            <tr class="archive-row" style="${rowStyle} border-bottom: 1px solid #f0f0f0; transition: all 0.2s ease;">
-                <td style="padding: 10px; text-align: center; vertical-align: middle;">
-                    ${avatarHtml}
+            <tr class="archive-row" style="${rowStyle} border-bottom: 1px solid #f0f0f0; transition: all 0.3s ease;">
+                <td style="padding: 12px; text-align: center; vertical-align: middle;">
+                    ${photoHtml}
                 </td>
-                <td style="padding: 10px; color: #333; font-weight: 500; vertical-align: middle;">
-                    <div style="display: flex; align-items: center; gap: 8px;">
+                <td style="padding: 12px; color: #333; font-weight: 500; vertical-align: middle;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
                         <div>
-                            <div style="font-weight: 600; color: #2c3e50; font-size: 0.9rem;">${record.fio || 'Не указано'}</div>
-                            <div style="font-size: 0.7rem; color: #7f8c8d;">ID: ${record.registrationId || 'N/A'}</div>
+                            <div style="font-weight: 600; color: #2c3e50; font-size: 0.95rem;">${record.fio || 'Не указано'}</div>
+                            <div style="font-size: 0.75rem; color: #7f8c8d;">ID: ${record.registrationId || 'N/A'}</div>
                         </div>
                     </div>
                 </td>
-                <td style="padding: 10px 8px; text-align: center; color: #666; font-weight: 500; vertical-align: middle;">
+                <td style="padding: 12px 8px; text-align: center; color: #666; font-weight: 500; vertical-align: middle;">
                     ${record.age || '-'}
                 </td>
-                <td style="padding: 10px; color: #666; vertical-align: middle;">
+                <td style="padding: 12px; color: #666; vertical-align: middle;">
                     <div style="display: flex; align-items: center; gap: 6px;">
-                        <span style="font-size: 0.9rem;">📞</span>
+                        <span style="color: #8B4352; font-size: 0.9rem;">📞</span>
                         <span style="font-size: 0.85rem;">${record.phone || 'Не указан'}</span>
                     </div>
                 </td>
-                <td style="padding: 10px; color: #666; vertical-align: middle;">
+                <td style="padding: 12px; color: #666; vertical-align: middle;">
                     <div style="display: flex; align-items: center; gap: 6px;">
-                        <span style="font-size: 0.9rem;">✈️</span>
+                        <span style="color: #0088cc; font-size: 0.9rem;">✈️</span>
                         <span style="font-size: 0.85rem;">${record.telegram || 'Не указан'}</span>
                     </div>
                 </td>
-                <td style="padding: 10px 8px; text-align: center; vertical-align: middle;">
+                <td style="padding: 12px 8px; text-align: center; vertical-align: middle;">
                     <span style="
                         display: inline-block;
                         padding: 6px 12px;
                         border-radius: 15px;
-                        font-size: 0.75rem;
+                        font-size: 0.8rem;
                         font-weight: 600;
                         ${levelStyle}
                     ">
                         ${getLevelIcon(record.level)} ${record.level || 'Не указан'}
                     </span>
                 </td>
-                <td style="padding: 10px 8px; text-align: center; color: #333; font-weight: 700; font-size: 0.9rem; vertical-align: middle;">
+                <td style="padding: 12px 8px; text-align: center; color: #8B4352; font-weight: 700; font-size: 0.9rem; vertical-align: middle;">
                     ${record.score || '0'}
                 </td>
-                <td style="padding: 10px 8px; text-align: center; color: #999; font-size: 0.8rem; vertical-align: middle;">
+                <td style="padding: 12px 8px; text-align: center; color: #999; font-size: 0.8rem; vertical-align: middle;">
                     ${record.date ? new Date(record.date).toLocaleDateString('ru-RU') : 'Не указана'}
                 </td>
             </tr>
@@ -835,22 +837,22 @@ function populateArchiveTable(records) {
     updateArchiveInfo(records.length);
 }
 
-// Получение стиля для уровня либидо
+// Получение стиля для уровня либидо - ПРИЯТНЫЕ ПАСТЕЛЬНЫЕ ЦВЕТА
 function getLevelStyle(level) {
-    if (!level) return 'background: #f5f5f5; color: #666; border: 1px solid #ddd;';
+    if (!level) return 'background: #f8f9fa; color: #6c757d; border: 1px solid #dee2e6;';
     
     const styles = {
-        'Низкое': 'background: linear-gradient(135deg, #ffebee, #ffcdd2); color: #c62828; border: 1px solid #ffcdd2;',
-        'Среднее': 'background: linear-gradient(135deg, #fff3e0, #ffe0b2); color: #ef6c00; border: 1px solid #ffe0b2;',
-        'Высокое': 'background: linear-gradient(135deg, #e8f5e9, #c8e6c9); color: #2e7d32; border: 1px solid #c8e6c9;',
-        'Очень высокое': 'background: linear-gradient(135deg, #f3e5f5, #e1bee7); color: #7b1fa2; border: 1px solid #e1bee7;'
+        'Низкое': 'background: linear-gradient(135deg, #FFF5F5, #FFE8E8); color: #D46A6A; border: 1px solid #FFE8E8;',
+        'Среднее': 'background: linear-gradient(135deg, #FFF9F0, #FFF0D9); color: #D4A46A; border: 1px solid #FFF0D9;',
+        'Высокое': 'background: linear-gradient(135deg, #F0FFF4, #E8F5E8); color: #4CAF50; border: 1px solid #E8F5E8;',
+        'Очень высокое': 'background: linear-gradient(135deg, #F5F0FF, #E8E0F5); color: #8B6B9E; border: 1px solid #E8E0F5;'
     };
     
     for (const [key, style] of Object.entries(styles)) {
         if (level.includes(key)) return style;
     }
     
-    return 'background: #f5f5f5; color: #666; border: 1px solid #ddd;';
+    return 'background: #f8f9fa; color: #6c757d; border: 1px solid #dee2e6;';
 }
 
 // Получение иконки для уровня либидо
@@ -858,10 +860,10 @@ function getLevelIcon(level) {
     if (!level) return '❓';
     
     const icons = {
-        'Низкое': '🔴',
-        'Среднее': '🟡', 
-        'Высокое': '🟢',
-        'Очень высокое': '🟣'
+        'Низкое': '🌙',
+        'Среднее': '⭐', 
+        'Высокое': '🔥',
+        'Очень высокое': '💫'
     };
     
     for (const [key, icon] of Object.entries(icons)) {
