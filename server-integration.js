@@ -22,6 +22,28 @@ function fileToBase64(file) {
     });
 }
 
+// Функция для получения фото из формы регистрации
+function getPhotoFromForm() {
+    return new Promise((resolve) => {
+        // Ищем поле для фото в форме
+        const photoInput = document.getElementById('photo');
+        if (photoInput && photoInput.files && photoInput.files[0]) {
+            fileToBase64(photoInput.files[0])
+                .then(base64 => resolve(base64))
+                .catch(() => resolve(null));
+        } else {
+            // Проверяем глобальную переменную window.userPhoto
+            if (window.userPhoto) {
+                fileToBase64(window.userPhoto)
+                    .then(base64 => resolve(base64))
+                    .catch(() => resolve(null));
+            } else {
+                resolve(null);
+            }
+        }
+    });
+}
+
 // Registration function with photo support
 async function handleRegistrationToServer(form) {
     try {
@@ -30,18 +52,20 @@ async function handleRegistrationToServer(form) {
         
         console.log('📝 Отправка данных на сервер...', registrationData);
 
-        // Добавляем фото в формате base64
-        if (window.userPhoto) {
-            try {
-                registrationData.photo_data = await fileToBase64(window.userPhoto);
-                console.log('✅ Фото преобразовано в base64, длина:', registrationData.photo_data.length);
-            } catch (photoError) {
-                console.error('❌ Ошибка преобразования фото:', photoError);
-                registrationData.photo_data = null;
-            }
+        // Получаем фото в формате base64
+        console.log('🖼️ Поиск фото для загрузки...');
+        registrationData.photo_data = await getPhotoFromForm();
+        
+        if (registrationData.photo_data) {
+            console.log('✅ Фото найдено и преобразовано в base64, длина:', registrationData.photo_data.length);
         } else {
-            console.log('⚠️ Фото не загружено');
-            registrationData.photo_data = null;
+            console.log('⚠️ Фото не найдено в форме');
+            // Проверяем есть ли фото в localStorage
+            const savedPhoto = localStorage.getItem('userPhoto');
+            if (savedPhoto) {
+                console.log('📸 Найдено фото в localStorage');
+                registrationData.photo_data = savedPhoto.split(',')[1]; // Убираем префикс
+            }
         }
 
         console.log('📤 Отправка данных на сервер:', { 
