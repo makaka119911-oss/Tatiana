@@ -1,5 +1,5 @@
 // ===== ARCHIVE SYSTEM - TATIANA WEBSITE =====
-// Исправленная версия с работающими фото и фильтрами
+// Полностью переписанная версия с работающими фото и фильтрами
 
 const API_BASE_URL = 'https://tatiana-server-production.up.railway.app';
 const ARCHIVE_PASSWORD = 'tatiana_archive_2024_LBg_makaka_9f3a7c2e8d1b5a4c6';
@@ -586,6 +586,34 @@ function addModalAnimations() {
             transform: scale(1.05);
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
     `;
     document.head.appendChild(style);
 }
@@ -711,7 +739,18 @@ async function loadArchiveData() {
         const data = await response.json();
         console.log('✅ Данные получены:', data);
         
+        // ДЕБАГ: Проверяем фото в данных
         if (data.success && data.records) {
+            console.log(`📊 Получено ${data.records.length} записей`);
+            data.records.forEach((record, index) => {
+                console.log(`📝 Запись ${index + 1}:`, {
+                    fio: record.fio,
+                    has_photo: !!record.photo_data,
+                    photo_length: record.photo_data ? record.photo_data.length : 0,
+                    photo_data_sample: record.photo_data ? record.photo_data.substring(0, 50) + '...' : 'нет'
+                });
+            });
+            
             archiveData = data.records;
             populateArchiveTable(archiveData);
             updateArchiveStats();
@@ -778,10 +817,20 @@ function populateArchiveTable(records) {
         const levelStyle = getLevelStyle(record.level);
         const rowStyle = index % 2 === 0 ? 'background: #fafafa;' : 'background: white;';
         
-        // ИСПРАВЛЕНИЕ: Правильное отображение фото
-        const avatarUrl = record.photo_data ? 
-            `data:image/jpeg;base64,${record.photo_data}` : 
-            generateAvatar(record.fio);
+        // ИСПРАВЛЕНИЕ: Правильное отображение фото с проверкой
+        let avatarUrl;
+        if (record.photo_data) {
+            // Проверяем, есть ли уже префикс data:image
+            if (record.photo_data.startsWith('data:image')) {
+                avatarUrl = record.photo_data;
+            } else {
+                avatarUrl = `data:image/jpeg;base64,${record.photo_data}`;
+            }
+            console.log('🖼️ Фото найдено для записи:', record.fio, 'URL длина:', avatarUrl.length);
+        } else {
+            avatarUrl = generateAvatar(record.fio);
+            console.log('👤 Аватар сгенерирован для:', record.fio);
+        }
         
         return `
             <tr class="archive-row" style="${rowStyle} border-bottom: 1px solid #f0f0f0; transition: all 0.3s ease;">
@@ -799,6 +848,7 @@ function populateArchiveTable(records) {
                          "
                          onclick="showEnlargedPhoto('${avatarUrl}')"
                          title="Нажмите для увеличения"
+                         onerror="this.src='${generateAvatar(record.fio)}'"
                     >
                 </td>
                 <td style="padding: 16px; color: #333; font-weight: 500;">
@@ -1152,39 +1202,6 @@ function showNotification(message, type = 'info') {
         }
     }, 4000);
 }
-
-// Добавление CSS анимаций для уведомлений
-const notificationStyles = document.createElement('style');
-notificationStyles.textContent = `
-    @keyframes slideInRight {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-    
-    @keyframes slideOutRight {
-        from {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        to {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-    }
-    
-    @keyframes shake {
-        0%, 100% { transform: translateX(0); }
-        25% { transform: translateX(-8px); }
-        75% { transform: translateX(8px); }
-    }
-`;
-document.head.appendChild(notificationStyles);
 
 // Экспорт функций для глобального использования
 window.ArchiveSystem = {
