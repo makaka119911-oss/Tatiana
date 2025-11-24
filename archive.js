@@ -1,1255 +1,1206 @@
-// Tatiana Website - Main Script
-// Полностью переписанная версия с интеграцией архива и фото
+// ===== ARCHIVE SYSTEM - TATIANA WEBSITE =====
+// Полностью переработанная версия архива с улучшенным дизайном и обработкой ошибок
 
-// Конфигурация Telegram
-const TELEGRAM_BOT_TOKEN = '8402206062:AAEJim1GkriKqY_o1mOo0YWSWQDdw5Qy2h0';
-const TELEGRAM_CHAT_ID = '-1002313355102';
 const API_BASE_URL = 'https://tatiana-server-production.up.railway.app';
+const ARCHIVE_PASSWORD = 'tatiana_archive_2024_LBg_makaka_9f3a7c2e8d1b5a4c6';
 
 // Глобальные переменные
-let currentStep = 1;
-let totalSteps = 6;
-let testData = {};
-let registrationData = {};
-let userPhoto = null;
-let currentRegistrationId = null;
+let archiveData = [];
+let currentSearch = '';
+let currentFilter = '';
+let currentPage = 1;
+const recordsPerPage = 10;
 
+// Инициализация архива при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Сайт загружен');
-
-    // Проверяем, пройдена ли диагностика
-    checkDiagnosticStatus();
-
-    // Инициализация
-    initEventListeners();
-    initTestSteps();
-    initPhotoUpload();
+    console.log('🔧 Инициализация системы архива...');
+    initArchiveSystem();
 });
 
-function checkDiagnosticStatus() {
-    const diagnosticCompleted = localStorage.getItem('diagnosticCompleted') === 'true';
-    if (diagnosticCompleted) {
-        unlockAllSections();
-    }
+function initArchiveSystem() {
+    createArchiveButton();
+    createArchiveModal();
+    console.log('✅ Система архива готова');
 }
 
-function unlockAllSections() {
-    const sections = ['about', 'power', 'services', 'process', 'awakening', 'contacts'];
-    
-    sections.forEach(section => {
-        const lock = document.getElementById(section + 'Lock');
-        const content = document.getElementById(section + 'Content');
-        
-        if (lock) lock.style.display = 'none';
-        if (content) content.style.display = 'block';
+// Создание кнопки архива в стиле сайта
+function createArchiveButton() {
+    const oldBtn = document.getElementById('archive-btn');
+    if (oldBtn) oldBtn.remove();
+
+    const archiveBtn = document.createElement('button');
+    archiveBtn.id = 'archive-btn';
+    archiveBtn.innerHTML = '📊';
+    archiveBtn.title = 'Архив данных';
+    archiveBtn.style.cssText = `
+        position: fixed;
+        bottom: 30px;
+        left: 30px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #8B4352, #8B6B9E);
+        border: 2px solid rgba(255,255,255,0.3);
+        color: white;
+        cursor: pointer;
+        opacity: 0.7;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        z-index: 9999;
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 20px rgba(139, 67, 82, 0.3);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        backdrop-filter: blur(10px);
+    `;
+
+    // Анимации при наведении
+    archiveBtn.addEventListener('mouseenter', function() {
+        this.style.opacity = '1';
+        this.style.transform = 'scale(1.1) rotate(5deg)';
+        this.style.boxShadow = '0 6px 25px rgba(139, 67, 82, 0.5)';
     });
+
+    archiveBtn.addEventListener('mouseleave', function() {
+        this.style.opacity = '0.7';
+        this.style.transform = 'scale(1) rotate(0deg)';
+        this.style.boxShadow = '0 4px 20px rgba(139, 67, 82, 0.3)';
+    });
+
+    archiveBtn.addEventListener('click', openArchiveModal);
+    document.body.appendChild(archiveBtn);
 }
 
-function initEventListeners() {
-    // Форма регистрации
-    const registrationForm = document.getElementById('registrationForm');
-    if (registrationForm) {
-        registrationForm.addEventListener('submit', handleRegistrationSubmit);
-    }
+// Создание модального окна архива
+function createArchiveModal() {
+    const oldModal = document.getElementById('archive-modal');
+    if (oldModal) oldModal.remove();
 
-    // Форма теста
-    const testForm = document.getElementById('libidoTestForm');
-    if (testForm) {
-        testForm.addEventListener('submit', handleTestSubmit);
-    }
+    const modal = document.createElement('div');
+    modal.id = 'archive-modal';
+    modal.style.cssText = `
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 10000;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(10px);
+        animation: fadeIn 0.3s ease;
+    `;
 
-    // Форма консультации
-    const consultationForm = document.getElementById('consultationForm');
-    if (consultationForm) {
-        consultationForm.addEventListener('submit', handleConsultationSubmit);
-    }
-
-    // Кнопка "Назад к тесту"
-    const backToTestBtn = document.getElementById('backToTest');
-    if (backToTestBtn) {
-        backToTestBtn.addEventListener('click', function() {
-            showTestSection();
-        });
-    }
-
-    // Сезонная зависимость
-    document.querySelectorAll('input[name="season_dependency"]').forEach(radio => {
-        radio.addEventListener('change', function() {
-            const description = document.getElementById('seasonDescription');
-            description.style.display = this.value === 'Да' ? 'block' : 'none';
-        });
-    });
-
-    // Навигационные ссылки
-    document.querySelectorAll('.registration-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            showRegistrationSection();
-        });
-    });
-
-    document.querySelectorAll('.consultation-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            showContactsSection();
-        });
-    });
-
-    document.querySelectorAll('.about-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            showAboutSection();
-        });
-    });
-
-    document.querySelectorAll('.power-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            showPowerSection();
-        });
-    });
-
-    document.querySelectorAll('.services-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            showServicesSection();
-        });
-    });
-
-    document.querySelectorAll('.process-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            showProcessSection();
-        });
-    });
-
-    document.querySelectorAll('.awakening-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            showAwakeningSection();
-        });
-    });
-
-    document.querySelectorAll('.contacts-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            showContactsSection();
-        });
-    });
-
-    // Мобильное меню
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const navLinks = document.getElementById('navLinks');
-    if (mobileMenuBtn) {
-        mobileMenuBtn.addEventListener('click', function() {
-            navLinks.classList.toggle('active');
-        });
-    }
-
-    // Закрытие меню при клике на ссылку
-    document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', function() {
-            navLinks.classList.remove('active');
-        });
-    });
-}
-
-function initTestSteps() {
-    document.querySelectorAll('.option-item').forEach(item => {
-        item.addEventListener('click', function() {
-            const radio = this.querySelector('input[type="radio"]');
-            if (radio) {
-                radio.checked = true;
-                
-                this.parentElement.querySelectorAll('.option-item').forEach(opt => {
-                    opt.classList.remove('selected');
-                });
-                this.classList.add('selected');
-            }
-        });
-    });
-}
-
-function initPhotoUpload() {
-    const photoInput = document.getElementById('photoInput');
-    const photoUploadArea = document.getElementById('photoUploadArea');
-    const photoPreview = document.getElementById('photoPreview');
-    const photoPreviewContainer = document.getElementById('photoPreviewContainer');
-    const uploadButton = document.getElementById('uploadButton');
-    const removePhotoButton = document.getElementById('removePhotoButton');
-
-    // Обработчик выбора файла
-    photoInput.addEventListener('change', function(e) {
-        handlePhotoUpload(e);
-    });
-
-    // Обработчик клика по кнопке загрузки
-    uploadButton.addEventListener('click', function(e) {
-        e.stopPropagation();
-        photoInput.click();
-    });
-
-    // Обработчик удаления фото
-    removePhotoButton.addEventListener('click', function(e) {
-        e.stopPropagation();
-        removePhoto();
-    });
-
-    // Drag and drop функционал
-    photoUploadArea.addEventListener('dragover', function(e) {
-        e.preventDefault();
-        this.classList.add('dragover');
-    });
-
-    photoUploadArea.addEventListener('dragleave', function(e) {
-        e.preventDefault();
-        this.classList.remove('dragover');
-    });
-
-    photoUploadArea.addEventListener('drop', function(e) {
-        e.preventDefault();
-        this.classList.remove('dragover');
-        
-        const files = e.dataTransfer.files;
-        if (files.length > 0) {
-            handleFileSelection(files[0]);
-        }
-    });
-
-    // Клик по области загрузки
-    photoUploadArea.addEventListener('click', function() {
-        photoInput.click();
-    });
-
-    function handleFileSelection(file) {
-        if (!file.type.match('image.*')) {
-            showErrorMessage('Пожалуйста, выберите файл изображения (JPG, PNG, GIF)');
-            return;
-        }
-
-        if (file.size > 5 * 1024 * 1024) {
-            showErrorMessage('Размер файла не должен превышать 5 МБ');
-            return;
-        }
-
-        userPhoto = file;
-
-        // Показываем превью
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            photoPreview.src = e.target.result;
-            photoPreviewContainer.style.display = 'block';
-            
-            document.getElementById('photoError').style.display = 'none';
-        };
-        reader.readAsDataURL(file);
-    }
-
-    function handlePhotoUpload(e) {
-        const file = e.target.files[0];
-        if (file) {
-            handleFileSelection(file);
-        }
-    }
-}
-
-function removePhoto() {
-    userPhoto = null;
-    document.getElementById('photoInput').value = '';
-    document.getElementById('photoPreviewContainer').style.display = 'none';
-    document.getElementById('photoPreview').src = '';
-}
-
-// Функция проверки валидности шага
-function validateStep(step) {
-    const stepElement = document.getElementById('step' + step);
-    if (!stepElement) return true;
-
-    const requiredInputs = stepElement.querySelectorAll('[required]');
-    let isValid = true;
-
-    // Сбрасываем предыдущие ошибки
-    stepElement.querySelectorAll('.error-message').forEach(error => {
-        error.style.display = 'none';
-    });
-    stepElement.querySelectorAll('.form-control.error').forEach(input => {
-        input.classList.remove('error');
-    });
-
-    stepElement.querySelectorAll('.question-block').forEach(block => {
-        block.classList.remove('error-highlight');
-    });
-
-    // Проверяем каждое обязательное поле
-    requiredInputs.forEach(input => {
-        if (input.type === 'radio') {
-            const radioGroup = stepElement.querySelectorAll(`input[name="${input.name}"]`);
-            const isChecked = Array.from(radioGroup).some(radio => radio.checked);
-            
-            if (!isChecked) {
-                isValid = false;
-                const errorElement = document.getElementById(input.name + 'Error');
-                if (errorElement) {
-                    errorElement.style.display = 'block';
-                }
-                
-                const questionBlock = input.closest('.question-block');
-                if (questionBlock) {
-                    questionBlock.classList.add('error-highlight');
-                }
-            }
-        } else {
-            if (!input.value.trim()) {
-                isValid = false;
-                input.classList.add('error');
-                const errorElement = document.getElementById(input.name + 'Error');
-                if (errorElement) {
-                    errorElement.style.display = 'block';
-                }
-            }
-        }
-    });
-
-    return isValid;
-}
-
-function nextStep(step) {
-    if (!validateStep(currentStep)) {
-        showErrorMessage('Пожалуйста, ответьте на все обязательные вопросы этого шага');
-        return;
-    }
-
-    if (step === 2) {
-        const testType = document.querySelector('input[name="test_type"]:checked');
-        if (!testType) {
-            showErrorMessage('Пожалуйста, выберите тип теста');
-            return;
-        }
-        
-        generateTestSteps(testType.value);
-        totalSteps = testType.value === 'regular' ? 6 : 2;
-    }
-    
-    document.querySelector('.test-step.active').classList.remove('active');
-    document.getElementById('step' + step).classList.add('active');
-    currentStep = step;
-    
-    updateProgress();
-    scrollToTop();
-}
-
-function prevStep(step) {
-    document.querySelector('.test-step.active').classList.remove('active');
-    document.getElementById('step' + step).classList.add('active');
-    currentStep = step;
-    
-    updateProgress();
-    scrollToTop();
-}
-
-function scrollToTop() {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-}
-
-function updateProgress() {
-    const progress = (currentStep / totalSteps) * 100;
-    document.getElementById('testProgress').style.width = progress + '%';
-    document.getElementById('progressText').textContent = `Шаг ${currentStep} из ${totalSteps}`;
-}
-
-function generateTestSteps(testType) {
-    const stepsContainer = document.getElementById('libidoTestForm');
-    
-    document.querySelectorAll('.test-step:not(#step1):not(#step6)').forEach(step => {
-        step.remove();
-    });
-    
-    if (testType === 'regular') {
-        const periods = [
-            { id: 1, name: 'От конца месячных до овуляции' },
-            { id: 2, name: 'В период овуляции' },
-            { id: 3, name: 'От конца овуляции до начала месячных' },
-            { id: 4, name: 'В период месячных' }
-        ];
-        
-        periods.forEach((period, index) => {
-            const stepNumber = index + 2;
-            const stepHTML = `
-                <div class="test-step" id="step${stepNumber}">
-                    <div class="step-header">
-                        <h4>Период: ${period.name}</h4>
-                        <p>Ответьте на вопросы для этого периода цикла</p>
-                    </div>
-                    
-                    ${generatePeriodQuestions(period.id, period.name)}
-                    
-                    <div class="test-navigation">
-                        <button type="button" class="btn btn-outline" onclick="prevStep(${stepNumber - 1})">
-                            <i class="fas fa-arrow-left"></i> Назад
-                        </button>
-                        <button type="button" class="btn btn-secondary" onclick="nextStep(${stepNumber + 1})">
-                            Далее <i class="fas fa-arrow-right"></i>
-                        </button>
+    modal.innerHTML = `
+        <div class="archive-modal-content" style="
+            background: linear-gradient(165deg, #FFF8F0 0%, #F5E6C8 50%, #F0E6FF 100%);
+            border-radius: 20px;
+            padding: 0;
+            max-width: 95vw;
+            width: 1400px;
+            max-height: 90vh;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.5);
+            border: 2px solid #8B4352;
+            position: relative;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        ">
+            <!-- Заголовок -->
+            <div style="
+                background: linear-gradient(135deg, #8B4352, #8B6B9E);
+                padding: 1.5rem 2rem;
+                color: white;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 2px solid rgba(255,255,255,0.2);
+            ">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="font-size: 2rem;">📊</div>
+                    <div>
+                        <h2 style="margin: 0; font-size: 1.6rem; font-weight: 700;">Архив данных</h2>
+                        <p style="margin: 0; opacity: 0.9; font-size: 0.9rem;">Система управления регистрациями и результатами тестов</p>
                     </div>
                 </div>
-            `;
-            
-            const lastStep = document.getElementById('step6');
-            lastStep.insertAdjacentHTML('beforebegin', stepHTML);
-        });
-        
-        totalSteps = 6;
-    } else {
-        const stepHTML = `
-            <div class="test-step" id="step2">
-                <div class="step-header">
-                    <h4>Вопросы для периода менопаузы</h4>
-                    <p>Ответьте на вопросы о вашем текущем состоянии</p>
-                </div>
-                
-                ${generateMenopauseQuestions()}
-                
-                <div class="test-navigation">
-                    <button type="button" class="btn btn-outline" onclick="prevStep(1)">
-                        <i class="fas fa-arrow-left"></i> Назад
-                    </button>
-                    <button type="button" class="btn btn-secondary" onclick="nextStep(6)">
-                        Далее <i class="fas fa-arrow-right"></i>
-                    </button>
+                <button id="archive-close-btn" style="
+                    background: rgba(255,255,255,0.2);
+                    border: 2px solid rgba(255,255,255,0.3);
+                    color: white;
+                    font-size: 24px;
+                    cursor: pointer;
+                    padding: 8px;
+                    border-radius: 50%;
+                    width: 45px;
+                    height: 45px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.3s ease;
+                ">×</button>
+            </div>
+
+            <!-- Форма входа -->
+            <div id="archive-login" style="padding: 3rem 2rem; text-align: center;">
+                <div style="max-width: 500px; margin: 0 auto;">
+                    <div style="font-size: 4rem; color: #8B4352; margin-bottom: 1.5rem;">🔒</div>
+                    <h3 style="color: #8B4352; margin-bottom: 1rem; font-size: 1.8rem;">Защищенный доступ</h3>
+                    <p style="color: #666; margin-bottom: 2.5rem; font-size: 1.1rem; line-height: 1.6;">
+                        Для доступа к архиву данных требуется авторизация.<br>
+                        Введите пароль безопасности для продолжения.
+                    </p>
+                    
+                    <div style="position: relative; margin-bottom: 2rem;">
+                        <input type="password" id="archive-password" placeholder="Введите пароль доступа" style="
+                            width: 100%;
+                            padding: 18px 20px;
+                            border: 2px solid #E6E6FA;
+                            border-radius: 12px;
+                            font-size: 16px;
+                            box-sizing: border-box;
+                            text-align: center;
+                            background: white;
+                            transition: all 0.3s ease;
+                            font-weight: 500;
+                        ">
+                        <div style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer;" onclick="togglePasswordVisibility()">
+                            <span id="password-toggle" style="color: #8B6B9E; font-size: 1.2rem;">👁️</span>
+                        </div>
+                    </div>
+                    
+                    <button id="archive-login-btn" style="
+                        width: 100%;
+                        padding: 18px;
+                        background: linear-gradient(135deg, #D46A6A, #8B6B9E);
+                        color: white;
+                        border: none;
+                        border-radius: 12px;
+                        cursor: pointer;
+                        font-weight: 700;
+                        font-size: 1.1rem;
+                        transition: all 0.3s ease;
+                        box-shadow: 0 6px 20px rgba(139, 107, 158, 0.4);
+                    ">🔓 Войти в архив</button>
+                    
+                    <div id="archive-error" style="
+                        color: #e74c3c;
+                        margin-top: 1.5rem;
+                        display: none;
+                        background: #ffebee;
+                        padding: 1.2rem;
+                        border-radius: 10px;
+                        border-left: 5px solid #e74c3c;
+                        font-weight: 500;
+                    ">
+                        ❌ Неверный пароль! Попробуйте снова.
+                    </div>
                 </div>
             </div>
+
+            <!-- Содержимое архива -->
+            <div id="archive-content" style="display: none; padding: 0;">
+                <!-- Панель управления -->
+                <div style="background: white; padding: 1.5rem 2rem; border-bottom: 2px solid #f0f0f0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
+                        <div style="flex: 1; min-width: 300px;">
+                            <h3 style="color: #8B4352; margin: 0 0 0.5rem 0; font-size: 1.4rem;">
+                                📈 Панель управления данными
+                            </h3>
+                            <p style="color: #666; margin: 0; font-size: 0.95rem;" id="archive-stats">
+                                Загрузка статистики...
+                            </p>
+                        </div>
+                        
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                            <button id="refresh-data" style="
+                                padding: 12px 20px;
+                                background: #3498db;
+                                color: white;
+                                border: none;
+                                border-radius: 8px;
+                                cursor: pointer;
+                                font-weight: 600;
+                                display: flex;
+                                align-items: center;
+                                gap: 8px;
+                                transition: all 0.3s ease;
+                            ">
+                                🔄 Обновить
+                            </button>
+                            <button id="export-csv" style="
+                                padding: 12px 20px;
+                                background: #27ae60;
+                                color: white;
+                                border: none;
+                                border-radius: 8px;
+                                cursor: pointer;
+                                font-weight: 600;
+                                display: flex;
+                                align-items: center;
+                                gap: 8px;
+                                transition: all 0.3s ease;
+                            ">
+                                📥 Экспорт CSV
+                            </button>
+                            <button id="archive-logout-btn" style="
+                                padding: 12px 24px;
+                                background: #e74c3c;
+                                color: white;
+                                border: none;
+                                border-radius: 8px;
+                                cursor: pointer;
+                                font-weight: 600;
+                                display: flex;
+                                align-items: center;
+                                gap: 8px;
+                                transition: all 0.3s ease;
+                            ">
+                                🚪 Выйти
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Панель поиска и фильтров -->
+                <div style="background: #f8f9fa; padding: 1.5rem 2rem; border-bottom: 1px solid #e9ecef;">
+                    <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+                        <div style="flex: 1; min-width: 350px;">
+                            <label style="display: block; color: #8B4352; font-weight: 600; margin-bottom: 0.8rem; font-size: 1rem;">
+                                🔍 Поиск по имени или фамилии
+                            </label>
+                            <input type="text" id="archive-search" placeholder="Введите имя для поиска..." style="
+                                width: 100%;
+                                padding: 14px 16px;
+                                border: 2px solid #ddd;
+                                border-radius: 10px;
+                                font-size: 15px;
+                                box-sizing: border-box;
+                                transition: all 0.3s ease;
+                                background: white;
+                            ">
+                        </div>
+                        
+                        <div style="min-width: 280px;">
+                            <label style="display: block; color: #8B4352; font-weight: 600; margin-bottom: 0.8rem; font-size: 1rem;">
+                                ⚡ Фильтр по уровню либидо
+                            </label>
+                            <select id="archive-filter" style="
+                                width: 100%;
+                                padding: 14px 16px;
+                                border: 2px solid #ddd;
+                                border-radius: 10px;
+                                font-size: 15px;
+                                background: white;
+                                cursor: pointer;
+                            ">
+                                <option value="">Все уровни</option>
+                                <option value="Low">🔴 Низкое либидо</option>
+                                <option value="Medium">🟡 Среднее либидо</option>
+                                <option value="High">🟢 Высокое либидо</option>
+                                <option value="Very high">🟣 Очень высокое</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Индикатор загрузки -->
+                <div id="archive-loading" style="display: none; text-align: center; padding: 4rem 2rem;">
+                    <div style="font-size: 4rem; color: #8B4352; margin-bottom: 1.5rem;">
+                        <div class="loading-spinner">⏳</div>
+                    </div>
+                    <p style="color: #666; font-size: 1.2rem; margin-bottom: 0.5rem;">Загрузка данных архива</p>
+                    <p style="color: #999; font-size: 0.9rem;">Пожалуйста, подождите...</p>
+                </div>
+
+                <!-- Контейнер таблицы -->
+                <div id="archive-table-container" style="padding: 0;">
+                    <div style="overflow-x: auto; max-height: 50vh;">
+                        <table id="archive-table" style="
+                            width: 100%;
+                            border-collapse: collapse;
+                            min-width: 1400px;
+                            background: white;
+                        ">
+                            <thead style="position: sticky; top: 0; z-index: 10;">
+                                <tr style="background: linear-gradient(135deg, #8B4352, #8B6B9E);">
+                                    <th style="
+                                        padding: 18px 16px;
+                                        text-align: center;
+                                        color: white;
+                                        font-weight: 700;
+                                        font-size: 0.95rem;
+                                        border-right: 1px solid rgba(255,255,255,0.15);
+                                        min-width: 120px;
+                                    ">Фото</th>
+                                    <th style="
+                                        padding: 18px 16px;
+                                        text-align: left;
+                                        color: white;
+                                        font-weight: 700;
+                                        font-size: 0.95rem;
+                                        border-right: 1px solid rgba(255,255,255,0.15);
+                                        min-width: 200px;
+                                    ">👤 ФИО</th>
+                                    <th style="
+                                        padding: 18px 12px;
+                                        text-align: center;
+                                        color: white;
+                                        font-weight: 700;
+                                        font-size: 0.95rem;
+                                        border-right: 1px solid rgba(255,255,255,0.15);
+                                        min-width: 80px;
+                                    ">Возраст</th>
+                                    <th style="
+                                        padding: 18px 16px;
+                                        text-align: left;
+                                        color: white;
+                                        font-weight: 700;
+                                        font-size: 0.95rem;
+                                        border-right: 1px solid rgba(255,255,255,0.15);
+                                        min-width: 150px;
+                                    ">📞 Телефон</th>
+                                    <th style="
+                                        padding: 18px 16px;
+                                        text-align: left;
+                                        color: white;
+                                        font-weight: 700;
+                                        font-size: 0.95rem;
+                                        border-right: 1px solid rgba(255,255,255,0.15);
+                                        min-width: 150px;
+                                    ">✈️ Telegram</th>
+                                    <th style="
+                                        padding: 18px 12px;
+                                        text-align: center;
+                                        color: white;
+                                        font-weight: 700;
+                                        font-size: 0.95rem;
+                                        border-right: 1px solid rgba(255,255,255,0.15);
+                                        min-width: 180px;
+                                    ">⚡ Уровень либидо</th>
+                                    <th style="
+                                        padding: 18px 12px;
+                                        text-align: center;
+                                        color: white;
+                                        font-weight: 700;
+                                        font-size: 0.95rem;
+                                        border-right: 1px solid rgba(255,255,255,0.15);
+                                        min-width: 100px;
+                                    ">⭐ Баллы</th>
+                                    <th style="
+                                        padding: 18px 12px;
+                                        text-align: center;
+                                        color: white;
+                                        font-weight: 700;
+                                        font-size: 0.95rem;
+                                        min-width: 120px;
+                                    ">📅 Дата</th>
+                                </tr>
+                            </thead>
+                            <tbody id="archive-table-body">
+                                <tr>
+                                    <td colspan="8" style="
+                                        padding: 4rem 2rem;
+                                        text-align: center;
+                                        color: #999;
+                                        font-style: italic;
+                                        font-size: 1.1rem;
+                                    ">
+                                        Данные не загружены. Войдите в систему для просмотра архива.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Пагинация и информация -->
+                <div style="
+                    background: #f8f9fa;
+                    padding: 1.2rem 2rem;
+                    border-top: 1px solid #e9ecef;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    flex-wrap: wrap;
+                    gap: 1rem;
+                ">
+                    <div style="color: #666; font-size: 0.9rem;" id="archive-info">
+                        Загрузка информации...
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;" id="archive-pagination">
+                        <!-- Пагинация будет генерироваться динамически -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Модальное окно для увеличения фото -->
+        <div id="photo-modal" style="
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 10001;
+            align-items: center;
+            justify-content: center;
+        ">
+            <div style="position: relative; max-width: 90vw; max-height: 90vh;">
+                <img id="enlarged-photo" src="" style="
+                    max-width: 100%;
+                    max-height: 90vh;
+                    border-radius: 10px;
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+                ">
+                <button id="close-photo-modal" style="
+                    position: absolute;
+                    top: -40px;
+                    right: -40px;
+                    background: rgba(255,255,255,0.2);
+                    border: 2px solid rgba(255,255,255,0.3);
+                    color: white;
+                    font-size: 24px;
+                    cursor: pointer;
+                    padding: 8px;
+                    border-radius: 50%;
+                    width: 45px;
+                    height: 45px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.3s ease;
+                ">×</button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+    attachEventHandlers();
+    addModalAnimations();
+}
+
+// Прикрепление обработчиков событий
+function attachEventHandlers() {
+    // Кнопка входа
+    document.getElementById('archive-login-btn').addEventListener('click', handleArchiveLogin);
+    
+    // Кнопка выхода
+    document.getElementById('archive-logout-btn').addEventListener('click', handleArchiveLogout);
+    
+    // Кнопка закрытия
+    document.getElementById('archive-close-btn').addEventListener('click', closeArchiveModal);
+    
+    // Поиск и фильтрация
+    document.getElementById('archive-search').addEventListener('input', function(e) {
+        currentSearch = e.target.value.toLowerCase();
+        currentPage = 1;
+        filterArchiveTable();
+    });
+    
+    document.getElementById('archive-filter').addEventListener('change', function(e) {
+        currentFilter = e.target.value;
+        currentPage = 1;
+        filterArchiveTable();
+    });
+    
+    // Кнопки управления
+    document.getElementById('refresh-data').addEventListener('click', loadArchiveData);
+    document.getElementById('export-csv').addEventListener('click', exportToCSV);
+    
+    // Enter в поле пароля
+    document.getElementById('archive-password').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') handleArchiveLogin();
+    });
+    
+    // Закрытие по клику на фон
+    document.getElementById('archive-modal').addEventListener('click', function(e) {
+        if (e.target === this) closeArchiveModal();
+    });
+
+    // Закрытие модального окна фото
+    document.getElementById('close-photo-modal').addEventListener('click', closePhotoModal);
+    document.getElementById('photo-modal').addEventListener('click', function(e) {
+        if (e.target === this) closePhotoModal();
+    });
+}
+
+// Добавление анимаций
+function addModalAnimations() {
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .archive-modal-content {
+            animation: slideInUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .loading-spinner {
+            animation: spin 1.5s linear infinite;
+        }
+        
+        #archive-btn {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .archive-row:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .photo-thumbnail {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .photo-thumbnail:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// Переключение видимости пароля
+function togglePasswordVisibility() {
+    const passwordInput = document.getElementById('archive-password');
+    const toggleIcon = document.getElementById('password-toggle');
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleIcon.textContent = '👁️‍🗨️';
+    } else {
+        passwordInput.type = 'password';
+        toggleIcon.textContent = '👁️';
+    }
+}
+
+// Открытие модального окна архива
+function openArchiveModal() {
+    const modal = document.getElementById('archive-modal');
+    modal.style.display = 'flex';
+    document.getElementById('archive-password').focus();
+    
+    // Сброс состояния
+    document.getElementById('archive-password').value = '';
+    document.getElementById('archive-error').style.display = 'none';
+    document.getElementById('archive-login').style.display = 'block';
+    document.getElementById('archive-content').style.display = 'none';
+}
+
+// Закрытие модального окна архива
+function closeArchiveModal() {
+    const modal = document.getElementById('archive-modal');
+    modal.style.display = 'none';
+    
+    // Очистка данных
+    document.getElementById('archive-password').value = '';
+    document.getElementById('archive-error').style.display = 'none';
+    currentSearch = '';
+    currentFilter = '';
+    currentPage = 1;
+    document.getElementById('archive-search').value = '';
+    document.getElementById('archive-filter').value = '';
+}
+
+// Закрытие модального окна фото
+function closePhotoModal() {
+    document.getElementById('photo-modal').style.display = 'none';
+}
+
+// Показать увеличенное фото
+function showEnlargedPhoto(photoUrl) {
+    document.getElementById('enlarged-photo').src = photoUrl;
+    document.getElementById('photo-modal').style.display = 'flex';
+}
+
+// Обработка входа в архив
+function handleArchiveLogin() {
+    const password = document.getElementById('archive-password').value;
+    const errorElement = document.getElementById('archive-error');
+
+    if (password === ARCHIVE_PASSWORD) {
+        errorElement.style.display = 'none';
+        document.getElementById('archive-login').style.display = 'none';
+        document.getElementById('archive-content').style.display = 'block';
+        loadArchiveData();
+    } else {
+        errorElement.style.display = 'block';
+        document.getElementById('archive-password').value = '';
+        document.getElementById('archive-password').focus();
+        
+        // Анимация ошибки
+        errorElement.style.animation = 'none';
+        setTimeout(() => {
+            errorElement.style.animation = 'shake 0.5s ease-in-out';
+        }, 10);
+    }
+}
+
+// Обработка выхода из архива
+function handleArchiveLogout() {
+    closeArchiveModal();
+}
+
+// Загрузка данных архива
+async function loadArchiveData() {
+    const loadingElement = document.getElementById('archive-loading');
+    const tableBody = document.getElementById('archive-table-body');
+    
+    // Показываем загрузку
+    loadingElement.style.display = 'block';
+    tableBody.innerHTML = `
+        <tr>
+            <td colspan="8" style="padding: 3rem; text-align: center; color: #999;">
+                Загрузка данных...
+            </td>
+        </tr>
+    `;
+
+    try {
+        console.log('🔄 Начало загрузки архива...');
+        
+        const response = await fetch(`${API_BASE_URL}/api/archive`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${ARCHIVE_PASSWORD}`,
+                'Content-Type': 'application/json'
+            },
+            mode: 'cors'
+        });
+
+        console.log('📨 Статус ответа:', response.status);
+        
+        if (response.status === 401) {
+            throw new Error('Ошибка авторизации: неверный токен доступа');
+        }
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ошибка ${response.status}: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log('✅ Данные получены:', data);
+        
+        if (data.success && data.records) {
+            archiveData = data.records;
+            populateArchiveTable(archiveData);
+            updateArchiveStats();
+            showNotification('✅ Данные архива успешно загружены', 'success');
+        } else {
+            throw new Error(data.error || 'Неверный формат ответа от сервера');
+        }
+        
+    } catch (error) {
+        console.error('❌ Ошибка загрузки архива:', error);
+        
+        let errorMessage = 'Не удалось загрузить данные: ';
+        if (error.message.includes('Failed to fetch')) {
+            errorMessage += 'Проблема с подключением к серверу. Проверьте интернет-соединение.';
+        } else if (error.message.includes('401')) {
+            errorMessage += 'Ошибка авторизации. Проверьте токен доступа.';
+        } else {
+            errorMessage += error.message;
+        }
+        
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="8" style="padding: 3rem; text-align: center; color: #e74c3c;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">❌</div>
+                    <div style="font-weight: 600; margin-bottom: 1rem;">${errorMessage}</div>
+                    <small>Проверьте консоль браузера для подробной информации</small>
+                </td>
+            </tr>
         `;
         
-        const lastStep = document.getElementById('step6');
-        lastStep.insertAdjacentHTML('beforebegin', stepHTML);
-        totalSteps = 2;
+        showNotification('❌ Ошибка загрузки данных архива', 'error');
+    } finally {
+        loadingElement.style.display = 'none';
     }
-    
-    initTestSteps();
 }
 
-function generatePeriodQuestions(periodId, periodName) {
-    return `
-        <div class="question-block">
-            <div class="question-text">Как часто хочется секса в период "${periodName}"?</div>
-            <div class="options-grid">
-                ${generateOptions(`period${periodId}_frequency`, [
-                    'Вообще не хочется',
-                    'Хочется 1 раза в неделю',
-                    'Хочется 1 раз в 3 дня',
-                    'Хочется через день',
-                    'Хочется каждый день',
-                    'Хочется каждый день по много раз'
-                ])}
-            </div>
-        </div>
-        
-        <div class="question-block">
-            <div class="question-text">Сила желания в те дни, когда хочется секса?</div>
-            <div class="options-grid">
-                ${generateOptions(`period${periodId}_strength`, [
-                    'Легкое желание',
-                    'Среднее желание',
-                    'Сильное желание',
-                    'Очень сильное желание',
-                    'Максимально сильное желание(на столько,что почти невозможно терпеть)'
-                ])}
-            </div>
-        </div>
-        
-        <div class="question-block">
-            <div class="question-text">Возбуждает ли Вас вид эрегированного полового члена в дни, когда хочется секса?</div>
-            <div class="options-grid">
-                ${generateOptions(`period${periodId}_erected_want`, [
-                    'Вообще не возбуждает',
-                    'Немного возбуждает',
-                    'Средне возбуждает',
-                    'Сильно возбуждает',
-                    'Очень сильно возбуждает'
-                ])}
-            </div>
-        </div>
-        
-        <div class="question-block">
-            <div class="question-text">Возбуждает ли Вас вид эрегированного полового члена в дни, когда НЕ хочется секса?</div>
-            <div class="options-grid">
-                ${generateOptions(`period${periodId}_erected_not_want`, [
-                    'Вообще не возбуждает',
-                    'Немного возбуждает',
-                    'Средне возбуждает',
-                    'Сильно возбуждает',
-                    'Очень сильно возбуждает'
-                ])}
-            </div>
-        </div>
-        
-        <div class="question-block">
-            <div class="question-text">Возбуждает ли Вас вид НЕэрегированного полового члена в дни, когда хочется секса?</div>
-            <div class="options-grid">
-                ${generateOptions(`period${periodId}_non_erected_want`, [
-                    'Вообще не возбуждает',
-                    'Немного возбуждает',
-                    'Средне возбуждает',
-                    'Сильно возбуждает',
-                    'Очень сильно возбуждает'
-                ])}
-            </div>
-        </div>
-        
-        <div class="question-block">
-            <div class="question-text">Возбуждает ли Вас вид НЕэрегированного полового члена в дни, когда НЕ хочется секса?</div>
-            <div class="options-grid">
-                ${generateOptions(`period${periodId}_non_erected_not_want`, [
-                    'Вообще не возбуждает',
-                    'Немного возбуждает',
-                    'Средне возбуждает',
-                    'Сильно возбуждает',
-                    'Очень сильно возбуждает'
-                ])}
-            </div>
-        </div>
-    `;
-}
+// Заполнение таблицы данными
+function populateArchiveTable(records) {
+    const tbody = document.getElementById('archive-table-body');
 
-function generateMenopauseQuestions() {
-    return `
-        <div class="question-block">
-            <div class="question-text">Как часто хочется секса в текущий период?</div>
-            <div class="options-grid">
-                ${generateOptions('menopause_frequency', [
-                    'Вообще не хочется',
-                    'Хочется 1 раза в неделю',
-                    'Хочется 1 раз в 3 дня',
-                    'Хочется через день',
-                    'Хочется каждый день',
-                    'Хочется каждый день по много раз'
-                ])}
-            </div>
-        </div>
-        
-        <div class="question-block">
-            <div class="question-text">Сила желания в те дни, когда хочется секса?</div>
-            <div class="options-grid">
-                ${generateOptions('menopause_strength', [
-                    'Легкое желание',
-                    'Среднее желание',
-                    'Сильное желание',
-                    'Очень сильное желание',
-                    'Максимально сильное желание(на столько,что почти невозможно терпеть)'
-                ])}
-            </div>
-        </div>
-        
-        <div class="question-block">
-            <div class="question-text">Возбуждает ли Вас вид эрегированного полового члена в дни, когда хочется секса?</div>
-            <div class="options-grid">
-                ${generateOptions('menopause_erected_want', [
-                    'Вообще не возбуждает',
-                    'Немного возбуждает',
-                    'Средне возбуждает',
-                    'Сильно возбуждает',
-                    'Очень сильно возбуждает'
-                ])}
-            </div>
-        </div>
-        
-        <div class="question-block">
-            <div class="question-text">Возбуждает ли Вас вид эрегированного полового члена в дни, когда НЕ хочется секса?</div>
-            <div class="options-grid">
-                ${generateOptions('menopause_erected_not_want', [
-                    'Вообще не возбуждает',
-                    'Немного возбуждает',
-                    'Средне возбуждает',
-                    'Сильно возбуждает',
-                    'Очень сильно возбуждает'
-                ])}
-            </div>
-        </div>
-        
-        <div class="question-block">
-            <div class="question-text">Возбуждает ли Вас вид НЕэрегированного полового члена в дни, когда хочется секса?</div>
-            <div class="options-grid">
-                ${generateOptions('menopause_non_erected_want', [
-                    'Вообще не возбуждает',
-                    'Немного возбуждает',
-                    'Средне возбуждает',
-                    'Сильно возбуждает',
-                    'Очень сильно возбуждает'
-                ])}
-            </div>
-        </div>
-        
-        <div class="question-block">
-            <div class="question-text">Возбуждает ли Вас вид НЕэрегированного полового члена в дни, когда НЕ хочется секса?</div>
-            <div class="options-grid">
-                ${generateOptions('menopause_non_erected_not_want', [
-                    'Вообще не возбуждает',
-                    'Немного возбуждает',
-                    'Средне возбуждает',
-                    'Сильно возбуждает',
-                    'Очень сильно возбуждает'
-                ])}
-            </div>
-        </div>
-    `;
-}
-
-function generateOptions(name, options) {
-    return options.map(option => `
-        <label class="option-item">
-            <input type="radio" name="${name}" value="${option}" required>
-            ${option}
-        </label>
-    `).join('');
-}
-
-// Валидация формы регистрации
-function validateRegistrationForm(form) {
-    let isValid = true;
-    
-    form.querySelectorAll('.error-message').forEach(error => {
-        error.style.display = 'none';
-    });
-    form.querySelectorAll('.form-control.error').forEach(input => {
-        input.classList.remove('error');
-    });
-    
-    const requiredFields = form.querySelectorAll('[required]');
-    requiredFields.forEach(field => {
-        if (field.type === 'file') {
-            if (!userPhoto) {
-                isValid = false;
-                document.getElementById('photoError').style.display = 'block';
-            } else {
-                document.getElementById('photoError').style.display = 'none';
-            }
-        } else if (!field.value.trim()) {
-            isValid = false;
-            field.classList.add('error');
-            const errorId = field.id + 'Error';
-            const errorElement = document.getElementById(errorId);
-            if (errorElement) {
-                errorElement.style.display = 'block';
-            }
-        }
-    });
-    
-    const age = document.getElementById('age');
-    if (age.value) {
-        const ageNum = parseInt(age.value);
-        if (ageNum < 18 || ageNum > 80) {
-            isValid = false;
-            age.classList.add('error');
-            document.getElementById('ageError').textContent = 'Пожалуйста, укажите возраст от 18 до 80 лет';
-            document.getElementById('ageError').style.display = 'block';
-        }
-    }
-    
-    const phone = document.getElementById('phone');
-    if (phone.value && !isValidPhone(phone.value)) {
-        isValid = false;
-        phone.classList.add('error');
-        document.getElementById('phoneError').textContent = 'Пожалуйста, введите корректный номер телефона';
-        document.getElementById('phoneError').style.display = 'block';
-    }
-    
-    return isValid;
-}
-
-function isValidPhone(phone) {
-    const phoneRegex = /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;
-    return phoneRegex.test(phone.replace(/\s/g, ''));
-}
-
-// ОБНОВЛЕННАЯ ФУНКЦИЯ РЕГИСТРАЦИИ
-async function handleRegistrationSubmit(e) {
-    e.preventDefault();
-    
-    if (!validateRegistrationForm(e.target)) {
-        showErrorMessage('Пожалуйста, заполните все обязательные поля корректно');
+    if (!records || records.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="8" style="padding: 4rem 2rem; text-align: center; color: #999;">
+                    <div style="font-size: 4rem; margin-bottom: 1rem;">📭</div>
+                    <div style="font-size: 1.2rem; margin-bottom: 0.5rem;">Архив пуст</div>
+                    <div style="font-size: 0.9rem; color: #666;">Нет данных для отображения</div>
+                </td>
+            </tr>
+        `;
+        updateArchiveInfo(0);
         return;
     }
-    
-    const form = e.target;
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const originalText = submitBtn.innerHTML;
-    
-    try {
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Регистрация...';
-        submitBtn.disabled = true;
-        
-        // Собираем данные формы
-        const formData = new FormData(form);
-        registrationData = Object.fromEntries(formData.entries());
-        
-        // Проверяем наличие фото
-        if (!userPhoto) {
-            throw new Error('Пожалуйста, загрузите фотографию');
-        }
 
-        // === ВАЖНО: Преобразуем фото в base64 для архива ===
-        const base64Photo = await new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.onload = (e) => resolve(e.target.result);
-            reader.readAsDataURL(userPhoto);
-        });
-        registrationData.photo_data = base64Photo;
+    // Применяем фильтры
+    const filteredRecords = records.filter(record => filterRecord(record));
+    
+    // Пагинация
+    const totalPages = Math.ceil(filteredRecords.length / recordsPerPage);
+    const startIndex = (currentPage - 1) * recordsPerPage;
+    const paginatedRecords = filteredRecords.slice(startIndex, startIndex + recordsPerPage);
 
-        // Отправляем в Telegram и на сервер
-        await sendRegistrationToTelegram(registrationData, userPhoto);
+    tbody.innerHTML = paginatedRecords.map((record, index) => {
+        const levelStyle = getLevelStyle(record.level);
+        const rowStyle = index % 2 === 0 ? 'background: #fafafa;' : 'background: white;';
         
-        showSuccessMessage('✅ Регистрация прошла успешно! Переходим к тесту.');
+        // Генерируем аватарку если фото нет
+        const avatarUrl = record.photo_data ? 
+            `data:image/jpeg;base64,${record.photo_data}` : 
+            generateAvatar(record.fio);
         
-        // Сохраняем статус и показываем тест
-        localStorage.setItem('registrationCompleted', 'true');
-        setTimeout(() => showTestSection(), 1500);
-        
-    } catch (error) {
-        console.error('Ошибка регистрации:', error);
-        showErrorMessage('❌ Ошибка регистрации: ' + error.message);
-    } finally {
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-    }
+        return `
+            <tr class="archive-row" style="${rowStyle} border-bottom: 1px solid #f0f0f0; transition: all 0.3s ease;">
+                <td style="padding: 12px; text-align: center;">
+                    <img src="${avatarUrl}" 
+                         alt="${record.fio}" 
+                         class="photo-thumbnail"
+                         style="
+                            width: 50px;
+                            height: 50px;
+                            border-radius: 50%;
+                            object-fit: cover;
+                            border: 2px solid #E6E6FA;
+                            cursor: pointer;
+                         "
+                         onclick="showEnlargedPhoto('${avatarUrl}')"
+                         title="Нажмите для увеличения"
+                    >
+                </td>
+                <td style="padding: 16px; color: #333; font-weight: 500;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="
+                            width: 40px;
+                            height: 40px;
+                            border-radius: 50%;
+                            background: linear-gradient(135deg, #8B4352, #8B6B9E);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            color: white;
+                            font-weight: bold;
+                            font-size: 0.9rem;
+                        ">
+                            ${(record.fio || '?').charAt(0).toUpperCase()}
+                        </div>
+                        <div>
+                            <div style="font-weight: 600; color: #2c3e50;">${record.fio || 'Не указано'}</div>
+                            <div style="font-size: 0.8rem; color: #7f8c8d;">ID: ${record.registrationId || 'N/A'}</div>
+                        </div>
+                    </div>
+                </td>
+                <td style="padding: 16px 12px; text-align: center; color: #666; font-weight: 500;">
+                    ${record.age || '-'}
+                </td>
+                <td style="padding: 16px; color: #666;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span>📞</span>
+                        <span>${record.phone || 'Не указан'}</span>
+                    </div>
+                </td>
+                <td style="padding: 16px; color: #666;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span>✈️</span>
+                        <span>${record.telegram || 'Не указан'}</span>
+                    </div>
+                </td>
+                <td style="padding: 16px 12px; text-align: center;">
+                    <span style="
+                        display: inline-block;
+                        padding: 8px 16px;
+                        border-radius: 20px;
+                        font-size: 0.85rem;
+                        font-weight: 600;
+                        ${levelStyle}
+                    ">
+                        ${getLevelIcon(record.level)} ${record.level || 'Не указан'}
+                    </span>
+                </td>
+                <td style="padding: 16px 12px; text-align: center; color: #333; font-weight: 700; font-size: 1.1rem;">
+                    ${record.score || '0'}
+                </td>
+                <td style="padding: 16px 12px; text-align: center; color: #999; font-size: 0.9rem;">
+                    ${record.date ? new Date(record.date).toLocaleDateString('ru-RU') : 'Не указана'}
+                </td>
+            </tr>
+        `;
+    }).join('');
+
+    updateArchiveInfo(filteredRecords.length);
+    generatePagination(totalPages);
 }
 
-// ОБНОВЛЕННАЯ ФУНКЦИЯ ОТПРАВКИ В TELEGRAM И НА СЕРВЕР
-async function sendRegistrationToTelegram(data, photoFile) {
-    try {
-        // Сначала отправляем текстовое сообщение в Telegram
-        let message = `🌟 *НОВАЯ РЕГИСТРАЦИЯ* 🌟\n\n`;
-        message += `👤 *Контактная информация:*\n`;
-        message += `   └ *Фамилия:* ${data.lastName}\n`;
-        message += `   └ *Имя:* ${data.firstName}\n`;
-        message += `   └ *Возраст:* ${data.age}\n`;
-        message += `   └ *Телефон:* ${data.phone}\n`;
-        message += `   └ *Telegram:* ${data.telegram}\n`;
-        message += `   └ *Фото:* ${photoFile ? 'Да' : 'Нет'}\n`;
-        message += `\n⏰ *Дата регистрации:* ${new Date().toLocaleString('ru-RU')}`;
-
-        const textResponse = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                chat_id: TELEGRAM_CHAT_ID,
-                text: message,
-                parse_mode: 'Markdown'
-            })
-        });
-
-        const textResult = await textResponse.json();
-        
-        if (!textResponse.ok || !textResult.ok) {
-            throw new Error(textResult.description || 'Ошибка отправки текста в Telegram');
-        }
-
-        // Затем отправляем фото в Telegram
-        if (photoFile) {
-            await sendPhotoToTelegram(photoFile, `Фото: ${data.firstName} ${data.lastName}`);
-        }
-
-        // === ОТПРАВЛЯЕМ ДАННЫЕ НА СЕРВЕР ДЛЯ АРХИВА ===
-        const serverResponse = await fetch(`${API_BASE_URL}/api/register`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                lastName: data.lastName,
-                firstName: data.firstName,
-                age: parseInt(data.age),
-                phone: data.phone,
-                telegram: data.telegram,
-                photo_data: data.photo_data // отправляем base64 фото
-            })
-        });
-
-        const serverResult = await serverResponse.json();
-        
-        if (!serverResponse.ok || !serverResult.success) {
-            console.error('Ошибка сохранения на сервере:', serverResult.error);
-        } else {
-            console.log('✅ Данные сохранены на сервере, ID:', serverResult.registrationId);
-            currentRegistrationId = serverResult.registrationId;
-            localStorage.setItem('registrationId', serverResult.registrationId);
-        }
-
-        console.log('✅ Регистрация успешно отправлена в Telegram и на сервер');
-        
-    } catch (error) {
-        console.error('Ошибка отправки регистрации:', error);
-        throw error;
-    }
+// Генерация аватарки если фото нет
+function generateAvatar(name) {
+    const colors = ['#8B4352', '#D46A6A', '#8B6B9E', '#3498db', '#27ae60', '#e74c3c'];
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name || '?')}&background=${color.replace('#', '')}&color=fff&size=50&bold=true`;
 }
 
-// Функция отправки фото в Telegram
-async function sendPhotoToTelegram(photoFile, caption) {
-    try {
-        const formData = new FormData();
-        formData.append('chat_id', TELEGRAM_CHAT_ID);
-        formData.append('photo', photoFile);
-        formData.append('caption', caption);
-
-        const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
-            method: 'POST',
-            body: formData
-        });
-
-        const result = await response.json();
-        
-        if (!response.ok || !result.ok) {
-            throw new Error(result.description || 'Ошибка отправки фото');
-        }
-
-        console.log('✅ Фото успешно отправлено в Telegram');
-        
-    } catch (error) {
-        console.error('Ошибка отправки фото:', error);
-        throw error;
-    }
-}
-
-// Обработка теста
-async function handleTestSubmit(e) {
-    e.preventDefault();
+// Получение стиля для уровня либидо
+function getLevelStyle(level) {
+    if (!level) return 'background: #f5f5f5; color: #666; border: 1px solid #ddd;';
     
-    if (!validateStep(6)) {
-        showErrorMessage('Пожалуйста, ответьте на все обязательные вопросы этого шага');
-        return;
-    }
-    
-    const form = e.target;
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const originalText = submitBtn.innerHTML;
-    
-    try {
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Обработка...';
-        submitBtn.disabled = true;
-        
-        // Собираем данные теста
-        const formData = new FormData(form);
-        testData = Object.fromEntries(formData.entries());
-        
-        // Рассчитываем результат
-        const result = calculateTestResult(testData);
-        
-        // Показываем результат
-        showTestResult(result);
-        
-        // Отправляем результаты в Telegram и на сервер
-        await sendTestResultsToTelegram(testData, result);
-        
-        // Разблокируем все разделы
-        localStorage.setItem('diagnosticCompleted', 'true');
-        unlockAllSections();
-        
-        showSuccessMessage('✅ Диагностика завершена! Теперь вам доступны все разделы сайта.');
-        
-    } catch (error) {
-        console.error('Ошибка обработки теста:', error);
-        showErrorMessage('❌ Ошибка обработки теста. Пожалуйста, попробуйте еще раз.');
-    } finally {
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-    }
-}
-
-// Отправка результатов теста
-async function sendTestResultsToTelegram(data, result) {
-    try {
-        let message = `📊 *НОВЫЙ РЕЗУЛЬТАТ ТЕСТА* 📊\n\n`;
-        message += `👤 *Пользователь:* ${registrationData.firstName} ${registrationData.lastName}\n`;
-        message += `📱 *Telegram:* ${registrationData.telegram}\n\n`;
-        message += `🔍 *Тип теста:* ${data.test_type === 'regular' ? 'Обычный' : 'Менопауза'}\n`;
-        message += `📈 *Результат:* ${result.level}\n`;
-        message += `⭐ *Баллы:* ${result.score}\n\n`;
-        
-        if (data.test_type === 'regular') {
-            message += `📅 *Ответы по периодам:*\n`;
-            
-            const periods = [
-                {name: 'От конца месячных до овуляции', prefix: 'period1'},
-                {name: 'В период овуляции', prefix: 'period2'},
-                {name: 'От конца овуляции до начала месячных', prefix: 'period3'},
-                {name: 'В период месячных', prefix: 'period4'}
-            ];
-            
-            periods.forEach(period => {
-                message += `\n*${period.name}:*\n`;
-                message += `   └ *Частота:* ${data[`${period.prefix}_frequency`] || 'Не указано'}\n`;
-                message += `   └ *Сила желания:* ${data[`${period.prefix}_strength`] || 'Не указано'}\n`;
-                message += `   └ *Эрегир. (да):* ${data[`${period.prefix}_erected_want`] || 'Не указано'}\n`;
-                message += `   └ *Эрегир. (нет):* ${data[`${period.prefix}_erected_not_want`] || 'Не указано'}\n`;
-                message += `   └ *Не эрегир. (да):* ${data[`${period.prefix}_non_erected_want`] || 'Не указано'}\n`;
-                message += `   └ *Не эрегир. (нет):* ${data[`${period.prefix}_non_erected_not_want`] || 'Не указано'}\n`;
-            });
-        } else {
-            message += `🔸 *Ответы для менопаузы:*\n`;
-            message += `   └ *Частота:* ${data.menopause_frequency || 'Не указано'}\n`;
-            message += `   └ *Сила желания:* ${data.menopause_strength || 'Не указано'}\n`;
-            message += `   └ *Эрегир. (да):* ${data.menopause_erected_want || 'Не указано'}\n`;
-            message += `   └ *Эрегир. (нет):* ${data.menopause_erected_not_want || 'Не указано'}\n`;
-            message += `   └ *Не эрегир. (да):* ${data.menopause_non_erected_want || 'Не указано'}\n`;
-            message += `   └ *Не эрегир. (нет):* ${data.menopause_non_erected_not_want || 'Не указано'}\n`;
-        }
-        
-        message += `\n🍂 *Сезонная зависимость:* ${data.season_dependency || 'Не указано'}\n`;
-        if (data.season_description) {
-            message += `   └ *Описание:* ${data.season_description}\n`;
-        }
-        
-        message += `\n⏰ *Дата заполнения:* ${new Date().toLocaleString('ru-RU')}`;
-
-        const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                chat_id: TELEGRAM_CHAT_ID,
-                text: message,
-                parse_mode: 'Markdown'
-            })
-        });
-
-        const apiResult = await response.json();
-        
-        if (!response.ok || !apiResult.ok) {
-            console.error('Ошибка Telegram API:', apiResult);
-        } else {
-            console.log('✅ Результаты теста успешно отправлены в Telegram');
-        }
-
-        // === ОТПРАВЛЯЕМ РЕЗУЛЬТАТЫ ТЕСТА НА СЕРВЕР ===
-        if (currentRegistrationId) {
-            const testResponse = await fetch(`${API_BASE_URL}/api/test-result`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    registrationId: currentRegistrationId,
-                    level: result.level,
-                    score: result.score,
-                    testData: data
-                })
-            });
-
-            const testResult = await testResponse.json();
-            
-            if (!testResponse.ok || !testResult.success) {
-                console.error('Ошибка сохранения результатов теста:', testResult.error);
-            } else {
-                console.log('✅ Результаты теста сохранены на сервере');
-            }
-        }
-
-    } catch (error) {
-        console.error('Ошибка отправки результатов теста:', error);
-    }
-}
-
-// Обработка консультации
-async function handleConsultationSubmit(e) {
-    e.preventDefault();
-    
-    const form = e.target;
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const originalText = submitBtn.innerHTML;
-    
-    try {
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
-        submitBtn.disabled = true;
-        
-        const formData = new FormData(form);
-        const consultationData = Object.fromEntries(formData.entries());
-        
-        await sendConsultationToTelegram(consultationData);
-        
-        showSuccessMessage('✅ Заявка отправлена! Я свяжусь с вами в течение 24 часов.');
-        form.reset();
-        
-    } catch (error) {
-        console.error('Ошибка отправки заявки:', error);
-        showErrorMessage('❌ Ошибка отправки заявки. Пожалуйста, попробуйте еще раз.');
-    } finally {
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-    }
-}
-
-// Отправка заявки на консультацию
-async function sendConsultationToTelegram(data) {
-    try {
-        let message = `📅 *НОВАЯ ЗАЯВКА НА КОНСУЛЬТАЦИЮ* 📅\n\n`;
-        message += `👤 *Имя:* ${data.name}\n`;
-        message += `📧 *Email:* ${data.email}\n`;
-        message += `💼 *Формат:* ${data.format}\n`;
-        if (data.message) {
-            message += `📝 *Запрос:* ${data.message}\n`;
-        }
-        message += `\n⏰ *Дата заявки:* ${new Date().toLocaleString('ru-RU')}`;
-
-        const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                chat_id: TELEGRAM_CHAT_ID,
-                text: message,
-                parse_mode: 'Markdown'
-            })
-        });
-
-        const result = await response.json();
-        
-        if (!response.ok || !result.ok) {
-            throw new Error(result.description || 'Ошибка отправки в Telegram');
-        }
-
-        console.log('✅ Заявка на консультацию отправлена в Telegram');
-        
-    } catch (error) {
-        console.error('Ошибка отправки заявки:', error);
-        throw error;
-    }
-}
-
-// Расчет результатов теста
-function calculateTestResult(data) {
-    let totalScore = 0;
-    const testType = data.test_type;
-    
-    const scoreMap = {
-        'frequency': {
-            'Вообще не хочется': 0,
-            'Хочется 1 раза в неделю': 1,
-            'Хочется 1 раз в 3 дня': 2,
-            'Хочется через день': 3,
-            'Хочется каждый день': 4,
-            'Хочется каждый день по много раз': 5
-        },
-        'strength': {
-            'Легкое желание': 1,
-            'Среднее желание': 2,
-            'Сильное желание': 3,
-            'Очень сильное желание': 4,
-            'Максимально сильное желание(на столько,что почти невозможно терпеть)': 5
-        },
-        'arousal': {
-            'Вообще не возбуждает': 0,
-            'Немного возбуждает': 1,
-            'Средне возбуждает': 2,
-            'Сильно возбуждает': 3,
-            'Очень сильно возбуждает': 4
-        }
+    const styles = {
+        'Low': 'background: linear-gradient(135deg, #ffebee, #ffcdd2); color: #c62828; border: 1px solid #ffcdd2;',
+        'Medium': 'background: linear-gradient(135deg, #fff3e0, #ffe0b2); color: #ef6c00; border: 1px solid #ffe0b2;',
+        'High': 'background: linear-gradient(135deg, #e8f5e9, #c8e6c9); color: #2e7d32; border: 1px solid #c8e6c9;',
+        'Very high': 'background: linear-gradient(135deg, #f3e5f5, #e1bee7); color: #7b1fa2; border: 1px solid #e1bee7;'
     };
     
-    if (testType === 'regular') {
-        for (let i = 1; i <= 4; i++) {
-            const prefix = `period${i}_`;
-            
-            if (data[prefix + 'frequency']) {
-                totalScore += scoreMap.frequency[data[prefix + 'frequency']] || 0;
-            }
-            if (data[prefix + 'strength']) {
-                totalScore += scoreMap.strength[data[prefix + 'strength']] || 0;
-            }
-            if (data[prefix + 'erected_want']) {
-                totalScore += scoreMap.arousal[data[prefix + 'erected_want']] || 0;
-            }
-            if (data[prefix + 'erected_not_want']) {
-                totalScore += scoreMap.arousal[data[prefix + 'erected_not_want']] || 0;
-            }
-            if (data[prefix + 'non_erected_want']) {
-                totalScore += scoreMap.arousal[data[prefix + 'non_erected_want']] || 0;
-            }
-            if (data[prefix + 'non_erected_not_want']) {
-                totalScore += scoreMap.arousal[data[prefix + 'non_erected_not_want']] || 0;
-            }
+    for (const [key, style] of Object.entries(styles)) {
+        if (level.includes(key)) return style;
+    }
+    
+    return 'background: #f5f5f5; color: #666; border: 1px solid #ddd;';
+}
+
+// Получение иконки для уровня либидо
+function getLevelIcon(level) {
+    if (!level) return '❓';
+    
+    const icons = {
+        'Low': '🔴',
+        'Medium': '🟡', 
+        'High': '🟢',
+        'Very high': '🟣'
+    };
+    
+    for (const [key, icon] of Object.entries(icons)) {
+        if (level.includes(key)) return icon;
+    }
+    
+    return '❓';
+}
+
+// Обновление статистики архива
+function updateArchiveStats() {
+    if (!archiveData || archiveData.length === 0) {
+        document.getElementById('archive-stats').textContent = 'Нет данных для анализа';
+        return;
+    }
+    
+    const total = archiveData.length;
+    const levels = {
+        low: archiveData.filter(r => r.level && r.level.includes('Low')).length,
+        medium: archiveData.filter(r => r.level && r.level.includes('Medium')).length,
+        high: archiveData.filter(r => r.level && r.level.includes('High') && !r.level.includes('Very')).length,
+        veryHigh: archiveData.filter(r => r.level && r.level.includes('Very')).length
+    };
+    
+    const statsText = `
+        Всего записей: <strong style="color: #8B4352;">${total}</strong> | 
+        🔴 Низкое: <strong>${levels.low}</strong> | 
+        🟡 Среднее: <strong>${levels.medium}</strong> | 
+        🟢 Высокое: <strong>${levels.high}</strong> | 
+        🟣 Очень высокое: <strong>${levels.veryHigh}</strong>
+    `;
+    
+    document.getElementById('archive-stats').innerHTML = statsText;
+}
+
+// Обновление информации о данных
+function updateArchiveInfo(totalCount) {
+    const filteredCount = currentSearch || currentFilter ? 
+        archiveData.filter(record => filterRecord(record)).length : 
+        totalCount;
+    
+    let infoText = `Показано: <strong>${Math.min(filteredCount, recordsPerPage)}</strong> из <strong>${filteredCount}</strong> записей`;
+    
+    if (currentSearch) {
+        infoText += ` | Поиск: "${currentSearch}"`;
+    }
+    
+    if (currentFilter) {
+        infoText += ` | Фильтр: ${document.getElementById('archive-filter').options[document.getElementById('archive-filter').selectedIndex].text}`;
+    }
+    
+    document.getElementById('archive-info').innerHTML = infoText;
+}
+
+// Генерация пагинации
+function generatePagination(totalPages) {
+    const paginationContainer = document.getElementById('archive-pagination');
+    
+    if (totalPages <= 1) {
+        paginationContainer.innerHTML = '';
+        return;
+    }
+    
+    let paginationHTML = '';
+    
+    // Кнопка "Назад"
+    paginationHTML += `
+        <button class="pagination-btn ${currentPage === 1 ? 'disabled' : ''}" 
+                onclick="changePage(${currentPage - 1})"
+                ${currentPage === 1 ? 'disabled' : ''}
+                style="
+                    padding: 8px 12px;
+                    border: 1px solid #ddd;
+                    background: ${currentPage === 1 ? '#f5f5f5' : 'white'};
+                    color: ${currentPage === 1 ? '#999' : '#333'};
+                    border-radius: 5px;
+                    cursor: ${currentPage === 1 ? 'not-allowed' : 'pointer'};
+                ">
+            ←
+        </button>
+    `;
+    
+    // Номера страниц
+    for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+            paginationHTML += `
+                <button class="pagination-btn ${currentPage === i ? 'active' : ''}" 
+                        onclick="changePage(${i})"
+                        style="
+                            padding: 8px 12px;
+                            border: 1px solid #ddd;
+                            background: ${currentPage === i ? '#8B4352' : 'white'};
+                            color: ${currentPage === i ? 'white' : '#333'};
+                            border-radius: 5px;
+                            cursor: pointer;
+                        ">
+                    ${i}
+                </button>
+            `;
+        } else if (i === currentPage - 2 || i === currentPage + 2) {
+            paginationHTML += `<span style="padding: 8px 4px; color: #999;">...</span>`;
         }
+    }
+    
+    // Кнопка "Вперед"
+    paginationHTML += `
+        <button class="pagination-btn ${currentPage === totalPages ? 'disabled' : ''}" 
+                onclick="changePage(${currentPage + 1})"
+                ${currentPage === totalPages ? 'disabled' : ''}
+                style="
+                    padding: 8px 12px;
+                    border: 1px solid #ddd;
+                    background: ${currentPage === totalPages ? '#f5f5f5' : 'white'};
+                    color: ${currentPage === totalPages ? '#999' : '#333'};
+                    border-radius: 5px;
+                    cursor: ${currentPage === totalPages ? 'not-allowed' : 'pointer'};
+                ">
+            →
+        </button>
+    `;
+    
+    paginationContainer.innerHTML = paginationHTML;
+}
+
+// Смена страницы
+function changePage(page) {
+    const totalPages = Math.ceil(archiveData.filter(record => filterRecord(record)).length / recordsPerPage);
+    
+    if (page < 1 || page > totalPages) return;
+    
+    currentPage = page;
+    filterArchiveTable();
+    
+    // Прокрутка к верху таблицы
+    document.getElementById('archive-table-container').scrollIntoView({ behavior: 'smooth' });
+}
+
+// Фильтрация таблицы архива
+function filterArchiveTable() {
+    if (!archiveData || archiveData.length === 0) return;
+    
+    const filteredData = archiveData.filter(record => filterRecord(record));
+    populateArchiveTable(filteredData);
+}
+
+// Проверка записи на соответствие фильтрам
+function filterRecord(record) {
+    let matchesSearch = true;
+    let matchesFilter = true;
+    
+    if (currentSearch) {
+        const searchableText = `${record.fio || ''} ${record.phone || ''} ${record.telegram || ''}`.toLowerCase();
+        matchesSearch = searchableText.includes(currentSearch);
+    }
+    
+    if (currentFilter) {
+        matchesFilter = record.level && record.level.includes(currentFilter);
+    }
+    
+    return matchesSearch && matchesFilter;
+}
+
+// Экспорт данных в CSV
+function exportToCSV() {
+    if (!archiveData || archiveData.length === 0) {
+        showNotification('❌ Нет данных для экспорта', 'error');
+        return;
+    }
+    
+    try {
+        const headers = ['ФИО', 'Возраст', 'Телефон', 'Telegram', 'Уровень либидо', 'Баллы', 'Дата регистрации'];
+        const csvData = archiveData.map(record => [
+            record.fio || '',
+            record.age || '',
+            record.phone || '',
+            record.telegram || '',
+            record.level || '',
+            record.score || '',
+            record.date ? new Date(record.date).toLocaleDateString('ru-RU') : ''
+        ]);
         
-        totalScore = Math.round(totalScore / 4);
-    } else {
-        if (data.menopause_frequency) {
-            totalScore += scoreMap.frequency[data.menopause_frequency] || 0;
-        }
-        if (data.menopause_strength) {
-            totalScore += scoreMap.strength[data.menopause_strength] || 0;
-        }
-        if (data.menopause_erected_want) {
-            totalScore += scoreMap.arousal[data.menopause_erected_want] || 0;
-        }
-        if (data.menopause_erected_not_want) {
-            totalScore += scoreMap.arousal[data.menopause_erected_not_want] || 0;
-        }
-        if (data.menopause_non_erected_want) {
-            totalScore += scoreMap.arousal[data.menopause_non_erected_want] || 0;
-        }
-        if (data.menopause_non_erected_not_want) {
-            totalScore += scoreMap.arousal[data.menopause_non_erected_not_want] || 0;
-        }
+        let csvContent = 'data:text/csv;charset=utf-8,\uFEFF' + headers.join(';') + '\n';
+        csvContent += csvData.map(row => 
+            row.map(field => `"${field}"`).join(';')
+        ).join('\n');
+        
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement('a');
+        link.setAttribute('href', encodedUri);
+        link.setAttribute('download', `tatiana_archive_${new Date().toISOString().split('T')[0]}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        showNotification('✅ Данные экспортированы в CSV', 'success');
+    } catch (error) {
+        console.error('Ошибка экспорта:', error);
+        showNotification('❌ Ошибка при экспорте данных', 'error');
     }
-    
-    let level, description;
-    
-    if (testType === 'regular') {
-        if (totalScore <= 8) {
-            level = 'Низкое либидо';
-            description = 'Ваше либидо находится на низком уровне. Это может быть связано с гормональными изменениями, стрессом или другими факторами. Рекомендуется консультация для выявления причин и разработки индивидуального плана восстановления.';
-        } else if (totalScore <= 16) {
-            level = 'Среднее либидо';
-            description = 'У вас средний уровень либидо. Есть потенциал для усиления сексуальной энергии через работу с гормональным балансом и психологическими аспектами.';
-        } else if (totalScore <= 24) {
-            level = 'Высокое либидо';
-            description = 'Поздравляем! У вас высокий уровень либидо. Ваша сексуальная энергия находится в хорошем состоянии, но есть возможности для дальнейшего развития и гармонизации.';
-        } else {
-            level = 'Очень высокое либидо';
-            description = 'У вас очень высокий уровень либидо! Это прекрасный показатель вашей сексуальной энергии. Важно научиться правильно направлять эту энергию для достижения гармонии во всех сферах жизни.';
-        }
-    } else {
-        if (totalScore <= 6) {
-            level = 'Низкое либидо в менопаузе';
-            description = 'В период менопаузы снижение либидо является распространенным явлением из-за гормональных изменений. Существуют эффективные методы восстановления, включая гормональную терапию и натуральные подходы.';
-        } else if (totalScore <= 12) {
-            level = 'Среднее либидо в менопаузе';
-            description = 'У вас сохраняется умеренный уровень либидо, что является хорошим показателем для периода менопаузы. Есть возможности для усиления сексуальной энергии через специальные методики.';
-        } else if (totalScore <= 18) {
-            level = 'Высокое либидо в менопаузе';
-            description = 'Поздравляем! Несмотря на менопаузу, у вас сохраняется высокий уровень либидо. Это прекрасная основа для дальнейшего развития вашей сексуальности.';
-        } else {
-            level = 'Очень высокое либидо в менопаузе';
-            description = 'У вас исключительно высокий уровень либидо для периода менопаузы! Это редкий и ценный показатель. Важно научиться управлять этой энергией для максимальной реализации.';
-        }
-    }
-    
-    return { level, description, score: totalScore, testType };
 }
 
-function showTestResult(result) {
-    const resultLevel = document.getElementById('resultLevel');
-    const resultDescription = document.getElementById('resultDescription');
-    
-    if (result.level.includes('Низкое')) {
-        resultLevel.className = 'result-level level-low';
-    } else if (result.level.includes('Среднее')) {
-        resultLevel.className = 'result-level level-medium';
-    } else if (result.level.includes('Высокое')) {
-        resultLevel.className = 'result-level level-high';
-    } else {
-        resultLevel.className = 'result-level level-very-high';
-    }
-    
-    resultLevel.textContent = result.level;
-    resultDescription.textContent = result.description;
-    
-    showResultSection();
-    scrollToTop();
-}
-
-// Навигация по секциям
-function showRegistrationSection() {
-    hideAllSections();
-    document.getElementById('registration').classList.remove('section-hidden');
-    scrollToTop();
-}
-
-function showTestSection() {
-    hideAllSections();
-    document.getElementById('test').classList.remove('section-hidden');
-    
-    currentStep = 1;
-    updateProgress();
-    
-    scrollToTop();
-}
-
-function showResultSection() {
-    hideAllSections();
-    document.getElementById('result').classList.remove('section-hidden');
-    scrollToTop();
-}
-
-function showAboutSection() {
-    hideAllSections();
-    document.getElementById('about').classList.remove('section-hidden');
-    scrollToTop();
-}
-
-function showPowerSection() {
-    hideAllSections();
-    document.getElementById('power').classList.remove('section-hidden');
-    scrollToTop();
-}
-
-function showServicesSection() {
-    hideAllSections();
-    document.getElementById('services').classList.remove('section-hidden');
-    scrollToTop();
-}
-
-function showProcessSection() {
-    hideAllSections();
-    document.getElementById('process').classList.remove('section-hidden');
-    scrollToTop();
-}
-
-function showAwakeningSection() {
-    hideAllSections();
-    document.getElementById('awakening').classList.remove('section-hidden');
-    scrollToTop();
-}
-
-function showContactsSection() {
-    hideAllSections();
-    document.getElementById('contacts').classList.remove('section-hidden');
-    scrollToTop();
-}
-
-function hideAllSections() {
-    document.querySelectorAll('section').forEach(section => {
-        section.classList.add('section-hidden');
-    });
-}
-
-// Уведомления
-function showSuccessMessage(text) {
-    showNotification(text, 'success');
-}
-
-function showErrorMessage(text) {
-    showNotification(text, 'error');
-}
-
-function showInfoMessage(text) {
-    showNotification(text, 'info');
-}
-
-function showNotification(text, type) {
-    const existingNotifications = document.querySelectorAll('.notification');
-    existingNotifications.forEach(notification => notification.remove());
+// Показать уведомление
+function showNotification(message, type = 'info') {
+    // Удаляем старые уведомления
+    const oldNotifications = document.querySelectorAll('.archive-notification');
+    oldNotifications.forEach(notif => notif.remove());
     
     const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-    notification.innerHTML = `
-        <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-triangle' : 'info-circle'}" 
-           style="margin-right: 8px;"></i> 
-        ${text}
+    notification.className = `archive-notification archive-notification-${type}`;
+    notification.innerHTML = message;
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 16px 20px;
+        border-radius: 12px;
+        z-index: 10001;
+        animation: slideInRight 0.3s ease-out;
+        box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+        max-width: 400px;
+        color: white;
+        font-weight: 500;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        backdrop-filter: blur(10px);
     `;
+    
+    const backgrounds = {
+        success: 'linear-gradient(135deg, #27ae60, #2ecc71)',
+        error: 'linear-gradient(135deg, #e74c3c, #c0392b)',
+        info: 'linear-gradient(135deg, #3498db, #2980b9)'
+    };
+    
+    notification.style.background = backgrounds[type] || backgrounds.info;
+    
+    const icons = {
+        success: '✅',
+        error: '❌',
+        info: 'ℹ️'
+    };
+    
+    notification.innerHTML = `${icons[type]} ${message}`;
     
     document.body.appendChild(notification);
     
+    // Автоматическое скрытие
     setTimeout(() => {
         if (notification.parentNode) {
-            notification.parentNode.removeChild(notification);
+            notification.style.animation = 'slideOutRight 0.3s ease-in forwards';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
         }
-    }, 5000);
+    }, 4000);
 }
 
-console.log('🚀 Main script initialized successfully');
+// Добавление CSS анимаций для уведомлений
+const notificationStyles = document.createElement('style');
+notificationStyles.textContent = `
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideOutRight {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+    
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-8px); }
+        75% { transform: translateX(8px); }
+    }
+`;
+document.head.appendChild(notificationStyles);
+
+// Экспорт функций для глобального использования
+window.ArchiveSystem = {
+    openArchive: openArchiveModal,
+    closeArchive: closeArchiveModal,
+    loadData: loadArchiveData,
+    refreshData: loadArchiveData,
+    showEnlargedPhoto: showEnlargedPhoto,
+    closePhotoModal: closePhotoModal,
+    changePage: changePage,
+    togglePasswordVisibility: togglePasswordVisibility
+};
+
+console.log('🎯 Модуль архива полностью загружен и готов к работе!');
