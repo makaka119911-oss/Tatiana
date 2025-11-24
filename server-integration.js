@@ -8,16 +8,38 @@ if (typeof API_BASE_URL === 'undefined') {
     console.error('❌ API_BASE_URL не определена. Убедитесь что archive.js загружен первым.');
 }
 
-// Переменные для хранения данных
-let currentRegistrationId = null;
+// Функция для преобразования файла в base64
+function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+            // Убираем префикс data:image/jpeg;base64, 
+            const base64 = reader.result.split(',')[1];
+            resolve(base64);
+        };
+        reader.onerror = error => reject(error);
+    });
+}
 
-// Registration function
+// Registration function with photo support
 async function handleRegistrationToServer(form) {
     try {
         const formData = new FormData(form);
         const registrationData = Object.fromEntries(formData.entries());
         
         console.log('📝 Отправка данных на сервер...', registrationData);
+
+        // Добавляем фото в формате base64
+        if (window.userPhoto) {
+            try {
+                registrationData.photo_data = await fileToBase64(window.userPhoto);
+                console.log('✅ Фото преобразовано в base64');
+            } catch (photoError) {
+                console.error('❌ Ошибка преобразования фото:', photoError);
+                registrationData.photo_data = null;
+            }
+        }
 
         // Send to backend API
         const serverResponse = await fetch(API_BASE_URL + '/api/register', {
