@@ -34,19 +34,25 @@ async function handleRegistrationToServer(form) {
         if (window.userPhoto) {
             try {
                 registrationData.photo_data = await fileToBase64(window.userPhoto);
-                console.log('✅ Фото преобразовано в base64');
+                console.log('✅ Фото преобразовано в base64, длина:', registrationData.photo_data.length);
             } catch (photoError) {
                 console.error('❌ Ошибка преобразования фото:', photoError);
                 registrationData.photo_data = null;
             }
+        } else {
+            console.log('⚠️ Фото не загружено');
+            registrationData.photo_data = null;
         }
+
+        console.log('📤 Отправка данных на сервер:', { 
+            ...registrationData, 
+            photo_data: registrationData.photo_data ? `base64 длиной ${registrationData.photo_data.length}` : 'null' 
+        });
 
         // Send to backend API
         const serverResponse = await fetch(API_BASE_URL + '/api/register', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(registrationData)
         });
 
@@ -55,11 +61,7 @@ async function handleRegistrationToServer(form) {
         const responseData = await serverResponse.json();
         console.log('📊 Ответ сервера:', responseData);
 
-        if (!serverResponse.ok) {
-            throw new Error(responseData.error || `HTTP ${serverResponse.status}`);
-        }
-
-        if (!responseData.success) {
+        if (!serverResponse.ok || !responseData.success) {
             throw new Error(responseData.error || 'Registration failed');
         }
 
