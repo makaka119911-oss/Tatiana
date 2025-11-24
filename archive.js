@@ -1,5 +1,5 @@
 // ===== ARCHIVE SYSTEM - TATIANA WEBSITE =====
-// Полностью переработанная версия архива с улучшенным дизайном и обработкой ошибок
+// Исправленная версия с работающими фото и фильтрами
 
 const API_BASE_URL = 'https://tatiana-server-production.up.railway.app';
 const ARCHIVE_PASSWORD = 'tatiana_archive_2024_LBg_makaka_9f3a7c2e8d1b5a4c6';
@@ -30,7 +30,7 @@ function createArchiveButton() {
 
     const archiveBtn = document.createElement('button');
     archiveBtn.id = 'archive-btn';
-    archiveBtn.innerHTML = '📊';
+    archiveBtn.innerHTML = '<i class="fas fa-database"></i>';
     archiveBtn.title = 'Архив данных';
     archiveBtn.style.cssText = `
         position: fixed;
@@ -119,7 +119,7 @@ function createArchiveModal() {
                 border-bottom: 2px solid rgba(255,255,255,0.2);
             ">
                 <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="font-size: 2rem;">📊</div>
+                    <div style="font-size: 2rem;"><i class="fas fa-database"></i></div>
                     <div>
                         <h2 style="margin: 0; font-size: 1.6rem; font-weight: 700;">Архив данных</h2>
                         <p style="margin: 0; opacity: 0.9; font-size: 0.9rem;">Система управления регистрациями и результатами тестов</p>
@@ -145,7 +145,7 @@ function createArchiveModal() {
             <!-- Форма входа -->
             <div id="archive-login" style="padding: 3rem 2rem; text-align: center;">
                 <div style="max-width: 500px; margin: 0 auto;">
-                    <div style="font-size: 4rem; color: #8B4352; margin-bottom: 1.5rem;">🔒</div>
+                    <div style="font-size: 4rem; color: #8B4352; margin-bottom: 1.5rem;"><i class="fas fa-lock"></i></div>
                     <h3 style="color: #8B4352; margin-bottom: 1rem; font-size: 1.8rem;">Защищенный доступ</h3>
                     <p style="color: #666; margin-bottom: 2.5rem; font-size: 1.1rem; line-height: 1.6;">
                         Для доступа к архиву данных требуется авторизация.<br>
@@ -166,7 +166,7 @@ function createArchiveModal() {
                             font-weight: 500;
                         ">
                         <div style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer;" onclick="togglePasswordVisibility()">
-                            <span id="password-toggle" style="color: #8B6B9E; font-size: 1.2rem;">👁️</span>
+                            <span id="password-toggle" style="color: #8B6B9E; font-size: 1.2rem;"><i class="fas fa-eye"></i></span>
                         </div>
                     </div>
                     
@@ -182,7 +182,7 @@ function createArchiveModal() {
                         font-size: 1.1rem;
                         transition: all 0.3s ease;
                         box-shadow: 0 6px 20px rgba(139, 107, 158, 0.4);
-                    ">🔓 Войти в архив</button>
+                    "><i class="fas fa-unlock"></i> Войти в архив</button>
                     
                     <div id="archive-error" style="
                         color: #e74c3c;
@@ -194,7 +194,7 @@ function createArchiveModal() {
                         border-left: 5px solid #e74c3c;
                         font-weight: 500;
                     ">
-                        ❌ Неверный пароль! Попробуйте снова.
+                        <i class="fas fa-exclamation-circle"></i> Неверный пароль! Попробуйте снова.
                     </div>
                 </div>
             </div>
@@ -206,7 +206,7 @@ function createArchiveModal() {
                     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
                         <div style="flex: 1; min-width: 300px;">
                             <h3 style="color: #8B4352; margin: 0 0 0.5rem 0; font-size: 1.4rem;">
-                                📈 Панель управления данными
+                                <i class="fas fa-chart-line"></i> Панель управления данными
                             </h3>
                             <p style="color: #666; margin: 0; font-size: 0.95rem;" id="archive-stats">
                                 Загрузка статистики...
@@ -227,7 +227,7 @@ function createArchiveModal() {
                                 gap: 8px;
                                 transition: all 0.3s ease;
                             ">
-                                🔄 Обновить
+                                <i class="fas fa-sync-alt"></i> Обновить
                             </button>
                             <button id="export-csv" style="
                                 padding: 12px 20px;
@@ -242,7 +242,7 @@ function createArchiveModal() {
                                 gap: 8px;
                                 transition: all 0.3s ease;
                             ">
-                                📥 Экспорт CSV
+                                <i class="fas fa-download"></i> Экспорт CSV
                             </button>
                             <button id="archive-logout-btn" style="
                                 padding: 12px 24px;
@@ -257,7 +257,7 @@ function createArchiveModal() {
                                 gap: 8px;
                                 transition: all 0.3s ease;
                             ">
-                                🚪 Выйти
+                                <i class="fas fa-sign-out-alt"></i> Выйти
                             </button>
                         </div>
                     </div>
@@ -268,7 +268,7 @@ function createArchiveModal() {
                     <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
                         <div style="flex: 1; min-width: 350px;">
                             <label style="display: block; color: #8B4352; font-weight: 600; margin-bottom: 0.8rem; font-size: 1rem;">
-                                🔍 Поиск по имени или фамилии
+                                <i class="fas fa-search"></i> Поиск по имени или фамилии
                             </label>
                             <input type="text" id="archive-search" placeholder="Введите имя для поиска..." style="
                                 width: 100%;
@@ -284,7 +284,7 @@ function createArchiveModal() {
                         
                         <div style="min-width: 280px;">
                             <label style="display: block; color: #8B4352; font-weight: 600; margin-bottom: 0.8rem; font-size: 1rem;">
-                                ⚡ Фильтр по уровню либидо
+                                <i class="fas fa-filter"></i> Фильтр по уровню либидо
                             </label>
                             <select id="archive-filter" style="
                                 width: 100%;
@@ -296,10 +296,10 @@ function createArchiveModal() {
                                 cursor: pointer;
                             ">
                                 <option value="">Все уровни</option>
-                                <option value="Low">🔴 Низкое либидо</option>
-                                <option value="Medium">🟡 Среднее либидо</option>
-                                <option value="High">🟢 Высокое либидо</option>
-                                <option value="Very high">🟣 Очень высокое</option>
+                                <option value="Низкое">Низкое либидо</option>
+                                <option value="Среднее">Среднее либидо</option>
+                                <option value="Высокое">Высокое либидо</option>
+                                <option value="Очень высокое">Очень высокое либидо</option>
                             </select>
                         </div>
                     </div>
@@ -308,7 +308,7 @@ function createArchiveModal() {
                 <!-- Индикатор загрузки -->
                 <div id="archive-loading" style="display: none; text-align: center; padding: 4rem 2rem;">
                     <div style="font-size: 4rem; color: #8B4352; margin-bottom: 1.5rem;">
-                        <div class="loading-spinner">⏳</div>
+                        <div class="loading-spinner"><i class="fas fa-spinner"></i></div>
                     </div>
                     <p style="color: #666; font-size: 1.2rem; margin-bottom: 0.5rem;">Загрузка данных архива</p>
                     <p style="color: #999; font-size: 0.9rem;">Пожалуйста, подождите...</p>
@@ -333,7 +333,7 @@ function createArchiveModal() {
                                         font-size: 0.95rem;
                                         border-right: 1px solid rgba(255,255,255,0.15);
                                         min-width: 120px;
-                                    ">Фото</th>
+                                    "><i class="fas fa-camera"></i> Фото</th>
                                     <th style="
                                         padding: 18px 16px;
                                         text-align: left;
@@ -342,7 +342,7 @@ function createArchiveModal() {
                                         font-size: 0.95rem;
                                         border-right: 1px solid rgba(255,255,255,0.15);
                                         min-width: 200px;
-                                    ">👤 ФИО</th>
+                                    "><i class="fas fa-user"></i> ФИО</th>
                                     <th style="
                                         padding: 18px 12px;
                                         text-align: center;
@@ -351,7 +351,7 @@ function createArchiveModal() {
                                         font-size: 0.95rem;
                                         border-right: 1px solid rgba(255,255,255,0.15);
                                         min-width: 80px;
-                                    ">Возраст</th>
+                                    "><i class="fas fa-birthday-cake"></i> Возраст</th>
                                     <th style="
                                         padding: 18px 16px;
                                         text-align: left;
@@ -360,7 +360,7 @@ function createArchiveModal() {
                                         font-size: 0.95rem;
                                         border-right: 1px solid rgba(255,255,255,0.15);
                                         min-width: 150px;
-                                    ">📞 Телефон</th>
+                                    "><i class="fas fa-phone"></i> Телефон</th>
                                     <th style="
                                         padding: 18px 16px;
                                         text-align: left;
@@ -369,7 +369,7 @@ function createArchiveModal() {
                                         font-size: 0.95rem;
                                         border-right: 1px solid rgba(255,255,255,0.15);
                                         min-width: 150px;
-                                    ">✈️ Telegram</th>
+                                    "><i class="fab fa-telegram"></i> Telegram</th>
                                     <th style="
                                         padding: 18px 12px;
                                         text-align: center;
@@ -378,7 +378,7 @@ function createArchiveModal() {
                                         font-size: 0.95rem;
                                         border-right: 1px solid rgba(255,255,255,0.15);
                                         min-width: 180px;
-                                    ">⚡ Уровень либидо</th>
+                                    "><i class="fas fa-chart-bar"></i> Уровень либидо</th>
                                     <th style="
                                         padding: 18px 12px;
                                         text-align: center;
@@ -387,7 +387,7 @@ function createArchiveModal() {
                                         font-size: 0.95rem;
                                         border-right: 1px solid rgba(255,255,255,0.15);
                                         min-width: 100px;
-                                    ">⭐ Баллы</th>
+                                    "><i class="fas fa-star"></i> Баллы</th>
                                     <th style="
                                         padding: 18px 12px;
                                         text-align: center;
@@ -395,7 +395,7 @@ function createArchiveModal() {
                                         font-weight: 700;
                                         font-size: 0.95rem;
                                         min-width: 120px;
-                                    ">📅 Дата</th>
+                                    "><i class="fas fa-calendar"></i> Дата</th>
                                 </tr>
                             </thead>
                             <tbody id="archive-table-body">
@@ -597,10 +597,10 @@ function togglePasswordVisibility() {
     
     if (passwordInput.type === 'password') {
         passwordInput.type = 'text';
-        toggleIcon.textContent = '👁️‍🗨️';
+        toggleIcon.innerHTML = '<i class="fas fa-eye-slash"></i>';
     } else {
         passwordInput.type = 'password';
-        toggleIcon.textContent = '👁️';
+        toggleIcon.innerHTML = '<i class="fas fa-eye"></i>';
     }
 }
 
@@ -735,7 +735,7 @@ async function loadArchiveData() {
         tableBody.innerHTML = `
             <tr>
                 <td colspan="8" style="padding: 3rem; text-align: center; color: #e74c3c;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">❌</div>
+                    <div style="font-size: 3rem; margin-bottom: 1rem;"><i class="fas fa-exclamation-triangle"></i></div>
                     <div style="font-weight: 600; margin-bottom: 1rem;">${errorMessage}</div>
                     <small>Проверьте консоль браузера для подробной информации</small>
                 </td>
@@ -756,7 +756,7 @@ function populateArchiveTable(records) {
         tbody.innerHTML = `
             <tr>
                 <td colspan="8" style="padding: 4rem 2rem; text-align: center; color: #999;">
-                    <div style="font-size: 4rem; margin-bottom: 1rem;">📭</div>
+                    <div style="font-size: 4rem; margin-bottom: 1rem;"><i class="fas fa-inbox"></i></div>
                     <div style="font-size: 1.2rem; margin-bottom: 0.5rem;">Архив пуст</div>
                     <div style="font-size: 0.9rem; color: #666;">Нет данных для отображения</div>
                 </td>
@@ -778,7 +778,7 @@ function populateArchiveTable(records) {
         const levelStyle = getLevelStyle(record.level);
         const rowStyle = index % 2 === 0 ? 'background: #fafafa;' : 'background: white;';
         
-        // Генерируем аватарку если фото нет
+        // ИСПРАВЛЕНИЕ: Правильное отображение фото
         const avatarUrl = record.photo_data ? 
             `data:image/jpeg;base64,${record.photo_data}` : 
             generateAvatar(record.fio);
@@ -827,16 +827,10 @@ function populateArchiveTable(records) {
                     ${record.age || '-'}
                 </td>
                 <td style="padding: 16px; color: #666;">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span>📞</span>
-                        <span>${record.phone || 'Не указан'}</span>
-                    </div>
+                    ${record.phone || 'Не указан'}
                 </td>
                 <td style="padding: 16px; color: #666;">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span>✈️</span>
-                        <span>${record.telegram || 'Не указан'}</span>
-                    </div>
+                    ${record.telegram || 'Не указан'}
                 </td>
                 <td style="padding: 16px 12px; text-align: center;">
                     <span style="
@@ -876,10 +870,10 @@ function getLevelStyle(level) {
     if (!level) return 'background: #f5f5f5; color: #666; border: 1px solid #ddd;';
     
     const styles = {
-        'Low': 'background: linear-gradient(135deg, #ffebee, #ffcdd2); color: #c62828; border: 1px solid #ffcdd2;',
-        'Medium': 'background: linear-gradient(135deg, #fff3e0, #ffe0b2); color: #ef6c00; border: 1px solid #ffe0b2;',
-        'High': 'background: linear-gradient(135deg, #e8f5e9, #c8e6c9); color: #2e7d32; border: 1px solid #c8e6c9;',
-        'Very high': 'background: linear-gradient(135deg, #f3e5f5, #e1bee7); color: #7b1fa2; border: 1px solid #e1bee7;'
+        'Низкое': 'background: linear-gradient(135deg, #ffebee, #ffcdd2); color: #c62828; border: 1px solid #ffcdd2;',
+        'Среднее': 'background: linear-gradient(135deg, #fff3e0, #ffe0b2); color: #ef6c00; border: 1px solid #ffe0b2;',
+        'Высокое': 'background: linear-gradient(135deg, #e8f5e9, #c8e6c9); color: #2e7d32; border: 1px solid #c8e6c9;',
+        'Очень высокое': 'background: linear-gradient(135deg, #f3e5f5, #e1bee7); color: #7b1fa2; border: 1px solid #e1bee7;'
     };
     
     for (const [key, style] of Object.entries(styles)) {
@@ -891,20 +885,20 @@ function getLevelStyle(level) {
 
 // Получение иконки для уровня либидо
 function getLevelIcon(level) {
-    if (!level) return '❓';
+    if (!level) return '<i class="fas fa-question"></i>';
     
     const icons = {
-        'Low': '🔴',
-        'Medium': '🟡', 
-        'High': '🟢',
-        'Very high': '🟣'
+        'Низкое': '<i class="fas fa-thermometer-empty" style="color: #c62828;"></i>',
+        'Среднее': '<i class="fas fa-thermometer-half" style="color: #ef6c00;"></i>', 
+        'Высокое': '<i class="fas fa-thermometer-three-quarters" style="color: #2e7d32;"></i>',
+        'Очень высокое': '<i class="fas fa-thermometer-full" style="color: #7b1fa2;"></i>'
     };
     
     for (const [key, icon] of Object.entries(icons)) {
         if (level.includes(key)) return icon;
     }
     
-    return '❓';
+    return '<i class="fas fa-question"></i>';
 }
 
 // Обновление статистики архива
@@ -916,18 +910,18 @@ function updateArchiveStats() {
     
     const total = archiveData.length;
     const levels = {
-        low: archiveData.filter(r => r.level && r.level.includes('Low')).length,
-        medium: archiveData.filter(r => r.level && r.level.includes('Medium')).length,
-        high: archiveData.filter(r => r.level && r.level.includes('High') && !r.level.includes('Very')).length,
-        veryHigh: archiveData.filter(r => r.level && r.level.includes('Very')).length
+        low: archiveData.filter(r => r.level && r.level.includes('Низкое')).length,
+        medium: archiveData.filter(r => r.level && r.level.includes('Среднее')).length,
+        high: archiveData.filter(r => r.level && r.level.includes('Высокое') && !r.level.includes('Очень')).length,
+        veryHigh: archiveData.filter(r => r.level && r.level.includes('Очень')).length
     };
     
     const statsText = `
         Всего записей: <strong style="color: #8B4352;">${total}</strong> | 
-        🔴 Низкое: <strong>${levels.low}</strong> | 
-        🟡 Среднее: <strong>${levels.medium}</strong> | 
-        🟢 Высокое: <strong>${levels.high}</strong> | 
-        🟣 Очень высокое: <strong>${levels.veryHigh}</strong>
+        <i class="fas fa-thermometer-empty" style="color: #c62828;"></i> Низкое: <strong>${levels.low}</strong> | 
+        <i class="fas fa-thermometer-half" style="color: #ef6c00;"></i> Среднее: <strong>${levels.medium}</strong> | 
+        <i class="fas fa-thermometer-three-quarters" style="color: #2e7d32;"></i> Высокое: <strong>${levels.high}</strong> | 
+        <i class="fas fa-thermometer-full" style="color: #7b1fa2;"></i> Очень высокое: <strong>${levels.veryHigh}</strong>
     `;
     
     document.getElementById('archive-stats').innerHTML = statsText;
@@ -976,7 +970,7 @@ function generatePagination(totalPages) {
                     border-radius: 5px;
                     cursor: ${currentPage === 1 ? 'not-allowed' : 'pointer'};
                 ">
-            ←
+            <i class="fas fa-chevron-left"></i>
         </button>
     `;
     
@@ -1015,7 +1009,7 @@ function generatePagination(totalPages) {
                     border-radius: 5px;
                     cursor: ${currentPage === totalPages ? 'not-allowed' : 'pointer'};
                 ">
-            →
+            <i class="fas fa-chevron-right"></i>
         </button>
     `;
     
@@ -1043,7 +1037,7 @@ function filterArchiveTable() {
     populateArchiveTable(filteredData);
 }
 
-// Проверка записи на соответствие фильтрам
+// ИСПРАВЛЕНИЕ: Проверка записи на соответствие фильтрам
 function filterRecord(record) {
     let matchesSearch = true;
     let matchesFilter = true;
@@ -1053,6 +1047,7 @@ function filterRecord(record) {
         matchesSearch = searchableText.includes(currentSearch);
     }
     
+    // ИСПРАВЛЕНИЕ: Правильная фильтрация по уровню либидо
     if (currentFilter) {
         matchesFilter = record.level && record.level.includes(currentFilter);
     }
@@ -1136,9 +1131,9 @@ function showNotification(message, type = 'info') {
     notification.style.background = backgrounds[type] || backgrounds.info;
     
     const icons = {
-        success: '✅',
-        error: '❌',
-        info: 'ℹ️'
+        success: '<i class="fas fa-check-circle"></i>',
+        error: '<i class="fas fa-exclamation-circle"></i>',
+        info: '<i class="fas fa-info-circle"></i>'
     };
     
     notification.innerHTML = `${icons[type]} ${message}`;
